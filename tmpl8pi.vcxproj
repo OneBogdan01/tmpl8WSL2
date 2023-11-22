@@ -121,7 +121,7 @@
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
     <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
-    <ValidateArchitecture>false</ValidateArchitecture>
+    <ValidateArchitecture>true</ValidateArchitecture>
     <MultiProcNumber>4</MultiProcNumber>
     <WSLPath>Debian</WSLPath>
     <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
@@ -768,13 +768,13 @@
       <DebugInformationFormat>None</DebugInformationFormat>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
       <IgnoreDefaultLibraries>false</IgnoreDefaultLibraries>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
+      <AdditionalDependencies>$(StlAdditionalDependencies);%(Link.AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">

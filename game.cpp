@@ -121,12 +121,12 @@ void Game::KeyDown(XID key)
 		rotateCam.y -= 1;
 		break;
 	case XK_Left:
-		moveCam.x = 1;
+		moveCam.x = -1;
 
 
 		break;
 	case XK_Right:
-		moveCam.x = -1;
+		moveCam.x = 1;
 
 
 		break;
@@ -169,12 +169,12 @@ void Game::KeyUp(XID key)
 		rotateCam.y -= -1;
 		break;
 	case XK_Left:
-		moveCam.x -= 1;
+		moveCam.x -= -1;
 
 
 		break;
 	case XK_Right:
-		moveCam.x -= -1;
+		moveCam.x -= 1;
 
 
 		break;
