@@ -57,6 +57,7 @@ vec2 moveCam;
 
 void Game::Tick(float deltaTime)
 {
+	world.Update(deltaTime);
 	camera->RotateMouse(rotateCam);
 	camera->MoveX(moveCam.x);
 	camera->MoveZ(moveCam.y);
@@ -80,7 +81,7 @@ void Game::Tick(float deltaTime)
 	                                   static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                                   0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", projection);
-	glm::mat4 view = camera->LookAt();
+	mat4 view = camera->LookAt();
 	simpleShader->SetMat4x4("view", view);
 
 	//camera->SetViewMatrix(simpleShader);

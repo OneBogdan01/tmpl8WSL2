@@ -91,7 +91,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
     <MultiProcNumber>4</MultiProcNumber>
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -101,7 +101,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <MultiProcNumber>4</MultiProcNumber>
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES3;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES3;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
     <SourcePath>.;$(SourcePath)</SourcePath>
     <ValidateArchitecture>false</ValidateArchitecture>
@@ -120,7 +120,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <ValidateArchitecture>true</ValidateArchitecture>
     <MultiProcNumber>4</MultiProcNumber>
     <WSLPath>Debian</WSLPath>
@@ -129,7 +129,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <ValidateArchitecture>false</ValidateArchitecture>
     <MultiProcNumber>4</MultiProcNumber>
     <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
@@ -137,7 +137,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
@@ -146,7 +146,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>Debian</WSLPath>
@@ -241,9 +241,11 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">-mfpu=neon %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\DebugRenderer.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
+    <ClCompile Include="src\World.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="template\surface.cpp" />
@@ -545,9 +547,11 @@
     <ClInclude Include="external\Imgui\imgui.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\DebugRenderer.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
+    <ClInclude Include="src\World.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="template\stb_image.h" />
@@ -772,7 +776,7 @@
     </ClCompile>
     <Link>
       <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollisions;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
       <IgnoreDefaultLibraries>false</IgnoreDefaultLibraries>
       <AdditionalDependencies>$(StlAdditionalDependencies);%(Link.AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -796,7 +800,7 @@
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr</LibraryDependencies>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">

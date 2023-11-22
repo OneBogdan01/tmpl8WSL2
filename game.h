@@ -1,5 +1,6 @@
 #pragma once
 #include "Triangle.h"
+#include "World.h"
 
 class Camera;
 
@@ -37,5 +38,6 @@ namespace Tmpl8
 		Shader* simpleShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
+		World world;
 	};
 } // namespace Tmpl8
