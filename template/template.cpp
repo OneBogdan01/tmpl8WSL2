@@ -1,7 +1,6 @@
 // Template, IGAD version 3, Raspberry PI 4 version
 // Get the latest version from: https://github.com/jbikker/tmpl8pi
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "template.h"
 
@@ -132,7 +131,7 @@ XWindowAttributes attributes_{};
 static Atom deleteWindow = 0;
 
 
-//Input method modified from Lasse 220010
+//Input converter from x11 to imgui modified from Lasse 220010
 /// <summary>
 /// Converts X11 key semantics to ImGui semantics since neither uses a conventional system
 /// </summary>
@@ -402,7 +401,9 @@ void InitEGL()
 	x11Window = DefaultRootWindow(x11Display);
 	// set window attributes
 	XSetWindowAttributes windowAttributes{};
-	windowAttributes.event_mask = ExposureMask | PointerMotionMask | KeyPressMask | KeyReleaseMask;
+	windowAttributes.event_mask = KeyPressMask | KeyReleaseMask | KeymapStateMask |
+		//mouse events
+		PointerMotionMask | ButtonPressMask | ButtonReleaseMask;
 	windowAttributes.background_pixmap = None;
 	windowAttributes.background_pixel = 0;
 	windowAttributes.border_pixel = 0;
@@ -485,7 +486,8 @@ void InitEGL()
 void closeEGL()
 {
 	XDestroyWindow(x11Display, x11Window);
-	XFree(ScreenOfDisplay(x11Display, 0));
+	//creates segmentation fault
+	//XFree(ScreenOfDisplay(x11Display, 0));
 	XCloseDisplay(x11Display);
 }
 
@@ -576,6 +578,5 @@ int main(int argc, char* argv[])
 	// destroy ImGui context
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui::DestroyContext();
-	XDestroyWindow(x11Display, x11Window);
-	XCloseDisplay(x11Display);
+	closeEGL();
 }

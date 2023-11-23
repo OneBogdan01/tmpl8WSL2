@@ -57,9 +57,20 @@ float yOffset = 0;
 vec2 rotateCam;
 vec2 moveCam;
 
+float f = 0.3f;
 
 void Game::Tick(float deltaTime)
 {
+	char buf[] = "some windows";
+
+	ImGui::Text("Hello, world %d", 123);
+	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+	if (ImGui::Button("Button"))
+		f += deltaTime;
+
+	if (f > 1)
+		f = 0;
 	camera->RotateMouse(rotateCam);
 	camera->MoveX(moveCam.x);
 	camera->MoveZ(moveCam.y);
