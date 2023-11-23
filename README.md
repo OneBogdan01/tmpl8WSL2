@@ -1,6 +1,6 @@
 
 # tmpl8WSL2
-This project was made for making 3D games on the Raspberry Pi 4, but also using WSL2 to speed up development time.
+This project was made for making 3D games on the Raspberry Pi 4, but also using WSL2 to speed up development time.  
 Based on this template:https://github.com/jbikker/tmpl8pi/tree/main
 # WSL2 
 Make sure you follow this tutorial on setting up wsl, also make sure to use **debian**
