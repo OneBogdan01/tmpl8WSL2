@@ -24,29 +24,26 @@ subject to the following restrictions:
 
 void World::Update(float deltaTime)
 {
-	///-----stepsimulation_start-----
-	for (int i = 0; i < 150; i++)
-	{
-		dynamicsWorld->stepSimulation(1.f / 60.f, 5); //set it to 5! for the PI
-		//print positions of all objects
-		for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
-		{
-			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
-			btRigidBody* body = btRigidBody::upcast(obj);
-			btTransform trans;
-			if (body && body->getMotionState())
-			{
-				body->getMotionState()->getWorldTransform(trans);
-			}
-			else
-			{
-				trans = obj->getWorldTransform();
-			}
-			printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()),
-			       float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
-		}
-	}
 	dynamicsWorld->debugDrawWorld();
+
+	dynamicsWorld->stepSimulation(1.f / 60.f, 5); //set it to 5! for the PI
+	//print positions of all objects
+	for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
+	{
+		btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
+		btRigidBody* body = btRigidBody::upcast(obj);
+		btTransform trans;
+		if (body && body->getMotionState())
+		{
+			body->getMotionState()->getWorldTransform(trans);
+		}
+		else
+		{
+			trans = obj->getWorldTransform();
+		}
+		printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()),
+		       float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
+	}
 }
 
 ///-----stepsimulation_end-----
@@ -130,7 +127,7 @@ World::World()
 		btTransform startTransform;
 		startTransform.setIdentity();
 
-		btScalar mass(1.f);
+		btScalar mass(1.0f);
 
 		//rigidbody is dynamic if and only if mass is non zero, otherwise static
 		bool isDynamic = (mass != 0.f);
