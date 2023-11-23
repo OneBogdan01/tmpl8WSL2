@@ -26,3 +26,6 @@ sudo apt-get install libbullet-dev
 - W S - zooming
 - A D - rotating horizontally
 - Z C - rotating vertically
+# BUAS
+This was made as my first block project (Y1, programming)  
+![WAXiOi](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/b0be383b-31bd-4c44-b9b5-34deace1d161)
