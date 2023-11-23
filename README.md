@@ -1,9 +1,9 @@
 
 # tmpl8WSL2
 This project was made for making 3D games on the Raspberry Pi 4, but also using WSL2 to speed up development time.  
-Based on this template:https://github.com/jbikker/tmpl8pi/tree/main
+Based on this template: https://github.com/jbikker/tmpl8pi/tree/main
 # WSL2 
-To run on WSL2 set the target platform to wsl:
+To run on WSL2 set the target platform to wsl:  
 ![image](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/42b20f99-45a8-4d17-be89-c4a25601b22c)
 
 Make sure you follow this tutorial on setting up wsl, also make sure to use **debian**
