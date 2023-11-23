@@ -505,5 +505,6 @@
     <None Include="external\glm\gtx\vector_angle.inl" />
     <None Include="external\glm\gtx\vector_query.inl" />
     <None Include="external\glm\gtx\wrap.inl" />
+    <None Include="shaders\SolidColor.frag" />
   </ItemGroup>
 </Project>

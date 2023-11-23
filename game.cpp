@@ -9,6 +9,9 @@ using namespace glm;
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
+mat4 Game::perspective;
+mat4 Game::view;
+
 void Game::Init()
 {
 	simpleShader = new Shader(
@@ -57,7 +60,6 @@ vec2 moveCam;
 
 void Game::Tick(float deltaTime)
 {
-	world.Update(deltaTime);
 	camera->RotateMouse(rotateCam);
 	camera->MoveX(moveCam.x);
 	camera->MoveZ(moveCam.y);
@@ -77,14 +79,14 @@ void Game::Tick(float deltaTime)
 
 	camera->Update(deltaTime);
 
-	mat4 projection = glm::perspective(glm::radians(fov),
-	                                   static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                                   0.1f, 100.0f);
-	simpleShader->SetMat4x4("projection", projection);
-	mat4 view = camera->LookAt();
+	perspective = glm::perspective(glm::radians(fov),
+	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                               0.1f, 100.0f);
+	simpleShader->SetMat4x4("projection", perspective);
+	view = camera->LookAt();
+
 	simpleShader->SetMat4x4("view", view);
 
-	//camera->SetViewMatrix(simpleShader);
 	for (unsigned int i = 0; i < 10; i++)
 	{
 		mat4 model = mat4(1.0f);
@@ -97,6 +99,7 @@ void Game::Tick(float deltaTime)
 	}
 
 	simpleShader->Unbind();
+	world.Update(deltaTime);
 }
 
 void Game::KeyDown(XID key)

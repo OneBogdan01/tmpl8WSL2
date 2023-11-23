@@ -24,7 +24,6 @@ subject to the following restrictions:
 
 void World::Update(float deltaTime)
 {
-	dynamicsWorld->debugDrawWorld();
 	///-----stepsimulation_start-----
 	for (int i = 0; i < 150; i++)
 	{
@@ -47,6 +46,7 @@ void World::Update(float deltaTime)
 			       float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
 		}
 	}
+	dynamicsWorld->debugDrawWorld();
 }
 
 ///-----stepsimulation_end-----
@@ -76,12 +76,11 @@ World::World()
 
 	dynamicsWorld->setGravity(btVector3(0, -10, 0));
 
-	// Create your custom debug drawer
-	DebugRenderer* debugDrawer = new DebugRenderer();
-	dynamicsWorld->setDebugDrawer(debugDrawer);
+	debugDrawer = new DebugRenderer();
 
-	// Set debug mode according to your preferences
-	dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
+	// Create your custom debug drawer
+	dynamicsWorld->setDebugDrawer(debugDrawer);
+	//dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
 
 
 	///-----initialization_end-----
@@ -94,13 +93,13 @@ World::World()
 	//the ground is a cube of side 100 at position y = -56.
 	//the sphere will hit it at y = -6, with center at -5
 	{
-		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
+		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(20.), btScalar(50.)));
 
 		collisionShapes.push_back(groundShape);
 
 		btTransform groundTransform;
 		groundTransform.setIdentity();
-		groundTransform.setOrigin(btVector3(0, -56, 0));
+		groundTransform.setOrigin(btVector3(0, -30, 0));
 
 		btScalar mass(0.);
 

@@ -247,17 +247,17 @@ void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {
 	glUniform3f(glGetUniformLocation(ID, name), v1, v2, v3);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetInt(const char* name, const int v)
 {
 	glUniform1i(glGetUniformLocation(ID, name), v);
-	CheckGL();
+	//CheckGL();
 }
 
 void Shader::SetUInt(const char* name, const uint v)
 {
 	glUniform1ui(glGetUniformLocation(ID, name), v);
-	CheckGL();
+	//CheckGL();
 }

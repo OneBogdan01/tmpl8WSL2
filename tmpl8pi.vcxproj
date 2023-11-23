@@ -646,6 +646,7 @@
     <None Include="shaders\BasicFragmentShader.frag" />
     <None Include="shaders\BasicVertexShader.vert" />
     <None Include="shaders\compute.comp" />
+    <None Include="shaders\SolidColor.frag" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>

@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include <btBulletDynamicsCommon.h>
 
+class DebugRenderer;
+
 class World
 {
 public:
 	World();
 	~World();
-	void Init();
 	void Update(float deltaTime);
 
 private:
@@ -20,4 +21,6 @@ private:
 
 	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 	btBroadphaseInterface* overlappingPairCache;
+
+	DebugRenderer* debugDrawer;
 };

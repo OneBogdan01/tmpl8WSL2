@@ -35,6 +35,8 @@ namespace Tmpl8
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f, 0.0f
 		};
+		static glm::mat4 perspective;
+		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;

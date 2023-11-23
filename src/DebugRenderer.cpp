@@ -1,25 +1,42 @@
 ﻿#include "DebugRenderer.h"
+
+#include "game.h"
 #include "template.h"
+#include "glm/gtx/transform.hpp"
 
 
-DebugRenderer::DebugRenderer()
+DebugRenderer::DebugRenderer(): mode(DBG_DrawWireframe)
 {
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
-		"shaders/BasicFragmentShader.frag");
+		"shaders/SolidColor.frag");
+}
+
+DebugRenderer::~DebugRenderer()
+{
+	delete simpleShader;
 }
 
 void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
 	simpleShader->Bind();
-	// Use modern OpenGL ES 3.1 functions
-	GLuint vertexArray;
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
 
-	GLuint vertexBuffer;
-	glGenBuffers(1, &vertexBuffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	simpleShader->SetMat4x4("projection", Game::perspective);
+	simpleShader->SetMat4x4("view", Game::view);
+
+
+	glm::mat4 model = glm::mat4(1.0f);
+
+	simpleShader->SetMat4x4("model", model);
+
+
+	GLuint VAO;
+	glGenBuffers(1, &VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VAO);
+
+	GLuint VBO;
+	glGenVertexArrays(1, &VBO);
+	glBindVertexArray(VBO);
 
 	GLfloat vertices[] = {
 		from.x(), from.y(), from.z(),
@@ -37,8 +54,9 @@ void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const b
 
 	glDrawArrays(GL_LINES, 0, 2);
 
-	glDeleteVertexArrays(1, &vertexArray);
-	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteVertexArrays(1, &VBO);
+	glDeleteBuffers(1, &VAO);
+
 	simpleShader->Unbind();
 }
 
@@ -57,8 +75,10 @@ void DebugRenderer::draw3dText(const btVector3& location, const char* textString
 
 void DebugRenderer::setDebugMode(int debugMode)
 {
+	mode = static_cast<DebugDrawModes>(debugMode);
 }
 
 int DebugRenderer::getDebugMode() const
 {
+	return mode;
 }
