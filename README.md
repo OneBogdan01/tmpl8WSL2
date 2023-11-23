@@ -10,7 +10,7 @@ wsl --install -d Debian
 ```
 
 ![image](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/5ed48081-9e0a-4a35-b9e9-a1bd41287210)  
-Also check if you can run GUI apps on WSL2 https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps
+Try to run GUI apps on WSL2 https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps
 
 On your WSL terminal install:
 ```
