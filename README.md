@@ -22,6 +22,15 @@ sudo apt-get install libxrandr-dev
 sudo apt-get install g++ gdb make ninja-build rsync zip
 sudo apt-get install libbullet-dev
 ```
+#Bugs
+If your window looks something like this:  
+![image](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/d96d6100-856c-430c-9e36-2ab75ddd80bc)
+Open a powershell and run 
+```
+wsl --shutdown
+```
+Next time you run the project it should be displayed normally.
+
 ## Controls for the free camera
 - W S - zooming
 - A D - rotating horizontally
