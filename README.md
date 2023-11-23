@@ -11,6 +11,8 @@ On your WSL terminal install:
 sudo apt-get install libgles2-mesa-dev
 sudo apt-get install libxrandr-dev
 sudo apt-get install g++ gdb make ninja-build rsync zip
+sudo apt-get install libbullet-dev
+
 ```
 ## Controls for the free camera
 - W S - zooming
