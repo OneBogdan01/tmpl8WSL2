@@ -39,6 +39,6 @@ Next time you run the project it should be displayed normally.
 - A D - rotating horizontally
 - Z C - rotating vertically
 # BUAS
-This was made as my first block project (Y1, programming)  
+This was made as my second block project (Y1, programming)  
 ![Screenshot 2023-11-23 at 15-25-29 Logo Breda University_PMS - Logo BUas_RGB pdf](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/f3d8586f-4fac-478e-aa49-dea7ac168f6d)
 
