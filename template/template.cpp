@@ -131,145 +131,7 @@ static bool should_close;
 XWindowAttributes attributes_{};
 static Atom deleteWindow = 0;
 
-void GetMousePos(int& childx, int& childy)
-{
-	int rootx, rooty;
-	uint mask;
-	Window w1, w2;
-	XQueryPointer(x11Display, x11Window, &w1, &w2, &rootx, &rooty, &childx, &childy, &mask);
-}
 
-//void* InputHandlerThread(void* x)
-//{
-//	//get keyboard on linux
-//
-//	//device = open("/dev/input/eventX", O_RDONLY);
-//	device = XGrabKeyboard(x11Display, x11Window, 0, GrabModeAsync, GrabModeAsync, CurrentTime);
-//	if (XGrabKeyboard(x11Display, x11Window, 0, GrabModeAsync, GrabModeAsync, CurrentTime) != GrabSuccess)
-//	{
-//		fprintf(stderr, "Could not grab keyboard.\n");
-//		XCloseDisplay(x11Display);
-//		return 0;
-//	}
-//	//if (device < 0) printf("could not open keyboard.\n");
-//	//else
-//	//	while (1)
-//	//	{
-//	//		struct input_event e[64];
-//	//		ssize_t eventsSize = read(device, e, sizeof(input_event) * 64);
-//	//		int events = (int)(eventsSize / sizeof(input_event));
-//	//		for (int i = 0; i < events; i++)
-//	//		{
-//	//			if (e[i].type == EV_KEY /* keyboard */)
-//	//			{
-//	//				if (e[i].code == BTN_LEFT)
-//	//				{
-//	//					/* mouse button */
-//	//				}
-//	//				else if (e[i].code == BTN_MIDDLE)
-//	//				{
-//	//					/* mouse button */
-//	//				}
-//	//				else if (e[i].code == BTN_RIGHT)
-//	//				{
-//	//					/* mouse button */
-//	//				}
-//	//				else if (e[i].value == 2)
-//	//				{
-//	//					/* ignore key repeat */
-//	//				}
-//	//				else if (e[i].value == 1 /* down */)
-//	//					ks[e[i].code] = 1;
-//	//				else if (e[i].value == 0 /* up */)
-//	//					ks[e[i].code] = 0;
-//	//			}
-//	//			else if (e[i].type == EV_REL /* mouse; see input-event-codes.h for others */)
-//	//			{
-//	//				if (e[i].code == REL_WHEEL)
-//	//				{
-//	//					/* check e[i].value */
-//	//				}
-//	//			}
-//	//		}
-//	//	}
-//	XSelectInput(x11Display, x11Window, KeyPressMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask);
-//	// Grab the pointer to hide and capture it
-//	/*XGrabPointer(x11Display, x11Window, True, ButtonPressMask | ButtonReleaseMask | PointerMotionMask, GrabModeAsync,
-//	             GrabModeAsync, None, None, CurrentTime);*/
-//	XEvent event;
-//	KeySym key;
-//	char keybuf[64];
-//
-//	while (true)
-//	{
-//		//get event
-//		XNextEvent(x11Display, &event);
-//		int n = XLookupString(&event.xkey, keybuf, sizeof(keybuf), &key, nullptr);
-//		n;
-//		if (event.type == KeyPress)
-//		{
-//			ks[key] = 1;
-//		}
-//		else if (event.type == KeyRelease)
-//		{
-//			ks[key] = 0;
-//		}
-//		else if (event.type == MotionNotify)
-//		{
-//			// Handle mouse motion
-//
-//			//printf("Mouse motion: (%d, %d)\n", game->mousePos.x, game->mousePos.y);
-//		}
-//
-//		//	//letters
-//		//	if (n > 0)
-//		//	{
-//		//		keybuf[n] = 0;
-//
-//		//		if (key == XK_Escape)
-//		//		{
-//		//			printf("Escape key pressed\n");
-//		//		}
-//		//		else
-//		//			printf("Key pressed: %s\n", keybuf);
-//		//	} //arrow keys
-//		//	else
-//		//	{
-//		//		if (key == XK_Left)
-//		//		{
-//		//			printf("Left arrow key pressed\n");
-//		//		}
-//		//		else if (key == XK_Right)
-//		//		{
-//		//			printf("Right arrow key pressed\n");
-//		//		}
-//		//		else if (key == XK_Up)
-//		//		{
-//		//			printf("Up arrow key pressed\n");
-//		//		}
-//		//		else if (key == XK_Down)
-//		//		{
-//		//			printf("Down arrow key pressed\n");
-//		//		}
-//		//	}
-//		//}
-//		//else if (event.type == ButtonPress)
-//		//{
-//		//	if (event.xbutton.button == Button1)
-//		//	{
-//		//		//printf("Left mouse button pressed\n");
-//		//	}
-//		//	else if (event.xbutton.button == Button2)
-//		//	{
-//		//		//printf("Middle mouse button pressed\n");
-//		//	}
-//		//	else if (event.xbutton.button == Button3)
-//		//	{
-//		//		//printf("Right mouse button pressed\n");
-//		//	}
-//		//}
-//	}
-//}
 //Input method modified from Lasse 220010
 /// <summary>
 /// Converts X11 key semantics to ImGui semantics since neither uses a conventional system
@@ -553,6 +415,14 @@ void InitEGL()
 	// show the window
 	XMapWindow(x11Display, x11Window);
 	XStoreName(x11Display, x11Window, "pi4 template");
+	//fixed size
+	XSizeHints* size_hints = XAllocSizeHints();
+	size_hints->flags = PMinSize | PMaxSize;
+	size_hints->min_width = size_hints->max_width = SCRWIDTH;
+	size_hints->min_height = size_hints->max_height = SCRHEIGHT;
+	XSetWMNormalHints(x11Display, x11Window, size_hints);
+	XFree(size_hints);
+
 	// get EGL display
 	if (!(eglDisplay = eglGetDisplay((EGLNativeDisplayType)x11Display))) FatalError("Could not get EGL display");
 	// init EGL
@@ -607,6 +477,7 @@ void InitEGL()
 	//set window name
 	//show window
 	deleteWindow = XInternAtom(x11Display, "WM_DELETE_WINDOW", False);
+	XSetWMProtocols(x11Display, x11Window, &deleteWindow, 1);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glCullFace(GL_BACK);
 }
@@ -622,9 +493,8 @@ void closeEGL()
 // ----------------------------------------------------------------------------
 static Timer timer;
 
-int main(int argc, char* argv[])
+void GLErrorHandling()
 {
-	//debug code
 	const auto pegl_debug_message_control_khr = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress(
 		"glDebugMessageCallback"));
 	if (pegl_debug_message_control_khr == nullptr)
@@ -650,37 +520,20 @@ int main(int argc, char* argv[])
 		pegl_debug_message_control_khr(debug_fn, nullptr);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
 	}
+}
 
-	//multi X init
-	//XInitThreads();
-
+int main(int argc, char* argv[])
+{
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
-
-
-	//GLTexture* renderTarget = new GLTexture(SCRWIDTH, SCRHEIGHT, GLTexture::INTTARGET);
-	//#if WINBUILD
-	//		Shader* shader = new Shader(
-	//			"#version 330\nin vec4 p;\nin vec2 t;out vec2 u;void main(){u=t;gl_Position=p;}",
-	//			"#version 330\nuniform sampler2D c;in vec2 u;out vec4 f;void main(){f=sqrt(texture(c,u));}", true);
-	//#else
-	//	Shader* shader = new Shader(
-	//		"precision mediump float;attribute vec3 p;varying vec2 u;void main(){u=vec2(p.x*0.5+0.5,0.5-p.y*0.5);gl_Position=vec4(p,1);}",
-	//		"precision mediump float;varying vec2 u;uniform sampler2D c;void main(){gl_FragColor=texture2D(c,u).zyxw;}",
-	//		true);
-	//#endif
+	GLErrorHandling();
 
 	FixWorkingFolder();
-	//Surface screen(SCRWIDTH, SCRHEIGHT);
-	//screen.Clear(0);
 	game = new Game();
-	//game->SetTarget(&screen);
 	game->Init();
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	eglSwapInterval(eglDisplay, 0);
 
-	/*pthread_t dummy;
-	pthread_create(&dummy, 0, InputHandlerThread, 0);*/
 
 	// Create ImGui context
 	ImGui::CreateContext();
@@ -688,6 +541,9 @@ int main(int argc, char* argv[])
 	// Set ImGui context as current
 	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
 	ImGui_ImplOpenGL3_Init("#version 300 es");
+	//ImGui::StyleColorsDark();
+	ImGui::StyleColorsClassic();
+	//ImGui::StyleColorsLight();
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
@@ -701,7 +557,6 @@ int main(int argc, char* argv[])
 		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed());
 		timer.reset();
 
-		// start new ImGui frame for use inside game.tick()
 		//imgui still throws erros when used with the current opengl setup
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
@@ -710,17 +565,17 @@ int main(int argc, char* argv[])
 		game->Tick(deltaTime / 1000.0f);
 
 
-		/*renderTarget->CopyFrom(&screen);
-		shader->Bind();
-		shader->SetInputTexture(0, "c", renderTarget);*/
-		//DrawQuad();
-		/*shader->Unbind();*/
-
-
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		eglSwapBuffers(eglDisplay, eglSurface);
 		glFlush();
 	}
+	game->Shutdown();
+
+	// destroy ImGui context
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui::DestroyContext();
+	XDestroyWindow(x11Display, x11Window);
+	XCloseDisplay(x11Display);
 }
