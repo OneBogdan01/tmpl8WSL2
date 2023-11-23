@@ -28,4 +28,5 @@ sudo apt-get install libbullet-dev
 - Z C - rotating vertically
 # BUAS
 This was made as my first block project (Y1, programming)  
-![WAXiOi](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/b0be383b-31bd-4c44-b9b5-34deace1d161)
+![Screenshot 2023-11-23 at 15-25-29 Logo Breda University_PMS - Logo BUas_RGB pdf](https://github.com/OneBogdan01/tmpl8WSL2/assets/31468440/f3d8586f-4fac-478e-aa49-dea7ac168f6d)
+
