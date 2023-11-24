@@ -9,6 +9,8 @@ public:
 	World();
 	~World();
 	void Update(float deltaTime);
+	uint AddARigidbody(const btVector3& startinPos);
+	btVector3 GetRigidBodyPosition(const uint ID) const;
 
 private:
 	btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
@@ -23,4 +25,5 @@ private:
 	btBroadphaseInterface* overlappingPairCache;
 
 	DebugRenderer* debugDrawer;
+	inline static uint ID = 0;
 };

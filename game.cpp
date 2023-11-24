@@ -12,6 +12,19 @@ using namespace glm;
 mat4 Game::perspective;
 mat4 Game::view;
 
+vec3 cubePositions[] = {
+	vec3(0.0f, 5.5f, 0.0f),
+	vec3(2.0f, 5.0f, -15.0f),
+	vec3(-1.5f, -2.2f, -2.5f),
+	vec3(-3.8f, -2.0f, -12.3f),
+	vec3(2.4f, -0.4f, -3.5f),
+	vec3(-1.7f, 3.0f, -7.5f),
+	vec3(1.3f, -2.0f, -2.5f),
+	vec3(1.5f, 2.0f, -2.5f),
+	vec3(1.5f, 0.2f, -1.5f),
+	vec3(-1.3f, 1.0f, -1.5f)
+};
+
 void Game::Init()
 {
 	simpleShader = new Shader(
@@ -30,6 +43,11 @@ void Game::Init()
 	triangle.Init();
 	camera = new Camera();
 	camera->Init();
+	for (uint i = 1; i <= 10; i++)
+	{
+		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
+		world.AddARigidbody(pos);
+	}
 }
 
 // -----------------------------------------------------------
@@ -38,18 +56,7 @@ void Game::Init()
 
 
 float mixing = .2f;
-vec3 cubePositions[] = {
-	vec3(0.0f, 0.0f, 0.0f),
-	vec3(2.0f, 5.0f, -15.0f),
-	vec3(-1.5f, -2.2f, -2.5f),
-	vec3(-3.8f, -2.0f, -12.3f),
-	vec3(2.4f, -0.4f, -3.5f),
-	vec3(-1.7f, 3.0f, -7.5f),
-	vec3(1.3f, -2.0f, -2.5f),
-	vec3(1.5f, 2.0f, -2.5f),
-	vec3(1.5f, 0.2f, -1.5f),
-	vec3(-1.3f, 1.0f, -1.5f)
-};
+
 vec3 position;
 float fov = 45;
 float yOffset = 0;
@@ -91,7 +98,7 @@ void Game::Tick(float deltaTime)
 
 	camera->Update(deltaTime);
 
-	perspective = glm::perspective(glm::radians(fov),
+	perspective = glm::perspective(radians(fov),
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                               0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", perspective);
@@ -99,13 +106,15 @@ void Game::Tick(float deltaTime)
 
 	simpleShader->SetMat4x4("view", view);
 
-	for (unsigned int i = 0; i < 10; i++)
+	for (uint i = 1; i <= 10; i++)
 	{
 		mat4 model = mat4(1.0f);
-		model = translate(model, cubePositions[i]);
-		float angle = 20.0f * i;
+		btVector3 btVec = world.GetRigidBodyPosition(i);
+		vec3 pos = vec3(btVec.x(), btVec.y(), btVec.z());
+		model = translate(model, pos);
+		/*float angle = 20.0f * i;
 		vec3 dir(1.0f, 0.3f, 0.5f);
-		model = glm::rotate(model, radians(angle), dir);
+		model = glm::rotate(model, radians(angle), dir);*/
 		simpleShader->SetMat4x4("model", model);
 		triangle.Draw();
 	}

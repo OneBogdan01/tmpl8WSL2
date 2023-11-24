@@ -1,5 +1,7 @@
 ﻿#include "DebugRenderer.h"
 
+#include <iostream>
+
 #include "game.h"
 #include "template.h"
 #include "glm/gtx/transform.hpp"
@@ -19,6 +21,10 @@ DebugRenderer::~DebugRenderer()
 
 void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
 {
+	/*cout << from.x() << " " << from.y() << " " << from.z() << "\n" << to.x() << " " << to.x() << " " << to.y() << " " <<
+		to.z()
+		<<
+		"\n";*/
 	simpleShader->Bind();
 
 	simpleShader->SetMat4x4("projection", Game::perspective);
