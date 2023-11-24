@@ -1,10 +1,6 @@
 #include "Triangle.h"
 
 
-unsigned int VAO;
-unsigned int EBO;
-
-
 void Triangle::Draw()
 {
 	glActiveTexture(GL_TEXTURE0);

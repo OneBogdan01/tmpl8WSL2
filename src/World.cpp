@@ -24,7 +24,10 @@ subject to the following restrictions:
 
 void World::Update(float deltaTime)
 {
+	debugDrawer->BindBuffers();
 	dynamicsWorld->debugDrawWorld();
+	debugDrawer->UnbindBuffers();
+
 
 	dynamicsWorld->stepSimulation(1.f / 60.f, 5); //set it to 5! for the PI
 	////print positions of all objects
