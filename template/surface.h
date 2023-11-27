@@ -26,9 +26,9 @@ namespace Tmpl8
 		const uint r1 = (c1 >> 16) & 255, r2 = (c2 >> 16) & 255;
 		const uint g1 = (c1 >> 8) & 255, g2 = (c2 >> 8) & 255;
 		const uint b1 = c1 & 255, b2 = c2 & 255;
-		const uint r = min(255u, r1 + r2);
-		const uint g = min(255u, g1 + g2);
-		const uint b = min(255u, b1 + b2);
+		const uint r = std::min(255u, r1 + r2);
+		const uint g = std::min(255u, g1 + g2);
+		const uint b = std::min(255u, b1 + b2);
 		return (r << 16) + (g << 8) + b;
 	}
 

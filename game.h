@@ -1,7 +1,10 @@
 #pragma once
+
+
 #include "Triangle.h"
 #include "World.h"
 
+class Model;
 class Camera;
 
 namespace Tmpl8
@@ -38,8 +41,10 @@ namespace Tmpl8
 		static glm::mat4 perspective;
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
+		Shader* modelShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
 		World world;
+		Model* model = nullptr;
 	};
 } // namespace Tmpl8

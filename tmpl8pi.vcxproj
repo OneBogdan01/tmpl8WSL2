@@ -138,7 +138,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>Debian</WSLPath>
@@ -172,6 +172,8 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\DebugRenderer.cpp" />
+    <ClCompile Include="src\model_loading\Mesh.cpp" />
+    <ClCompile Include="src\model_loading\Model.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
@@ -474,6 +476,8 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\DebugRenderer.h" />
+    <ClInclude Include="src\model_loading\Mesh.h" />
+    <ClInclude Include="src\model_loading\Model.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
@@ -499,11 +503,17 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />
+    <Image Include="assets\backpack\ao.jpg" />
+    <Image Include="assets\backpack\diffuse.jpg" />
+    <Image Include="assets\backpack\normal.png" />
+    <Image Include="assets\backpack\roughness.jpg" />
+    <Image Include="assets\backpack\specular.jpg" />
     <Image Include="assets\font.png" />
     <Image Include="assets\spec.jpg" />
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\backpack\backpack.mtl" />
     <None Include="external\glm\detail\func_common.inl" />
     <None Include="external\glm\detail\func_common_simd.inl" />
     <None Include="external\glm\detail\func_exponential.inl" />
@@ -646,7 +656,18 @@
     <None Include="shaders\BasicFragmentShader.frag" />
     <None Include="shaders\BasicVertexShader.vert" />
     <None Include="shaders\compute.comp" />
+    <None Include="shaders\ModelLoading.frag" />
+    <None Include="shaders\ModelLoading.vert" />
     <None Include="shaders\SolidColor.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\backpack\source_attribution.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="assets\backpack\backpack.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </Object>
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <ClCompile>
@@ -749,7 +770,7 @@
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">

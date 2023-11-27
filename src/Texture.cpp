@@ -5,6 +5,10 @@ Texture::Texture(Surface* texture)
 	this->texture = texture;
 }
 
+Texture::Texture()
+{
+}
+
 Texture::~Texture()
 {
 	delete texture;

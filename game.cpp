@@ -5,24 +5,28 @@
 #include "Camera.h"
 #include "imgui.h"
 #include <glm/glm.hpp>
-using namespace glm;
+
+#include "stb_image.h"
+#include "model_loading/Model.h"
+
+
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
-mat4 Game::perspective;
-mat4 Game::view;
+glm::mat4 Game::perspective;
+glm::mat4 Game::view;
 
-vec3 cubePositions[] = {
-	vec3(0.0f, 5.5f, 0.0f),
-	vec3(2.0f, 5.0f, -15.0f),
-	vec3(-1.5f, -2.2f, -2.5f),
-	vec3(-3.8f, -2.0f, -12.3f),
-	vec3(2.4f, -0.4f, -3.5f),
-	vec3(-1.7f, 3.0f, -7.5f),
-	vec3(1.3f, -2.0f, -2.5f),
-	vec3(1.5f, 2.0f, -2.5f),
-	vec3(1.5f, 0.2f, -1.5f),
-	vec3(-1.3f, 1.0f, -1.5f)
+glm::vec3 cubePositions[] = {
+	glm::vec3(0.0f, 5.5f, 0.0f),
+	glm::vec3(2.0f, 5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f, 3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f, 2.0f, -2.5f),
+	glm::vec3(1.5f, 0.2f, -1.5f),
+	glm::vec3(-1.3f, 1.0f, -1.5f)
 };
 
 void Game::Init()
@@ -30,6 +34,9 @@ void Game::Init()
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
 		"shaders/BasicFragmentShader.frag");
+	modelShader = new Shader(
+		"shaders/ModelLoading.vert",
+		"shaders/ModelLoading.frag");
 
 	simpleShader->Bind();
 
@@ -48,6 +55,8 @@ void Game::Init()
 		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
 		world.AddARigidbody(pos);
 	}
+	stbi_set_flip_vertically_on_load(true);
+	model = new Model("assets/backpack/backpack.obj");
 }
 
 // -----------------------------------------------------------
@@ -57,12 +66,12 @@ void Game::Init()
 
 float mixing = .2f;
 
-vec3 position;
+glm::vec3 position;
 float fov = 45;
 float yOffset = 0;
 
-vec2 rotateCam;
-vec2 moveCam;
+glm::vec2 rotateCam;
+glm::vec2 moveCam;
 
 float f = 0.3f;
 char buf[] = "some windows";
@@ -98,7 +107,7 @@ void Game::Tick(float deltaTime)
 
 	camera->Update(deltaTime);
 
-	perspective = glm::perspective(radians(fov),
+	perspective = glm::perspective(glm::radians(fov),
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                               0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", perspective);
@@ -106,11 +115,12 @@ void Game::Tick(float deltaTime)
 
 	simpleShader->SetMat4x4("view", view);
 
+
 	for (uint i = 1; i <= 10; i++)
 	{
-		mat4 model = mat4(1.0f);
+		glm::mat4 model = glm::mat4(1.0f);
 		btVector3 btVec = world.GetRigidBodyPosition(i);
-		vec3 pos = vec3(btVec.x(), btVec.y(), btVec.z());
+		glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
 		model = translate(model, pos);
 		/*float angle = 20.0f * i;
 		vec3 dir(1.0f, 0.3f, 0.5f);
@@ -120,6 +130,18 @@ void Game::Tick(float deltaTime)
 	}
 
 	simpleShader->Unbind();
+	modelShader->Bind();
+	glm::mat4 m_model = glm::mat4(1.0f);
+	m_model = glm::translate(m_model, glm::vec3(0.0f, 0.0f, 0.0f));
+	// translate it down so it's at the center of the scene
+	m_model = glm::scale(m_model, glm::vec3(1.0f, 1.0f, 1.0f)); // it's a bit too big for our scene, so scale it down
+	modelShader->SetMat4x4("model", m_model);
+	modelShader->SetMat4x4("projection", perspective);
+	modelShader->SetMat4x4("view", view);
+
+
+	model->Draw(*modelShader);
+	modelShader->Unbind();
 	world.Update(deltaTime);
 }
 
@@ -216,10 +238,10 @@ void Game::KeyUp(XID key)
 	default:
 		break;
 	}
-	rotateCam.x = clamp(rotateCam.x, -1.0f, 1.0f);
-	rotateCam.y = clamp(rotateCam.y, -1.0f, 1.0f);
-	moveCam.x = clamp(moveCam.x, -1.0f, 1.0f);
-	moveCam.y = clamp(moveCam.y, -1.0f, 1.0f);
+	rotateCam.x = glm::clamp(rotateCam.x, -1.0f, 1.0f);
+	rotateCam.y = glm::clamp(rotateCam.y, -1.0f, 1.0f);
+	moveCam.x = glm::clamp(moveCam.x, -1.0f, 1.0f);
+	moveCam.y = glm::clamp(moveCam.y, -1.0f, 1.0f);
 }
 
 void Game::MouseScroll(float x)
