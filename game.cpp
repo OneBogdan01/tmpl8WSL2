@@ -7,6 +7,9 @@
 #include <glm/glm.hpp>
 
 #include "stb_image.h"
+#include "glm/ext/matrix_clip_space.hpp"
+#include "glm/gtx/transform.hpp"
+
 #include "model_loading/Model.h"
 
 
@@ -56,7 +59,7 @@ void Game::Init()
 		world.AddARigidbody(pos);
 	}
 	stbi_set_flip_vertically_on_load(true);
-	model = new Model("assets/backpack/backpack.obj");
+	model = new Model("assets/backpack/backpack.ob");
 }
 
 // -----------------------------------------------------------
@@ -121,7 +124,7 @@ void Game::Tick(float deltaTime)
 		glm::mat4 model = glm::mat4(1.0f);
 		btVector3 btVec = world.GetRigidBodyPosition(i);
 		glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-		model = translate(model, pos);
+		model = glm::translate(model, pos);
 		/*float angle = 20.0f * i;
 		vec3 dir(1.0f, 0.3f, 0.5f);
 		model = glm::rotate(model, radians(angle), dir);*/
@@ -132,9 +135,8 @@ void Game::Tick(float deltaTime)
 	simpleShader->Unbind();
 	modelShader->Bind();
 	glm::mat4 m_model = glm::mat4(1.0f);
-	m_model = glm::translate(m_model, glm::vec3(0.0f, 0.0f, 0.0f));
-	// translate it down so it's at the center of the scene
-	m_model = glm::scale(m_model, glm::vec3(1.0f, 1.0f, 1.0f)); // it's a bit too big for our scene, so scale it down
+	m_model = glm::translate(m_model, glm::vec3(3.0f, 0.0f, -5.0f));
+	m_model = glm::scale(m_model, glm::vec3(1.0f, 1.0f, 1.0f));
 	modelShader->SetMat4x4("model", m_model);
 	modelShader->SetMat4x4("projection", perspective);
 	modelShader->SetMat4x4("view", view);

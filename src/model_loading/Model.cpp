@@ -21,7 +21,7 @@ void Model::loadModel(std::string path)
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
-		std::cout << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+		cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
 		return;
 	}
 	directory = path.substr(0, path.find_last_of('/'));
@@ -94,33 +94,25 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	}
 	// process materials
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-	// we assume a convention for sampler names in the shaders. Each diffuse MeshTexture should be named
-	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-	// Same applies to other MeshTexture as the following list summarizes:
-	// diffuse: texture_diffuseN
-	// specular: texture_specularN
-	// normal: texture_normalN
 
-	// 1. diffuse maps
-	vector<Mesh::MeshTexture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-	// 2. specular maps
-	vector<Mesh::MeshTexture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	// 3. normal maps
-	std::vector<Mesh::MeshTexture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-	// 4. height maps
-	std::vector<Mesh::MeshTexture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
+	if (mesh->mMaterialIndex >= 0)
+	{
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		vector<Mesh::MeshTexture> diffuseMaps = loadMaterialTextures(material,
+		                                                             aiTextureType_DIFFUSE, "texture_diffuse");
+		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		vector<Mesh::MeshTexture> specularMaps = loadMaterialTextures(material,
+		                                                              aiTextureType_SPECULAR, "texture_specular");
+		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	}
 	// return a mesh object created from the extracted mesh data
 	return Mesh(vertices, indices, textures);
 }
 
 std::vector<Mesh::MeshTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 {
-	std::vector<Mesh::MeshTexture> textures;
+	vector<Mesh::MeshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
@@ -137,13 +129,13 @@ std::vector<Mesh::MeshTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTe
 		}
 		if (!skip)
 		{
-			// if MeshTexture hasn't been loaded already, load it
-			Mesh::MeshTexture MeshTexture;
-			MeshTexture.id = TextureFromFile(str.C_Str(), directory);
-			MeshTexture.type = typeName;
-			MeshTexture.path = str.C_Str();
-			textures.push_back(MeshTexture);
-			textures_loaded.push_back(MeshTexture); // add to loaded textures
+			// if texture hasn't been loaded already, load it
+			Mesh::MeshTexture texture;
+			texture.id = TextureFromFile(str.C_Str(), directory);
+			texture.type = typeName;
+			texture.path = str.C_Str();
+			textures.push_back(texture);
+			textures_loaded.push_back(texture); // add to loaded textures
 		}
 	}
 	return textures;

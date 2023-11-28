@@ -479,7 +479,7 @@ void InitEGL()
 	//show window
 	deleteWindow = XInternAtom(x11Display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(x11Display, x11Window, &deleteWindow, 1);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 	glCullFace(GL_BACK);
 }
 

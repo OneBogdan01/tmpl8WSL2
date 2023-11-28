@@ -364,10 +364,10 @@
     <Image Include="assets\wall.jpg" />
     <Image Include="assets\awesomeface.png" />
     <Image Include="assets\backpack\ao.jpg" />
-    <Image Include="assets\backpack\diffuse.jpg" />
     <Image Include="assets\backpack\normal.png" />
     <Image Include="assets\backpack\roughness.jpg" />
     <Image Include="assets\backpack\specular.jpg" />
+    <Image Include="assets\backpack\diffuse.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compute.comp">
@@ -515,11 +515,18 @@
     <None Include="external\glm\gtx\vector_query.inl" />
     <None Include="external\glm\gtx\wrap.inl" />
     <None Include="shaders\SolidColor.frag" />
-    <None Include="assets\backpack\backpack.mtl" />
     <None Include="shaders\ModelLoading.vert" />
     <None Include="shaders\ModelLoading.frag" />
+    <None Include="assets\backpack\backpack.mtl" />
+    <None Include="assets\backpack\backpack.ob" />
+    <None Include="assets\excalibur\alphaone.pcx" />
+    <None Include="assets\excalibur\alphaone_i.pcx" />
+    <None Include="assets\excalibur\tris.md2" />
+    <None Include="assets\excalibur\weapon.md2" />
+    <None Include="assets\excalibur\weapon.pcx" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\backpack\source_attribution.txt" />
+    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
 </Project>

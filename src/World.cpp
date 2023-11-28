@@ -188,13 +188,13 @@ World::World()
 	//the ground is a cube of side 100 at position y = -56.
 	//the sphere will hit it at y = -6, with center at -5
 
-	btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(20.), btScalar(50.)));
+	btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(10.), btScalar(50.)));
 
 	collisionShapes.push_back(groundShape);
 
 	btTransform groundTransform;
 	groundTransform.setIdentity();
-	groundTransform.setOrigin(btVector3(0, -30, 0));
+	groundTransform.setOrigin(btVector3(0, -20, 0));
 
 	btScalar mass(0.);
 
