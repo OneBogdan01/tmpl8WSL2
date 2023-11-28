@@ -149,7 +149,7 @@ void Game::Tick(float deltaTime)
 	//std::cout << offset.x << " " << offset.y << " " << offset.z << '\n';
 	//m_model = glm::translate(m_model, offset);
 
-	btVector3 btVec = world.GetRigidBodyPosition(11) - btVector3(0, 2.5f, 0.0f);
+	btVector3 btVec = world.GetRigidBodyPosition(11); //- btVector3(0, 2.5f, 0.0f);
 	//glm::vec3 pos = );
 	m_model = glm::translate(m_model, glm::vec3(btVec.x(), btVec.y(), btVec.z()));
 
