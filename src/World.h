@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include <btBulletDynamicsCommon.h>
+#include <vector>
 
+#include "model_loading/Mesh.h"
 class DebugRenderer;
 
 class World
@@ -10,6 +12,7 @@ public:
 	~World();
 	void Update(float deltaTime);
 	uint AddARigidbody(const btVector3& startinPos);
+	uint AddAModelRigidbody(const btVector3& startingPos, std::vector<Mesh>& meshes);
 	btVector3 GetRigidBodyPosition(const uint ID) const;
 
 private:

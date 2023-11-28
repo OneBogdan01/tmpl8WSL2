@@ -16,8 +16,8 @@ subject to the following restrictions:
 ///-----includes_start-----
 #include "World.h"
 #include <stdio.h>
-
 #include "DebugRenderer.h"
+#include "model_loading/Mesh.h"
 
 
 /// This is a Hello World program for running a basic Bullet physics simulation
@@ -76,6 +76,54 @@ uint World::AddARigidbody(const btVector3& startinPos)
 		colShape->calculateLocalInertia(mass, localInertia);
 
 	startTransform.setOrigin(startinPos);
+
+	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+	btRigidBody* body = new btRigidBody(rbInfo);
+
+	dynamicsWorld->addRigidBody(body);
+	return ID++;
+}
+
+uint World::AddAModelRigidbody(const btVector3& startingPos, std::vector<Mesh>& meshes)
+{
+	btVector3 modelMin = btVector3(0, 0, 0), modelMax = btVector3(0, 0, 0);
+	for (const auto& mesh : meshes)
+	{
+		for (const auto& vertex : mesh.vertices)
+		{
+			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+
+			// Update bounding box extents
+			modelMin.setMin(vertexVec);
+			modelMax.setMax(vertexVec);
+		}
+	}
+	//used as starting point for the model
+	btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
+
+	btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
+
+	btBoxShape* colShape = new btBoxShape(boxHalfExtents);
+
+
+	collisionShapes.push_back(colShape);
+
+	/// Create Dynamic Objects
+	btTransform startTransform;
+	startTransform.setIdentity();
+
+	btScalar mass(0);
+
+	//rigidbody is dynamic if and only if mass is non zero, otherwise static
+	bool isDynamic = (mass != 0.f);
+
+	btVector3 localInertia(0, 0, 0);
+	if (isDynamic)
+		colShape->calculateLocalInertia(mass, localInertia);
+
+	startTransform.setOrigin(startingPos);
 
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -164,6 +212,7 @@ World::World()
 
 	//add the body to the dynamics world
 	dynamicsWorld->addRigidBody(body);
+	ID++;
 }
 
 World::~World()

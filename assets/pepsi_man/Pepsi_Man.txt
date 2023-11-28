@@ -1,0 +1,13 @@
+PEPSI MAN for Quake2
+
+The 4th greatest superhero of all time (behind the Toxic Avenger, Buckaroo Banzai, and Kung Fury) is conveniently here for your Quake2 gaming fun! I finally found the old Quake 2 Pepsi Man skins by OldBean, then added a few sounds to make him extra-refreshing! 
+
+Credits:
+Supermale model: Paolo Piselli
+Pepsiman skins: OldBean
+
+INSTALLATION:
+Extract to your Quake 2 folder. This should place the pepsi_man folder into the Quake 2\baseq2\players folder, so that it's parallel to the crakhor, cyborg, female, and male folders.
+
+PROGRAMS USED:
+Audacity
