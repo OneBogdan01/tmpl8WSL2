@@ -32,6 +32,7 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(-1.3f, 1.0f, -1.5f)
 };
 glm::vec3 modelPos = glm::vec3(0.0f, 0.0f, 0.0f);
+float scale = 5.0f;
 
 void Game::Init()
 {
@@ -65,7 +66,7 @@ void Game::Init()
 
 	//model = new Model("assets/backpack/backpack.ob");
 	model = new Model("assets/tiled/castle/tower.ob");
-	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes());
+	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
 }
 
 // -----------------------------------------------------------
@@ -148,11 +149,11 @@ void Game::Tick(float deltaTime)
 	//std::cout << offset.x << " " << offset.y << " " << offset.z << '\n';
 	//m_model = glm::translate(m_model, offset);
 
-	btVector3 btVec = world.GetRigidBodyPosition(11);
+	btVector3 btVec = world.GetRigidBodyPosition(11) - btVector3(0, 2.5f, 0.0f);
 	//glm::vec3 pos = );
-	cout << btVec.x() << " " << btVec.y() << " " << btVec.z() << endl;
-	m_model = glm::translate(m_model, modelPos);
-	m_model = glm::scale(m_model, glm::vec3(1.0f, 1.0f, 1.0f));
+	m_model = glm::translate(m_model, glm::vec3(btVec.x(), btVec.y(), btVec.z()));
+
+	m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
 
 	modelShader->Bind();
 

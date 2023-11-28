@@ -12,7 +12,7 @@ public:
 	~World();
 	void Update(float deltaTime);
 	uint AddARigidbody(const btVector3& startinPos);
-	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes);
+	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes, float scale = 1.0f);
 	btVector3 GetRigidBodyPosition(const uint ID) const;
 
 private:
