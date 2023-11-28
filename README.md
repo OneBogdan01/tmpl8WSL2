@@ -20,10 +20,12 @@ Try to run GUI apps on WSL2 https://learn.microsoft.com/en-us/windows/wsl/tutori
 
 On your WSL terminal install:
 ```
+sudo apt-get update
 sudo apt-get install libgles2-mesa-dev
 sudo apt-get install libxrandr-dev
 sudo apt-get install g++ gdb make ninja-build rsync zip
 sudo apt-get install libbullet-dev
+sudo apt-get install libassimp-dev
 ```
 # Bugs
 If your window looks something like this:  
