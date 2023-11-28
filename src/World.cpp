@@ -24,10 +24,8 @@ subject to the following restrictions:
 
 void World::Update(float deltaTime)
 {
-	debugDrawer->BindBuffers();
 	dynamicsWorld->debugDrawWorld();
-	debugDrawer->UnbindBuffers();
-
+	debugDrawer->RenderDebug();
 
 	dynamicsWorld->stepSimulation(1.f / 60.f, 5); //set it to 5! for the PI
 	////print positions of all objects
@@ -86,14 +84,16 @@ uint World::AddARigidbody(const btVector3& startinPos)
 	return ID++;
 }
 
-uint World::AddAModelRigidbody(const btVector3& startingPos, std::vector<Mesh>& meshes)
+uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes)
 {
-	btVector3 modelMin = btVector3(0, 0, 0), modelMax = btVector3(0, 0, 0);
+	btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
+	btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 	for (const auto& mesh : meshes)
 	{
 		for (const auto& vertex : mesh.vertices)
 		{
 			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+
 
 			// Update bounding box extents
 			modelMin.setMin(vertexVec);
@@ -114,7 +114,7 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, std::vector<Mesh>& 
 	btTransform startTransform;
 	startTransform.setIdentity();
 
-	btScalar mass(0);
+	btScalar mass(0.f);
 
 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
 	bool isDynamic = (mass != 0.f);
@@ -123,7 +123,8 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, std::vector<Mesh>& 
 	if (isDynamic)
 		colShape->calculateLocalInertia(mass, localInertia);
 
-	startTransform.setOrigin(startingPos);
+	startTransform.setOrigin(startingPos + boxCenter);
+
 
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);

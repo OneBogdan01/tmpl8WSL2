@@ -31,7 +31,6 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<MeshTexture> textures;
-	std::vector<MeshTexture> textures_loaded;
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
 	void Draw(Shader& shader);
 

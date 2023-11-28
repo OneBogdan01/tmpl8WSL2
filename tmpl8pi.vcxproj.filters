@@ -524,6 +524,7 @@
     <None Include="assets\excalibur\tris.md2" />
     <None Include="assets\excalibur\weapon.md2" />
     <None Include="assets\excalibur\weapon.pcx" />
+    <None Include="shaders\DebugVert.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\backpack\source_attribution.txt" />

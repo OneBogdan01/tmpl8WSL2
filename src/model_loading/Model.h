@@ -16,6 +16,7 @@ public:
 	}
 
 	void Draw(Shader& shader);
+	std::vector<Mesh>& GetMeshes();
 
 private:
 	// model data

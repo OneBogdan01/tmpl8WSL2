@@ -31,9 +31,13 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(1.5f, 0.2f, -1.5f),
 	glm::vec3(-1.3f, 1.0f, -1.5f)
 };
+glm::vec3 modelPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 void Game::Init()
 {
+	stbi_set_flip_vertically_on_load(true);
+
+
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
 		"shaders/BasicFragmentShader.frag");
@@ -58,8 +62,9 @@ void Game::Init()
 		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
 		world.AddARigidbody(pos);
 	}
-	stbi_set_flip_vertically_on_load(true);
+
 	model = new Model("assets/backpack/backpack.ob");
+	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes());
 }
 
 // -----------------------------------------------------------
@@ -81,6 +86,8 @@ char buf[] = "some windows";
 
 void Game::Tick(float deltaTime)
 {
+	world.Update(deltaTime);
+
 	ImGui::Text("Hello, world %d", 123);
 
 	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
@@ -104,7 +111,7 @@ void Game::Tick(float deltaTime)
 	simpleShader->Bind();
 
 
-	//simpleShader->SetFloat3("offset", position.x, position.y, position.z);
+	simpleShader->SetFloat3("offset", position.x, position.y, position.z);
 	simpleShader->SetFloat("mixing", mixing);
 
 
@@ -121,30 +128,40 @@ void Game::Tick(float deltaTime)
 
 	for (uint i = 1; i <= 10; i++)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
+		glm::mat4 matModel = glm::mat4(1.0f);
 		btVector3 btVec = world.GetRigidBodyPosition(i);
 		glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-		model = glm::translate(model, pos);
+		matModel = glm::translate(matModel, pos);
 		/*float angle = 20.0f * i;
 		vec3 dir(1.0f, 0.3f, 0.5f);
-		model = glm::rotate(model, radians(angle), dir);*/
-		simpleShader->SetMat4x4("model", model);
+		matModel = glm::rotate(matModel, radians(angle), dir);*/
+		simpleShader->SetMat4x4("model", matModel);
 		triangle.Draw();
 	}
 
 	simpleShader->Unbind();
-	modelShader->Bind();
 	glm::mat4 m_model = glm::mat4(1.0f);
-	m_model = glm::translate(m_model, glm::vec3(3.0f, 0.0f, -5.0f));
+
+	//this crashes when I do addition and apply it to the model matrix
+	//const glm::vec3 offset = glm::vec3(2.0f, 0.0f, -3.0f) + camera->GetPosition();
+	//std::cout << offset.x << " " << offset.y << " " << offset.z << '\n';
+	//m_model = glm::translate(m_model, offset);
+
+	btVector3 btVec = world.GetRigidBodyPosition(11);
+	//glm::vec3 pos = );
+	cout << btVec.x() << " " << btVec.y() << " " << btVec.z() << endl;
+	m_model = glm::translate(m_model, modelPos);
 	m_model = glm::scale(m_model, glm::vec3(1.0f, 1.0f, 1.0f));
-	modelShader->SetMat4x4("model", m_model);
+
+	modelShader->Bind();
+
 	modelShader->SetMat4x4("projection", perspective);
 	modelShader->SetMat4x4("view", view);
+	modelShader->SetMat4x4("model", m_model);
 
 
 	model->Draw(*modelShader);
 	modelShader->Unbind();
-	world.Update(deltaTime);
 }
 
 void Game::KeyDown(XID key)

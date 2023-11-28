@@ -13,6 +13,7 @@ public:
 	glm::mat4 LookAt() const;
 	void Init();
 	void SetPosition(const glm::vec3& pos);
+	const glm::vec3 GetPosition() const;
 	void MoveZ(float multiplier);
 	void MoveX(float multiplier);
 	void Update(float deltaTime);

@@ -1,9 +1,15 @@
 ﻿#pragma once
 #include <gl2.h>
 #include <LinearMath/btIDebugDraw.h>
-
+#include <vector>
 
 class Shader;
+
+struct DebugInfo
+{
+	btVector3 from;
+	btVector3 to;
+};
 
 class DebugRenderer : public btIDebugDraw
 {
@@ -14,6 +20,7 @@ public:
 	DebugRenderer();
 	~DebugRenderer() override;
 	void SetShaderMatrices();
+	void RenderDebug();
 	void drawLine(const btVector3& from, const btVector3& to, const btVector3& color) override;
 	void drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance, int lifeTime,
 	                      const btVector3& color) override;
@@ -31,4 +38,7 @@ private:
 	GLuint VAO;
 	GLuint VBO;
 	GLfloat vertices[6] = {0};
+	std::vector<DebugInfo> debugInfo;
+	btVector3 color;
+	btVector3 secondColor = btVector3(1.0f, 0.0f, 1.0f);
 };

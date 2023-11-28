@@ -29,7 +29,7 @@ void DebugRenderer::InitBuffers()
 DebugRenderer::DebugRenderer() : mode(DBG_DrawWireframe)
 {
 	simpleShader = new Shader(
-		"shaders/BasicVertexShader.vert",
+		"shaders/DebugVert.vert",
 		"shaders/SolidColor.frag");
 	InitBuffers();
 }
@@ -49,32 +49,36 @@ void DebugRenderer::SetShaderMatrices()
 	simpleShader->SetMat4x4("model", model);
 }
 
-void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& color)
+void DebugRenderer::RenderDebug()
 {
-	//assign vertices
-	for (int i = 0; i < 3; i++)
-	{
-		vertices[i] = from[i];
-	}
-	for (int i = 3; i < 6; i++)
-	{
-		vertices[i] = to[i % 3];
-	}
-
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+	BindBuffers();
+	glBufferData(GL_ARRAY_BUFFER, debugInfo.size() * sizeof(DebugInfo), &debugInfo[0],
+	             GL_STATIC_DRAW);
+	//vertices
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
 
 	simpleShader->Bind();
 	SetShaderMatrices();
 
 	simpleShader->SetFloat3("color", color.x(), color.y(), color.z());
-
-	glDrawArrays(GL_LINES, 0, 2);
+	glDrawArrays(GL_LINES, 0, debugInfo.size() * 2);
 
 
 	simpleShader->Unbind();
+	debugInfo.clear();
+	UnbindBuffers();
+}
+
+void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& _color)
+{
+	//store for later render in one go
+	DebugInfo info;
+	info.from = from;
+	info.to = to;
+	color = _color;
+	debugInfo.push_back(info);
 }
 
 void DebugRenderer::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance,

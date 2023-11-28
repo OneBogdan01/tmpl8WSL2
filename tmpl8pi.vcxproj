@@ -665,6 +665,7 @@
     <None Include="shaders\BasicFragmentShader.frag" />
     <None Include="shaders\BasicVertexShader.vert" />
     <None Include="shaders\compute.comp" />
+    <None Include="shaders\DebugVert.vert" />
     <None Include="shaders\ModelLoading.frag" />
     <None Include="shaders\ModelLoading.vert" />
     <None Include="shaders\SolidColor.frag" />

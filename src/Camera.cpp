@@ -33,6 +33,11 @@ void Camera::SetPosition(const glm::vec3& pos)
 	position = pos;
 }
 
+const glm::vec3 Camera::GetPosition() const
+{
+	return position;
+}
+
 
 void Camera::MoveZ(float multiplier)
 {
