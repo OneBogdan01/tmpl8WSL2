@@ -63,7 +63,8 @@ void Game::Init()
 		world.AddARigidbody(pos);
 	}
 
-	model = new Model("assets/backpack/backpack.ob");
+	//model = new Model("assets/backpack/backpack.ob");
+	model = new Model("assets/tiled/castle/tower.ob");
 	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes());
 }
 
