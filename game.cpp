@@ -36,19 +36,13 @@ glm::vec3 cubePositions[] = {
 glm::vec3 modelPos = glm::vec3(0.0f, 0.0f, 0.0f);
 float scale = 5.0f;
 
-namespace fs = std::filesystem;
-
 
 void Game::Init()
 {
 	stbi_set_flip_vertically_on_load(true);
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
-	std::string path = "assets/tiled/castle";
-
-	for (const auto& entry : fs::directory_iterator(path))
-	{
-		std::cout << entry.path() << std::endl;
-	}
+	tileLoader.Init();
+	tileLoader.LoadCSVFile("assets/tiled/map.tmx");
 
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
@@ -79,7 +73,6 @@ void Game::Init()
 
 	//model = new Model("assets/backpack/backpack.ob");
 	model = new Model("assets/tiled/castle/tower.ob");
-	std::cout << "update";
 
 	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
 }
@@ -111,7 +104,7 @@ void Game::Tick(float deltaTime)
 	frameCount++;
 	if (timer.elapsed() >= 1.0f)
 	{
-		FPS = static_cast<float>(frameCount / timer.elapsed());
+		FPS = static_cast<float>(frameCount) / timer.elapsed();
 		frameCount = 0;
 		timer.reset();
 	}

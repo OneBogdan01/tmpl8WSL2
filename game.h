@@ -3,6 +3,7 @@
 
 #include "Triangle.h"
 #include "World.h"
+#include "tiles/TileLoader.h"
 
 class Model;
 class Camera;
@@ -46,5 +47,6 @@ namespace Tmpl8
 		Camera* camera = nullptr;
 		World world;
 		Model* model = nullptr;
+		TileLoader tileLoader;
 	};
 } // namespace Tmpl8
