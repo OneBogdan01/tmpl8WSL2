@@ -27,6 +27,6 @@ private:
 	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 	btBroadphaseInterface* overlappingPairCache;
 	bool debugPositionInitialized = false;
-	DebugRenderer* debugDrawer;
+	DebugRenderer* debugDrawer = nullptr;
 	inline static uint ID = 0;
 };

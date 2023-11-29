@@ -86,8 +86,19 @@ uint World::AddARigidbody(const btVector3& startinPos)
 
 uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes, float scale)
 {
-	btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
-	btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	//btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
+	//btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+
+	////used as starting point for the model
+	//btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
+
+	//btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
+
+	//btBoxShape* colShape = new btBoxShape(boxHalfExtents);
+
+	btConvexHullShape* colShape = new btConvexHullShape();
+
 	for (const auto& mesh : meshes)
 	{
 		for (const auto& vertex : mesh.vertices)
@@ -95,19 +106,12 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<M
 			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
 
 
-			// Update bounding box extents
-			modelMin.setMin(vertexVec);
-			modelMax.setMax(vertexVec);
+			colShape->addPoint(vertexVec);
 		}
 	}
 
-	//used as starting point for the model
-	btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
-
-	btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
-
-	btBoxShape* colShape = new btBoxShape(boxHalfExtents);
 	colShape->setLocalScaling(btVector3(scale, scale, scale));
+
 
 	collisionShapes.push_back(colShape);
 
@@ -115,7 +119,7 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<M
 	btTransform startTransform;
 	startTransform.setIdentity();
 
-	btScalar mass(1.f);
+	btScalar mass(0.f);
 
 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
 	bool isDynamic = (mass != 0.f);
@@ -124,7 +128,7 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<M
 	if (isDynamic)
 		colShape->calculateLocalInertia(mass, localInertia);
 
-	startTransform.setOrigin(startingPos + boxCenter);
+	startTransform.setOrigin(startingPos);
 
 
 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
