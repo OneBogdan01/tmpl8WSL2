@@ -13,6 +13,8 @@
 #include "model_loading/Model.h"
 #include <filesystem>
 
+#include "Timer.h"
+
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
@@ -67,7 +69,7 @@ void Game::Init()
 	triangle.Init();
 	camera = new Camera();
 	camera->Init();
-	// bypass for suspected compiler bug
+
 	for (int i = 0; i <= 9; i++)
 	{
 		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
@@ -98,17 +100,31 @@ glm::vec2 moveCam = glm::vec2(0);
 
 float f = 0.3f;
 char buf[] = "some windows";
+float FPS = 0;
+uint frameCount = 0;
+Timer timer;
 
 void Game::Tick(float deltaTime)
 {
 	world.Update(deltaTime);
-	ImGui::Text("Hello, world %d", 123);
+#ifdef __DEBUG__
+	frameCount++;
+	if (timer.elapsed() >= 1.0f)
+	{
+		FPS = static_cast<float>(frameCount / timer.elapsed());
+		frameCount = 0;
+		timer.reset();
+	}
+
+
+	ImGui::Text("FPS:%f", FPS);
 
 	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 	if (ImGui::Button("Button"))
 		f += deltaTime;
+#endif
 
 	if (f > 1)
 		f = 0;

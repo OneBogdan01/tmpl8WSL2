@@ -43,6 +43,8 @@
     <ClCompile Include="src\DebugRenderer.cpp" />
     <ClCompile Include="src\model_loading\Mesh.cpp" />
     <ClCompile Include="src\model_loading\Model.cpp" />
+    <ClCompile Include="src\tiles\Tile.cpp" />
+    <ClCompile Include="src\tiles\ChunkOfTiles.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -353,6 +355,8 @@
     <ClInclude Include="src\model_loading\Mesh.h" />
     <ClInclude Include="src\model_loading\Model.h" />
     <ClInclude Include="template\stb_image.h" />
+    <ClInclude Include="src\tiles\Tile.h" />
+    <ClInclude Include="src\tiles\ChunkOfTiles.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -631,6 +635,8 @@
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
     <None Include="assets\tiled\map.tmx" />
+    <None Include="shaders\Lighting.vert" />
+    <None Include="shaders\Lighting.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

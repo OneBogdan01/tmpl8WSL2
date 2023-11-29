@@ -802,9 +802,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
@@ -827,9 +827,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
@@ -852,9 +852,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <PreprocessorDefinitions>
-      </PreprocessorDefinitions>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</LibraryDependencies>
