@@ -11,7 +11,7 @@
 #include "glm/gtx/transform.hpp"
 
 #include "model_loading/Model.h"
-
+#include <filesystem>
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -34,10 +34,19 @@ glm::vec3 cubePositions[] = {
 glm::vec3 modelPos = glm::vec3(0.0f, 0.0f, 0.0f);
 float scale = 5.0f;
 
+namespace fs = std::filesystem;
+
+
 void Game::Init()
 {
 	stbi_set_flip_vertically_on_load(true);
+	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
+	std::string path = "assets/tiled/castle";
 
+	for (const auto& entry : fs::directory_iterator(path))
+	{
+		std::cout << entry.path() << std::endl;
+	}
 
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
@@ -58,14 +67,18 @@ void Game::Init()
 	triangle.Init();
 	camera = new Camera();
 	camera->Init();
-	for (uint i = 1; i <= 10; i++)
+	// bypass for suspected compiler bug
+	for (int i = 0; i <= 9; i++)
 	{
 		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
 		world.AddARigidbody(pos);
 	}
 
+
 	//model = new Model("assets/backpack/backpack.ob");
 	model = new Model("assets/tiled/castle/tower.ob");
+	std::cout << "update";
+
 	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
 }
 
@@ -76,12 +89,12 @@ void Game::Init()
 
 float mixing = .2f;
 
-glm::vec3 position;
+glm::vec3 position = glm::vec3(0);
 float fov = 45;
 float yOffset = 0;
 
-glm::vec2 rotateCam;
-glm::vec2 moveCam;
+glm::vec2 rotateCam = glm::vec2(0);
+glm::vec2 moveCam = glm::vec2(0);
 
 float f = 0.3f;
 char buf[] = "some windows";
@@ -89,7 +102,6 @@ char buf[] = "some windows";
 void Game::Tick(float deltaTime)
 {
 	world.Update(deltaTime);
-
 	ImGui::Text("Hello, world %d", 123);
 
 	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));

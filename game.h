@@ -31,7 +31,7 @@ namespace Tmpl8
 		// data members
 		//Surface* screen;
 		//TODO less big array just to store input
-		int keystate[66666];
+		//int keystate[66666];
 
 		float vertices[9] = {
 			-0.5f, -0.5f, 0.0f,

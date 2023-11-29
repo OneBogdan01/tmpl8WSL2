@@ -50,18 +50,6 @@
     <ProjectName>tmpl8pi</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>WSL2_1_0</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'" Label="Configuration">
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>WSL2_1_0</PlatformToolset>
@@ -77,50 +65,54 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
-    <RemoteCopyIncludeDirectories>assets/backpack/</RemoteCopyIncludeDirectories>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
-    <RemoteCopyIncludeDirectories>assets/backpack/</RemoteCopyIncludeDirectories>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>Remote_GCC_1_0</PlatformToolset>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>WSL2_1_0</PlatformToolset>
-    <RemoteCopyIncludeDirectories>assets/backpack/</RemoteCopyIncludeDirectories>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WSL2_1_0</PlatformToolset>
+    <RemoteCopyIncludeDirectories>
+    </RemoteCopyIncludeDirectories>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <SourcePath>.;$(SourcePath)</SourcePath>
-    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
-    <ValidateArchitecture>true</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <SourcePath>.;$(SourcePath)</SourcePath>
-    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
-    <ValidateArchitecture>true</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <SourcePath>.;$(SourcePath)</SourcePath>
-    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
-    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;$(IncludePath)</IncludePath>
-    <ValidateArchitecture>false</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <SourcePath>.;$(SourcePath)</SourcePath>
+    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
+    <MultiProcNumber>4</MultiProcNumber>
+    <ValidateArchitecture>false</ValidateArchitecture>
+    <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
     <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
@@ -138,7 +130,25 @@
     <WSLPath>default</WSLPath>
     <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <SourcePath>.;$(SourcePath)</SourcePath>
+    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
+    <MultiProcNumber>4</MultiProcNumber>
+    <ValidateArchitecture>false</ValidateArchitecture>
+    <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <SourcePath>.;$(SourcePath)</SourcePath>
+    <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
+    <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
+    <MultiProcNumber>4</MultiProcNumber>
+    <ValidateArchitecture>false</ValidateArchitecture>
+    <WSLPath>Debian</WSLPath>
+    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
     <LibraryPath>/usr/lib;/usr/lib/arm-linux-gnueabihf;$(LibraryPath)</LibraryPath>
     <IncludePath>/usr/include/libdrm;/usr/include/bullet;/usr/include/GLES2;/usr/include;/usr/include/x11;/usr/include/arm-linux-gnueabihf/c++/8;.;./template;/usr/include/assimp;$(IncludePath)</IncludePath>
@@ -490,27 +500,22 @@
     <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="template\surface.h" />
     <ClCompile Include="template\template.h">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">-x %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">-x %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">-x %(AdditionalOptions)</AdditionalOptions>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">CompileAsCpp</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">CompileAsCpp</CompileAs>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">template\template.gch</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">template\template.gch</ObjectFileName>
-      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">template\template.gch</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">template\template.gch</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">template\template.gch</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">template\template.gch</ObjectFileName>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">template\template.gch</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">template\template.gch</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />
-    <Image Include="assets\backpack\ao.jpg" />
-    <Image Include="assets\backpack\diffuse.jpg" />
-    <Image Include="assets\backpack\normal.png" />
-    <Image Include="assets\backpack\roughness.jpg" />
-    <Image Include="assets\backpack\specular.jpg" />
     <Image Include="assets\font.png" />
     <Image Include="assets\spec.jpg" />
     <Image Include="assets\tiled\castle\Textures\barrel.png" />
@@ -523,8 +528,6 @@
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\backpack\backpack.mtl" />
-    <None Include="assets\backpack\backpack.ob" />
     <None Include="assets\tiled\castle\battlement.mtl" />
     <None Include="assets\tiled\castle\battlement.ob" />
     <None Include="assets\tiled\castle\battlement_cornerInner.mtl" />
@@ -635,6 +638,20 @@
     <None Include="assets\tiled\castle\wall_half.ob" />
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
+    <None Include="assets\tiled\map.tmx" />
+    <Resource Include="assets\tiled\Tiles.tsx">
+      <DeploymentContent>true</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='RelProf|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </Resource>
     <None Include="external\glm\detail\func_common.inl" />
     <None Include="external\glm\detail\func_common_simd.inl" />
     <None Include="external\glm\detail\func_exponential.inl" />
@@ -782,86 +799,26 @@
     <None Include="shaders\ModelLoading.vert" />
     <None Include="shaders\SolidColor.frag" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\backpack\source_attribution.txt" />
-  </ItemGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <ClCompile>
-      <UnrollLoops>true</UnrollLoops>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <ClCompile>
-      <UnrollLoops>true</UnrollLoops>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <UnrollLoops>true</UnrollLoops>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
-    <ClCompile>
-      <OmitFramePointers>false</OmitFramePointers>
-      <RelaxIEEE>true</RelaxIEEE>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
-      <CLanguageStandard>c11</CLanguageStandard>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
-      <IgnoreDefaultLibraries>false</IgnoreDefaultLibraries>
-      <AdditionalDependencies />
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
-    <ClCompile>
-      <OmitFramePointers>false</OmitFramePointers>
-      <RelaxIEEE>true</RelaxIEEE>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);ARM64</PreprocessorDefinitions>
-      <CLanguageStandard>c11</CLanguageStandard>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui;;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
-    <Link>
-      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
-      <IgnoreDefaultLibraries>false</IgnoreDefaultLibraries>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <OmitFramePointers>false</OmitFramePointers>
-      <RelaxIEEE>true</RelaxIEEE>
-      <ExceptionHandling>Disabled</ExceptionHandling>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <CppLanguageStandard>c++17</CppLanguageStandard>
-      <DebugInformationFormat>None</DebugInformationFormat>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;$(StlIncludeDirectories);%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
-    </ClCompile>
-    <Link>
-      <DebuggerSymbolInformation>OmitAllSymbolInformation</DebuggerSymbolInformation>
-      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;</LibraryDependencies>
-      <IgnoreDefaultLibraries>false</IgnoreDefaultLibraries>
-      <AdditionalDependencies>$(StlAdditionalDependencies);%(Link.AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <UnrollLoops>false</UnrollLoops>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
@@ -878,12 +835,41 @@
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <PreprocessorDefinitions>ARM64</PreprocessorDefinitions>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <UnrollLoops>false</UnrollLoops>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <PreprocessorDefinitions>
       </PreprocessorDefinitions>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</LibraryDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <DebugInformationFormat>FullDebug</DebugInformationFormat>
+      <UnrollLoops>false</UnrollLoops>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</LibraryDependencies>
