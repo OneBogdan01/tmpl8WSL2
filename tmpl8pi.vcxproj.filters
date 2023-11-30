@@ -357,6 +357,12 @@
     <ClInclude Include="src\md2_loader\Md2.h" />
     <ClInclude Include="src\md2_loader\ShaderProgram.h" />
     <ClInclude Include="src\md2_loader\Texture2D.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="external\Imgui\imgui_internal.h" />
+    <ClInclude Include="external\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="external\Imgui\imstb_textedit.h" />
+    <ClInclude Include="external\Imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -649,5 +655,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\excalibur\vf19excalibur.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\PixelifySans-Regular.ttf" />
   </ItemGroup>
 </Project>

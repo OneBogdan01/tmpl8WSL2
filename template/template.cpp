@@ -524,6 +524,8 @@ void GLErrorHandling()
 	}
 }
 
+const uint sizePixels = 24;
+
 int main(int argc, char* argv[])
 {
 	setenv("DISPLAY", ":0", 1);
@@ -546,10 +548,16 @@ int main(int argc, char* argv[])
 	//ImGui::StyleColorsDark();
 	ImGui::StyleColorsClassic();
 	//ImGui::StyleColorsLight();
-
 	ImGuiIO& io = ImGui::GetIO();
+	//use my own font
+	//io.Fonts->AddFontDefault();
+
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", sizePixels);
+
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
+
+
 	while (!should_close)
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

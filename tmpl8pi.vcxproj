@@ -492,6 +492,12 @@
     <ClInclude Include="external\glm\vector_relational.hpp" />
     <ClInclude Include="external\Imgui\imconfig.h" />
     <ClInclude Include="external\Imgui\imgui.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="external\Imgui\imgui_internal.h" />
+    <ClInclude Include="external\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="external\Imgui\imstb_textedit.h" />
+    <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\DebugRenderer.h" />
@@ -821,6 +827,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\excalibur\vf19excalibur.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\PixelifySans-Regular.ttf" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <ClCompile>
