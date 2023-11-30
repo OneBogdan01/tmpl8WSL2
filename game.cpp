@@ -1,19 +1,14 @@
 #include "game.h"
-
 #include <iostream>
-
 #include "Camera.h"
 #include "imgui.h"
 #include <glm/glm.hpp>
-
-#include "stb_image.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtx/transform.hpp"
-
 #include "model_loading/Model.h"
 #include <filesystem>
-
 #include "Timer.h"
+#include "tiles/TileLoader.h"
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -39,17 +34,14 @@ float scale = 5.0f;
 
 void Game::Init()
 {
-	stbi_set_flip_vertically_on_load(true);
+	tileLoader = new TileLoader();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
-	tileLoader.Init();
-	tileLoader.LoadCSVFile("assets/tiled/map.tmx");
+	tileLoader->Init("assets/tiled/map.tmx");
 
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
 		"shaders/BasicFragmentShader.frag");
-	modelShader = new Shader(
-		"shaders/ModelLoading.vert",
-		"shaders/ModelLoading.frag");
+
 
 	simpleShader->Bind();
 
@@ -163,28 +155,14 @@ void Game::Tick(float deltaTime)
 	}
 
 	simpleShader->Unbind();
-	glm::mat4 m_model = glm::mat4(1.0f);
+	tileLoader->DrawChunk(0);
+}
 
-	//this crashes when I do addition and apply it to the model matrix
-	//const glm::vec3 offset = glm::vec3(2.0f, 0.0f, -3.0f) + camera->GetPosition();
-	//std::cout << offset.x << " " << offset.y << " " << offset.z << '\n';
-	//m_model = glm::translate(m_model, offset);
-
-	btVector3 btVec = world.GetRigidBodyPosition(11); //- btVector3(0, 2.5f, 0.0f);
-	//glm::vec3 pos = );
-	m_model = glm::translate(m_model, glm::vec3(btVec.x(), btVec.y(), btVec.z()));
-
-	m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
-
-	modelShader->Bind();
-
-	modelShader->SetMat4x4("projection", perspective);
-	modelShader->SetMat4x4("view", view);
-	modelShader->SetMat4x4("model", m_model);
-
-
-	model->Draw(*modelShader);
-	modelShader->Unbind();
+void Game::Shutdown()
+{
+	delete simpleShader;
+	delete tileLoader;
+	delete camera;
 }
 
 void Game::KeyDown(XID key)

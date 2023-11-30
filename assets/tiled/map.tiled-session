@@ -7,7 +7,7 @@
         "Tiles.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.125,
-            "scaleInEditor": 0.12
+            "scaleInEditor": 0.25
         },
         "map.tmx": {
             "scale": 1,

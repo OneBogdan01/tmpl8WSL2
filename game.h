@@ -3,10 +3,10 @@
 
 #include "Triangle.h"
 #include "World.h"
-#include "tiles/TileLoader.h"
 
 class Model;
 class Camera;
+class TileLoader;
 
 namespace Tmpl8
 {
@@ -17,10 +17,8 @@ namespace Tmpl8
 		void Init();
 		void Tick(float deltaTime);
 
-		void Shutdown()
-		{
-			/* implement if you want to do something on exit */
-		}
+		void Shutdown();
+
 
 		void KeyDown(XID key);
 		void KeyUp(XID key);
@@ -42,11 +40,11 @@ namespace Tmpl8
 		static glm::mat4 perspective;
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
-		Shader* modelShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
 		World world;
+		TileLoader* tileLoader = nullptr;
+
 		Model* model = nullptr;
-		TileLoader tileLoader;
 	};
 } // namespace Tmpl8

@@ -41,7 +41,6 @@ const glm::vec3 Camera::GetPosition() const
 
 void Camera::MoveZ(float multiplier)
 {
-	cameraFront.y = 0;
 	translation += camSpeed * cameraFront * multiplier;
 }
 

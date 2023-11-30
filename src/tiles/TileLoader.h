@@ -1,21 +1,30 @@
 ﻿#pragma once
-#include <string>
-#include <vector>
+#include "ChunkOfTiles.h"
 
+
+constexpr uint TILE_SIZE = 5;
+
+//inspired by my old class from block A https://github.com/Tycro-Games/BlockA-Pitfall/blob/master/Scripts/Map/Tilemap.cpp
 class TileLoader
 {
 public:
 	~TileLoader();
-	bool hasEnding(const std::string& fullString, const std::string& ending);
-	void Init();
-	void ConvertCharToInt(const char* pch, uint& numberForm);
-	void ExtractWidthHeight(const char* csvRaw, uint& w, uint& h);
-	void LoadCSVFile(const char* csvPath);
+
+	void Init(const char* csvPath);
+	void DrawChunk(size_t index);
 
 private:
+	std::vector<ChunkOfTiles*> chunksOfTiles;
+
+	void LoadCSVFile(const char* csvPath);
+
+	bool hasEnding(const std::string& fullString, const std::string& ending);
+
+	void ConvertCharToInt(const char* pch, uint& numberForm);
+	void ExtractWidthHeight(const char* csvRaw, uint& w, uint& h);
 	std::vector<std::string> tilePaths;
-	uint* tileArray;
-	uint widthX;
-	uint heightY;
-	uint size;
+	uint widthX = 0;
+	uint heightY = 0;
+	uint size = 0;
+	uint* tileArray = nullptr;
 };

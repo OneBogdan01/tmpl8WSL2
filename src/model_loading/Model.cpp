@@ -3,6 +3,7 @@
 
 #include "template.h"
 
+
 #include "stb_image.h"
 
 #include <iostream>
@@ -10,8 +11,8 @@ using namespace std;
 
 void Model::Draw(Shader& shader)
 {
-	for (uint i = 0; i < meshes.size(); i++)
-		meshes[i].Draw(shader);
+	for (auto& mesh : meshes)
+		mesh.Draw(shader);
 }
 
 std::vector<Mesh>& Model::GetMeshes()

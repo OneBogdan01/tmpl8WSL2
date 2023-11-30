@@ -504,7 +504,6 @@
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="template\stb_image.h" />
-    <ClInclude Include="template\surface.h" />
     <ClCompile Include="template\template.h">
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">CompileAsCpp</CompileAs>
       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">CompileAsCpp</CompileAs>
@@ -519,6 +518,7 @@
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">template\template.gch</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">template\template.gch</ObjectFileName>
     </ClCompile>
+    <ClInclude Include="template\surface.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />

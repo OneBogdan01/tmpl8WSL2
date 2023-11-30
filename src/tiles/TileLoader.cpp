@@ -1,15 +1,23 @@
 ﻿#include "TileLoader.h"
-#include <iostream>
-#include <algorithm>
-#include <filesystem>
+
+
 #include "template.h"
+
+#include <filesystem>
+#include <iostream>
 
 namespace fs = std::filesystem;
 
 TileLoader::~TileLoader()
 {
 	delete[] tileArray;
+	for (auto& chunk : chunksOfTiles)
+	{
+		delete chunk;
+	}
+	chunksOfTiles.clear();
 }
+
 
 //from https://stackoverflow.com/questions/874134/find-if-string-ends-with-another-string-in-c
 bool TileLoader::hasEnding(const std::string& fullString, const std::string& ending)
@@ -22,13 +30,13 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 	return false;
 }
 
-void TileLoader::Init()
+void TileLoader::Init(const char* csvPath)
 {
 	std::string path = "assets/tiled/castle";
 
 	for (const auto& entry : fs::directory_iterator(path))
 	{
-		string pathString = entry.path().string();
+		std::string pathString = entry.path().string();
 		if (hasEnding(pathString, ".ob"))
 		{
 			tilePaths.push_back(pathString);
@@ -36,6 +44,32 @@ void TileLoader::Init()
 	}
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
+	LoadCSVFile(csvPath);
+	ChunkOfTiles* chunk = new ChunkOfTiles();
+	for (uint i = 0; i < heightY; i++)
+	{
+		for (uint j = 0; j < widthX; j++)
+		{
+			uint index = j + i * widthX;
+			uint modelIndex = tileArray[index];
+			if (modelIndex) //index !=0
+			{
+				//so the index can start from 0
+				modelIndex--;
+				glm::vec3 position = glm::vec3(j * TILE_SIZE, 0, i * TILE_SIZE);
+				chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
+			}
+			else
+			{
+			}
+		}
+	}
+	chunksOfTiles.push_back(chunk);
+}
+
+void TileLoader::DrawChunk(size_t index)
+{
+	chunksOfTiles[index]->Draw();
 }
 
 void TileLoader::ConvertCharToInt(const char* pch, uint& numberForm)
@@ -80,25 +114,18 @@ void TileLoader::LoadCSVFile(const char* csvPath)
 	tileArray = new uint[widthX * heightY];
 	size = widthX * heightY;
 	//get to the start of the csv
-	/*char* startOfCsv;
-	for (int i = 0; i < strlen(tilemapRaw); i++)
-	{
-		if (tilemapRaw[i] == ',')
-		{
-			startOfCsv = tilemapRaw + i;
-			break;
-		}
-	}*/
+
 	char* startOfCsv = strstr(tilemapRaw, "csv") + 7;
 	//get to the first element of the csv
 	const char* pch = strtok(startOfCsv, ",");
 
-	int index = 0;
+	uint index = 0;
 	while (index < size) //stops when it reaches the end of the csv
 	{
 		uint numberForm = 0;
 		ConvertCharToInt(pch, numberForm);
-		cout << numberForm << '\n';
+		if (numberForm > 0)
+			cout << numberForm << " which is the model: " << tilePaths[numberForm - 1] << '\n';
 		tileArray[index++] = numberForm;
 		pch = strtok(nullptr, ",\r\n");
 	}
