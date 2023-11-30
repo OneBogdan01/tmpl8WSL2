@@ -157,11 +157,11 @@ void Game::Tick(float deltaTime)
 		vec3 dir(1.0f, 0.3f, 0.5f);
 		matModel = glm::rotate(matModel, radians(angle), dir);*/
 		simpleShader->SetMat4x4("model", matModel);
-		//triangle.Draw();
+		triangle.Draw();
 	}
 
 	simpleShader->Unbind();
-	//tileLoader->DrawChunk(0);
+	tileLoader->DrawChunk(0);
 
 	//render player animating
 
