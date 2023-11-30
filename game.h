@@ -3,6 +3,7 @@
 
 #include "Triangle.h"
 #include "World.h"
+#include "md2_loader/Md2.h"
 
 class Model;
 class Camera;
@@ -44,7 +45,7 @@ namespace Tmpl8
 		Camera* camera = nullptr;
 		World world;
 		TileLoader* tileLoader = nullptr;
-
+		md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 		Model* model = nullptr;
 	};
 } // namespace Tmpl8

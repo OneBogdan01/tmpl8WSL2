@@ -88,6 +88,12 @@ char buf[] = "some windows";
 float FPS = 0;
 uint frameCount = 0;
 Timer timer;
+const int startFrame = 0;
+const int endFrame = 197;
+int renderFrame = startFrame;
+// Rendering loop
+float interpolation = 0.0f;
+int bufferIndex = 0;
 
 void Game::Tick(float deltaTime)
 {
@@ -151,11 +157,30 @@ void Game::Tick(float deltaTime)
 		vec3 dir(1.0f, 0.3f, 0.5f);
 		matModel = glm::rotate(matModel, radians(angle), dir);*/
 		simpleShader->SetMat4x4("model", matModel);
-		triangle.Draw();
+		//triangle.Draw();
 	}
 
 	simpleShader->Unbind();
-	tileLoader->DrawChunk(0);
+	//tileLoader->DrawChunk(0);
+
+	//render player animating
+
+	player.Draw(renderFrame, 0, interpolation, view, perspective);
+	if (interpolation >= 1.0f)
+	{
+		interpolation = 0.0f;
+		if (renderFrame == endFrame)
+		{
+			renderFrame = startFrame;
+			bufferIndex = 0;
+		}
+		else
+		{
+			renderFrame++;
+			bufferIndex++;
+		}
+	}
+	interpolation += 10.0f * deltaTime;
 }
 
 void Game::Shutdown()

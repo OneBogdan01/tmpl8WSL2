@@ -42,6 +42,9 @@
     <ClCompile Include="src\tiles\TileLoader.cpp" />
     <ClCompile Include="template\surface.cpp" />
     <ClCompile Include="template\sprite.cpp" />
+    <ClCompile Include="src\md2_loader\Md2.cpp" />
+    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
+    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -351,6 +354,9 @@
     <ClInclude Include="src\tiles\TileLoader.h" />
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="template\sprite.h" />
+    <ClInclude Include="src\md2_loader\Md2.h" />
+    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
+    <ClInclude Include="src\md2_loader\Texture2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -368,6 +374,7 @@
     <Image Include="assets\tiled\castle\Textures\roof.png" />
     <Image Include="assets\tiled\castle\Textures\stones.png" />
     <Image Include="assets\tiled\castle\Textures\stonesPainted.png" />
+    <Image Include="assets\excalibur\alphaone.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compute.comp">
@@ -629,8 +636,18 @@
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
     <None Include="assets\tiled\map.tmx" />
+    <None Include="assets\excalibur\alphaone.pcx" />
+    <None Include="assets\excalibur\alphaone_i.pcx" />
+    <None Include="assets\excalibur\tris.md2" />
+    <None Include="assets\excalibur\weapon.md2" />
+    <None Include="assets\excalibur\weapon.pcx" />
+    <None Include="shaders\basic.vert" />
+    <None Include="shaders\basic.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
 </Project>
