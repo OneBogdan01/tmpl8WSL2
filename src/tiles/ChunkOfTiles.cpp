@@ -18,7 +18,7 @@ ChunkOfTiles::ChunkOfTiles()
 		"shaders/ModelLoading.frag");
 }
 
-void ChunkOfTiles::LoadTile(unsigned long index, const char* path, glm::vec3 pos)
+void ChunkOfTiles::LoadTile(size_t index, const char* path, glm::vec3 pos)
 {
 	tiles[index].LoadModel(path);
 	tiles[index].SetPosition(pos);

@@ -810,7 +810,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ARM64;__DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
@@ -835,7 +835,7 @@
       <CppLanguageStandard>c++17</CppLanguageStandard>
       <DebugInformationFormat>FullDebug</DebugInformationFormat>
       <AdditionalIncludeDirectories>external/;shaders/;src/;external/Imgui/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ARM64;__DEBUG__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <LibraryDependencies>EGL;GLESv2;pthread;X11;Xrandr;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp;</LibraryDependencies>
