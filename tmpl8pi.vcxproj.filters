@@ -45,6 +45,7 @@
     <ClCompile Include="src\md2_loader\Md2.cpp" />
     <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
     <ClCompile Include="src\md2_loader\Texture2D.cpp" />
+    <ClCompile Include="src\lighting\Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -363,6 +364,7 @@
     <ClInclude Include="external\Imgui\imstb_rectpack.h" />
     <ClInclude Include="external\Imgui\imstb_textedit.h" />
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
+    <ClInclude Include="src\lighting\Sun.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -649,6 +651,7 @@
     <None Include="assets\excalibur\weapon.pcx" />
     <None Include="shaders\basic.vert" />
     <None Include="shaders\basic.frag" />
+    <None Include="shaders\Sun.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

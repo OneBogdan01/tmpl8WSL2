@@ -28,7 +28,7 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(1.5f, 0.2f, -1.5f),
 	glm::vec3(-1.3f, 1.0f, -1.5f)
 };
-glm::vec3 modelPos = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 modelPos = glm::vec3(-5.0f, 0.0f, 0.0f);
 float scale = 5.0f;
 
 
@@ -41,8 +41,17 @@ void Game::Init()
 	simpleShader = new Shader(
 		"shaders/BasicVertexShader.vert",
 		"shaders/BasicFragmentShader.frag");
+	lightShader = new Shader(
+		"shaders/BasicVertexShader.vert",
+		"shaders/Sun.frag");
 
-
+	modelShader = new Shader(
+		"shaders/ModelLoading.vert",
+		"shaders/ModelLoading.frag");
+	modelShader->Bind();
+	modelShader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+	modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+	modelShader->Unbind();
 	simpleShader->Bind();
 
 
@@ -53,6 +62,7 @@ void Game::Init()
 
 
 	triangle.Init();
+	sun.Init();
 	camera = new Camera();
 	camera->Init();
 
@@ -94,6 +104,7 @@ int renderFrame = startFrame;
 // Rendering loop
 float interpolation = 0.0f;
 int bufferIndex = 0;
+glm::vec3 lightPos(-9.2f, 1.0f, 2.0f);
 
 void Game::Tick(float deltaTime)
 {
@@ -161,8 +172,41 @@ void Game::Tick(float deltaTime)
 	}
 
 	simpleShader->Unbind();
+	//draw lighting
+	lightShader->Bind();
+	lightShader->SetMat4x4("projection", perspective);
+	lightShader->SetMat4x4("view", view);
+
+	glm::mat4 sunModel = glm::mat4(1.0f);
+	sunModel = glm::translate(sunModel, lightPos);
+	sunModel = glm::scale(sunModel, glm::vec3(0.2f));
+	lightShader->SetMat4x4("model", sunModel);
+	sun.Draw();
+	lightShader->Unbind();
+
+	modelShader->Bind();
+	modelShader->SetMat4x4("projection", perspective);
+	modelShader->SetMat4x4("view", view);
+	glm::mat4 matModel = glm::mat4(1.0f);
+	btVector3 btVec = world.GetRigidBodyPosition(11);
+	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
+	matModel = glm::translate(matModel, pos);
+	modelShader->SetMat4x4("model", matModel);
+	glm::vec3 camPos = camera->GetPosition();
+	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
+	modelShader->SetFloat3("lightPos", lightPos.x, lightPos.y, lightPos.z);
+	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	modelShader->SetFloat("material.shininess", 32.0f);
+	modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
+	modelShader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+	modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
+
+	modelShader->SetInt("material.diffuse", 0);
+	model->Draw(*modelShader);
+	//draw the tile map
 	tileLoader->DrawChunk(0);
 
+	modelShader->Unbind();
 	//render player animating
 
 	player.Draw(renderFrame, 0, interpolation, view, perspective);

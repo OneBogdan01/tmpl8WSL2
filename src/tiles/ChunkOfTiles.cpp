@@ -28,9 +28,9 @@ void ChunkOfTiles::Draw()
 {
 	//m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
 
-	modelShader->Bind();
+	/*modelShader->Bind();
 	modelShader->SetMat4x4("projection", Game::perspective);
-	modelShader->SetMat4x4("view", Game::view);
+	modelShader->SetMat4x4("view", Game::view);*/
 	for (auto& tile : tiles)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
@@ -41,5 +41,5 @@ void ChunkOfTiles::Draw()
 		tile.Draw(*modelShader);
 	}
 
-	modelShader->Unbind();
+	//modelShader->Unbind();
 }

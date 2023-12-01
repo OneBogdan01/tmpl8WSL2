@@ -3,6 +3,7 @@
 
 #include "Triangle.h"
 #include "World.h"
+#include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
 
 class Model;
@@ -41,11 +42,14 @@ namespace Tmpl8
 		static glm::mat4 perspective;
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
+		Shader* lightShader = nullptr;
 		Triangle triangle;
 		Camera* camera = nullptr;
 		World world;
 		TileLoader* tileLoader = nullptr;
 		md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 		Model* model = nullptr;
+		Sun sun;
+		Shader* modelShader = nullptr;
 	};
 } // namespace Tmpl8
