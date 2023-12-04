@@ -41,13 +41,13 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{7f2fe357-d184-4b88-8117-e2f1de2262aa}</ProjectGuid>
     <Keyword>Linux</Keyword>
-    <RootNamespace>HelloCubes</RootNamespace>
+    <RootNamespace>Pitfall3D</RootNamespace>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <ApplicationType>Linux</ApplicationType>
     <ApplicationTypeRevision>1.0</ApplicationTypeRevision>
     <TargetLinuxPlatform>Raspberry</TargetLinuxPlatform>
     <LinuxProjectType>{8748239F-558C-44D1-944B-07B09C35B330}</LinuxProjectType>
-    <ProjectName>tmpl8pi</ProjectName>
+    <ProjectName>Pitfall3D</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'" Label="Configuration">
