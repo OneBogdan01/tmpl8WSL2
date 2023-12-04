@@ -25,13 +25,9 @@ uniform sampler2D texture_diffuse1;
 
 in highp vec3 Normal;  
 uniform highp vec3 lightPos;  
-uniform highp vec3 lightColor;  
 
 in highp vec3 FragPos; 
 
-uniform highp vec3 objectColor;
-highp float ambientStrength = 0.1;
-highp float specularStrength = 0.1;
 uniform highp vec3 viewPos;
 void main()
 {    
@@ -54,5 +50,4 @@ void main()
          
     highp vec3 result = ambient + diffuse + specular;
     FragColor = vec4(result, 1.0);
-    //FragColor = texture(texture_diffuse1, TexCoords);
 }
