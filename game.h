@@ -5,6 +5,7 @@
 #include "World.h"
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
+#include "skybox/Skybox.h"
 
 class Model;
 class Camera;
@@ -51,5 +52,6 @@ namespace Tmpl8
 		Model* model = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;
+		Skybox skybox;
 	};
 } // namespace Tmpl8

@@ -191,6 +191,7 @@
     <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\model_loading\Mesh.cpp" />
     <ClCompile Include="src\model_loading\Model.cpp" />
+    <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\tiles\ChunkOfTiles.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
@@ -508,6 +509,7 @@
     <ClInclude Include="src\md2_loader\Texture2D.h" />
     <ClInclude Include="src\model_loading\Mesh.h" />
     <ClInclude Include="src\model_loading\Model.h" />
+    <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\tiles\ChunkOfTiles.h" />
     <ClInclude Include="src\tiles\Tile.h" />
@@ -538,6 +540,12 @@
     <Image Include="assets\awesomeface.png" />
     <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\font.png" />
+    <Image Include="assets\skybox\nx.jpg" />
+    <Image Include="assets\skybox\ny.jpg" />
+    <Image Include="assets\skybox\nz.jpg" />
+    <Image Include="assets\skybox\px.jpg" />
+    <Image Include="assets\skybox\py.jpg" />
+    <Image Include="assets\skybox\pz.jpg" />
     <Image Include="assets\spec.jpg" />
     <Image Include="assets\tiled\castle\Textures\barrel.png" />
     <Image Include="assets\tiled\castle\Textures\bricks.png" />
@@ -665,6 +673,8 @@
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
     <None Include="assets\tiled\map.tmx" />
+    <None Include="shaders\Skybox.frag" />
+    <None Include="shaders\Skybox.vert" />
     <None Include="shaders\Sun.frag" />
     <Resource Include="assets\tiled\Tiles.tsx">
       <DeploymentContent>true</DeploymentContent>

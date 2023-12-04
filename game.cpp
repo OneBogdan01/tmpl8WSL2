@@ -77,6 +77,7 @@ void Game::Init()
 	model = new Model("assets/tiled/castle/tower.ob");
 
 	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
+	skybox.Init();
 }
 
 // -----------------------------------------------------------
@@ -108,7 +109,12 @@ glm::vec3 lightPos(-9.2f, 1.0f, 2.0f);
 
 void Game::Tick(float deltaTime)
 {
+	//input is done first in the template
+
+	//update physics
 	world.Update(deltaTime);
+
+	//displaying stuff
 #ifdef __DEBUG__
 	frameCount++;
 	if (timer.elapsed() >= 1.0f)
@@ -225,6 +231,10 @@ void Game::Tick(float deltaTime)
 		}
 	}
 	interpolation += 10.0f * deltaTime;
+
+
+	//skybox
+	skybox.Draw();
 }
 
 void Game::Shutdown()
