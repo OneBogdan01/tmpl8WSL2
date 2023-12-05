@@ -495,34 +495,6 @@ void closeEGL()
 // ----------------------------------------------------------------------------
 static Timer timer;
 
-void GLErrorHandling()
-{
-	const auto pegl_debug_message_control_khr = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress(
-		"glDebugMessageCallback"));
-	if (pegl_debug_message_control_khr == nullptr)
-	{
-		printf("failed to eglGetProcAddress eglDebugMessageControlKHR\n");
-	}
-	else
-	{
-		const GLDEBUGPROCKHR debug_fn = [](GLenum source, GLenum type, GLuint id, const GLenum severity, GLsizei length,
-		                                   const GLchar* message, const void*)
-		{
-			switch (severity)
-			{
-			case GL_DEBUG_SEVERITY_HIGH_KHR:
-			case GL_DEBUG_SEVERITY_MEDIUM_KHR:
-				cout << message << std::endl;
-			case GL_DEBUG_SEVERITY_LOW_KHR:
-			case GL_DEBUG_SEVERITY_NOTIFICATION_KHR:
-			default:
-				break; //Ignore.
-			}
-		};
-		pegl_debug_message_control_khr(debug_fn, nullptr);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
-	}
-}
 
 const uint sizePixels = 24;
 
@@ -530,7 +502,6 @@ int main(int argc, char* argv[])
 {
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
-	GLErrorHandling();
 
 	FixWorkingFolder();
 	game = new Game();
