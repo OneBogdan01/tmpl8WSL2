@@ -534,16 +534,16 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		ProccessEvents(game);
-
-		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed());
+		//as Abhishek said, multiplication is way faster then division
+		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
 		timer.reset();
 
 		//imgui still throws erros when used with the current opengl setup
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui::NewFrame();
-		io.DeltaTime = deltaTime / 1000.0f;
+		io.DeltaTime = deltaTime;
 
-		game->Tick(deltaTime / 1000.0f);
+		game->Tick(deltaTime);
 
 
 		ImGui::Render();
