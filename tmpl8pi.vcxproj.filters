@@ -46,6 +46,7 @@
     <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
     <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
+    <ClCompile Include="src\skybox\Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -365,6 +366,7 @@
     <ClInclude Include="external\Imgui\imstb_textedit.h" />
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="src\lighting\Sun.h" />
+    <ClInclude Include="src\skybox\Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -383,6 +385,12 @@
     <Image Include="assets\tiled\castle\Textures\stones.png" />
     <Image Include="assets\tiled\castle\Textures\stonesPainted.png" />
     <Image Include="assets\excalibur\alphaone.png" />
+    <Image Include="assets\skybox\nx.jpg" />
+    <Image Include="assets\skybox\ny.jpg" />
+    <Image Include="assets\skybox\nz.jpg" />
+    <Image Include="assets\skybox\px.jpg" />
+    <Image Include="assets\skybox\py.jpg" />
+    <Image Include="assets\skybox\pz.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compute.comp">
@@ -652,6 +660,8 @@
     <None Include="shaders\basic.vert" />
     <None Include="shaders\basic.frag" />
     <None Include="shaders\Sun.frag" />
+    <None Include="shaders\Skybox.vert" />
+    <None Include="shaders\Skybox.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

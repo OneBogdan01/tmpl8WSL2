@@ -77,6 +77,7 @@ void Game::Init()
 	model = new Model("assets/tiled/castle/tower.ob");
 
 	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
+	skybox.Init();
 }
 
 // -----------------------------------------------------------
@@ -104,11 +105,15 @@ int renderFrame = startFrame;
 // Rendering loop
 float interpolation = 0.0f;
 int bufferIndex = 0;
-glm::vec3 lightPos(-9.2f, 1.0f, 2.0f);
 
 void Game::Tick(float deltaTime)
 {
+	//input is done first in the template
+
+	//update physics
 	world.Update(deltaTime);
+
+	//displaying stuff
 #ifdef __DEBUG__
 	frameCount++;
 	if (timer.elapsed() >= 1.0f)
@@ -178,7 +183,7 @@ void Game::Tick(float deltaTime)
 	lightShader->SetMat4x4("view", view);
 
 	glm::mat4 sunModel = glm::mat4(1.0f);
-	sunModel = glm::translate(sunModel, lightPos);
+	sunModel = glm::translate(sunModel, GetLightPos());
 	sunModel = glm::scale(sunModel, glm::vec3(0.2f));
 	lightShader->SetMat4x4("model", sunModel);
 	sun.Draw();
@@ -194,7 +199,7 @@ void Game::Tick(float deltaTime)
 	modelShader->SetMat4x4("model", matModel);
 	glm::vec3 camPos = camera->GetPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	modelShader->SetFloat3("lightPos", lightPos.x, lightPos.y, lightPos.z);
+	modelShader->SetFloat3("lightPos", GetLightPos().x, GetLightPos().y, GetLightPos().z);
 	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
 	modelShader->SetFloat("material.shininess", 32.0f);
 	modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
@@ -225,6 +230,10 @@ void Game::Tick(float deltaTime)
 		}
 	}
 	interpolation += 10.0f * deltaTime;
+
+
+	//skybox
+	skybox.Draw();
 }
 
 void Game::Shutdown()

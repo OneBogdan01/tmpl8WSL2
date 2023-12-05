@@ -163,8 +163,6 @@ Shader::~Shader()
 {
 	glDetachShader(ID, pixel);
 	glDetachShader(ID, vertex);
-	glDeleteShader(pixel);
-	glDeleteShader(vertex);
 	glDeleteProgram(ID);
 	CheckGL();
 }
@@ -208,13 +206,13 @@ void Shader::Compile(const char* vtext, const char* ftext)
 void Shader::Bind()
 {
 	glUseProgram(ID);
-	//CheckGL();
+	CheckGL();
 }
 
 void Shader::Unbind()
 {
 	glUseProgram(0);
-	//CheckGL();
+	CheckGL();
 }
 
 void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
@@ -234,30 +232,30 @@ void Shader::SetInputMatrix(const char* name, const glm::mat4& matrix)
 void Shader::SetFloat(const char* name, const float v)
 {
 	glUniform1f(glGetUniformLocation(ID, name), v);
-	//CheckGL();
+	CheckGL();
 }
 
 void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(v));
-	//CheckGL();
+	CheckGL();
 }
 
 
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {
 	glUniform3f(glGetUniformLocation(ID, name), v1, v2, v3);
-	//CheckGL();
+	CheckGL();
 }
 
 void Shader::SetInt(const char* name, const int v)
 {
 	glUniform1i(glGetUniformLocation(ID, name), v);
-	//CheckGL();
+	CheckGL();
 }
 
 void Shader::SetUInt(const char* name, const uint v)
 {
 	glUniform1ui(glGetUniformLocation(ID, name), v);
-	//CheckGL();
+	CheckGL();
 }

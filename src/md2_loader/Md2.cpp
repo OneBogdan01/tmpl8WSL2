@@ -1,4 +1,6 @@
 #include "Md2.h"
+
+#include "game.h"
 #include "ShaderProgram.h"
 #include "Texture2D.h"
 
@@ -15,7 +17,7 @@ Md2::Md2(const char* md2FileName, const char* textureFileName): m_texture(std::m
 	LoadModel(md2FileName);
 	LoadTexture(textureFileName);
 	InitBuffer();
-	m_shaderProgram->loadShaders("shaders/basic.vert", "shaders/basic.frag");
+	m_shaderProgram->loadShaders("shaders/basic.vert", "shaders/ModelLoading.frag");
 }
 
 Md2::~Md2()
@@ -34,16 +36,25 @@ void Md2::Draw(int frame, float angle, float interpolation, glm::mat4& view, glm
 	glm::mat4 model = glm::mat4(1.0f);
 
 	// Rotates around the cube center
-	model = glm::translate(model, m_position) * glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.0f, 0.0f)) *
-		glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f)) * glm::scale(
-			model, glm::vec3(0.3, 0.3, 0.3));
+	model = glm::translate(model, m_position);
+	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
 	model = glm::rotate(model, glm::radians(-135.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+	model = glm::scale(model, glm::vec3(0.1f));
 	m_shaderProgram->use();
 	m_shaderProgram->setUniform("model", model);
 	m_shaderProgram->setUniform("view", view);
 	m_shaderProgram->setUniform("projection", projection);
 	m_shaderProgram->setUniform("modelView", view * model);
 
+	glm::vec3 camPos = Game::camera->GetPosition();
+	m_shaderProgram->setUniform("viewPos", camPos);
+	m_shaderProgram->setUniform("lightPos", Game::GetLightPos());
+	m_shaderProgram->setUniform("material.specular", glm::vec3(1.f, 0.5f, 0.5f));
+	m_shaderProgram->setUniform("material.shininess", 32.0f);
+	m_shaderProgram->setUniform("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	m_shaderProgram->setUniform("light.diffuse", glm::vec3(0.5f, 0.5f, 0.5f)); // darken diffuse light a bit
+	m_shaderProgram->setUniform("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 	glBindVertexArray(m_vaoIndices[frame]);
 	//  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -102,6 +113,17 @@ void Md2::InitBuffer()
 				//tex coords
 				md2Vertices.emplace_back(m_model->st[m_model->triIndx[index].stIndex[p]].s);
 				md2Vertices.emplace_back(m_model->st[m_model->triIndx[index].stIndex[p]].t);
+				//normals
+				for (int j = 0; j < 3; j++)
+				{
+					//vertices
+					md2Vertices.emplace_back(currentFrame->normal[j]);
+				}
+				for (int j = 0; j < 3; j++)
+				{
+					//vertices
+					md2Vertices.emplace_back(nextFrame->normal[j]);
+				}
 				vertexIndex++;
 			}
 			//End of the vertex data
@@ -121,21 +143,26 @@ void Md2::InitBuffer()
 
 		auto count = m_frameIndices[frameIndex].second - m_frameIndices[frameIndex].first + 1;
 		glBindBuffer(GL_ARRAY_BUFFER, vbo); // "bind" or set as the current buffer we are working with
-		glBufferData(GL_ARRAY_BUFFER, count * sizeof(float) * 8, &md2Vertices[m_frameIndices[frameIndex].first * 8],
+		glBufferData(GL_ARRAY_BUFFER, count * sizeof(float) * 14, &md2Vertices[m_frameIndices[frameIndex].first * 14],
 		             GL_STATIC_DRAW); // copy the data from CPU to GPU
 
 		glBindVertexArray(vao); // Make it the current one
 		// Current Frame Position attribute
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(0));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(0));
 		glEnableVertexAttribArray(0);
 
 		// Next  Frame Position attribute
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
 
 		// Texture Coord attribute
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
 		glEnableVertexAttribArray(2);
+		//normal
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(8 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 14 * sizeof(GLfloat), (GLvoid*)(11 * sizeof(GLfloat)));
+		glEnableVertexAttribArray(4);
 		frameIndex++;
 		m_vaoIndices.emplace_back(vao);
 		m_vboIndices.emplace_back(vbo);
@@ -189,6 +216,11 @@ void Md2::LoadModel(const char* md2FileName)
 			pntlst[count2].point[0] = fra->scale[0] * fra->fp[count2].v[0] + fra->translate[0];
 			pntlst[count2].point[1] = fra->scale[1] * fra->fp[count2].v[1] + fra->translate[1];
 			pntlst[count2].point[2] = fra->scale[2] * fra->fp[count2].v[2] + fra->translate[2];
+
+
+			pntlst[count2].normal[0] = fra->scale[0] * normals[fra->fp[count2].normalIndex][0];
+			pntlst[count2].normal[1] = fra->scale[1] * normals[fra->fp[count2].normalIndex][1];
+			pntlst[count2].normal[2] = fra->scale[2] * normals[fra->fp[count2].normalIndex][2];
 		}
 	}
 
