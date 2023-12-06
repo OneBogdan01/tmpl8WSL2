@@ -370,7 +370,6 @@
     <ClInclude Include="src\lighting\Sun.h" />
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
-    <ClInclude Include="src\model_loading\AssimpGLMHelpers.h" />
     <ClInclude Include="src\KeyboardManager.h" />
   </ItemGroup>
   <ItemGroup>
