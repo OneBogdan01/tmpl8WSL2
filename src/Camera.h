@@ -18,6 +18,7 @@ public:
 	void MoveZ(float multiplier);
 	void MoveX(float multiplier);
 	void Update(float deltaTime);
+	void HandleInput(float deltaTime);
 	//void SetViewMatrix(Shader* shader);
 	void RotateMouse(const glm::vec2& p);
 
@@ -34,5 +35,7 @@ private:
 	//euler angles
 	float yaw = -90.0f;
 	float pitch = 0.0f;
-	float fov = 45;
+	float yawSpeed = 5.0f;
+	float pitchSpeed = 5.0f;
+	float fov = 45.0f;
 };

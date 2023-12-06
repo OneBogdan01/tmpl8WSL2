@@ -41,7 +41,7 @@ void Tile::AddStaticRigidbody()
 
 void Tile::LoadModel(const char* path)
 {
-	model = new Model(path);
+	model = new StaticModel(path);
 }
 
 void Tile::Draw(Shader& shader) const

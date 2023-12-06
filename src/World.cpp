@@ -17,7 +17,7 @@ subject to the following restrictions:
 #include "World.h"
 #include <stdio.h>
 #include "DebugRenderer.h"
-#include "model_loading/Mesh.h"
+#include "model_loading/StaticMesh.h"
 
 
 /// This is a Hello World program for running a basic Bullet physics simulation
@@ -88,7 +88,7 @@ uint World::AddARigidbody(const btVector3& startinPos)
 	return ID++;
 }
 
-uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes, float scale)
+uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale)
 {
 	//btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
 	//btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
@@ -144,7 +144,7 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<M
 	return ID++;
 }
 
-btBoxShape* World::CreateBoundingBoxModel(const std::vector<Mesh>& meshes, float scale)
+btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale)
 {
 	btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
 	btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);

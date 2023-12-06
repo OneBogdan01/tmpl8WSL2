@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 
-#include "model_loading/Model.h"
+#include "model_loading/StaticModel.h"
 
 class Tile
 {
@@ -14,7 +14,7 @@ public:
 	glm::vec3 GetPosition() const;
 
 private:
-	Model* model = nullptr;
+	StaticModel* model = nullptr;
 	glm::vec3 position = glm::vec3(0);
 	btRigidBody* rigidBody = nullptr;
 };

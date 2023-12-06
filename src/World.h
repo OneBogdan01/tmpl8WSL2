@@ -2,7 +2,7 @@
 #include <btBulletDynamicsCommon.h>
 #include <vector>
 
-#include "model_loading/Mesh.h"
+#include "model_loading/StaticMesh.h"
 class DebugRenderer;
 
 class World
@@ -12,8 +12,8 @@ public:
 	~World();
 	void Update(float deltaTime);
 	uint AddARigidbody(const btVector3& startinPos);
-	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes, float scale = 1.0f);
-	static btBoxShape* CreateBoundingBoxModel(const std::vector<Mesh>& meshes, float scale = 1.0f);
+	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale = 1.0f);
+	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
 	btVector3 GetRigidBodyPosition(uint ID) const;
 	btDiscreteDynamicsWorld* GetDynamicWorld() const;
 	void AddRigidBody(btRigidBody* rb) const;

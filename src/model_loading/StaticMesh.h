@@ -5,12 +5,12 @@
 #include <vector>
 
 
-//from https://learnopengl.com/Model-Loading/Mesh
+//from https://learnopengl.com/Model-Loading/StaticMesh
 
 
 class Shader;
 
-class Mesh
+class StaticMesh
 {
 public:
 	struct Vertex
@@ -31,7 +31,7 @@ public:
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
 	std::vector<MeshTexture> textures;
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
+	StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
 	void Draw(Shader& shader);
 
 private:

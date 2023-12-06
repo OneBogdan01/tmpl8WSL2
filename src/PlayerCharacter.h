@@ -4,9 +4,10 @@
 #include <btBulletDynamicsCommon.h>
 
 #include "md2_loader/Md2.h"
-#include "model_loading/Model.h"
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
+
+#include "model_loading/StaticModel.h"
 
 //inspired from Abhishek's presentation
 class PlayerCharacter
@@ -25,7 +26,7 @@ private:
 	//md2model::Md2 model = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 	btPairCachingGhostObject* ghostObject = nullptr;
 	btKinematicCharacterController* characterController;
-	Model* model2;
+	StaticModel* playerModel;
 	Shader* shader = nullptr;
 	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);

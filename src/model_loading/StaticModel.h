@@ -1,33 +1,33 @@
 ﻿#pragma once
 //from https://learnopengl.com/Model-Loading/Model
-#include "Mesh.h"
+#include "StaticMesh.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
 class Shader;
 
-class Model
+class StaticModel
 {
 public:
-	Model(const char* path)
+	StaticModel(const char* path)
 	{
 		loadModel(path);
 	}
 
 	void Draw(Shader& shader);
-	std::vector<Mesh>& GetMeshes();
+	std::vector<StaticMesh>& GetMeshes();
 
 private:
 	// model data
-	std::vector<Mesh> meshes;
+	std::vector<StaticMesh> meshes;
 	std::string directory;
-	std::vector<Mesh::MeshTexture> textures_loaded;
+	std::vector<StaticMesh::MeshTexture> textures_loaded;
 
 	void loadModel(std::string path);
 	void processNode(aiNode* node, const aiScene* scene);
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	std::vector<Mesh::MeshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
-	                                                    std::string typeName);
+	StaticMesh processMesh(aiMesh* mesh, const aiScene* scene);
+	std::vector<StaticMesh::MeshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
+	                                                          std::string typeName);
 	unsigned TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
 };

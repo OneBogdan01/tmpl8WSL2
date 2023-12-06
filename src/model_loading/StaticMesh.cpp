@@ -1,8 +1,9 @@
-﻿#include "Mesh.h"
+﻿#include "StaticMesh.h"
 #include "template.h"
 
 
-Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vector<Mesh::MeshTexture> textures)
+StaticMesh::StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
+                       std::vector<StaticMesh::MeshTexture> textures)
 {
 	this->vertices = vertices;
 	this->indices = indices;
@@ -11,7 +12,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned> indices, std::vec
 	setupMesh();
 }
 
-void Mesh::Draw(Shader& shader)
+void StaticMesh::Draw(Shader& shader)
 {
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
@@ -37,7 +38,7 @@ void Mesh::Draw(Shader& shader)
 	glBindVertexArray(0);
 }
 
-void Mesh::setupMesh()
+void StaticMesh::setupMesh()
 {
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);

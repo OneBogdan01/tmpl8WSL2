@@ -1,4 +1,4 @@
-﻿#include "Model.h"
+﻿#include "StaticModel.h"
 
 
 #include "template.h"
@@ -9,18 +9,18 @@
 #include <iostream>
 using namespace std;
 
-void Model::Draw(Shader& shader)
+void StaticModel::Draw(Shader& shader)
 {
 	for (auto& mesh : meshes)
 		mesh.Draw(shader);
 }
 
-std::vector<Mesh>& Model::GetMeshes()
+std::vector<StaticMesh>& StaticModel::GetMeshes()
 {
 	return meshes;
 }
 
-void Model::loadModel(std::string path)
+void StaticModel::loadModel(std::string path)
 {
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -36,7 +36,7 @@ void Model::loadModel(std::string path)
 }
 
 //can be used to get a parent child relationship
-void Model::processNode(aiNode* node, const aiScene* scene)
+void StaticModel::processNode(aiNode* node, const aiScene* scene)
 {
 	// process all the node's meshes (if any)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -51,17 +51,17 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 	}
 }
 
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
+StaticMesh StaticModel::processMesh(aiMesh* mesh, const aiScene* scene)
 {
 	// data to fill
-	vector<Mesh::Vertex> vertices;
+	vector<StaticMesh::Vertex> vertices;
 	vector<unsigned int> indices;
-	vector<Mesh::MeshTexture> textures;
+	vector<StaticMesh::MeshTexture> textures;
 
 	// walk through each of the mesh's vertices
 	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
-		Mesh::Vertex vertex;
+		StaticMesh::Vertex vertex;
 		glm::vec3 vector;
 		// we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
 		// positions
@@ -105,20 +105,22 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	if (mesh->mMaterialIndex >= 0)
 	{
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		vector<Mesh::MeshTexture> diffuseMaps = loadMaterialTextures(material,
-		                                                             aiTextureType_DIFFUSE, "texture_diffuse");
+		vector<StaticMesh::MeshTexture> diffuseMaps = loadMaterialTextures(material,
+		                                                                   aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		vector<Mesh::MeshTexture> specularMaps = loadMaterialTextures(material,
-		                                                              aiTextureType_SPECULAR, "texture_specular");
+		vector<StaticMesh::MeshTexture> specularMaps = loadMaterialTextures(material,
+		                                                                    aiTextureType_SPECULAR,
+		                                                                    "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 	// return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures);
+	return StaticMesh(vertices, indices, textures);
 }
 
-std::vector<Mesh::MeshTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(
+	aiMaterial* mat, aiTextureType type, std::string typeName)
 {
-	vector<Mesh::MeshTexture> textures;
+	vector<StaticMesh::MeshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
@@ -136,7 +138,7 @@ std::vector<Mesh::MeshTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTe
 		if (!skip)
 		{
 			// if texture hasn't been loaded already, load it
-			Mesh::MeshTexture texture;
+			StaticMesh::MeshTexture texture;
 			texture.id = TextureFromFile(str.C_Str(), directory);
 			texture.type = typeName;
 			texture.path = str.C_Str();
@@ -147,7 +149,7 @@ std::vector<Mesh::MeshTexture> Model::loadMaterialTextures(aiMaterial* mat, aiTe
 	return textures;
 }
 
-unsigned int Model::TextureFromFile(const char* path, const std::string& directory, bool gamma)
+unsigned int StaticModel::TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {
 	std::string filename = std::string(path);
 	filename = directory + '/' + filename;

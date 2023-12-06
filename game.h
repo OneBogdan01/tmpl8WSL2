@@ -2,6 +2,7 @@
 
 
 #include "Camera.h"
+#include "KeyboardManager.h"
 #include "PlayerCharacter.h"
 #include "Triangle.h"
 #include "World.h"
@@ -9,7 +10,7 @@
 #include "md2_loader/Md2.h"
 #include "skybox/Skybox.h"
 
-class Model;
+class StaticModel;
 class Camera;
 class TileLoader;
 
@@ -47,6 +48,11 @@ namespace Tmpl8
 			return glm::vec3(-5.f, 1.0f, 2.0f);
 		}
 
+		static KeyboardManager& GetInputManager()
+		{
+			return inputManager;
+		}
+
 		// data members
 		//Surface* screen;
 		//TODO less big array just to store input
@@ -70,5 +76,6 @@ namespace Tmpl8
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
 		btVector3 startingPlayerPosition = {0, 0, 0};
+		inline static KeyboardManager inputManager;
 	};
 } // namespace Tmpl8

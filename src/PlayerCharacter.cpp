@@ -16,10 +16,10 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerTransform.setIdentity();
 	playerTransform.setOrigin(startingPosition);
 	//get the mesh info
-	model2 = new Model("assets/Run.dae");
+	playerModel = new StaticModel("assets/Run.dae");
 
 	//create collision shape
-	btConvexShape* collider = World::CreateBoundingBoxModel(model2->GetMeshes(), 1.0f);
+	btConvexShape* collider = World::CreateBoundingBoxModel(playerModel->GetMeshes(), 1.0f);
 
 	// Create a ghost object for collision detection
 	ghostObject = new btPairCachingGhostObject();
@@ -72,8 +72,16 @@ void PlayerCharacter::Draw()
 	shader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
 	shader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 
+	/*auto transforms = animator->GetFinalBoneMatrices();
+	for (int i = 0; i < transforms.size(); ++i)
+	{
+		std::string finalBones = "finalBonesMatrices[" + std::to_string(i) + "]";
+		shader->SetMat4x4(finalBones.c_str(), transforms[i]);
+	}*/
+
+
 	shader->SetInt("material.diffuse", 0);
-	model2->Draw(*shader);
+	playerModel->Draw(*shader);
 	shader->Unbind();
 }
 
