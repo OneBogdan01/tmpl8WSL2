@@ -510,6 +510,7 @@
     <ClInclude Include="src\md2_loader\Md2.h" />
     <ClInclude Include="src\md2_loader\ShaderProgram.h" />
     <ClInclude Include="src\md2_loader\Texture2D.h" />
+    <ClInclude Include="src\model_loading\AssimpGLMHelpers.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
