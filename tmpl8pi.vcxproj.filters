@@ -370,7 +370,6 @@
     <ClInclude Include="src\lighting\Sun.h" />
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
-    <ClInclude Include="src\model_loading\AssimpGLMHelpers.h" />
     <ClInclude Include="src\KeyboardManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -389,7 +388,6 @@
     <Image Include="assets\tiled\castle\Textures\roof.png" />
     <Image Include="assets\tiled\castle\Textures\stones.png" />
     <Image Include="assets\tiled\castle\Textures\stonesPainted.png" />
-    <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\skybox\nx.jpg" />
     <Image Include="assets\skybox\ny.jpg" />
     <Image Include="assets\skybox\nz.jpg" />
@@ -658,11 +656,6 @@
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
     <None Include="assets\tiled\map.tmx" />
-    <None Include="assets\excalibur\alphaone.pcx" />
-    <None Include="assets\excalibur\alphaone_i.pcx" />
-    <None Include="assets\excalibur\tris.md2" />
-    <None Include="assets\excalibur\weapon.md2" />
-    <None Include="assets\excalibur\weapon.pcx" />
     <None Include="shaders\basic.vert" />
     <None Include="shaders\basic.frag" />
     <None Include="shaders\Sun.frag" />
@@ -672,9 +665,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\PixelifySans-Regular.ttf" />

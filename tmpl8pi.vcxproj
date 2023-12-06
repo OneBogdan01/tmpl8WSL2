@@ -510,7 +510,6 @@
     <ClInclude Include="src\md2_loader\Md2.h" />
     <ClInclude Include="src\md2_loader\ShaderProgram.h" />
     <ClInclude Include="src\md2_loader\Texture2D.h" />
-    <ClInclude Include="src\model_loading\AssimpGLMHelpers.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
@@ -543,7 +542,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />
-    <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\font.png" />
     <Image Include="assets\skybox\nx.jpg" />
     <Image Include="assets\skybox\ny.jpg" />
@@ -563,11 +561,6 @@
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\excalibur\alphaone.pcx" />
-    <None Include="assets\excalibur\alphaone_i.pcx" />
-    <None Include="assets\excalibur\tris.md2" />
-    <None Include="assets\excalibur\weapon.md2" />
-    <None Include="assets\excalibur\weapon.pcx" />
     <None Include="assets\Run.dae" />
     <None Include="assets\tiled\castle\battlement.mtl" />
     <None Include="assets\tiled\castle\battlement.ob" />
@@ -844,9 +837,6 @@
     <None Include="shaders\ModelLoading.frag" />
     <None Include="shaders\ModelLoading.vert" />
     <None Include="shaders\SolidColor.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\PixelifySans-Regular.ttf" />
