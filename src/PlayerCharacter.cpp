@@ -1,5 +1,7 @@
 ﻿#include "PlayerCharacter.h"
 
+#include <iostream>
+
 #include "game.h"
 const int startFrame = 0;
 const int endFrame = 197;
@@ -105,8 +107,8 @@ void PlayerCharacter::Update(float deltaTime)
 	{
 		if (characterController->onGround())
 		{
-			characterController->setWalkDirection(btVector3(dir.x(), dir.y(), dir.z()).normalized() * speed);
-			characterController->setWalkDirection(btVector3(dirX, 0, 0).normalized() * speed);
+			characterController->setWalkDirection(btVector3(0.0001f, 0, 0).normalized() * speed);
+			//characterController->setWalkDirection(btVector3(dirX, 0, 0).normalized() * speed);
 		}
 	}
 	else
@@ -128,22 +130,22 @@ void PlayerCharacter::Jump()
 void PlayerCharacter::GetMoveInput(float input)
 {
 	dirX = input;
+	std::cout << dirX << "\n";
 	btTransform t = GetTransform();
 	btVector3 pos = t.getOrigin();
 	btQuaternion q = t.getRotation();
 
-	btVector3 rightVector;
-	btVector3 forwardVector;
-	btMatrix3x3 rotationMatrix(t.getBasis());
-	rightVector = rotationMatrix.getColumn(0); // Right vector
-	forwardVector = rotationMatrix.getColumn(2); // Forward vector
+	btVector3 rightDir = t.getBasis().getColumn(0); // X-axis
+
+	// Assuming positive input moves to the right and negative input moves to the left
+	// You may need to adjust this based on your input system
 	dir = btVector3(0, 0, 0);
 	if (input > 0)
 	{
-		dir += rightVector;
+		dir += rightDir;
 	}
 	if (input < 0)
 	{
-		dir -= rightVector;
+		dir -= rightDir;
 	}
 }

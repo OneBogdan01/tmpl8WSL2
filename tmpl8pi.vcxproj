@@ -540,7 +540,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\awesomeface.png" />
-    <Image Include="assets\diffuse.jpg" />
     <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\font.png" />
     <Image Include="assets\skybox\nx.jpg" />
