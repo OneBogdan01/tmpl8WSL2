@@ -7,6 +7,8 @@
 #include "glm/gtx/transform.hpp"
 #include "model_loading/Model.h"
 #include <filesystem>
+
+#include "PlayerCharacter.h"
 #include "Timer.h"
 #include "tiles/TileLoader.h"
 
@@ -16,24 +18,26 @@
 glm::mat4 Game::perspective;
 glm::mat4 Game::view;
 
-glm::vec3 cubePositions[] = {
-	glm::vec3(0.0f, 5.5f, 0.0f),
-	glm::vec3(2.0f, 5.0f, -15.0f),
-	glm::vec3(-1.5f, -2.2f, -2.5f),
-	glm::vec3(-3.8f, -2.0f, -12.3f),
-	glm::vec3(2.4f, -0.4f, -3.5f),
-	glm::vec3(-1.7f, 3.0f, -7.5f),
-	glm::vec3(1.3f, -2.0f, -2.5f),
-	glm::vec3(1.5f, 2.0f, -2.5f),
-	glm::vec3(1.5f, 0.2f, -1.5f),
-	glm::vec3(-1.3f, 1.0f, -1.5f)
-};
+//glm::vec3 cubePositions[] = {
+//	glm::vec3(0.0f, 5.5f, 0.0f),
+//	glm::vec3(2.0f, 5.0f, -15.0f),
+//	glm::vec3(-1.5f, -2.2f, -2.5f),
+//	glm::vec3(-3.8f, -2.0f, -12.3f),
+//	glm::vec3(2.4f, -0.4f, -3.5f),
+//	glm::vec3(-1.7f, 3.0f, -7.5f),
+//	glm::vec3(1.3f, -2.0f, -2.5f),
+//	glm::vec3(1.5f, 2.0f, -2.5f),
+//	glm::vec3(1.5f, 0.2f, -1.5f),
+//	glm::vec3(-1.3f, 1.0f, -1.5f)
+//};
 glm::vec3 modelPos = glm::vec3(-5.0f, 0.0f, 0.0f);
 float scale = 5.0f;
 
 
 void Game::Init()
 {
+	world.Init();
+
 	tileLoader = new TileLoader();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init("assets/tiled/map.tmx");
@@ -52,31 +56,12 @@ void Game::Init()
 	modelShader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
 	modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 	modelShader->Unbind();
-	simpleShader->Bind();
 
-
-	simpleShader->SetInt("wallTexture", 0); // or with shader class
-	simpleShader->SetInt("faceTexture", 1); // or with shader class
-
-	simpleShader->Unbind();
-
-
-	triangle.Init();
 	sun.Init();
+	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	camera = new Camera();
 	camera->Init();
 
-	for (int i = 0; i <= 9; i++)
-	{
-		btVector3 pos = btVector3(cubePositions[i].x, cubePositions[i].y, cubePositions[i].z);
-		world.AddARigidbody(pos);
-	}
-
-
-	//model = new Model("assets/backpack/backpack.ob");
-	model = new Model("assets/tiled/castle/tower.ob");
-
-	world.AddAModelRigidbody(btVector3(modelPos.x, modelPos.y, modelPos.z), model->GetMeshes(), scale);
 	skybox.Init();
 }
 
@@ -99,17 +84,11 @@ char buf[] = "some windows";
 float FPS = 0;
 uint frameCount = 0;
 Timer timer;
-const int startFrame = 0;
-const int endFrame = 197;
-int renderFrame = startFrame;
-// Rendering loop
-float interpolation = 0.0f;
-int bufferIndex = 0;
+
 
 void Game::Tick(float deltaTime)
 {
 	//input is done first in the template
-
 	//update physics
 	world.Update(deltaTime);
 
@@ -158,23 +137,23 @@ void Game::Tick(float deltaTime)
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                               0.1f, 100.0f);
 	simpleShader->SetMat4x4("projection", perspective);
-	view = camera->LookAt();
+	view = camera->GetViewMat();
 
 	simpleShader->SetMat4x4("view", view);
 
 
-	for (uint i = 1; i <= 10; i++)
-	{
-		glm::mat4 matModel = glm::mat4(1.0f);
-		btVector3 btVec = world.GetRigidBodyPosition(i);
-		glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-		matModel = glm::translate(matModel, pos);
-		/*float angle = 20.0f * i;
-		vec3 dir(1.0f, 0.3f, 0.5f);
-		matModel = glm::rotate(matModel, radians(angle), dir);*/
-		simpleShader->SetMat4x4("model", matModel);
-		triangle.Draw();
-	}
+	//for (uint i = 1; i <= 10; i++)
+	//{
+	//	glm::mat4 matModel = glm::mat4(1.0f);
+	//	btVector3 btVec = world.GetRigidBodyPosition(i);
+	//	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
+	//	matModel = glm::translate(matModel, pos);
+	//	/*float angle = 20.0f * i;
+	//	vec3 dir(1.0f, 0.3f, 0.5f);
+	//	matModel = glm::rotate(matModel, radians(angle), dir);*/
+	//	simpleShader->SetMat4x4("model", matModel);
+	//	triangle.Draw();
+	//}
 
 	simpleShader->Unbind();
 	//draw lighting
@@ -192,11 +171,6 @@ void Game::Tick(float deltaTime)
 	modelShader->Bind();
 	modelShader->SetMat4x4("projection", perspective);
 	modelShader->SetMat4x4("view", view);
-	glm::mat4 matModel = glm::mat4(1.0f);
-	btVector3 btVec = world.GetRigidBodyPosition(11);
-	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-	matModel = glm::translate(matModel, pos);
-	modelShader->SetMat4x4("model", matModel);
 	glm::vec3 camPos = camera->GetPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 	modelShader->SetFloat3("lightPos", GetLightPos().x, GetLightPos().y, GetLightPos().z);
@@ -207,33 +181,16 @@ void Game::Tick(float deltaTime)
 	modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 
 	modelShader->SetInt("material.diffuse", 0);
-	model->Draw(*modelShader);
 	//draw the tile map
 	tileLoader->DrawChunk(0);
 
 	modelShader->Unbind();
-	//render player animating
-
-	player.Draw(renderFrame, 0, interpolation, view, perspective);
-	if (interpolation >= 1.0f)
-	{
-		interpolation = 0.0f;
-		if (renderFrame == endFrame)
-		{
-			renderFrame = startFrame;
-			bufferIndex = 0;
-		}
-		else
-		{
-			renderFrame++;
-			bufferIndex++;
-		}
-	}
-	interpolation += 10.0f * deltaTime;
 
 
 	//skybox
 	skybox.Draw();
+	player->Update(deltaTime);
+	player->Draw();
 }
 
 void Game::Shutdown()
@@ -247,6 +204,8 @@ void Game::KeyDown(XID key)
 {
 	switch (key)
 	{
+	case XK_space:
+		player->Jump();
 	case XK_w:
 		yOffset -= 1;
 		break;
@@ -255,9 +214,11 @@ void Game::KeyDown(XID key)
 		break;
 	case XK_d:
 		rotateCam.x += -1;
+		player->GetMoveInput(1);
 		break;
 	case XK_a:
 		rotateCam.x -= -1;
+		player->GetMoveInput(-1);
 		break;
 	case XK_z:
 		rotateCam.y += 1;
@@ -303,9 +264,12 @@ void Game::KeyUp(XID key)
 		break;
 	case XK_d:
 		rotateCam.x += 1;
+		player->GetMoveInput(0);
+
 		break;
 	case XK_a:
 		rotateCam.x -= 1;
+		player->GetMoveInput(0);
 		break;
 	case XK_z:
 		rotateCam.y += -1;

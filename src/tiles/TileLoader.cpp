@@ -46,9 +46,12 @@ void TileLoader::Init(const char* csvPath)
 	sort(tilePaths.begin(), tilePaths.end());
 	LoadCSVFile(csvPath);
 	ChunkOfTiles* chunk = new ChunkOfTiles();
-	for (uint i = 0; i < heightY; i++)
+
+	glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
+	                             static_cast<float>(heightY - 1) * TILE_SIZE);
+	for (int i = 0; i < heightY; i++)
 	{
-		for (uint j = 0; j < widthX; j++)
+		for (int j = 0; j < widthX; j++)
 		{
 			uint index = j + i * widthX;
 			uint modelIndex = tileArray[index];
@@ -56,11 +59,10 @@ void TileLoader::Init(const char* csvPath)
 			{
 				//so the index can start from 0
 				modelIndex--;
-				glm::vec3 position = glm::vec3(j * TILE_SIZE, 0, i * TILE_SIZE);
+				const glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
+				                                     static_cast<float>(i) * TILE_SIZE) - offset;
+				cout << position.x << " " << position.z << "\n";
 				chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
-			}
-			else
-			{
 			}
 		}
 	}

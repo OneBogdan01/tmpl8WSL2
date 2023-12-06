@@ -2,7 +2,7 @@
 #include "ChunkOfTiles.h"
 
 
-constexpr uint TILE_SIZE = 5;
+constexpr float TILE_SIZE = 5.0f;
 
 //inspired by my old class from block A https://github.com/Tycro-Games/BlockA-Pitfall/blob/master/Scripts/Map/Tilemap.cpp
 class TileLoader

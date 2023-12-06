@@ -1,6 +1,7 @@
 ﻿#include "Camera.h"
 
 #include "template.h"
+#include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
 
 
@@ -19,9 +20,16 @@ Camera::~Camera()
 {
 }
 
-glm::mat4 Camera::LookAt() const
+glm::mat4 Camera::GetViewMat() const
 {
 	return glm::lookAt(position, position + cameraFront, cameraUp);
+}
+
+glm::mat4 Camera::GetProjectionMat() const
+{
+	return glm::perspective(glm::radians(fov),
+	                        static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                        0.1f, 100.0f);
 }
 
 void Camera::Init()

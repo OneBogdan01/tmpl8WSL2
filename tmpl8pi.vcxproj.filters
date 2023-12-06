@@ -47,6 +47,7 @@
     <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
     <ClCompile Include="src\skybox\Skybox.cpp" />
+    <ClCompile Include="src\PlayerCharacter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -367,6 +368,7 @@
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="src\lighting\Sun.h" />
     <ClInclude Include="src\skybox\Skybox.h" />
+    <ClInclude Include="src\PlayerCharacter.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -391,6 +393,8 @@
     <Image Include="assets\skybox\px.jpg" />
     <Image Include="assets\skybox\py.jpg" />
     <Image Include="assets\skybox\pz.jpg" />
+    <Image Include="assets\diffuse.jpg" />
+    <Image Include="assets\textures\diffuse.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\compute.comp">
@@ -662,6 +666,7 @@
     <None Include="shaders\Sun.frag" />
     <None Include="shaders\Skybox.vert" />
     <None Include="shaders\Skybox.frag" />
+    <None Include="assets\Run.dae" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

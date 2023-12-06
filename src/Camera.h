@@ -10,7 +10,8 @@ class Camera
 public:
 	Camera();
 	~Camera();
-	glm::mat4 LookAt() const;
+	glm::mat4 GetViewMat() const;
+	glm::mat4 GetProjectionMat() const;
 	void Init();
 	void SetPosition(const glm::vec3& pos);
 	const glm::vec3 GetPosition() const;
@@ -23,7 +24,7 @@ public:
 private:
 	//void GetCameraAxis(const float3& cameraTarget);
 	//	float lastX = 0, lastY = 0;
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 dir = glm::vec3(0.0f);
 	glm::vec3 translation = glm::vec3(0.0f);
@@ -33,4 +34,5 @@ private:
 	//euler angles
 	float yaw = -90.0f;
 	float pitch = 0.0f;
+	float fov = 45;
 };

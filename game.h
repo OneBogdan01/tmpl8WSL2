@@ -2,6 +2,7 @@
 
 
 #include "Camera.h"
+#include "PlayerCharacter.h"
 #include "Triangle.h"
 #include "World.h"
 #include "lighting/Sun.h"
@@ -36,6 +37,11 @@ namespace Tmpl8
 			return camera->GetPosition();
 		}
 
+		static Camera& GetCamera()
+		{
+			return *camera;
+		}
+
 		static glm::vec3 GetLightPos()
 		{
 			return glm::vec3(-5.f, 1.0f, 2.0f);
@@ -55,14 +61,14 @@ namespace Tmpl8
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
 		Shader* lightShader = nullptr;
-		Triangle triangle;
+		//Triangle triangle;
 		inline static Camera* camera = nullptr;
-		World world;
+		inline static World world;
 		TileLoader* tileLoader = nullptr;
-		md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
-		Model* model = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;
 		Skybox skybox;
+		PlayerCharacter* player = nullptr;
+		btVector3 startingPlayerPosition = {0, 0, 0};
 	};
 } // namespace Tmpl8

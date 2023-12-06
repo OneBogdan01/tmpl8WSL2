@@ -144,6 +144,31 @@ uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<M
 	return ID++;
 }
 
+btBoxShape* World::CreateBoundingBoxModel(const std::vector<Mesh>& meshes, float scale)
+{
+	btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
+	btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	for (auto& mesh : meshes)
+	{
+		for (auto& vertex : mesh.vertices)
+		{
+			// Update min values
+			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+			modelMin.setMin(vertexVec);
+
+			// Update max values
+			modelMax.setMax(vertexVec);
+		}
+	}
+
+
+	const btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
+	btBoxShape* col = new btBoxShape(boxHalfExtents);
+	col->setLocalScaling(btVector3(scale, scale, scale));
+
+	return col;
+}
+
 btVector3 World::GetRigidBodyPosition(const uint ID) const
 {
 	btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[ID];
@@ -160,7 +185,18 @@ btVector3 World::GetRigidBodyPosition(const uint ID) const
 	return trans.getOrigin();
 }
 
-World::World()
+btDiscreteDynamicsWorld* World::GetDynamicWorld() const
+{
+	return dynamicsWorld;
+}
+
+void World::AddRigidBody(btRigidBody* rb) const
+{
+	dynamicsWorld->addRigidBody(rb);
+}
+
+
+void World::Init()
 {
 	///-----includes_end-----
 	///-----initialization_start-----
@@ -199,32 +235,35 @@ World::World()
 	//the ground is a cube of side 100 at position y = -56.
 	//the sphere will hit it at y = -6, with center at -5
 
-	btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(10.), btScalar(50.)));
+	//btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(10.), btScalar(50.)));
 
-	collisionShapes.push_back(groundShape);
+	//collisionShapes.push_back(groundShape);
 
-	btTransform groundTransform;
-	groundTransform.setIdentity();
-	groundTransform.setOrigin(btVector3(0, -20, 0));
+	//btTransform groundTransform;
+	//groundTransform.setIdentity();
+	//groundTransform.setOrigin(btVector3(0, -20, 0));
 
-	btScalar mass(0.);
+	//btScalar mass(0.);
 
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	bool isDynamic = (mass != 0.f);
+	////rigidbody is dynamic if and only if mass is non zero, otherwise static
+	//bool isDynamic = (mass != 0.f);
 
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic)
-		groundShape->calculateLocalInertia(mass, localInertia);
+	//btVector3 localInertia(0, 0, 0);
+	//if (isDynamic)
+	//	groundShape->calculateLocalInertia(mass, localInertia);
 
-	//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
+	////using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
+	//btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
+	//btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
+	//btRigidBody* body = new btRigidBody(rbInfo);
 
-	//add the body to the dynamics world
-	dynamicsWorld->addRigidBody(body);
-	ID++;
+	////add the body to the dynamics world
+	//dynamicsWorld->addRigidBody(body);
+	//ID++;
 }
+
+World::World()
+= default;
 
 World::~World()
 {

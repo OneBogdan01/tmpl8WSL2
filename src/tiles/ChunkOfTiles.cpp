@@ -20,8 +20,7 @@ ChunkOfTiles::ChunkOfTiles()
 
 void ChunkOfTiles::LoadTile(size_t index, const char* path, glm::vec3 pos)
 {
-	tiles[index].LoadModel(path);
-	tiles[index].SetPosition(pos);
+	tiles[index].Init(path, pos);
 }
 
 void ChunkOfTiles::Draw()

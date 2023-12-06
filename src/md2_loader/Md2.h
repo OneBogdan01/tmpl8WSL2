@@ -126,7 +126,8 @@ namespace md2model
 		Md2(const char* md2FileName, const char* textureFileName);
 		~Md2();
 		//The frame parameter start at 0
-		void Draw(int frame, float angle, float interpolation, glm::mat4& view, glm::mat4& projection);
+		void Draw(int frame, float angle, float interpolation, glm::mat4&& view, glm::mat4&& projection);
+		void SetPosition(glm::vec3 position);
 
 		void SetPause(bool pause)
 		{

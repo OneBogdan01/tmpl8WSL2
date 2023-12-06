@@ -13,7 +13,11 @@ public:
 	void Update(float deltaTime);
 	uint AddARigidbody(const btVector3& startinPos);
 	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<Mesh>& meshes, float scale = 1.0f);
-	btVector3 GetRigidBodyPosition(const uint ID) const;
+	static btBoxShape* CreateBoundingBoxModel(const std::vector<Mesh>& meshes, float scale = 1.0f);
+	btVector3 GetRigidBodyPosition(uint ID) const;
+	btDiscreteDynamicsWorld* GetDynamicWorld() const;
+	void AddRigidBody(btRigidBody* rb) const;
+	void Init();
 
 private:
 	btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
