@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//from https://github.com/emeiri/ogldev/blob/master/tutorial25_youtube/skinned_mesh.h
+
 #ifndef SKINNED_MESH_H
 #define SKINNED_MESH_H
 
@@ -27,8 +27,9 @@
 #include <assimp/postprocess.h> // Post processing flags
 
 #include "ogldev_util.h"
-#include "ogldev_material.h"
+#include "ogldev_math_3d.h"
 #include "ogldev_world_transform.h"
+#include "ogldev_material.h"
 
 class SkinnedMesh
 {

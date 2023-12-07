@@ -24,24 +24,24 @@
 
 struct PBRMaterial
 {
-	float Roughness = 0.0f;
-	bool IsMetal = false;
-	glm::vec3 Color = glm::vec3(0.0f, 0.0f, 0.0f);
+    float Roughness = 0.0f;
+    bool IsMetal = false;
+    Vector3f Color = Vector3f(0.0f, 0.0f, 0.0f);
 };
 
 
 class Material
 {
 public:
-    glm::vec3 AmbientColor = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 DiffuseColor = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 SpecularColor = glm::vec3(0.0f, 0.0f, 0.0f);
+    Vector3f AmbientColor = Vector3f(0.0f, 0.0f, 0.0f);
+    Vector3f DiffuseColor = Vector3f(0.0f, 0.0f, 0.0f);
+    Vector3f SpecularColor = Vector3f(0.0f, 0.0f, 0.0f);
 
-	PBRMaterial PBRmaterial;
+    PBRMaterial PBRmaterial;
 
-	// TODO: need to deallocate these
-	Texture* pDiffuse = NULL; // base color of the material
-	Texture* pSpecularExponent = NULL;
+    // TODO: need to deallocate these
+    Texture* pDiffuse = NULL; // base color of the material
+    Texture* pSpecularExponent = NULL;
 };
 
 

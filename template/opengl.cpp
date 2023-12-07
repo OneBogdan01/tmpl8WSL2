@@ -245,7 +245,7 @@ void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 
 void Shader::SetMat4x4Transpose(const Matrix4f& v, GLuint boneLocation) const
 {
-	glUniformMatrix4fv(boneLocation, 1, GL_TRUE, v);
+	glUniformMatrix4fv(glGetUniformLocation(ID, "gBones") + boneLocation, 1, GL_FALSE, v);
 	CheckGL();
 }
 

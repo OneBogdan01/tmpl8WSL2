@@ -7,7 +7,6 @@ layout (location = 2) in vec3 Normal;
 layout (location = 3) in ivec4 BoneIDs;
 layout (location = 4) in vec4 Weights;
 
-
 out vec2 TexCoord0;
 out vec3 Normal0;
 out vec3 LocalPos0;
@@ -26,13 +25,14 @@ uniform mat4 gBones[MAX_BONES];
 
 void main()
 {
-    mat4 BoneTransform = gBones[BoneIDs[0]] * Weights[0];
+     mat4 BoneTransform = gBones[BoneIDs[0]] * Weights[0];
     BoneTransform     += gBones[BoneIDs[1]] * Weights[1];
     BoneTransform     += gBones[BoneIDs[2]] * Weights[2];
     BoneTransform     += gBones[BoneIDs[3]] * Weights[3];
 
     vec4 PosL = BoneTransform * vec4(Position, 1.0);
-    gl_Position = projection*view *model* PosL;
+    mat4 mvp = projection * view * model;
+    gl_Position = mvp* vec4(PosL.xyz,1.0);//replacing posL with Position works
     FragPos=vec3(Position);
     TexCoord0 = TexCoord;
     Normal0 = Normal;
