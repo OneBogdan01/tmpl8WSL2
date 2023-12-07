@@ -35,7 +35,7 @@ private:
 	//euler angles
 	float yaw = -90.0f;
 	float pitch = 0.0f;
-	float yawSpeed = 5.0f;
-	float pitchSpeed = 5.0f;
+	float yawSpeed = 50.0f;
+	float pitchSpeed = 50.0f;
 	float fov = 45.0f;
 };

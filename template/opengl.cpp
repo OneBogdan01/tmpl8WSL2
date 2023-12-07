@@ -6,6 +6,8 @@
 #include "template.h"
 
 #include <glm/gtc/type_ptr.hpp>
+
+#include "model_loading/ogldev_math_3d.h"
 static bool IGP_detected = false;
 
 // OpenGL helper functions
@@ -241,6 +243,11 @@ void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 	CheckGL();
 }
 
+void Shader::SetMat4x4Transpose(const Matrix4f& v, GLuint boneLocation) const
+{
+	glUniformMatrix4fv(boneLocation, 1, GL_TRUE, v);
+	CheckGL();
+}
 
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {
@@ -258,4 +265,16 @@ void Shader::SetUInt(const char* name, const uint v)
 {
 	glUniform1ui(glGetUniformLocation(ID, name), v);
 	CheckGL();
+}
+
+GLint Shader::GetUniformLocation(const char* name)
+{
+	GLuint Location = glGetUniformLocation(ID, name);
+
+	if (Location == INVALID_UNIFORM_LOCATION)
+	{
+		fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", name);
+	}
+
+	return Location;
 }

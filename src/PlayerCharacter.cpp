@@ -1,14 +1,9 @@
 ﻿#include "PlayerCharacter.h"
 
 #include <iostream>
-
+#include "model_loading/UtilityAssimp.h"
 #include "game.h"
-const int startFrame = 0;
-const int endFrame = 197;
-int renderFrame = startFrame;
-// Rendering loop
-float interpolation = 0.0f;
-int bufferIndex = 0;
+#include "model_loading/StaticModel.h"
 
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
@@ -16,10 +11,14 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerTransform.setIdentity();
 	playerTransform.setOrigin(startingPosition);
 	//get the mesh info
-	playerModel = new StaticModel("assets/Run.dae");
-
+	playerModel = new SkinnedMesh();
+	playerModel->LoadMesh("assets/Run.dae");
+	StaticModel model("assets/Run.dae");
+	//debug
+	UtilityAssimp util;
+	util.PrintMeshInformation("assets/Run.dae");
 	//create collision shape
-	btConvexShape* collider = World::CreateBoundingBoxModel(playerModel->GetMeshes(), 1.0f);
+	btConvexShape* collider = World::CreateBoundingBoxModel(model.GetMeshes(), 1.0f);
 
 	// Create a ghost object for collision detection
 	ghostObject = new btPairCachingGhostObject();
@@ -36,11 +35,26 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	dynamicsWorld->addAction(characterController);
 	characterController->setMaxJumpHeight(2.0f);
 	shader = new Shader(
-		"shaders/ModelLoading.vert",
-		"shaders/ModelLoading.frag");
+		"shaders/Skinned.vert",
+		"shaders/Skinned.frag");
 	shader->Bind();
-	shader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+	shader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
+	shader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	shader->SetFloat("material.shininess", 32.0f);
+	shader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
+	shader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+	shader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
+	shader->SetInt("material.diffuse", 0);
+	shader->SetFloat3("objectColor", 1.0f, 0.5f, 0.0f);
 	shader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+
+	for (unsigned int i = 0; i < std::size(m_boneLocation); i++)
+	{
+		char Name[128];
+		memset(Name, 0, sizeof(Name));
+		SNPRINTF(Name, sizeof(Name), "gBones[%d]", i);
+		m_boneLocation[i];
+	}
 	shader->Unbind();
 }
 
@@ -56,32 +70,36 @@ void PlayerCharacter::Draw()
 	const glm::vec3 camPos = Game::GetCameraPosition();
 
 	glm::mat4 model = glm::mat4(1.0f);
-	glm::vec3 position = glm::vec3(pos.x(), pos.y(), pos.z());
+	glm::vec3 position = glm::vec3(0, 0, 0);
 	model = glm::translate(model, position);
-	//model = glm::scale(model, glm::vec3(1.0f));
+	model = glm::scale(model, glm::vec3(1.0f));
 	shader->Bind();
 
 	shader->SetMat4x4("view", cam.GetViewMat());
 	shader->SetMat4x4("projection", cam.GetProjectionMat());
 	shader->SetMat4x4("model", model);
 	shader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	shader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
-	shader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
-	shader->SetFloat("material.shininess", 32.0f);
-	shader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-	shader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-	shader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 
-	/*auto transforms = animator->GetFinalBoneMatrices();
-	for (int i = 0; i < transforms.size(); ++i)
+	vector<Matrix4f> transforms;
+	float deltaTime = timer.elapsed();
+	playerModel->GetBoneTransforms(deltaTime, transforms);
+	for (uint i = 0; i < transforms.size(); i++)
 	{
-		std::string finalBones = "finalBonesMatrices[" + std::to_string(i) + "]";
-		shader->SetMat4x4(finalBones.c_str(), transforms[i]);
-	}*/
+		GLint boneLocation = glGetUniformLocation(shader->ID, "gBones");
+		if (boneLocation != -1)
+		{
+			transforms[i].Print();
+			cout << '\n';
+			shader->SetMat4x4Transpose(transforms[i], boneLocation);
+		}
+		else
+		{
+			// Handle error: Unable to find the bone uniform in the shader
+		}
+	}
 
+	playerModel->Render();
 
-	shader->SetInt("material.diffuse", 0);
-	playerModel->Draw(*shader);
 	shader->Unbind();
 }
 
@@ -90,24 +108,6 @@ btTransform PlayerCharacter::GetTransform()
 	return characterController->getGhostObject()->getWorldTransform();
 }
 
-void PlayerCharacter::InterpolateFrames(float deltaTime)
-{
-	if (interpolation >= 1.0f)
-	{
-		interpolation = 0.0f;
-		if (renderFrame == endFrame)
-		{
-			renderFrame = startFrame;
-			bufferIndex = 0;
-		}
-		else
-		{
-			renderFrame++;
-			bufferIndex++;
-		}
-	}
-	interpolation += 10.0f * deltaTime;
-}
 
 void PlayerCharacter::Update(float deltaTime)
 {
@@ -124,7 +124,12 @@ void PlayerCharacter::Update(float deltaTime)
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 	}
 	//animation stuff
-	InterpolateFrames(deltaTime);
+	//InterpolateFrames(deltaTime);
+	if (Game::GetInputManager().IsJustPressed(Action::Jump))
+	{
+		displayIndex++;
+		displayIndex = displayIndex % playerModel->NumBones();
+	}
 }
 
 void PlayerCharacter::Jump()

@@ -75,7 +75,7 @@ void Camera::HandleInput(const float deltaTime)
 {
 	// Get inputs.
 	const KeyboardManager& km = Game::GetInputManager();
-	int xMovement{km.IsPressed(Action::MoveLeft) ? 1 : 0 + km.IsPressed(Action::MoveRight) ? -1 : 0};
+	int xMovement{km.IsPressed(Action::MoveLeft) ? -1 : 0 + km.IsPressed(Action::MoveRight) ? 1 : 0};
 	int zMovement{km.IsPressed(Action::MoveForward) ? 1 : 0 + km.IsPressed(Action::MoveBackward) ? -1 : 0};
 
 	int yawAmount{km.IsPressed(Action::YawLeft) ? 1 : 0 + km.IsPressed(Action::YawRight) ? -1 : 0};

@@ -67,12 +67,15 @@ void Surface::LoadFromFile(const char* file)
 
 void Surface::LoadRawData(const char* file)
 {
+	stbi_set_flip_vertically_on_load(true);
 	int w, h, n;
 	rawPixels = stbi_load(file, &w, &h, &n, 0);
 	if (!rawPixels)
 		FatalError("could not load file %s.\n", file);
 	width = w;
 	height = h;
+	numberChannels = n;
+	stbi_set_flip_vertically_on_load(false);
 }
 
 void Surface::FreeRawData() const

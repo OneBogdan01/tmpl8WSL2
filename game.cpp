@@ -182,15 +182,16 @@ void Game::Tick(float deltaTime)
 
 	modelShader->SetInt("material.diffuse", 0);
 	//draw the tile map
-	tileLoader->DrawChunk(0);
+	//tileLoader->DrawChunk(0);
 
 	modelShader->Unbind();
 
 
 	//skybox
-	skybox.Draw();
 	player->Update(deltaTime);
 	player->Draw();
+
+	skybox.Draw();
 }
 
 void Game::Shutdown()

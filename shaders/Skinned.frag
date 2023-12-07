@@ -1,5 +1,14 @@
 #version 310 es
+precision  highp float;
 //from https://learnopengl.com/Lighting/Basic-Lighting
+const int MAX_POINT_LIGHTS = 2;
+const int MAX_SPOT_LIGHTS = 2;
+
+in vec2 TexCoord0;
+in vec3 Normal0;
+in vec3 LocalPos0;
+flat in ivec4 BoneIDs0;
+in vec4 Weights0;
 struct Material {
    sampler2D diffuse;
    highp vec3 specular;
@@ -17,29 +26,26 @@ struct Light {
 
 uniform Light light; 
 
-out highp vec4 FragColor;
+out vec4 FragColor;
 
-in highp vec2 TexCoords;
-
-uniform sampler2D texture_diffuse1;
-
-in highp vec3 normal;  
 uniform highp vec3 lightPos;  
 
 in highp vec3 FragPos; 
 
 uniform highp vec3 viewPos;
+uniform int gDisplayBoneIndex;
 void main()
 {    
     // ambient
+
   
-    highp vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
+    highp vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoord0));
     
      // diffuse 
-    highp vec3 norm = normalize(normal);
+    highp vec3 norm = normalize(Normal0);
     highp vec3 lightDir = normalize(lightPos - FragPos);
     highp float diff = max(dot(norm, lightDir), 0.0);
-    highp vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));  
+    highp vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoord0));  
 
      
      // specular
@@ -49,5 +55,7 @@ void main()
     highp vec3 specular = light.specular * (spec * material.specular);   
          
     highp vec3 result = ambient + diffuse + specular;
-    FragColor = vec4(result, 1.0);
+   
+  
+     FragColor = vec4(result,1.0);
 }

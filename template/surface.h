@@ -73,6 +73,7 @@ namespace Tmpl8
 		uint* pixels = 0;
 		unsigned char* rawPixels = 0;
 		int width = 0, height = 0;
+		int numberChannels = 0;
 		bool ownBuffer = false;
 		// static data for the hardcoded font
 		static inline char font[51][5][6];

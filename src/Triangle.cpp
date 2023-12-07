@@ -26,7 +26,7 @@ void Triangle::Init()
 	//texture loading
 
 	wall.Init("assets/wall.jpg");
-	face.Init("assets/awesomeface.png", true);
+	face.Init("assets/awesomeface.png");
 	//Vertex array object creation
 	//first triangle
 	glGenVertexArrays(1, &VAO);
