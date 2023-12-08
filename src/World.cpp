@@ -148,12 +148,14 @@ btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes,
 {
 	btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
 	btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	for (auto& mesh : meshes)
+
+	for (const auto& mesh : meshes)
 	{
-		for (auto& vertex : mesh.vertices)
+		for (const auto& vertex : mesh.vertices)
 		{
-			// Update min values
 			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+
+			// Update min values
 			modelMin.setMin(vertexVec);
 
 			// Update max values
@@ -163,8 +165,8 @@ btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes,
 
 
 	const btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
-	btBoxShape* col = new btBoxShape(boxHalfExtents);
-	col->setLocalScaling(btVector3(scale, scale, scale));
+	btBoxShape* col = new btBoxShape(boxHalfExtents * scale);
+	//col->setLocalScaling(btVector3(scale, scale, scale));
 
 	return col;
 }

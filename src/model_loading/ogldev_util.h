@@ -114,7 +114,7 @@ long long GetCurrentTimeMillis();
 
 string GetDirFromFilename(const string& Filename);
 
-#define MAX_BONES (100)
+#define MAX_BONES (34)
 
 #define CLAMP(Val, Start, End) Val = std::min(std::max((Val), (Start)), (End));
 

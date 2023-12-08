@@ -19,7 +19,7 @@ uniform mat4 view;
 uniform mat4 projection;
 
 out highp vec3 FragPos; 
-const int MAX_BONES = 100;
+const int MAX_BONES = 34;
 
 uniform mat4 gBones[MAX_BONES];
 
