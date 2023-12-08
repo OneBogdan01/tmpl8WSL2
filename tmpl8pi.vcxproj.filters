@@ -405,6 +405,7 @@
     <Image Include="assets\skybox\px.jpg" />
     <Image Include="assets\skybox\py.jpg" />
     <Image Include="assets\skybox\pz.jpg" />
+    <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\textures\diffuse.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -672,14 +673,22 @@
     <None Include="shaders\Sun.frag" />
     <None Include="shaders\Skybox.vert" />
     <None Include="shaders\Skybox.frag" />
-    <None Include="assets\Run.dae" />
     <None Include="shaders\Skinned.vert" />
     <None Include="shaders\Skinned.frag" />
+    <None Include="assets\excalibur\alphaone_i.pcx" />
+    <None Include="assets\excalibur\tris.md2" />
+    <None Include="assets\excalibur\weapon.md2" />
+    <None Include="assets\excalibur\weapon.pcx" />
+    <None Include="assets\excalibur\alphaone.pcx" />
+    <None Include="assets\Run.dae" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\PixelifySans-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
 </Project>

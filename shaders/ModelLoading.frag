@@ -23,7 +23,7 @@ in highp vec2 TexCoords;
 
 uniform sampler2D texture_diffuse1;
 
-in highp vec3 normal;  
+in highp vec3 Normal;  
 uniform highp vec3 lightPos;  
 
 in highp vec3 FragPos; 
@@ -36,7 +36,7 @@ void main()
     highp vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
     
      // diffuse 
-    highp vec3 norm = normalize(normal);
+    highp vec3 norm = normalize(Normal);
     highp vec3 lightDir = normalize(lightPos - FragPos);
     highp float diff = max(dot(norm, lightDir), 0.0);
     highp vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));  

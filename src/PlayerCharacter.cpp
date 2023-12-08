@@ -17,7 +17,9 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	/*UtilityAssimp util;
 	util.PrintMeshInformation("assets/Run.dae");*/
 	//create collision shape
-	btConvexShape* collider = World::CreateBoundingBoxModel(staticPlayerModel.GetMeshes());
+	StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
+
+	btConvexShape* collider = World::CreateBoundingBoxModel(staticPlayerMode.GetMeshes(), 0.1f);
 
 	// Create a ghost object for collision detection
 	ghostObject = new btPairCachingGhostObject();
@@ -30,9 +32,12 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setGravity(dynamicsWorld->getGravity());
 
 	dynamicsWorld->addCollisionObject(ghostObject, btBroadphaseProxy::CharacterFilter,
-	                                  btBroadphaseProxy::AllFilter);
+		btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 	characterController->setMaxJumpHeight(3.0f);
+	///set them sometime
+	characterController->setFallSpeed(5.0f);
+	characterController->setJumpSpeed(14.0f);
 	shader = new Shader(
 		"shaders/ModelLoading.vert",
 		"shaders/ModelLoading.frag");
@@ -76,9 +81,9 @@ void PlayerCharacter::Draw()
 	const glm::vec3 camPos = Game::GetCameraPosition();
 
 	glm::mat4 model = glm::mat4(1.0f);
-	glm::vec3 position = glm::vec3(0, 0, 0.0f);
+	glm::vec3 position = glm::vec3(pos.x(), pos.y(), pos.z());
 	model = glm::translate(model, position);
-	//model = glm::scale(model, glm::vec3(1.0f));
+	model = glm::scale(model, glm::vec3(1.0f));
 	shader->Bind();
 
 	shader->SetMat4x4("view", cam.GetViewMat());
@@ -94,10 +99,11 @@ void PlayerCharacter::Draw()
 	{
 		SetBoneTransform(i, transforms[i]);
 	}*/
-
-	staticPlayerModel.Draw(*shader);
-
 	shader->Unbind();
+	player.SetPosition(position);
+	player.Draw(renderFrame, 0, interpolation, Game::camera->GetViewMat(), Game::camera->GetProjectionMat());
+
+
 }
 
 void PlayerCharacter::SetBoneTransform(uint Index, const Matrix4f& Transform)
@@ -116,57 +122,70 @@ btTransform PlayerCharacter::GetTransform()
 	return characterController->getGhostObject()->getWorldTransform();
 }
 
-
-void PlayerCharacter::Update(float deltaTime)
+void PlayerCharacter::InterpolateFrames(float deltaTime)
 {
+	//animation stuff
+	if (interpolation >= 1.0f)
+	{
+		interpolation = 0.0f;
+		if (renderFrame == endFrame)
+		{
+			renderFrame = startFrame;
+			bufferIndex = 0;
+		}
+		else
+		{
+			renderFrame++;
+			bufferIndex++;
+		}
+	}
+	interpolation += 10.0f * deltaTime;
+}
+
+void PlayerCharacter::HandleInput()
+{
+	KeyboardManager& inputManager = Game::GetInputManager();
+
+	dir = btVector3(0, 0, 0);
+	int dirX = 0;
+	dirX += inputManager.IsPressed(Action::MoveLeft) ? -1 : 0;
+	dirX += inputManager.IsPressed(Action::MoveRight) ? 1 : 0;
+	dir += btVector3(static_cast<float>(dirX), 0, 0);
 	if (dirX != 0)
 	{
 		if (characterController->onGround())
 		{
-			characterController->setWalkDirection(btVector3(0.0001f, 0, 0).normalized() * speed);
-			//characterController->setWalkDirection(btVector3(dirX, 0, 0).normalized() * speed);
+			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
+
+		}
+		else
+		{
+			//maybe slower
+			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
+
 		}
 	}
 	else
 	{
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 	}
-	//animation stuff
-	//InterpolateFrames(deltaTime);
-	if (Game::GetInputManager().IsJustPressed(Action::Jump))
-	{
-		displayIndex++;
-		displayIndex = displayIndex % playerModel->NumBones();
-	}
+	if (inputManager.IsJustPressed(Action::Jump))
+		if (characterController->onGround())
+		{
+			characterController->jump();
+		}
+	cout << dirX << "\n";
+
 }
 
-void PlayerCharacter::Jump()
+
+void PlayerCharacter::Update(float deltaTime)
 {
-	if (characterController->onGround())
-	{
-		characterController->jump();
-	}
+	HandleInput();
+
+	InterpolateFrames(deltaTime);
+
 }
 
-void PlayerCharacter::GetMoveInput(float input)
-{
-	dirX = input;
-	std::cout << dirX << "\n";
-	btTransform t = GetTransform();
-	btVector3 pos = t.getOrigin();
-	btQuaternion q = t.getRotation();
 
-	btVector3 rightDir = t.getBasis().getColumn(0); // X-axis
 
-	// Assuming positive input moves to the right and negative input moves to the left
-	// You may need to adjust this based on your input system
-	dir = btVector3(0, 0, 0);
-	if (input > 0)
-	{
-		dir += rightDir;
-	}
-	if (input < 0)
-	{
-		dir -= rightDir;
-	}
-}

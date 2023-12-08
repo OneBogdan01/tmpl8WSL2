@@ -75,7 +75,7 @@ namespace Tmpl8
 		Shader* modelShader = nullptr;
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
-		btVector3 startingPlayerPosition = {0, 0, 0};
+		btVector3 startingPlayerPosition = {0, 5, 0};
 		inline static KeyboardManager inputManager;
 	};
 } // namespace Tmpl8

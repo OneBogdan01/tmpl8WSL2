@@ -11,6 +11,7 @@ public:
 	World();
 	~World();
 	void Update(float deltaTime);
+
 	uint AddARigidbody(const btVector3& startinPos);
 	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale = 1.0f);
 	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);

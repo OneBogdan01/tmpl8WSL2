@@ -11,8 +11,8 @@ using namespace std;
 
 void StaticModel::Draw(Shader& shader)
 {
-	for (auto& mesh : meshes)
-		mesh.Draw(shader);
+	for (auto& StaticMesh : meshes)
+		StaticMesh.Draw(shader);
 }
 
 std::vector<StaticMesh>& StaticModel::GetMeshes()
@@ -23,8 +23,7 @@ std::vector<StaticMesh>& StaticModel::GetMeshes()
 void StaticModel::loadModel(std::string path)
 {
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(
-		path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -42,8 +41,8 @@ void StaticModel::processNode(aiNode* node, const aiScene* scene)
 	// process all the node's meshes (if any)
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.push_back(processMesh(mesh, scene));
+		aiMesh* StaticMesh = scene->mMeshes[node->mMeshes[i]];
+		meshes.push_back(processMesh(StaticMesh, scene));
 	}
 	// then do the same for each of its children
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -52,38 +51,38 @@ void StaticModel::processNode(aiNode* node, const aiScene* scene)
 	}
 }
 
-StaticMesh StaticModel::processMesh(aiMesh* mesh, const aiScene* scene)
+StaticMesh StaticModel::processMesh(aiMesh* StaticMesh, const aiScene* scene)
 {
 	// data to fill
 	vector<StaticMesh::Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<StaticMesh::MeshTexture> textures;
 
-	// walk through each of the mesh's vertices
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	// walk through each of the StaticMesh's vertices
+	for (unsigned int i = 0; i < StaticMesh->mNumVertices; i++)
 	{
 		StaticMesh::Vertex vertex;
 		glm::vec3 vector;
 		// we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
 		// positions
-		vector.x = mesh->mVertices[i].x;
-		vector.y = mesh->mVertices[i].y;
-		vector.z = mesh->mVertices[i].z;
+		vector.x = StaticMesh->mVertices[i].x;
+		vector.y = StaticMesh->mVertices[i].y;
+		vector.z = StaticMesh->mVertices[i].z;
 		vertex.Position = vector;
 		// normals
-		if (mesh->HasNormals())
+		if (StaticMesh->HasNormals())
 		{
-			vector.x = mesh->mNormals[i].x;
-			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
+			vector.x = StaticMesh->mNormals[i].x;
+			vector.y = StaticMesh->mNormals[i].y;
+			vector.z = StaticMesh->mNormals[i].z;
 			vertex.Normal = vector;
 		}
 		// MeshTexture coordinates
-		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+		if (StaticMesh->mTextureCoords[0]) // does the StaticMesh contain texture coordinates?
 		{
 			glm::vec2 vec;
-			vec.x = mesh->mTextureCoords[0][i].x;
-			vec.y = mesh->mTextureCoords[0][i].y;
+			vec.x = StaticMesh->mTextureCoords[0][i].x;
+			vec.y = StaticMesh->mTextureCoords[0][i].y;
 			vertex.TexCoords = vec;
 		}
 		else
@@ -91,35 +90,37 @@ StaticMesh StaticModel::processMesh(aiMesh* mesh, const aiScene* scene)
 
 		vertices.push_back(vertex);
 	}
-	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+
+	// now wak through each of the StaticMesh's faces (a face is a StaticMesh its triangle) and retrieve the corresponding vertex indices.
+	for (unsigned int i = 0; i < StaticMesh->mNumFaces; i++)
 	{
-		aiFace face = mesh->mFaces[i];
+		aiFace face = StaticMesh->mFaces[i];
 		// retrieve all indices of the face and store them in the indices vector
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
 	}
+	if (noTextures)
+		return {vertices, indices, textures};
 	// process materials
-	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	aiMaterial* material = scene->mMaterials[StaticMesh->mMaterialIndex];
 
 
-	if (mesh->mMaterialIndex >= 0)
+	if (StaticMesh->mMaterialIndex >= 0)
 	{
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		aiMaterial* material = scene->mMaterials[StaticMesh->mMaterialIndex];
 		vector<StaticMesh::MeshTexture> diffuseMaps = loadMaterialTextures(material,
 		                                                                   aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 		vector<StaticMesh::MeshTexture> specularMaps = loadMaterialTextures(material,
-		                                                                    aiTextureType_SPECULAR,
-		                                                                    "texture_specular");
+		                                                                    aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
-	// return a mesh object created from the extracted mesh data
-	return StaticMesh(vertices, indices, textures);
+	// return a StaticMesh object created from the extracted StaticMesh data
+	return {vertices, indices, textures};
 }
 
-std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(
-	aiMaterial* mat, aiTextureType type, std::string typeName)
+std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
+                                                                       std::string typeName)
 {
 	vector<StaticMesh::MeshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)

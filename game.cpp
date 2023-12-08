@@ -57,9 +57,9 @@ void Game::Init()
 	modelShader->Unbind();
 
 	sun.Init();
-	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	camera = new Camera();
 	camera->Init();
+	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 
 	skybox.Init();
 }

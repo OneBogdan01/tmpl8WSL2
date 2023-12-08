@@ -165,8 +165,9 @@ btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes,
 
 
 	const btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
-	btBoxShape* col = new btBoxShape(boxHalfExtents * scale);
-	//col->setLocalScaling(btVector3(scale, scale, scale));
+
+	btBoxShape* col = new btBoxShape(boxHalfExtents);
+	col->setLocalScaling(btVector3(scale, scale, scale));
 
 	return col;
 }

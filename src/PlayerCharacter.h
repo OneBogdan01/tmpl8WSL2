@@ -21,6 +21,7 @@ public:
 	void SetBoneTransform(uint Index, const Matrix4f& Transform);
 	btTransform GetTransform();
 	void InterpolateFrames(float deltaTime);
+	void HandleInput();
 	void Update(float deltaTime);
 	void Jump();
 	void GetMoveInput(float input);
@@ -36,7 +37,12 @@ private:
 	float speed = 0.1f;
 	int displayIndex = 32;
 	Timer timer;
-	StaticModel staticPlayerModel = StaticModel("assets/Run.dae");
-
+	md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 	GLuint m_boneLocation[MAX_BONES];
+	const int startFrame = 0;
+	const int endFrame = 197;
+	int renderFrame = startFrame;
+	// Rendering loop
+	float interpolation = 0.0f;
+	int bufferIndex = 0;
 };
