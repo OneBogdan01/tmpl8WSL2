@@ -1,9 +1,8 @@
 ﻿#include "PlayerCharacter.h"
 
-#include <iostream>
-#include "model_loading/UtilityAssimp.h"
 #include "game.h"
 #include "model_loading/StaticModel.h"
+#include "tiles/ChunkOfTiles.h"
 
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
@@ -20,7 +19,6 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
 
 	btConvexShape* collider = World::CreateBoundingBoxModel(staticPlayerMode.GetMeshes(), 0.1f);
-
 	// Create a ghost object for collision detection
 	ghostObject = new btPairCachingGhostObject();
 	ghostObject->setCollisionShape(collider);
@@ -32,12 +30,13 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setGravity(dynamicsWorld->getGravity());
 
 	dynamicsWorld->addCollisionObject(ghostObject, btBroadphaseProxy::CharacterFilter,
-		btBroadphaseProxy::AllFilter);
+	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
 	characterController->setFallSpeed(5.0f);
 	characterController->setJumpSpeed(14.0f);
+
 	shader = new Shader(
 		"shaders/ModelLoading.vert",
 		"shaders/ModelLoading.frag");
@@ -77,13 +76,10 @@ PlayerCharacter::~PlayerCharacter()
 void PlayerCharacter::Draw()
 {
 	Camera& cam = Game::GetCamera();
-	const btVector3 pos = GetTransform().getOrigin();
 	const glm::vec3 camPos = Game::GetCameraPosition();
 
-	glm::mat4 model = glm::mat4(1.0f);
-	glm::vec3 position = glm::vec3(pos.x(), pos.y(), pos.z());
-	model = glm::translate(model, position);
-	model = glm::scale(model, glm::vec3(1.0f));
+	glm::mat4 model = GetModelMatrix();
+	glm::vec3 position = glm::vec3(model[3]);
 	shader->Bind();
 
 	shader->SetMat4x4("view", cam.GetViewMat());
@@ -102,24 +98,35 @@ void PlayerCharacter::Draw()
 	shader->Unbind();
 	player.SetPosition(position);
 	player.Draw(renderFrame, 0, interpolation, Game::camera->GetViewMat(), Game::camera->GetProjectionMat());
-
-
 }
 
-void PlayerCharacter::SetBoneTransform(uint Index, const Matrix4f& Transform)
-{
-	assert(Index < MAX_BONES);
-	if (Index >= MAX_BONES)
-	{
-		return;
-	}
-	//Transform.Print();
-	glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform);
-}
+//void PlayerCharacter::SetBoneTransform(uint Index, const Matrix4f& Transform)
+//{
+//	assert(Index < MAX_BONES);
+//	if (Index >= MAX_BONES)
+//	{
+//		return;
+//	}
+//	//Transform.Print();
+//	glUniformMatrix4fv(m_boneLocation[Index], 1, GL_TRUE, (const GLfloat*)Transform);
+//}
 
-btTransform PlayerCharacter::GetTransform()
+glm::mat4 PlayerCharacter::GetModelMatrix() const
 {
-	return characterController->getGhostObject()->getWorldTransform();
+	const GameValues* values = nullptr;
+	values = new GameValues(characterController->getGhostObject()->getWorldTransform());
+
+	btTransform trans;
+	values->getWorldTransform(trans);
+	float mat4[16]{0.0f};
+	trans.getOpenGLMatrix(mat4);
+	delete values;
+	return {
+		mat4[0], mat4[1], mat4[2], mat4[3],
+		mat4[4], mat4[5], mat4[6], mat4[7],
+		mat4[8], mat4[9], mat4[10], mat4[11],
+		mat4[12], mat4[13], mat4[14], mat4[15],
+	};
 }
 
 void PlayerCharacter::InterpolateFrames(float deltaTime)
@@ -156,13 +163,11 @@ void PlayerCharacter::HandleInput()
 		if (characterController->onGround())
 		{
 			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
-
 		}
 		else
 		{
 			//maybe slower
 			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
-
 		}
 	}
 	else
@@ -174,8 +179,6 @@ void PlayerCharacter::HandleInput()
 		{
 			characterController->jump();
 		}
-	cout << dirX << "\n";
-
 }
 
 
@@ -184,8 +187,4 @@ void PlayerCharacter::Update(float deltaTime)
 	HandleInput();
 
 	InterpolateFrames(deltaTime);
-
 }
-
-
-

@@ -15,9 +15,9 @@ subject to the following restrictions:
 
 ///-----includes_start-----
 #include "World.h"
+
 #include <stdio.h>
 #include "DebugRenderer.h"
-#include "model_loading/StaticMesh.h"
 
 
 /// This is a Hello World program for running a basic Bullet physics simulation

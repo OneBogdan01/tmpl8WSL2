@@ -6,7 +6,7 @@
 
 #include "game.h"
 #include "TileLoader.h"
-#include "World.h"
+#include "physics/World.h"
 
 void Tile::Init(const char* path, glm::vec3 pos)
 {

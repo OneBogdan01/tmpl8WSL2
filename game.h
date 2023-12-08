@@ -5,7 +5,7 @@
 #include "KeyboardManager.h"
 #include "PlayerCharacter.h"
 #include "Triangle.h"
-#include "World.h"
+#include "physics/World.h"
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
 #include "skybox/Skybox.h"

@@ -2,14 +2,16 @@
 
 
 #include <btBulletDynamicsCommon.h>
-
-#include "md2_loader/Md2.h"
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
 #include <BulletDynamics/Character/btKinematicCharacterController.h>
 
+#include "md2_loader/Md2.h"
+
+
 #include "Timer.h"
 #include "model_loading/SkinnedMesh.h"
-#include "model_loading/StaticModel.h"
+#include "physics/GameValues.h"
+
 
 //inspired from Abhishek's presentation
 class PlayerCharacter
@@ -19,12 +21,10 @@ public:
 	~PlayerCharacter();
 	void Draw();
 	void SetBoneTransform(uint Index, const Matrix4f& Transform);
-	btTransform GetTransform();
+	glm::mat4 GetModelMatrix() const;
 	void InterpolateFrames(float deltaTime);
 	void HandleInput();
 	void Update(float deltaTime);
-	void Jump();
-	void GetMoveInput(float input);
 
 private:
 	//md2model::Md2 model = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
@@ -38,7 +38,7 @@ private:
 	int displayIndex = 32;
 	Timer timer;
 	md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
-	GLuint m_boneLocation[MAX_BONES];
+	//GLuint m_boneLocation[MAX_BONES];
 	const int startFrame = 0;
 	const int endFrame = 197;
 	int renderFrame = startFrame;
