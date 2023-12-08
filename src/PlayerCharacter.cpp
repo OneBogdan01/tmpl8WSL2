@@ -4,11 +4,20 @@
 #include "model_loading/StaticModel.h"
 #include "tiles/ChunkOfTiles.h"
 
-PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
+
+btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosition)
 {
 	btTransform playerTransform;
+
 	playerTransform.setIdentity();
 	playerTransform.setOrigin(startingPosition);
+	return playerTransform;
+}
+
+PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
+{
+	const btTransform playerTransform = SetPositionTransform(startingPosition);
+
 	//get the mesh info
 	//playerModel = new SkinnedMesh();
 	//playerModel->LoadMesh("assets/Run.dae");
@@ -25,17 +34,19 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	ghostObject->setWorldTransform(playerTransform);
 	ghostObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-
+	ghostObject->setUserPointer(&gameObject);
 	characterController = new btKinematicCharacterController(ghostObject, collider, 0.05f);
 	characterController->setGravity(dynamicsWorld->getGravity());
 
 	dynamicsWorld->addCollisionObject(ghostObject, btBroadphaseProxy::CharacterFilter,
 	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
+
 	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
 	characterController->setFallSpeed(5.0f);
 	characterController->setJumpSpeed(14.0f);
+	originalTransform = characterController->getGhostObject()->getWorldTransform();
 
 	shader = new Shader(
 		"shaders/ModelLoading.vert",
@@ -73,13 +84,23 @@ PlayerCharacter::~PlayerCharacter()
 	delete shader;
 }
 
+void PlayerCharacter::CheckForFall()
+{
+	if (position.y < 0)
+	{
+		//falling
+		ghostObject->setWorldTransform(originalTransform);
+	}
+}
+
 void PlayerCharacter::Draw()
 {
 	Camera& cam = Game::GetCamera();
 	const glm::vec3 camPos = Game::GetCameraPosition();
 
 	glm::mat4 model = GetModelMatrix();
-	glm::vec3 position = glm::vec3(model[3]);
+	position = glm::vec3(model[3]);
+	CheckForFall();
 	shader->Bind();
 
 	shader->SetMat4x4("view", cam.GetViewMat());
@@ -149,7 +170,7 @@ void PlayerCharacter::InterpolateFrames(float deltaTime)
 	interpolation += 10.0f * deltaTime;
 }
 
-void PlayerCharacter::HandleInput()
+void PlayerCharacter::HandleInput(float deltaTime)
 {
 	KeyboardManager& inputManager = Game::GetInputManager();
 
@@ -162,12 +183,12 @@ void PlayerCharacter::HandleInput()
 	{
 		if (characterController->onGround())
 		{
-			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
+			characterController->setWalkDirection(btVector3(dir).normalized() * speed * deltaTime);
 		}
 		else
 		{
 			//maybe slower
-			characterController->setWalkDirection(btVector3(dir).normalized() * speed);
+			characterController->setWalkDirection(btVector3(dir).normalized() * speed * deltaTime);
 		}
 	}
 	else
@@ -184,7 +205,7 @@ void PlayerCharacter::HandleInput()
 
 void PlayerCharacter::Update(float deltaTime)
 {
-	HandleInput();
+	HandleInput(deltaTime);
 
 	InterpolateFrames(deltaTime);
 }

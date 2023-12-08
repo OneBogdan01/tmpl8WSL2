@@ -2,6 +2,7 @@
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 
 #include "model_loading/StaticModel.h"
+#include "physics/GameObject.h"
 
 class Tile
 {
@@ -14,6 +15,7 @@ public:
 	glm::vec3 GetPosition() const;
 
 private:
+	GameObject gameObject = GameObject(GameObject::Box);
 	StaticModel* model = nullptr;
 	glm::vec3 position = glm::vec3(0);
 	btRigidBody* rigidBody = nullptr;

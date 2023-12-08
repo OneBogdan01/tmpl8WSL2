@@ -36,6 +36,7 @@ void Tile::AddStaticRigidbody()
 	rigidBody = new btRigidBody(rbInfo);
 
 	// Add the rigid body to the dynamics world
+	rigidBody->setUserPointer(&gameObject);
 	Game::world.AddRigidBody(rigidBody);
 }
 

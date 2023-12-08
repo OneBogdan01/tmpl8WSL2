@@ -16,8 +16,10 @@ subject to the following restrictions:
 ///-----includes_start-----
 #include "World.h"
 
+#include <algorithm>
 #include <stdio.h>
 #include "DebugRenderer.h"
+#include "GameObject.h"
 
 
 /// This is a Hello World program for running a basic Bullet physics simulation
@@ -49,6 +51,32 @@ void World::Update(float deltaTime)
 	//	printf("world pos object %d = %f,%f,%f\n", j, float(trans.getOrigin().getX()),
 	//	       float(trans.getOrigin().getY()), float(trans.getOrigin().getZ()));
 	//}
+	CheckForCollisionEvents();
+}
+
+void World::AddRigidBody(btRigidBody* rb)
+{
+	if (rb)
+	{
+		rigidBodies_.push_back(rb);
+		dynamicsWorld->addRigidBody(rb);
+	}
+}
+
+void World::RemoveRigidBody(btRigidBody* rb)
+{
+	// Make sure passed value is not null and that it exists in the vector.
+	if (rb)
+	{
+		auto iter{std::find(rigidBodies_.begin(), rigidBodies_.end(), rb)};
+
+		if (iter != rigidBodies_.end())
+		{
+			// Remove the rigidbody from vector and world.
+			rigidBodies_.erase(iter);
+			dynamicsWorld->removeRigidBody(rb);
+		}
+	}
 }
 
 ///-----stepsimulation_end-----
@@ -56,93 +84,93 @@ void World::Update(float deltaTime)
 //cleanup in the reverse order of creation/initialization
 
 
-uint World::AddARigidbody(const btVector3& startinPos)
-{
-	//create a dynamic rigidbody
-
-	//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-	btCollisionShape* colShape = new btBoxShape(btVector3(1, 1, 1));
-	collisionShapes.push_back(colShape);
-
-	/// Create Dynamic Objects
-	btTransform startTransform;
-	startTransform.setIdentity();
-
-	btScalar mass(1.0f);
-
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic)
-		colShape->calculateLocalInertia(mass, localInertia);
-
-	startTransform.setOrigin(startinPos);
-
-	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
-
-	dynamicsWorld->addRigidBody(body);
-	return ID++;
-}
-
-uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale)
-{
-	//btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
-	//btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-
-
-	////used as starting point for the model
-	//btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
-
-	//btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
-
-	//btBoxShape* colShape = new btBoxShape(boxHalfExtents);
-
-	btConvexHullShape* colShape = new btConvexHullShape();
-
-	for (const auto& mesh : meshes)
-	{
-		for (const auto& vertex : mesh.vertices)
-		{
-			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
-
-
-			colShape->addPoint(vertexVec);
-		}
-	}
-
-	colShape->setLocalScaling(btVector3(scale, scale, scale));
-
-
-	collisionShapes.push_back(colShape);
-
-	/// Create Dynamic Objects
-	btTransform startTransform;
-	startTransform.setIdentity();
-
-	btScalar mass(0.f);
-
-	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-	bool isDynamic = (mass != 0.f);
-
-	btVector3 localInertia(0, 0, 0);
-	if (isDynamic)
-		colShape->calculateLocalInertia(mass, localInertia);
-
-	startTransform.setOrigin(startingPos);
-
-
-	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
-
-	dynamicsWorld->addRigidBody(body);
-	return ID++;
-}
+//uint World::AddARigidbody(const btVector3& startinPos)
+//{
+//	//create a dynamic rigidbody
+//
+//	//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+//	btCollisionShape* colShape = new btBoxShape(btVector3(1, 1, 1));
+//	collisionShapes.push_back(colShape);
+//
+//	/// Create Dynamic Objects
+//	btTransform startTransform;
+//	startTransform.setIdentity();
+//
+//	btScalar mass(1.0f);
+//
+//	//rigidbody is dynamic if and only if mass is non zero, otherwise static
+//	bool isDynamic = (mass != 0.f);
+//
+//	btVector3 localInertia(0, 0, 0);
+//	if (isDynamic)
+//		colShape->calculateLocalInertia(mass, localInertia);
+//
+//	startTransform.setOrigin(startinPos);
+//
+//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//
+//	dynamicsWorld->addRigidBody(body);
+//	return ID++;
+//}
+//
+//uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale)
+//{
+//	//btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
+//	//btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+//
+//
+//	////used as starting point for the model
+//	//btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
+//
+//	//btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
+//
+//	//btBoxShape* colShape = new btBoxShape(boxHalfExtents);
+//
+//	btConvexHullShape* colShape = new btConvexHullShape();
+//
+//	for (const auto& mesh : meshes)
+//	{
+//		for (const auto& vertex : mesh.vertices)
+//		{
+//			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+//
+//
+//			colShape->addPoint(vertexVec);
+//		}
+//	}
+//
+//	colShape->setLocalScaling(btVector3(scale, scale, scale));
+//
+//
+//	collisionShapes.push_back(colShape);
+//
+//	/// Create Dynamic Objects
+//	btTransform startTransform;
+//	startTransform.setIdentity();
+//
+//	btScalar mass(0.f);
+//
+//	//rigidbody is dynamic if and only if mass is non zero, otherwise static
+//	bool isDynamic = (mass != 0.f);
+//
+//	btVector3 localInertia(0, 0, 0);
+//	if (isDynamic)
+//		colShape->calculateLocalInertia(mass, localInertia);
+//
+//	startTransform.setOrigin(startingPos);
+//
+//
+//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+//	btRigidBody* body = new btRigidBody(rbInfo);
+//
+//	dynamicsWorld->addRigidBody(body);
+//	return ID++;
+//}
 
 btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale)
 {
@@ -309,4 +337,104 @@ World::~World()
 
 	//next line is optional: it will be cleared by the destructor when the array goes out of scope
 	collisionShapes.clear();
+}
+
+
+// [Credt] https://resources.oreilly.com/examples/9781783281879/-/blob/master/Chapter6.1_CollisionEvents/Chapter6.1/BulletOpenGLApplication.cpp
+void World::CheckForCollisionEvents()
+{
+	// Keep a list of the collision pairs we found during the current update
+	CollisionPairs pairsThisUpdate;
+
+	// Iterate through all of the manifolds in the dispatcher
+	for (int i = 0; i < dispatcher->getNumManifolds(); ++i)
+	{
+		// Get the manifold.
+		btPersistentManifold* pManifold = dispatcher->getManifoldByIndexInternal(i);
+
+		// Ignore manifolds that have no contact points.
+		if (pManifold->getNumContacts() > 0)
+		{
+			// Get the two rigid bodies involved in the collision.
+			const btRigidBody* pBody0 = static_cast<const btRigidBody*>(pManifold->getBody0());
+			const btRigidBody* pBody1 = static_cast<const btRigidBody*>(pManifold->getBody1());
+
+			// Always create the pair in a predictable order (use the pointer value..).
+			// (This is because we will add them to a set, which takes unique items only.
+			// So pair(objA, objB) would be different than pair(objB, objA) - but they are
+			// the same to us in this situation, so we make sure they are ordered consistently).
+			const bool swapped = pBody0 > pBody1;
+			const btRigidBody* pSortedBodyA = swapped ? pBody1 : pBody0;
+			const btRigidBody* pSortedBodyB = swapped ? pBody0 : pBody1;
+
+			// Create the pair
+			CollisionPair thisPair = std::make_pair(pSortedBodyA, pSortedBodyB);
+
+			// Insert the pair into the current set
+			pairsThisUpdate.insert(thisPair);
+
+			// If this pair doesn't exist in the list from the previous update, 
+			// it is a new pair and we must send a collision event.
+			if (pairsLastUpdate_.find(thisPair) == pairsLastUpdate_.end())
+			{
+				CollisionEvent(pBody0, pBody1);
+			}
+		}
+	} // Manifold loop
+
+	// Create another list for pairs that were removed this update.
+	CollisionPairs removedPairs;
+
+	// This handy function gets the difference beween two sets. 
+	// It takes the difference between collision pairs from the last update, 
+	// and this update and pushes them into the removed pairs list.
+	std::set_difference(
+		pairsLastUpdate_.begin(), pairsLastUpdate_.end(),
+		pairsThisUpdate.begin(), pairsThisUpdate.end(),
+		std::inserter(removedPairs, removedPairs.begin())
+	);
+
+	// Iterate through all of the removed pairs sending separation events for them.
+	for (CollisionPairs::const_iterator iter = removedPairs.begin(); iter != removedPairs.end(); ++iter)
+	{
+		SeparationEvent(iter->first, iter->second);
+	}
+
+	// In the next iteration we'll want to compare against the pairs we found in this iteration.
+	pairsLastUpdate_ = pairsThisUpdate;
+}
+
+void World::CollisionEvent(const btRigidBody* pBody0, const btRigidBody* pBody1)
+{
+	// Find the two colliding objects.
+	GameObject* pObj0 = static_cast<GameObject*>(pBody0->getUserPointer());
+	GameObject* pObj1 = static_cast<GameObject*>(pBody1->getUserPointer());
+
+	// Exit if we didn't find anything
+	if (!pObj0 || !pObj1)
+	{
+		return;
+	}
+
+	// Tell each object that they have started to collide. Let them figure it out later.
+	pObj0->CollidedWith(pObj1);
+	pObj1->CollidedWith(pObj0);
+}
+
+
+void World::SeparationEvent(const btRigidBody* pBody0, const btRigidBody* pBody1)
+{
+	// Find the two separating objects.
+	GameObject* pObj0 = static_cast<GameObject*>(pBody0->getUserPointer());
+	GameObject* pObj1 = static_cast<GameObject*>(pBody1->getUserPointer());
+
+	// Exit if we didn't find anything
+	if (!pObj0 || !pObj1)
+	{
+		return;
+	}
+
+	// Tell each object that they have started to separate. Let them figure it out later.
+	pObj0->SeparatedFrom(pObj1);
+	pObj1->SeparatedFrom(pObj0);
 }

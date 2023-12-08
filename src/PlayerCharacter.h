@@ -10,6 +10,7 @@
 
 #include "Timer.h"
 #include "model_loading/SkinnedMesh.h"
+#include "physics/GameObject.h"
 #include "physics/GameValues.h"
 
 
@@ -17,13 +18,15 @@
 class PlayerCharacter
 {
 public:
+	btTransform SetPositionTransform(const btVector3& startingPosition);
 	PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition);
 	~PlayerCharacter();
+	void CheckForFall();
 	void Draw();
-	void SetBoneTransform(uint Index, const Matrix4f& Transform);
+	//void SetBoneTransform(uint Index, const Matrix4f& Transform);
 	glm::mat4 GetModelMatrix() const;
 	void InterpolateFrames(float deltaTime);
-	void HandleInput();
+	void HandleInput(float deltaTime);
 	void Update(float deltaTime);
 
 private:
@@ -34,7 +37,7 @@ private:
 	Shader* shader = nullptr;
 	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);
-	float speed = 0.1f;
+	float speed = 20.0f;
 	int displayIndex = 32;
 	Timer timer;
 	md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
@@ -45,4 +48,7 @@ private:
 	// Rendering loop
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
+	GameObject gameObject = GameObject(GameObject::Mesh);
+	glm::vec3 position;
+	btTransform originalTransform;
 };

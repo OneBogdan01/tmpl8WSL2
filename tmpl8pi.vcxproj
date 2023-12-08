@@ -195,6 +195,7 @@
     <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
+    <ClCompile Include="src\physics\GameObject.cpp" />
     <ClCompile Include="src\PlayerCharacter.cpp" />
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -523,6 +524,7 @@
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
     <ClInclude Include="src\model_loading\UtilityAssimp.h" />
+    <ClInclude Include="src\physics\GameObject.h" />
     <ClInclude Include="src\physics\GameValues.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
     <ClInclude Include="src\skybox\Skybox.h" />

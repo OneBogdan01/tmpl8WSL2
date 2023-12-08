@@ -1,9 +1,14 @@
 ﻿#pragma once
 #include <btBulletDynamicsCommon.h>
+#include <set>
 #include <vector>
 
 #include "model_loading/StaticMesh.h"
 class DebugRenderer;
+//modified from Erik Cupark
+// QoL
+using CollisionPair = std::pair<const btRigidBody*, const btRigidBody*>;
+using CollisionPairs = std::set<CollisionPair>;
 
 class World
 {
@@ -12,8 +17,11 @@ public:
 	~World();
 	void Update(float deltaTime);
 
-	uint AddARigidbody(const btVector3& startinPos);
-	uint AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale = 1.0f);
+	void AddRigidBody(btRigidBody* rb);
+
+
+	void RemoveRigidBody(btRigidBody* rb);
+
 	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
 	btVector3 GetRigidBodyPosition(uint ID) const;
 	btDiscreteDynamicsWorld* GetDynamicWorld() const;
@@ -31,7 +39,18 @@ private:
 
 	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 	btBroadphaseInterface* overlappingPairCache;
-	bool debugPositionInitialized = false;
+
+
+	static void CollisionEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
+	void CheckForCollisionEvents();
+
+
+	static void SeparationEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
 	DebugRenderer* debugDrawer = nullptr;
 	inline static uint ID = 0;
+	// Collision tracking.
+	CollisionPairs pairsLastUpdate_;
+
+	// Object tracking.
+	std::vector<btRigidBody*> rigidBodies_;
 };

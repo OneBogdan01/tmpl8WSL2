@@ -78,7 +78,7 @@ void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const b
 	info.from = from;
 	info.to = to;
 	color = _color;
-	debugInfo.push_back(info);
+	debugInfo.emplace_back(info);
 }
 
 void DebugRenderer::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance,
@@ -88,6 +88,7 @@ void DebugRenderer::drawContactPoint(const btVector3& PointOnB, const btVector3&
 
 void DebugRenderer::reportErrorWarning(const char* warningString)
 {
+	printf(warningString);
 }
 
 void DebugRenderer::draw3dText(const btVector3& location, const char* textString)
