@@ -29,7 +29,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
     //create collision shape
     StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
 
-    btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 0.079f);
+    btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 0.08f);
     // Create a ghost object for collision detection
     playerCharacterGhost = new btPairCachingGhostObject();
     playerCharacterGhost->setCollisionShape(collider);
@@ -37,9 +37,9 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
     playerCharacterGhost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
     dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
     playerCharacterGhost->setUserPointer(&gameObject);
-    characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.05f);
+    characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
     characterController->setGravity(dynamicsWorld->getGravity());
-
+    characterController->setMaxSlope(btScalar(0.0f));
     dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
                                       btBroadphaseProxy::AllFilter);
     dynamicsWorld->addAction(characterController);
