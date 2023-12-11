@@ -89,6 +89,7 @@ void Game::Tick(float deltaTime)
     inputManager.Update();
     //input is done first in the template
     //update physics
+
     world.Update(deltaTime);
 
     //displaying stuff
@@ -185,8 +186,9 @@ void Game::Tick(float deltaTime)
     modelShader->SetInt("material.diffuse", 0);
     //draw the tile map
     tileLoader->DrawChunk(0);
+    tileLoader->DrawChunk(1);
     modelShader->Unbind();
-
+    tileLoader->Update(deltaTime);
 
     player->Update(deltaTime);
     player->Draw();

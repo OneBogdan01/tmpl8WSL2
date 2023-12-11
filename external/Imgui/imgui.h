@@ -364,14 +364,14 @@ namespace ImGui
     IMGUI_API bool          IsWindowFocused(ImGuiFocusedFlags flags=0); // is current window focused? or its root/child, depending on flags. see flags for options.
     IMGUI_API bool          IsWindowHovered(ImGuiHoveredFlags flags=0); // is current window hovered and hoverable (e.g. not blocked by a popup/modal)? See ImGuiHoveredFlags_ for options. IMPORTANT: If you are trying to check whether your mouse should be dispatched to Dear ImGui or to your underlying app, you should not use this function! Use the 'io.WantCaptureMouse' boolean for that! Refer to FAQ entry "How can I tell whether to dispatch mouse/keyboard to Dear ImGui or my application?" for details.
     IMGUI_API ImDrawList*   GetWindowDrawList();                        // get draw list associated to the current window, to append your own drawing primitives
-    IMGUI_API ImVec2        GetWindowPos();                             // get current window position in screen space (note: it is unlikely you need to use this. Consider using current layout pos instead, GetCursorScreenPos())
+    IMGUI_API ImVec2        GetWindowPos();                             // get current window chunkPos in screen space (note: it is unlikely you need to use this. Consider using current layout pos instead, GetCursorScreenPos())
     IMGUI_API ImVec2        GetWindowSize();                            // get current window size (note: it is unlikely you need to use this. Consider using GetCursorScreenPos() and e.g. GetContentRegionAvail() instead)
     IMGUI_API float         GetWindowWidth();                           // get current window width (shortcut for GetWindowSize().x)
     IMGUI_API float         GetWindowHeight();                          // get current window height (shortcut for GetWindowSize().y)
 
     // Window manipulation
     // - Prefer using SetNextXXX functions (before Begin) rather that SetXXX functions (after Begin).
-    IMGUI_API void          SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0, const ImVec2& pivot = ImVec2(0, 0)); // set next window position. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
+    IMGUI_API void          SetNextWindowPos(const ImVec2& pos, ImGuiCond cond = 0, const ImVec2& pivot = ImVec2(0, 0)); // set next window chunkPos. call before Begin(). use pivot=(0.5f,0.5f) to center on given point, etc.
     IMGUI_API void          SetNextWindowSize(const ImVec2& size, ImGuiCond cond = 0);                  // set next window size. set axis to 0.0f to force an auto-fit on this axis. call before Begin()
     IMGUI_API void          SetNextWindowSizeConstraints(const ImVec2& size_min, const ImVec2& size_max, ImGuiSizeCallback custom_callback = NULL, void* custom_callback_data = NULL); // set next window size limits. use 0.0f or FLT_MAX if you don't want limits. Use -1 for both min and max of same axis to preserve current size (which itself is a constraint). Use callback to apply non-trivial programmatic constraints.
     IMGUI_API void          SetNextWindowContentSize(const ImVec2& size);                               // set next window content size (~ scrollable client area, which enforce the range of scrollbars). Not including window decorations (title bar, menu bar, etc.) nor WindowPadding. set an axis to 0.0f to leave it automatic. call before Begin()
@@ -379,12 +379,12 @@ namespace ImGui
     IMGUI_API void          SetNextWindowFocus();                                                       // set next window to be focused / top-most. call before Begin()
     IMGUI_API void          SetNextWindowScroll(const ImVec2& scroll);                                  // set next window scrolling value (use < 0.0f to not affect a given axis).
     IMGUI_API void          SetNextWindowBgAlpha(float alpha);                                          // set next window background color alpha. helper to easily override the Alpha component of ImGuiCol_WindowBg/ChildBg/PopupBg. you may also use ImGuiWindowFlags_NoBackground.
-    IMGUI_API void          SetWindowPos(const ImVec2& pos, ImGuiCond cond = 0);                        // (not recommended) set current window position - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
+    IMGUI_API void          SetWindowPos(const ImVec2& pos, ImGuiCond cond = 0);                        // (not recommended) set current window chunkPos - call within Begin()/End(). prefer using SetNextWindowPos(), as this may incur tearing and side-effects.
     IMGUI_API void          SetWindowSize(const ImVec2& size, ImGuiCond cond = 0);                      // (not recommended) set current window size - call within Begin()/End(). set to ImVec2(0, 0) to force an auto-fit. prefer using SetNextWindowSize(), as this may incur tearing and minor side-effects.
     IMGUI_API void          SetWindowCollapsed(bool collapsed, ImGuiCond cond = 0);                     // (not recommended) set current window collapsed state. prefer using SetNextWindowCollapsed().
     IMGUI_API void          SetWindowFocus();                                                           // (not recommended) set current window to be focused / top-most. prefer using SetNextWindowFocus().
     IMGUI_API void          SetWindowFontScale(float scale);                                            // [OBSOLETE] set font scale. Adjust IO.FontGlobalScale if you want to scale all windows. This is an old API! For correct scaling, prefer to reload font + rebuild ImFontAtlas + call style.ScaleAllSizes().
-    IMGUI_API void          SetWindowPos(const char* name, const ImVec2& pos, ImGuiCond cond = 0);      // set named window position.
+    IMGUI_API void          SetWindowPos(const char* name, const ImVec2& pos, ImGuiCond cond = 0);      // set named window chunkPos.
     IMGUI_API void          SetWindowSize(const char* name, const ImVec2& size, ImGuiCond cond = 0);    // set named window size. set axis to 0.0f to force an auto-fit on this axis.
     IMGUI_API void          SetWindowCollapsed(const char* name, bool collapsed, ImGuiCond cond = 0);   // set named window collapsed state
     IMGUI_API void          SetWindowFocus(const char* name);                                           // set named window to be focused / top-most. use NULL to remove focus.
@@ -406,10 +406,10 @@ namespace ImGui
     IMGUI_API void          SetScrollY(float scroll_y);                                     // set scrolling amount [0 .. GetScrollMaxY()]
     IMGUI_API float         GetScrollMaxX();                                                // get maximum scrolling amount ~~ ContentSize.x - WindowSize.x - DecorationsSize.x
     IMGUI_API float         GetScrollMaxY();                                                // get maximum scrolling amount ~~ ContentSize.y - WindowSize.y - DecorationsSize.y
-    IMGUI_API void          SetScrollHereX(float center_x_ratio = 0.5f);                    // adjust scrolling amount to make current cursor position visible. center_x_ratio=0.0: left, 0.5: center, 1.0: right. When using to make a "default/current item" visible, consider using SetItemDefaultFocus() instead.
-    IMGUI_API void          SetScrollHereY(float center_y_ratio = 0.5f);                    // adjust scrolling amount to make current cursor position visible. center_y_ratio=0.0: top, 0.5: center, 1.0: bottom. When using to make a "default/current item" visible, consider using SetItemDefaultFocus() instead.
-    IMGUI_API void          SetScrollFromPosX(float local_x, float center_x_ratio = 0.5f);  // adjust scrolling amount to make given position visible. Generally GetCursorStartPos() + offset to compute a valid position.
-    IMGUI_API void          SetScrollFromPosY(float local_y, float center_y_ratio = 0.5f);  // adjust scrolling amount to make given position visible. Generally GetCursorStartPos() + offset to compute a valid position.
+    IMGUI_API void          SetScrollHereX(float center_x_ratio = 0.5f);                    // adjust scrolling amount to make current cursor chunkPos visible. center_x_ratio=0.0: left, 0.5: center, 1.0: right. When using to make a "default/current item" visible, consider using SetItemDefaultFocus() instead.
+    IMGUI_API void          SetScrollHereY(float center_y_ratio = 0.5f);                    // adjust scrolling amount to make current cursor chunkPos visible. center_y_ratio=0.0: top, 0.5: center, 1.0: bottom. When using to make a "default/current item" visible, consider using SetItemDefaultFocus() instead.
+    IMGUI_API void          SetScrollFromPosX(float local_x, float center_x_ratio = 0.5f);  // adjust scrolling amount to make given chunkPos visible. Generally GetCursorStartPos() + offset to compute a valid chunkPos.
+    IMGUI_API void          SetScrollFromPosY(float local_y, float center_y_ratio = 0.5f);  // adjust scrolling amount to make given chunkPos visible. Generally GetCursorStartPos() + offset to compute a valid chunkPos.
 
     // Parameters stacks (shared)
     IMGUI_API void          PushFont(ImFont* font);                                         // use NULL as a shortcut to push default font
@@ -429,8 +429,8 @@ namespace ImGui
     IMGUI_API void          PushItemWidth(float item_width);                                // push width of items for common large "item+label" widgets. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -FLT_MIN always align width to the right side).
     IMGUI_API void          PopItemWidth();
     IMGUI_API void          SetNextItemWidth(float item_width);                             // set width of the _next_ common large "item+label" widget. >0.0f: width in pixels, <0.0f align xx pixels to the right of window (so -FLT_MIN always align width to the right side)
-    IMGUI_API float         CalcItemWidth();                                                // width of item given pushed settings and current cursor position. NOT necessarily the width of last item unlike most 'Item' functions.
-    IMGUI_API void          PushTextWrapPos(float wrap_local_pos_x = 0.0f);                 // push word-wrapping position for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column); > 0.0f: wrap at 'wrap_pos_x' position in window local space
+    IMGUI_API float         CalcItemWidth();                                                // width of item given pushed settings and current cursor chunkPos. NOT necessarily the width of last item unlike most 'Item' functions.
+    IMGUI_API void          PushTextWrapPos(float wrap_local_pos_x = 0.0f);                 // push word-wrapping chunkPos for Text*() commands. < 0.0f: no wrapping; 0.0f: wrap to end of window (or column); > 0.0f: wrap at 'wrap_pos_x' chunkPos in window local space
     IMGUI_API void          PopTextWrapPos();
 
     // Style read access
@@ -444,33 +444,33 @@ namespace ImGui
     IMGUI_API const ImVec4& GetStyleColorVec4(ImGuiCol idx);                                // retrieve style color as stored in ImGuiStyle structure. use to feed back into PushStyleColor(), otherwise use GetColorU32() to get style color with style alpha baked in.
 
     // Layout cursor positioning
-    // - By "cursor" we mean the current output position.
-    // - The typical widget behavior is to output themselves at the current cursor position, then move the cursor one line down.
+    // - By "cursor" we mean the current output chunkPos.
+    // - The typical widget behavior is to output themselves at the current cursor chunkPos, then move the cursor one line down.
     // - You can call SameLine() between widgets to undo the last carriage return and output at the right of the preceding widget.
     // - Attention! We currently have inconsistencies between window-local and absolute positions we will aim to fix with future API:
     //    - Absolute coordinate:        GetCursorScreenPos(), SetCursorScreenPos(), all ImDrawList:: functions. -> this is the preferred way forward.
     //    - Window-local coordinates:   SameLine(), GetCursorPos(), SetCursorPos(), GetCursorStartPos(), GetContentRegionMax(), GetWindowContentRegion*(), PushTextWrapPos()
     // - GetCursorScreenPos() = GetCursorPos() + GetWindowPos(). GetWindowPos() is almost only ever useful to convert from window-local to absolute coordinates.
-    IMGUI_API ImVec2        GetCursorScreenPos();                                           // cursor position in absolute coordinates (prefer using this, also more useful to work with ImDrawList API).
-    IMGUI_API void          SetCursorScreenPos(const ImVec2& pos);                          // cursor position in absolute coordinates
-    IMGUI_API ImVec2        GetCursorPos();                                                 // [window-local] cursor position in window coordinates (relative to window position)
+    IMGUI_API ImVec2        GetCursorScreenPos();                                           // cursor chunkPos in absolute coordinates (prefer using this, also more useful to work with ImDrawList API).
+    IMGUI_API void          SetCursorScreenPos(const ImVec2& pos);                          // cursor chunkPos in absolute coordinates
+    IMGUI_API ImVec2        GetCursorPos();                                                 // [window-local] cursor chunkPos in window coordinates (relative to window chunkPos)
     IMGUI_API float         GetCursorPosX();                                                // [window-local] "
     IMGUI_API float         GetCursorPosY();                                                // [window-local] "
     IMGUI_API void          SetCursorPos(const ImVec2& local_pos);                          // [window-local] "
     IMGUI_API void          SetCursorPosX(float local_x);                                   // [window-local] "
     IMGUI_API void          SetCursorPosY(float local_y);                                   // [window-local] "
-    IMGUI_API ImVec2        GetCursorStartPos();                                            // [window-local] initial cursor position, in window coordinates
+    IMGUI_API ImVec2        GetCursorStartPos();                                            // [window-local] initial cursor chunkPos, in window coordinates
 
     // Other layout functions
     IMGUI_API void          Separator();                                                    // separator, generally horizontal. inside a menu bar or in horizontal layout mode, this becomes a vertical separator.
-    IMGUI_API void          SameLine(float offset_from_start_x=0.0f, float spacing=-1.0f);  // call between widgets or groups to layout them horizontally. X position given in window coordinates.
+    IMGUI_API void          SameLine(float offset_from_start_x=0.0f, float spacing=-1.0f);  // call between widgets or groups to layout them horizontally. X chunkPos given in window coordinates.
     IMGUI_API void          NewLine();                                                      // undo a SameLine() or force a new line when in a horizontal-layout context.
     IMGUI_API void          Spacing();                                                      // add vertical spacing.
     IMGUI_API void          Dummy(const ImVec2& size);                                      // add a dummy item of given size. unlike InvisibleButton(), Dummy() won't take the mouse click or be navigable into.
-    IMGUI_API void          Indent(float indent_w = 0.0f);                                  // move content position toward the right, by indent_w, or style.IndentSpacing if indent_w <= 0
-    IMGUI_API void          Unindent(float indent_w = 0.0f);                                // move content position back to the left, by indent_w, or style.IndentSpacing if indent_w <= 0
-    IMGUI_API void          BeginGroup();                                                   // lock horizontal starting position
-    IMGUI_API void          EndGroup();                                                     // unlock horizontal starting position + capture the whole group bounding box into one "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
+    IMGUI_API void          Indent(float indent_w = 0.0f);                                  // move content chunkPos toward the right, by indent_w, or style.IndentSpacing if indent_w <= 0
+    IMGUI_API void          Unindent(float indent_w = 0.0f);                                // move content chunkPos back to the left, by indent_w, or style.IndentSpacing if indent_w <= 0
+    IMGUI_API void          BeginGroup();                                                   // lock horizontal starting chunkPos
+    IMGUI_API void          EndGroup();                                                     // unlock horizontal starting chunkPos + capture the whole group bounding box into one "item" (so you can use IsItemHovered() or layout primitives such as SameLine() on whole group, etc.)
     IMGUI_API void          AlignTextToFramePadding();                                      // vertically align upcoming text baseline to FramePadding.y so that it will align properly to regularly framed items (call if you have text on a line before a framed item)
     IMGUI_API float         GetTextLineHeight();                                            // ~ FontSize
     IMGUI_API float         GetTextLineHeightWithSpacing();                                 // ~ FontSize + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of text)
@@ -526,7 +526,7 @@ namespace ImGui
     IMGUI_API bool          RadioButton(const char* label, bool active);                    // use with e.g. if (RadioButton("one", my_value==1)) { my_value = 1; }
     IMGUI_API bool          RadioButton(const char* label, int* v, int v_button);           // shortcut to handle the above pattern when value is an integer
     IMGUI_API void          ProgressBar(float fraction, const ImVec2& size_arg = ImVec2(-FLT_MIN, 0), const char* overlay = NULL);
-    IMGUI_API void          Bullet();                                                       // draw a small circle + keep the cursor on the same line. advance cursor x position by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses
+    IMGUI_API void          Bullet();                                                       // draw a small circle + keep the cursor on the same line. advance cursor x chunkPos by GetTreeNodeToLabelSpacing(), same distance that TreeNode() uses
 
     // Widgets: Images
     // - Read about ImTextureID here: https://github.com/ocornut/imgui/wiki/Image-Loading-and-Displaying-Examples
@@ -807,8 +807,8 @@ namespace ImGui
     IMGUI_API int           GetColumnIndex();                                                   // get current column index
     IMGUI_API float         GetColumnWidth(int column_index = -1);                              // get column width (in pixels). pass -1 to use current column
     IMGUI_API void          SetColumnWidth(int column_index, float width);                      // set column width (in pixels). pass -1 to use current column
-    IMGUI_API float         GetColumnOffset(int column_index = -1);                             // get position of column line (in pixels, from the left side of the contents region). pass -1 to use current column, otherwise 0..GetColumnsCount() inclusive. column 0 is typically 0.0f
-    IMGUI_API void          SetColumnOffset(int column_index, float offset_x);                  // set position of column line (in pixels, from the left side of the contents region). pass -1 to use current column
+    IMGUI_API float         GetColumnOffset(int column_index = -1);                             // get chunkPos of column line (in pixels, from the left side of the contents region). pass -1 to use current column, otherwise 0..GetColumnsCount() inclusive. column 0 is typically 0.0f
+    IMGUI_API void          SetColumnOffset(int column_index, float offset_x);                  // set chunkPos of column line (in pixels, from the left side of the contents region). pass -1 to use current column
     IMGUI_API int           GetColumnsCount();
 
     // Tab Bars, Tabs
@@ -895,7 +895,7 @@ namespace ImGui
     IMGUI_API ImDrawList*   GetForegroundDrawList();                                            // this draw list will be the last rendered one. Useful to quickly draw shapes/text over dear imgui contents.
 
     // Miscellaneous Utilities
-    IMGUI_API bool          IsRectVisible(const ImVec2& size);                                  // test if rectangle (of given size, starting from cursor position) is visible / not clipped.
+    IMGUI_API bool          IsRectVisible(const ImVec2& size);                                  // test if rectangle (of given size, starting from cursor chunkPos) is visible / not clipped.
     IMGUI_API bool          IsRectVisible(const ImVec2& rect_min, const ImVec2& rect_max);      // test if rectangle (in screen space) is visible / not clipped. to perform coarse clipping on user's side.
     IMGUI_API double        GetTime();                                                          // get global imgui time. incremented by io.DeltaTime every frame.
     IMGUI_API int           GetFrameCount();                                                    // get global imgui frame count. incremented by 1 every frame.
@@ -929,7 +929,7 @@ namespace ImGui
     // Inputs Utilities: Mouse specific
     // - To refer to a mouse button, you may use named enums in your code e.g. ImGuiMouseButton_Left, ImGuiMouseButton_Right.
     // - You can also use regular integer: it is forever guaranteed that 0=Left, 1=Right, 2=Middle.
-    // - Dragging operations are only reported after mouse has moved a certain distance away from the initial clicking position (see 'lock_threshold' and 'io.MouseDraggingThreshold')
+    // - Dragging operations are only reported after mouse has moved a certain distance away from the initial clicking chunkPos (see 'lock_threshold' and 'io.MouseDraggingThreshold')
     IMGUI_API bool          IsMouseDown(ImGuiMouseButton button);                               // is mouse button held?
     IMGUI_API bool          IsMouseClicked(ImGuiMouseButton button, bool repeat = false);       // did mouse button clicked? (went from !Down to Down). Same as GetMouseClickedCount() == 1.
     IMGUI_API bool          IsMouseReleased(ImGuiMouseButton button);                           // did mouse button released? (went from Down to !Down)
@@ -939,9 +939,9 @@ namespace ImGui
     IMGUI_API bool          IsMousePosValid(const ImVec2* mouse_pos = NULL);                    // by convention we use (-FLT_MAX,-FLT_MAX) to denote that there is no mouse available
     IMGUI_API bool          IsAnyMouseDown();                                                   // [WILL OBSOLETE] is any mouse button held? This was designed for backends, but prefer having backend maintain a mask of held mouse buttons, because upcoming input queue system will make this invalid.
     IMGUI_API ImVec2        GetMousePos();                                                      // shortcut to ImGui::GetIO().MousePos provided by user, to be consistent with other calls
-    IMGUI_API ImVec2        GetMousePosOnOpeningCurrentPopup();                                 // retrieve mouse position at the time of opening popup we have BeginPopup() into (helper to avoid user backing that value themselves)
+    IMGUI_API ImVec2        GetMousePosOnOpeningCurrentPopup();                                 // retrieve mouse chunkPos at the time of opening popup we have BeginPopup() into (helper to avoid user backing that value themselves)
     IMGUI_API bool          IsMouseDragging(ImGuiMouseButton button, float lock_threshold = -1.0f);         // is mouse dragging? (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)
-    IMGUI_API ImVec2        GetMouseDragDelta(ImGuiMouseButton button = 0, float lock_threshold = -1.0f);   // return the delta from the initial clicking position while the mouse button is pressed or was just released. This is locked and return 0.0f until the mouse moves past a distance threshold at least once (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)
+    IMGUI_API ImVec2        GetMouseDragDelta(ImGuiMouseButton button = 0, float lock_threshold = -1.0f);   // return the delta from the initial clicking chunkPos while the mouse button is pressed or was just released. This is locked and return 0.0f until the mouse moves past a distance threshold at least once (if lock_threshold < -1.0f, uses io.MouseDraggingThreshold)
     IMGUI_API void          ResetMouseDragDelta(ImGuiMouseButton button = 0);                   //
     IMGUI_API ImGuiMouseCursor GetMouseCursor();                                                // get desired mouse cursor shape. Important: reset in ImGui::NewFrame(), this is updated during the frame. valid before Render(). If you use software rendering by setting io.MouseDrawCursor ImGui will render those for you
     IMGUI_API void          SetMouseCursor(ImGuiMouseCursor cursor_type);                       // set desired mouse cursor shape
@@ -1057,7 +1057,7 @@ enum ImGuiInputTextFlags_
     ImGuiInputTextFlags_EnterReturnsTrue    = 1 << 5,   // Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.
     ImGuiInputTextFlags_CallbackCompletion  = 1 << 6,   // Callback on pressing TAB (for completion handling)
     ImGuiInputTextFlags_CallbackHistory     = 1 << 7,   // Callback on pressing Up/Down arrows (for history handling)
-    ImGuiInputTextFlags_CallbackAlways      = 1 << 8,   // Callback on each iteration. User code may query cursor position, modify text buffer.
+    ImGuiInputTextFlags_CallbackAlways      = 1 << 8,   // Callback on each iteration. User code may query cursor chunkPos, modify text buffer.
     ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9,   // Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
     ImGuiInputTextFlags_AllowTabInput       = 1 << 10,  // Pressing TAB input a '\t' character into the text field
     ImGuiInputTextFlags_CtrlEnterForNewLine = 1 << 11,  // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
@@ -1181,8 +1181,8 @@ enum ImGuiTabItemFlags_
     ImGuiTabItemFlags_NoPushId                      = 1 << 3,   // Don't call PushID(tab->ID)/PopID() on BeginTabItem()/EndTabItem()
     ImGuiTabItemFlags_NoTooltip                     = 1 << 4,   // Disable tooltip for the given tab
     ImGuiTabItemFlags_NoReorder                     = 1 << 5,   // Disable reordering this tab or having another tab cross over this tab
-    ImGuiTabItemFlags_Leading                       = 1 << 6,   // Enforce the tab position to the left of the tab bar (after the tab list popup button)
-    ImGuiTabItemFlags_Trailing                      = 1 << 7,   // Enforce the tab position to the right of the tab bar (before the scrolling buttons)
+    ImGuiTabItemFlags_Leading                       = 1 << 6,   // Enforce the tab chunkPos to the left of the tab bar (after the tab list popup button)
+    ImGuiTabItemFlags_Trailing                      = 1 << 7,   // Enforce the tab chunkPos to the right of the tab bar (before the scrolling buttons)
 };
 
 // Flags for ImGui::BeginTable()
@@ -1348,7 +1348,7 @@ enum ImGuiHoveredFlags_
     //ImGuiHoveredFlags_AllowWhenBlockedByModal     = 1 << 6,   // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
     ImGuiHoveredFlags_AllowWhenBlockedByActiveItem  = 1 << 7,   // Return true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
     ImGuiHoveredFlags_AllowWhenOverlappedByItem     = 1 << 8,   // IsItemHovered() only: Return true even if the item uses AllowOverlap mode and is overlapped by another hoverable item.
-    ImGuiHoveredFlags_AllowWhenOverlappedByWindow   = 1 << 9,   // IsItemHovered() only: Return true even if the position is obstructed or overlapped by another window.
+    ImGuiHoveredFlags_AllowWhenOverlappedByWindow   = 1 << 9,   // IsItemHovered() only: Return true even if the chunkPos is obstructed or overlapped by another window.
     ImGuiHoveredFlags_AllowWhenDisabled             = 1 << 10,  // IsItemHovered() only: Return true even if the item is disabled
     ImGuiHoveredFlags_NoNavOverride                 = 1 << 11,  // IsItemHovered() only: Disable using gamepad/keyboard navigation state when active, always query mouse
     ImGuiHoveredFlags_AllowWhenOverlapped           = ImGuiHoveredFlags_AllowWhenOverlappedByItem | ImGuiHoveredFlags_AllowWhenOverlappedByWindow,
@@ -1381,7 +1381,7 @@ enum ImGuiDragDropFlags_
     ImGuiDragDropFlags_SourceNoPreviewTooltip       = 1 << 0,   // Disable preview tooltip. By default, a successful call to BeginDragDropSource opens a tooltip so you can display a preview or description of the source contents. This flag disables this behavior.
     ImGuiDragDropFlags_SourceNoDisableHover         = 1 << 1,   // By default, when dragging we clear data so that IsItemHovered() will return false, to avoid subsequent user code submitting tooltips. This flag disables this behavior so you can still call IsItemHovered() on the source item.
     ImGuiDragDropFlags_SourceNoHoldToOpenOthers     = 1 << 2,   // Disable the behavior that allows to open tree nodes and collapsing header by holding over them while dragging a source item.
-    ImGuiDragDropFlags_SourceAllowNullID            = 1 << 3,   // Allow items such as Text(), Image() that have no unique identifier to be used as drag source, by manufacturing a temporary identifier based on their window-relative position. This is extremely unusual within the dear imgui ecosystem and so we made it explicit.
+    ImGuiDragDropFlags_SourceAllowNullID            = 1 << 3,   // Allow items such as Text(), Image() that have no unique identifier to be used as drag source, by manufacturing a temporary identifier based on their window-relative chunkPos. This is extremely unusual within the dear imgui ecosystem and so we made it explicit.
     ImGuiDragDropFlags_SourceExtern                 = 1 << 4,   // External source (from outside of dear imgui), won't attempt to read current item/window info. Will always return true. Only one Extern source can be active simultaneously.
     ImGuiDragDropFlags_SourceAutoExpirePayload      = 1 << 5,   // Automatically expire the payload if the source cease to be submitted (otherwise payloads are persisting while being dragged)
     // AcceptDragDropPayload() flags
@@ -1589,7 +1589,7 @@ enum ImGuiConfigFlags_
     ImGuiConfigFlags_NavEnableGamepad       = 1 << 1,   // Master gamepad navigation enable flag. Backend also needs to set ImGuiBackendFlags_HasGamepad.
     ImGuiConfigFlags_NavEnableSetMousePos   = 1 << 2,   // Instruct navigation to move the mouse cursor. May be useful on TV/console systems where moving a virtual mouse is awkward. Will update io.MousePos and set io.WantSetMousePos=true. If enabled you MUST honor io.WantSetMousePos requests in your backend, otherwise ImGui will react as if the mouse is jumping around back and forth.
     ImGuiConfigFlags_NavNoCaptureKeyboard   = 1 << 3,   // Instruct navigation to not set the io.WantCaptureKeyboard flag when io.NavActive is set.
-    ImGuiConfigFlags_NoMouse                = 1 << 4,   // Instruct imgui to clear mouse position/buttons in NewFrame(). This allows ignoring the mouse information set by the backend.
+    ImGuiConfigFlags_NoMouse                = 1 << 4,   // Instruct imgui to clear mouse chunkPos/buttons in NewFrame(). This allows ignoring the mouse information set by the backend.
     ImGuiConfigFlags_NoMouseCursorChange    = 1 << 5,   // Instruct backend to not alter mouse cursor shape and visibility. Use if the backend cursor changes are interfering with yours and you don't want to use SetMouseCursor() to change mouse cursor. You may want to honor requests from imgui by reading GetMouseCursor() yourself instead.
 
     // User storage (to allow your backend/engine to communicate to code that may be shared between multiple projects. Those flags are NOT used by core Dear ImGui)
@@ -1603,7 +1603,7 @@ enum ImGuiBackendFlags_
     ImGuiBackendFlags_None                  = 0,
     ImGuiBackendFlags_HasGamepad            = 1 << 0,   // Backend Platform supports gamepad and currently has one connected.
     ImGuiBackendFlags_HasMouseCursors       = 1 << 1,   // Backend Platform supports honoring GetMouseCursor() value to change the OS cursor shape.
-    ImGuiBackendFlags_HasSetMousePos        = 1 << 2,   // Backend Platform supports io.WantSetMousePos requests to reposition the OS mouse position (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
+    ImGuiBackendFlags_HasSetMousePos        = 1 << 2,   // Backend Platform supports io.WantSetMousePos requests to reposition the OS mouse chunkPos (only used if ImGuiConfigFlags_NavEnableSetMousePos is set).
     ImGuiBackendFlags_RendererHasVtxOffset  = 1 << 3,   // Backend Renderer supports ImDrawCmd::VtxOffset. This enables output of large meshes (64K+ vertices) while still using 16-bit indices.
 };
 
@@ -1956,7 +1956,7 @@ struct ImGuiStyle
     ImVec2      ItemSpacing;                // Horizontal and vertical spacing between widgets/lines.
     ImVec2      ItemInnerSpacing;           // Horizontal and vertical spacing between within elements of a composed widget (e.g. a slider and its label).
     ImVec2      CellPadding;                // Padding within a table cell. CellPadding.y may be altered between different rows.
-    ImVec2      TouchExtraPadding;          // Expand reactive bounding box for touch-based system where touch position is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!
+    ImVec2      TouchExtraPadding;          // Expand reactive bounding box for touch-based system where touch chunkPos is not accurate enough. Unfortunately we don't sort widgets so priority on overlap will always be given to the first widget. So don't grow this too much!
     float       IndentSpacing;              // Horizontal indentation when e.g. entering a tree node. Generally == (FontSize + FramePadding.x*2).
     float       ColumnsMinSpacing;          // Minimum horizontal spacing between two columns. Preferably > (FramePadding.x + 1).
     float       ScrollbarSize;              // Width of the vertical scrollbar, Height of the horizontal scrollbar.
@@ -1975,7 +1975,7 @@ struct ImGuiStyle
     float       SeparatorTextBorderSize;    // Thickkness of border in SeparatorText()
     ImVec2      SeparatorTextAlign;         // Alignment of text within the separator. Defaults to (0.0f, 0.5f) (left aligned, center).
     ImVec2      SeparatorTextPadding;       // Horizontal offset of text from each edge of the separator + spacing on other axis. Generally small values. .y is recommended to be == FramePadding.y.
-    ImVec2      DisplayWindowPadding;       // Window position are clamped to be visible within the display area or monitors by at least this amount. Only applies to regular windows.
+    ImVec2      DisplayWindowPadding;       // Window chunkPos are clamped to be visible within the display area or monitors by at least this amount. Only applies to regular windows.
     ImVec2      DisplaySafeAreaPadding;     // If you cannot see the edges of your screen (e.g. on a TV) increase the safe area padding. Apply to popups/tooltips as well regular windows. NB: Prefer configuring your TV sets correctly!
     float       MouseCursorScale;           // Scale software rendered mouse cursor (when io.MouseDrawCursor is enabled). May be removed later.
     bool        AntiAliasedLines;           // Enable anti-aliased lines/borders. Disable if you are really tight on CPU/GPU. Latched at the beginning of the frame (copied to ImDrawList).
@@ -2091,7 +2091,7 @@ struct ImGuiIO
     void        (*SetClipboardTextFn)(void* user_data, const char* text);
     void*       ClipboardUserData;
 
-    // Optional: Notify OS Input Method Editor of the screen position of your cursor for text input position (e.g. when using Japanese/Chinese IME on Windows)
+    // Optional: Notify OS Input Method Editor of the screen chunkPos of your cursor for text input chunkPos (e.g. when using Japanese/Chinese IME on Windows)
     // (default to use native imm32 api on Windows)
     void        (*SetPlatformImeDataFn)(ImGuiViewport* viewport, ImGuiPlatformImeData* data);
 
@@ -2105,7 +2105,7 @@ struct ImGuiIO
     // Input Functions
     IMGUI_API void  AddKeyEvent(ImGuiKey key, bool down);                   // Queue a new key down/up event. Key should be "translated" (as in, generally ImGuiKey_A matches the key end-user would use to emit an 'A' character)
     IMGUI_API void  AddKeyAnalogEvent(ImGuiKey key, bool down, float v);    // Queue a new key down/up event for analog values (e.g. ImGuiKey_Gamepad_ values). Dead-zones should be handled by the backend.
-    IMGUI_API void  AddMousePosEvent(float x, float y);                     // Queue a mouse position update. Use -FLT_MAX,-FLT_MAX to signify no mouse (e.g. app not focused and not hovered)
+    IMGUI_API void  AddMousePosEvent(float x, float y);                     // Queue a mouse chunkPos update. Use -FLT_MAX,-FLT_MAX to signify no mouse (e.g. app not focused and not hovered)
     IMGUI_API void  AddMouseButtonEvent(int button, bool down);             // Queue a mouse button change
     IMGUI_API void  AddMouseWheelEvent(float wheel_x, float wheel_y);       // Queue a mouse wheel update. wheel_y<0: scroll down, wheel_y>0: scroll up, wheel_x<0: scroll right, wheel_x>0: scroll left.
     IMGUI_API void  AddMouseSourceEvent(ImGuiMouseSource source);           // Queue a mouse source change (Mouse/TouchScreen/Pen)
@@ -2140,7 +2140,7 @@ struct ImGuiIO
     int         MetricsRenderIndices;               // Indices output during last call to Render() = number of triangles * 3
     int         MetricsRenderWindows;               // Number of visible windows
     int         MetricsActiveWindows;               // Number of active windows
-    ImVec2      MouseDelta;                         // Mouse delta. Note that this is zero if either current or previous position are invalid (-FLT_MAX,-FLT_MAX), so a disappearing/reappearing mouse won't have a huge delta.
+    ImVec2      MouseDelta;                         // Mouse delta. Note that this is zero if either current or previous chunkPos are invalid (-FLT_MAX,-FLT_MAX), so a disappearing/reappearing mouse won't have a huge delta.
 
     // Legacy: before 1.87, we required backend to fill io.KeyMap[] (imgui->native map) during initialization and io.KeysDown[] (native indices) every frame.
     // This is still temporarily supported as a legacy feature. However the new preferred scheme is for backend to call io.AddKeyEvent().
@@ -2165,7 +2165,7 @@ struct ImGuiIO
     // Main Input State
     // (this block used to be written by backend, since 1.87 it is best to NOT write to those directly, call the AddXXX functions above instead)
     // (reading from those variables is fair game, as they are extremely unlikely to be moving anywhere)
-    ImVec2      MousePos;                           // Mouse position, in pixels. Set to ImVec2(-FLT_MAX, -FLT_MAX) if mouse is unavailable (on another screen, etc.)
+    ImVec2      MousePos;                           // Mouse chunkPos, in pixels. Set to ImVec2(-FLT_MAX, -FLT_MAX) if mouse is unavailable (on another screen, etc.)
     bool        MouseDown[5];                       // Mouse buttons: 0=left, 1=right, 2=middle + extras (ImGuiMouseButton_COUNT == 5). Dear ImGui mostly uses left and right buttons. Other buttons allow us to track if the mouse is being used by your application + available to user as a convenience via IsMouse** API.
     float       MouseWheel;                         // Mouse wheel Vertical: 1 unit scrolls about 5 lines text. >0 scrolls Up, <0 scrolls Down. Hold SHIFT to turn vertical scroll into horizontal scroll.
     float       MouseWheelH;                        // Mouse wheel Horizontal. >0 scrolls Left, <0 scrolls Right. Most users don't have a mouse with a horizontal wheel, may not be filled by all backends.
@@ -2179,7 +2179,7 @@ struct ImGuiIO
     ImGuiKeyChord KeyMods;                          // Key mods flags (any of ImGuiMod_Ctrl/ImGuiMod_Shift/ImGuiMod_Alt/ImGuiMod_Super flags, same as io.KeyCtrl/KeyShift/KeyAlt/KeySuper but merged into flags. DOES NOT CONTAINS ImGuiMod_Shortcut which is pretranslated). Read-only, updated by NewFrame()
     ImGuiKeyData  KeysData[ImGuiKey_KeysData_SIZE]; // Key state for all known keys. Use IsKeyXXX() functions to access this.
     bool        WantCaptureMouseUnlessPopupClose;   // Alternative to WantCaptureMouse: (WantCaptureMouse == true && WantCaptureMouseUnlessPopupClose == false) when a click over void is expected to close a popup.
-    ImVec2      MousePosPrev;                       // Previous mouse position (note that MouseDelta is not necessary == MousePos-MousePosPrev, in case either position is invalid)
+    ImVec2      MousePosPrev;                       // Previous mouse chunkPos (note that MouseDelta is not necessary == MousePos-MousePosPrev, in case either chunkPos is invalid)
     ImVec2      MouseClickedPos[5];                 // Position at time of clicking
     double      MouseClickedTime[5];                // Time of last click (used to figure out double-click)
     bool        MouseClicked[5];                    // Mouse button went from !Down to Down (same as MouseClickedCount[x] != 0)
@@ -2252,9 +2252,9 @@ struct ImGuiInputTextCallbackData
 struct ImGuiSizeCallbackData
 {
     void*   UserData;       // Read-only.   What user passed to SetNextWindowSizeConstraints(). Generally store an integer or float in here (need reinterpret_cast<>).
-    ImVec2  Pos;            // Read-only.   Window position, for reference.
+    ImVec2  Pos;            // Read-only.   Window chunkPos, for reference.
     ImVec2  CurrentSize;    // Read-only.   Current window size.
-    ImVec2  DesiredSize;    // Read-write.  Desired size, based on user's mouse position. Write to this field to restrain resizing.
+    ImVec2  DesiredSize;    // Read-write.  Desired size, based on user's mouse chunkPos. Write to this field to restrain resizing.
 };
 
 // Data payload for Drag and Drop operations: AcceptDragDropPayload(), GetDragDropPayload()
@@ -2438,7 +2438,7 @@ struct ImGuiStorage
 // - Clipper lets you process the first element (DisplayStart = 0, DisplayEnd = 1) regardless of it being visible or not.
 // - User code submit that one element.
 // - Clipper can measure the height of the first element
-// - Clipper calculate the actual range of elements to display based on the current clipping rectangle, position the cursor before the first visible element.
+// - Clipper calculate the actual range of elements to display based on the current clipping rectangle, chunkPos the cursor before the first visible element.
 // - User code submit visible elements.
 // - The clipper also handles various subtleties related to keyboard/gamepad navigation, wrapping etc.
 struct ImGuiListClipper
@@ -2448,7 +2448,7 @@ struct ImGuiListClipper
     int             DisplayEnd;         // End of items to display (exclusive)
     int             ItemsCount;         // [Internal] Number of items
     float           ItemsHeight;        // [Internal] Height of item after a first step and item submission can calculate it
-    float           StartPosY;          // [Internal] Cursor position at the time of Begin() or after table frozen rows are all processed
+    float           StartPosY;          // [Internal] Cursor chunkPos at the time of Begin() or after table frozen rows are all processed
     void*           TempData;           // [Internal] Internal data
 
     // items_count: Use INT_MAX if you don't know how many items you have (in which case the cursor won't be advanced in the final step)
@@ -2814,7 +2814,7 @@ struct ImDrawData
     int                 TotalIdxCount;      // For convenience, sum of all ImDrawList's IdxBuffer.Size
     int                 TotalVtxCount;      // For convenience, sum of all ImDrawList's VtxBuffer.Size
     ImVector<ImDrawList*> CmdLists;         // Array of ImDrawList* to render. The ImDrawLists are owned by ImGuiContext and only pointed to from here.
-    ImVec2              DisplayPos;         // Top-left position of the viewport to render (== top-left of the orthogonal projection matrix to use) (== GetMainViewport()->Pos for the main viewport, == (0.0) in most single-viewport applications)
+    ImVec2              DisplayPos;         // Top-left chunkPos of the viewport to render (== top-left of the orthogonal projection matrix to use) (== GetMainViewport()->Pos for the main viewport, == (0.0) in most single-viewport applications)
     ImVec2              DisplaySize;        // Size of the viewport to render (== GetMainViewport()->Size for the main viewport, == io.DisplaySize in most single-viewport applications)
     ImVec2              FramebufferScale;   // Amount of pixels for each unit of DisplaySize. Based on io.DisplayFramebufferScale. Generally (1,1) on normal display, (2,2) on OSX with Retina display.
     ImGuiViewport*      OwnerViewport;      // Viewport carrying the ImDrawData instance, might be of use to the renderer (generally not).
@@ -2891,7 +2891,7 @@ struct ImFontGlyphRangesBuilder
 struct ImFontAtlasCustomRect
 {
     unsigned short  Width, Height;  // Input    // Desired rectangle dimension
-    unsigned short  X, Y;           // Output   // Packed position in Atlas
+    unsigned short  X, Y;           // Output   // Packed chunkPos in Atlas
     unsigned int    GlyphID;        // Input    // For custom font glyphs only (ID < 0x110000)
     float           GlyphAdvanceX;  // Input    // For custom font glyphs only: glyph xadvance
     ImVec2          GlyphOffset;    // Input    // For custom font glyphs only: glyph display offset
@@ -2975,7 +2975,7 @@ struct ImFontAtlas
     //-------------------------------------------
 
     // You can request arbitrary rectangles to be packed into the atlas, for your own purposes.
-    // - After calling Build(), you can query the rectangle position and render your pixels.
+    // - After calling Build(), you can query the rectangle chunkPos and render your pixels.
     // - If you render colored output, set 'atlas->TexPixelsUseColors = true' as this may help some backends decide of prefered texture format.
     // - You can also request your rectangles to be mapped as font glyph (given a font + Unicode point),
     //   so you can render e.g. custom colorful icons and use them as regular glyphs.

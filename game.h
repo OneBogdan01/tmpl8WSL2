@@ -14,12 +14,12 @@ class StaticModel;
 class Camera;
 class TileLoader;
 // Function to convert btVector3 to glm::vec3
-inline glm::vec3 BtVector3_to_glm(const btVector3& vector)
+inline glm::vec3 BtVector3ToGlm(const btVector3& vector)
 {
     return glm::vec3(vector.x(), vector.y(), vector.z());
 }
 
-inline btVector3 Glm_to_btVector3(const glm::vec3& vector)
+inline btVector3 GlmToBtVector3(const glm::vec3& vector)
 {
     return btVector3(vector.x, vector.y, vector.z);
 }
