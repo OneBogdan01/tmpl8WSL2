@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "ChunkOfTiles.h"
+#include "Chunk.h"
 
 
 constexpr float TILE_SIZE = 5.0f;
@@ -15,7 +15,7 @@ public:
     void Update(float deltaTime);
 
 private:
-    std::vector<ChunkOfTiles*> chunksOfTiles;
+    std::vector<Chunk*> chunksOfTiles;
 
     void LoadCSVFile(const char* csvPath);
 

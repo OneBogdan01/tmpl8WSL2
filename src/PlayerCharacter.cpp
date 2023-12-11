@@ -2,7 +2,7 @@
 
 #include "game.h"
 #include "model_loading/StaticModel.h"
-#include "tiles/ChunkOfTiles.h"
+#include "tiles/Chunk.h"
 
 
 btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosition)

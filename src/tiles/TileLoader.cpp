@@ -53,7 +53,7 @@ void TileLoader::Init(const char* csvPath)
     chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
     for (int k = 0; k < chunkCount; k++)
     {
-        ChunkOfTiles* chunk = new ChunkOfTiles();
+        Chunk* chunk = new Chunk();
 
         for (int i = 0; i < heightY; i++)
         {

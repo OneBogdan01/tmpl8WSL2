@@ -1,4 +1,4 @@
-﻿#include "ChunkOfTiles.h"
+﻿#include "Chunk.h"
 
 
 #include "game.h"
@@ -6,25 +6,25 @@
 #include "glm/fwd.hpp"
 #include "glm/gtx/transform.hpp"
 
-ChunkOfTiles::~ChunkOfTiles()
+Chunk::~Chunk()
 {
     delete modelShader;
 }
 
-ChunkOfTiles::ChunkOfTiles()
+Chunk::Chunk()
 {
     modelShader = new Shader(
         "shaders/ModelLoading.vert",
         "shaders/ModelLoading.frag");
 }
 
-void ChunkOfTiles::LoadTile(size_t index, const char* path, glm::vec3 pos)
+void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
 {
     tiles[index].Init(path, pos);
     activeTiles.push_back(index);
 }
 
-void ChunkOfTiles::Draw()
+void Chunk::Draw()
 {
     //m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
 
@@ -44,7 +44,7 @@ void ChunkOfTiles::Draw()
     //modelShader->Unbind();
 }
 
-void ChunkOfTiles::Update(float deltaTime)
+void Chunk::Update(float deltaTime)
 {
     for (auto& index : activeTiles)
     {
@@ -53,13 +53,13 @@ void ChunkOfTiles::Update(float deltaTime)
     offset = glm::vec3(0.0f);
 }
 
-void ChunkOfTiles::SetPosition(glm::vec3 pos)
+void Chunk::SetPosition(glm::vec3 pos)
 {
     offset = pos;
     position += offset;
 }
 
-glm::vec3 ChunkOfTiles::GetPosition()
+glm::vec3 Chunk::GetPosition()
 {
     return position;
 }

@@ -199,7 +199,7 @@
     <ClCompile Include="src\PlayerCharacter.cpp" />
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\tiles\ChunkOfTiles.cpp" />
+    <ClCompile Include="src\tiles\Chunk.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
     <ClCompile Include="src\tiles\TileLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
@@ -529,7 +529,7 @@
     <ClInclude Include="src\PlayerCharacter.h" />
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\tiles\ChunkOfTiles.h" />
+    <ClInclude Include="src\tiles\Chunk.h" />
     <ClInclude Include="src\tiles\Tile.h" />
     <ClInclude Include="src\tiles\TileLoader.h" />
     <ClInclude Include="src\Timer.h" />

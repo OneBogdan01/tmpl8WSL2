@@ -7,12 +7,12 @@
 constexpr unsigned int TILES_PER_CHUNK = 25;
 
 
-class ChunkOfTiles
+class Chunk
 {
 public:
-    ~ChunkOfTiles();
+    ~Chunk();
     void LoadTile(size_t index, const char* path, glm::vec3 pos);
-    ChunkOfTiles();
+    Chunk();
 
     void Draw();
     void Update(float deltaTime);
