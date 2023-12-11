@@ -29,7 +29,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
     //create collision shape
     StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
 
-    btConvexShape* collider = World::CreateBoundingBoxModel(staticPlayerMode.GetMeshes(), 0.1f);
+    btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 0.079f);
     // Create a ghost object for collision detection
     playerCharacterGhost = new btPairCachingGhostObject();
     playerCharacterGhost->setCollisionShape(collider);
