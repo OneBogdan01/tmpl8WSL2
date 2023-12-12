@@ -70,26 +70,26 @@ Index of this file:
 #endif
 #endif
 
-// Clang/GCC warnings with -Weverything
-#if defined(__clang__)
-#pragma clang diagnostic push
-#if __has_warning("-Wunknown-warning-option")
-#pragma clang diagnostic ignored "-Wunknown-warning-option"         // warning: unknown warning group 'xxx'
-#endif
-#pragma clang diagnostic ignored "-Wunknown-pragmas"                // warning: unknown warning group 'xxx'
-#pragma clang diagnostic ignored "-Wfloat-equal"                    // warning: comparing floating point with == or != is unsafe // storing and comparing against same constants ok, for ImFloor()
-#pragma clang diagnostic ignored "-Wunused-function"                // for stb_textedit.h
-#pragma clang diagnostic ignored "-Wmissing-prototypes"             // for stb_textedit.h
-#pragma clang diagnostic ignored "-Wold-style-cast"
-#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
-#pragma clang diagnostic ignored "-Wdouble-promotion"
-#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"  // warning: implicit conversion from 'xxx' to 'float' may lose precision
-#pragma clang diagnostic ignored "-Wmissing-noreturn"               // warning: function 'xxx' could be declared with attribute 'noreturn'
-#elif defined(__GNUC__)
+//// Clang/GCC warnings with -Weverything
+//#if defined(__clang__)
+//#pragma clang diagnostic push
+//#if __has_warning("-Wunknown-warning-option")
+//#pragma clang diagnostic ignored "-Wunknown-warning-option"         // warning: unknown warning group 'xxx'
+//#endif
+//#pragma clang diagnostic ignored "-Wunknown-pragmas"                // warning: unknown warning group 'xxx'
+//#pragma clang diagnostic ignored "-Wfloat-equal"                    // warning: comparing floating point with == or != is unsafe // storing and comparing against same constants ok, for ImFloor()
+//#pragma clang diagnostic ignored "-Wunused-function"                // for stb_textedit.h
+//#pragma clang diagnostic ignored "-Wmissing-prototypes"             // for stb_textedit.h
+//#pragma clang diagnostic ignored "-Wold-style-cast"
+//#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+//#pragma clang diagnostic ignored "-Wdouble-promotion"
+//#pragma clang diagnostic ignored "-Wimplicit-int-float-conversion"  // warning: implicit conversion from 'xxx' to 'float' may lose precision
+//#pragma clang diagnostic ignored "-Wmissing-noreturn"               // warning: function 'xxx' could be declared with attribute 'noreturn'
+
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpragmas"              // warning: unknown option after '#pragma GCC diagnostic' kind
 #pragma GCC diagnostic ignored "-Wclass-memaccess"      // [__GNUC__ >= 8] warning: 'memset/memcpy' clearing/writing an object of type 'xxxx' with no trivial copy-assignment; use assignment or value-initialization instead
-#endif
+#pragma GCC diagnostic ignored "-Wconversion"
 
 // In 1.89.4, we moved the implementation of "courtesy maths operators" from imgui_internal.h in imgui.h
 // As they are frequently requested, we do not want to encourage to many people using imgui_internal.h
@@ -3464,12 +3464,13 @@ extern const char*  ImGuiTestEngine_FindItemDebugLabel(ImGuiContext* ctx, ImGuiI
 #endif
 
 //-----------------------------------------------------------------------------
-
-#if defined(__clang__)
-#pragma clang diagnostic pop
-#elif defined(__GNUC__)
 #pragma GCC diagnostic pop
-#endif
+
+//#if defined(__clang__)
+//#pragma clang diagnostic pop
+//#elif defined(__GNUC__)
+//#pragma GCC diagnostic pop
+//#endif
 
 #ifdef _MSC_VER
 #pragma warning (pop)
