@@ -63,7 +63,7 @@ void DebugRenderer::RenderDebug()
 	SetShaderMatrices();
 
 	simpleShader->SetFloat3("color", color.x(), color.y(), color.z());
-	glDrawArrays(GL_LINES, 0, debugInfo.size() * 2);
+	glDrawArrays(GL_LINES, 0, static_cast<unsigned int>(debugInfo.size()) * 2);
 
 
 	simpleShader->Unbind();

@@ -507,6 +507,7 @@
     <ClInclude Include="external\Imgui\imstb_textedit.h" />
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\physics\DebugRenderer.h" />
     <ClInclude Include="src\KeyboardManager.h" />

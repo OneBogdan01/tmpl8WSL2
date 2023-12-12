@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <template.h>
-#include <LinearMath/btIDebugDraw.h>
+#include "BulletWrapper.h"
 #include <vector>
 
 class Shader;

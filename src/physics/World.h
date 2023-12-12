@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <btBulletDynamicsCommon.h>
+#include "BulletWrapper.h"
 #include <set>
 #include <vector>
 

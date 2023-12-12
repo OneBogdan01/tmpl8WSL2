@@ -1,5 +1,5 @@
 #pragma once
-#include <btBulletDynamicsCommon.h>
+#include "BulletWrapper.h"
 //from Brian
 // this is a support class to get return data to the game status, it won't have much extra info, so its safe in here.
 //The only thing we really want is the worldTransform of the MotionState which supplies us with chunkPos and orientation

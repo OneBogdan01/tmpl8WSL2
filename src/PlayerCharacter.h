@@ -1,9 +1,7 @@
 ﻿#pragma once
 
 
-#include <btBulletDynamicsCommon.h>
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
+#include "BulletWrapper.h"
 
 #include "md2_loader/Md2.h"
 

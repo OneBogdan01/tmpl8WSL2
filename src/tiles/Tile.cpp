@@ -1,8 +1,6 @@
 ﻿#include "Tile.h"
 
-#include <BulletCollision/CollisionShapes/btBoxShape.h>
-#include <BulletDynamics/Dynamics/btRigidBody.h>
-#include <LinearMath/btDefaultMotionState.h>
+
 
 #include "game.h"
 #include "TileLoader.h"

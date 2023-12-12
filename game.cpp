@@ -1,15 +1,7 @@
 #include "game.h"
-#include <iostream>
-#include "Camera.h"
-#include "imgui.h"
-#include <glm/glm.hpp>
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/gtx/transform.hpp"
-#include <filesystem>
 
-#include "PlayerCharacter.h"
-#include "Timer.h"
 #include "tiles/TileLoader.h"
+#include "imgui.h"
 
 // -----------------------------------------------------------
 // Initialize the application
