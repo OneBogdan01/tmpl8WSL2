@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <array>
+#include <vector>
 
-#include "template.h"
 
 #include "Tile.h"
 constexpr unsigned int TILES_PER_CHUNK = 25;

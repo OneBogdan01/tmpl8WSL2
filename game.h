@@ -9,7 +9,7 @@
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
 #include "skybox/Skybox.h"
-
+#include "bullet/btBulletDynamicsCommon.h"
 class StaticModel;
 class Camera;
 class TileLoader;
@@ -35,9 +35,16 @@ namespace Tmpl8
 
         void Shutdown();
 
-
+#ifdef _WINDOWS
+        void KeyDown(int key);
+        void KeyUp(int key);
+#else 
         void KeyDown(XID key);
         void KeyUp(XID key);
+       
+#endif
+
+
         void MouseScroll(float x);
         void MouseDown(unsigned button);
         void MouseUp(unsigned button);

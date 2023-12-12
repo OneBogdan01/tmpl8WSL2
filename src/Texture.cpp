@@ -1,5 +1,7 @@
 ﻿#include "Texture.h"
 
+
+
 #include "model_loading/ogldev_util.h"
 
 Texture::Texture(Surface* texture): textureTarget(0)

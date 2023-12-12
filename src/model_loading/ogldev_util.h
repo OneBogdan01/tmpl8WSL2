@@ -30,7 +30,6 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
-#include "template.h"
 
 using namespace std;
 
@@ -39,8 +38,8 @@ char* ReadBinaryFile(const char* pFileName, int& size);
 
 void WriteBinaryFile(const char* pFilename, const void* pData, int size);
 
-void OgldevError(const char* pFileName, uint line, const char* msg, ...);
-void OgldevFileError(const char* pFileName, uint line, const char* pFileError);
+void OgldevError(const char* pFileName, unsigned int line, const char* msg, ...);
+void OgldevFileError(const char* pFileName, unsigned int line, const char* pFileError);
 
 #define OGLDEV_ERROR0(msg) OgldevError(__FILE__, __LINE__, msg)
 #define OGLDEV_ERROR(msg, ...) OgldevError(__FILE__, __LINE__, msg, __VA_ARGS__)

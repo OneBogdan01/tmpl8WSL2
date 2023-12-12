@@ -176,7 +176,7 @@ void WriteBinaryFile(const char* pFilename, const void* pData, int size)
 #endif
 
 
-void OgldevError(const char* pFileName, uint line, const char* format, ...)
+void OgldevError(const char* pFileName, unsigned int line, const char* format, ...)
 {
     char msg[1000];
     va_list args;
@@ -194,7 +194,7 @@ void OgldevError(const char* pFileName, uint line, const char* format, ...)
 }
 
 
-void OgldevFileError(const char* pFileName, uint line, const char* pFileError)
+void OgldevFileError(const char* pFileName, unsigned int line, const char* pFileError)
 {
 #ifdef _WIN32
     char msg[1000];

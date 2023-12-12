@@ -31,6 +31,7 @@
 #endif
 #include <stdio.h>
 #include <cfloat>
+#include <math.h>
 
 #include "ogldev_util.h"
 

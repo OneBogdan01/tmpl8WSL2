@@ -1,9 +1,16 @@
 ﻿#pragma once
+#ifdef _WINDOWS
 
+#include <GLFW/glfw3.h>
+
+typedef int KeySym;
+#else
 #include <X11/keysym.h>
 #include <X11/Xlib.h>
-//keyboard manager from Cupak, Erik (231059)
+#endif
 
+//keyboard manager from Cupak, Erik (231059)
+//sometimes on x11 a button keeps getting pressed
 struct KeyPacket
 {
 	KeyPacket(const KeySym boundKeycode)
@@ -74,9 +81,9 @@ public:
 
 	void Update();
 
-	void KeyPressed(const KeySym keycode);
+	void KeyPressed( KeySym keycode);
 
-	void KeyReleased(const KeySym keycode);
+	void KeyReleased( KeySym keycode);
 
 	const bool IsPressed(const Action action) const;
 
@@ -93,6 +100,31 @@ private:
 
 	// Initial keybinding should match the action of the keyPacket.
 	// keyPackets_[0] is jump and should have a corresponding keybinding.
+#ifdef _WINDOWS
+	KeyPacket keyPackets_[Action::Count]
+	{
+		// Pitch
+	GLFW_KEY_W,
+	GLFW_KEY_S,
+
+	// Yaw
+	GLFW_KEY_A,
+	GLFW_KEY_D,
+
+	// Move
+	GLFW_KEY_LEFT,
+	GLFW_KEY_RIGHT,
+	GLFW_KEY_UP,
+	GLFW_KEY_DOWN,
+
+	// Action / Jump
+	GLFW_KEY_SPACE,
+
+	// Exit
+	GLFW_KEY_ESCAPE,
+	};
+#else
+	
 	KeyPacket keyPackets_[Action::Count]
 	{
 		// Pitch
@@ -115,4 +147,6 @@ private:
 		// Exit
 		XK_Escape,
 	};
+#endif
+
 };

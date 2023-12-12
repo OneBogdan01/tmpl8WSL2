@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <gl2.h>
+#include <template.h>
 #include <LinearMath/btIDebugDraw.h>
 #include <vector>
 

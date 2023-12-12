@@ -13,268 +13,268 @@ static bool IGP_detected = false;
 // OpenGL helper functions
 void _CheckGL(const char* f, int l)
 {
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR)
-	{
-		const char* errStr = "UNKNOWN ERROR";
-		if (error == 0x500) errStr = "INVALID ENUM";
-		else if (error == 0x502) errStr = "INVALID OPERATION";
-		else if (error == 0x501) errStr = "INVALID VALUE";
-		else if (error == 0x506) errStr = "INVALID FRAMEBUFFER OPERATION";
-		FatalError("GL error %d: %s at %s:%d\n", error, errStr, f, l);
-	}
+    GLenum error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        const char* errStr = "UNKNOWN ERROR";
+        if (error == 0x500) errStr = "INVALID ENUM";
+        else if (error == 0x502) errStr = "INVALID OPERATION";
+        else if (error == 0x501) errStr = "INVALID VALUE";
+        else if (error == 0x506) errStr = "INVALID FRAMEBUFFER OPERATION";
+        FatalError("GL error %d: %s at %s:%d\n", error, errStr, f, l);
+    }
 }
 
 GLuint CreateVBO(const GLfloat* data, const uint size)
 {
-	GLuint id;
-	glGenBuffers(1, &id);
-	glBindBuffer(GL_ARRAY_BUFFER, id);
-	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-	CheckGL();
-	return id;
+    GLuint id;
+    glGenBuffers(1, &id);
+    glBindBuffer(GL_ARRAY_BUFFER, id);
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    CheckGL();
+    return id;
 }
 
 void BindVBO(const uint idx, const uint N, const GLuint id)
 {
-	glEnableVertexAttribArray(idx);
-	glBindBuffer(GL_ARRAY_BUFFER, id);
-	glVertexAttribPointer(idx, N, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	CheckGL();
+    glEnableVertexAttribArray(idx);
+    glBindBuffer(GL_ARRAY_BUFFER, id);
+    glVertexAttribPointer(idx, N, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    CheckGL();
 }
 
 void CheckShader(GLuint shader)
 {
-	char buffer[1024];
-	memset(buffer, 0, sizeof(buffer));
-	GLsizei length = 0;
-	glGetShaderInfoLog(shader, sizeof(buffer), &length, buffer);
-	CheckGL();
-	FATALERROR_IF(length > 0 && strstr( buffer, "ERROR" ), "Shader compile error:\n%s", buffer);
+    char buffer[1024];
+    memset(buffer, 0, sizeof(buffer));
+    GLsizei length = 0;
+    glGetShaderInfoLog(shader, sizeof(buffer), &length, buffer);
+    CheckGL();
+    FATALERROR_IF(length > 0 && strstr( buffer, "ERROR" ), "Shader compile error:\n%s", buffer);
 }
 
 void CheckProgram(GLuint id)
 {
-	char buffer[1024];
-	memset(buffer, 0, sizeof(buffer));
-	GLsizei length = 0;
-	glGetProgramInfoLog(id, sizeof(buffer), &length, buffer);
-	CheckGL();
-	FATALERROR_IF(length > 0, "Shader link error:\n%s", buffer);
+    char buffer[1024];
+    memset(buffer, 0, sizeof(buffer));
+    GLsizei length = 0;
+    glGetProgramInfoLog(id, sizeof(buffer), &length, buffer);
+    CheckGL();
+    FATALERROR_IF(length > 0, "Shader link error:\n%s", buffer);
 }
 
 void DrawQuad()
 {
-	static GLuint vao = 0;
-	if (!vao)
-	{
-		// generate buffers
-		static const GLfloat verts[] = {-1, 1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0};
-		static const GLfloat uvdata[] = {0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1};
-		static const GLfloat verts_igp[] = {0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0};
-		static const GLfloat uvdata_igp[] = {-1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1};
-		GLuint vertexBuffer, UVBuffer;
-		if (IGP_detected)
-		{
-			// not sure why it is needed - without it IGPs tile and clamp the output.
-			vertexBuffer = CreateVBO(verts_igp, sizeof(verts_igp));
-			UVBuffer = CreateVBO(uvdata_igp, sizeof(uvdata_igp));
-		}
-		else
-		{
-			vertexBuffer = CreateVBO(verts, sizeof(verts));
-			UVBuffer = CreateVBO(uvdata, sizeof(uvdata));
-		}
-		glGenVertexArrays(1, &vao);
-		glBindVertexArray(vao);
-		BindVBO(0, 3, vertexBuffer);
-		BindVBO(1, 2, UVBuffer);
-		glBindVertexArray(0);
-		CheckGL();
-	}
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindVertexArray(0);
+    static GLuint vao = 0;
+    if (!vao)
+    {
+        // generate buffers
+        static const GLfloat verts[] = {-1, 1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0};
+        static const GLfloat uvdata[] = {0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1};
+        static const GLfloat verts_igp[] = {0, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0};
+        static const GLfloat uvdata_igp[] = {-1, -1, 1, -1, -1, 1, 1, -1, -1, 1, 1, 1};
+        GLuint vertexBuffer, UVBuffer;
+        if (IGP_detected)
+        {
+            // not sure why it is needed - without it IGPs tile and clamp the output.
+            vertexBuffer = CreateVBO(verts_igp, sizeof(verts_igp));
+            UVBuffer = CreateVBO(uvdata_igp, sizeof(uvdata_igp));
+        }
+        else
+        {
+            vertexBuffer = CreateVBO(verts, sizeof(verts));
+            UVBuffer = CreateVBO(uvdata, sizeof(uvdata));
+        }
+        glGenVertexArrays(1, &vao);
+        glBindVertexArray(vao);
+        BindVBO(0, 3, vertexBuffer);
+        BindVBO(1, 2, UVBuffer);
+        glBindVertexArray(0);
+        CheckGL();
+    }
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
 }
 
 // OpenGL texture wrapper class
 GLTexture::GLTexture(uint w, uint h, uint type)
 {
-	width = w;
-	height = h;
-	glGenTextures(1, &ID);
-	glBindTexture(GL_TEXTURE_2D, ID);
-	if (type == DEFAULT)
-	{
-		// regular texture
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
-	}
-	else if (type == INTTARGET)
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-	}
-	else /* type == FLOAT */
-	{
-		FatalError("Floating point textures not supported in OpenGL ES 3.x.");
-	}
-	glBindTexture(GL_TEXTURE_2D, 0);
-	CheckGL();
+    width = w;
+    height = h;
+    glGenTextures(1, &ID);
+    glBindTexture(GL_TEXTURE_2D, ID);
+    if (type == DEFAULT)
+    {
+        // regular texture
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    }
+    else if (type == INTTARGET)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+    }
+    else /* type == FLOAT */
+    {
+        FatalError("Floating point textures not supported in OpenGL ES 3.x.");
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    CheckGL();
 }
 
 GLTexture::~GLTexture()
 {
-	glDeleteTextures(1, &ID);
-	CheckGL();
+    glDeleteTextures(1, &ID);
+    CheckGL();
 }
 
 void GLTexture::Bind(const uint slot)
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, ID);
-	CheckGL();
+    glActiveTexture(GL_TEXTURE0 + slot);
+    glBindTexture(GL_TEXTURE_2D, ID);
+    CheckGL();
 }
 
 void GLTexture::CopyFrom(Surface* src)
 {
-	glBindTexture(GL_TEXTURE_2D, ID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, src->pixels);
-	CheckGL();
+    glBindTexture(GL_TEXTURE_2D, ID);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, src->pixels);
+    CheckGL();
 }
 
 void GLTexture::CopyTo(Surface* dst)
 {
-	// TODO: implement for EGL
-	// glBindTexture( GL_TEXTURE_2D, ID );
-	// glGetTexImage( GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, dst->pixels );
-	// CheckGL();
+    // TODO: implement for EGL
+    // glBindTexture( GL_TEXTURE_2D, ID );
+    // glGetTexImage( GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, dst->pixels );
+    // CheckGL();
 }
 
 // Shader class implementation
 Shader::Shader(const char* vfile, const char* pfile)
 {
-	Init(vfile, pfile);
+    Init(vfile, pfile);
 }
 
 Shader::~Shader()
 {
-	glDetachShader(ID, pixel);
-	glDetachShader(ID, vertex);
-	glDeleteProgram(ID);
-	CheckGL();
+    glDetachShader(ID, pixel);
+    glDetachShader(ID, vertex);
+    glDeleteProgram(ID);
+    CheckGL();
 }
 
 void Shader::Init(const char* vfile, const char* pfile)
 {
-	string vsText = TextFileRead(vfile);
-	string fsText = TextFileRead(pfile);
-	FATALERROR_IF(vsText.size() == 0, "File %s not found", vfile);
-	FATALERROR_IF(fsText.size() == 0, "File %s not found", pfile);
-	const char* vertexText = vsText.c_str();
-	const char* fragmentText = fsText.c_str();
-	Compile(vertexText, fragmentText);
+    string vsText = TextFileRead(vfile);
+    string fsText = TextFileRead(pfile);
+    FATALERROR_IF(vsText.size() == 0, "File %s not found", vfile);
+    FATALERROR_IF(fsText.size() == 0, "File %s not found", pfile);
+    const char* vertexText = vsText.c_str();
+    const char* fragmentText = fsText.c_str();
+    Compile(vertexText, fragmentText);
 }
 
 void Shader::Compile(const char* vtext, const char* ftext)
 {
-	vertex = glCreateShader(GL_VERTEX_SHADER);
-	pixel = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(vertex, 1, &vtext, nullptr);
-	glCompileShader(vertex);
-	CheckShader(vertex);
-	glShaderSource(pixel, 1, &ftext, nullptr);
-	glCompileShader(pixel);
-	CheckShader(pixel);
-	//link together
-	ID = glCreateProgram();
-	glAttachShader(ID, vertex);
-	glAttachShader(ID, pixel);
-	/*glBindAttribLocation(ID, 0, "pos");
-	glBindAttribLocation(ID, 1, "tuv");*/
+    vertex = glCreateShader(GL_VERTEX_SHADER);
+    pixel = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(vertex, 1, &vtext, nullptr);
+    glCompileShader(vertex);
+    CheckShader(vertex);
+    glShaderSource(pixel, 1, &ftext, nullptr);
+    glCompileShader(pixel);
+    CheckShader(pixel);
+    //link together
+    ID = glCreateProgram();
+    glAttachShader(ID, vertex);
+    glAttachShader(ID, pixel);
+    /*glBindAttribLocation(ID, 0, "pos");
+    glBindAttribLocation(ID, 1, "tuv");*/
 
-	glLinkProgram(ID);
-	CheckProgram(ID);
-	CheckGL();
+    glLinkProgram(ID);
+    CheckProgram(ID);
+    CheckGL();
 
-	glDeleteShader(vertex);
-	glDeleteShader(pixel);
+    glDeleteShader(vertex);
+    glDeleteShader(pixel);
 }
 
 void Shader::Bind()
 {
-	glUseProgram(ID);
-	CheckGL();
+    glUseProgram(ID);
+    CheckGL();
 }
 
 void Shader::Unbind()
 {
-	glUseProgram(0);
-	CheckGL();
+    glUseProgram(0);
+    CheckGL();
 }
 
 void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
 {
-	glActiveTexture(GL_TEXTURE0 + slot);
-	glBindTexture(GL_TEXTURE_2D, texture->ID);
-	glUniform1i(glGetUniformLocation(ID, name), slot);
-	//CheckGL();
+    glActiveTexture(GL_TEXTURE0 + slot);
+    glBindTexture(GL_TEXTURE_2D, texture->ID);
+    glUniform1i(glGetUniformLocation(ID, name), slot);
+    //CheckGL();
 }
 
 void Shader::SetInputMatrix(const char* name, const glm::mat4& matrix)
 {
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
-	//CheckGL();
+    glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(matrix));
+    //CheckGL();
 }
 
 void Shader::SetFloat(const char* name, const float v)
 {
-	glUniform1f(glGetUniformLocation(ID, name), v);
-	CheckGL();
+    glUniform1f(glGetUniformLocation(ID, name), v);
+    CheckGL();
 }
 
 void Shader::SetMat4x4(const char* name, const glm::mat4& v) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(v));
-	CheckGL();
+    glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, glm::value_ptr(v));
+    CheckGL();
 }
 
 void Shader::SetMat4x4Transpose(const Matrix4f& v, GLuint boneLocation) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(ID, "gBones") + boneLocation, 1, GL_FALSE, v);
-	CheckGL();
+    glUniformMatrix4fv(glGetUniformLocation(ID, "gBones") + boneLocation, 1, GL_FALSE, v);
+    CheckGL();
 }
 
 void Shader::SetFloat3(const char* name, const float v1, const float v2, const float v3)
 {
-	glUniform3f(glGetUniformLocation(ID, name), v1, v2, v3);
-	CheckGL();
+    glUniform3f(glGetUniformLocation(ID, name), v1, v2, v3);
+    CheckGL();
 }
 
 void Shader::SetInt(const char* name, const int v)
 {
-	glUniform1i(glGetUniformLocation(ID, name), v);
-	CheckGL();
+    glUniform1i(glGetUniformLocation(ID, name), v);
+    CheckGL();
 }
 
 void Shader::SetUInt(const char* name, const uint v)
 {
-	glUniform1ui(glGetUniformLocation(ID, name), v);
-	CheckGL();
+    glUniform1ui(glGetUniformLocation(ID, name), v);
+    CheckGL();
 }
 
 GLint Shader::GetUniformLocation(const char* name)
 {
-	GLuint Location = glGetUniformLocation(ID, name);
+    GLuint Location = glGetUniformLocation(ID, name);
 
-	if (Location == INVALID_UNIFORM_LOCATION)
-	{
-		fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", name);
-	}
+    if (Location == INVALID_UNIFORM_LOCATION)
+    {
+        fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", name);
+    }
 
-	return Location;
+    return Location;
 }

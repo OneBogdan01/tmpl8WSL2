@@ -1,7 +1,7 @@
 ﻿#include "TileLoader.h"
 
 
-#include "template.h"
+
 
 #include <filesystem>
 #include <iostream>

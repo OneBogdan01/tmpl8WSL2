@@ -4,9 +4,9 @@
 #include <map>
 
 #include "template.h"
+
+
 using std::string;
-
-
 class ShaderProgram
 {
 public:

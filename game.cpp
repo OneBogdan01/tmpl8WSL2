@@ -203,113 +203,17 @@ void Game::Shutdown()
     delete tileLoader;
     delete camera;
 }
+#ifdef _WINDOWS
+void Game::KeyDown(int key)
+{
+    inputManager.KeyPressed(key);
+}
+void Game::KeyUp(int key)
+{
+    inputManager.KeyReleased(key);
+}
+#else
 
-//
-//void Game::KeyDown(XID key)
-//{
-//	switch (key)
-//	{
-//	case XK_space:
-//		player->Jump();
-//	case XK_w:
-//		yOffset -= 1;
-//		break;
-//	case XK_s:
-//		yOffset += 1;
-//		break;
-//	case XK_d:
-//		rotateCam.x += -1;
-//		player->GetMoveInput(1);
-//		break;
-//	case XK_a:
-//		rotateCam.x -= -1;
-//		player->GetMoveInput(-1);
-//		break;
-//	case XK_z:
-//		rotateCam.y += 1;
-//		break;
-//	case XK_c:
-//		rotateCam.y -= 1;
-//		break;
-//	case XK_Left:
-//		moveCam.x = -1;
-//
-//
-//		break;
-//	case XK_Right:
-//		moveCam.x = 1;
-//
-//
-//		break;
-//	case XK_Down:
-//		moveCam.y = -1;
-//
-//
-//		break;
-//	case XK_Up:
-//		moveCam.y = 1;
-//
-//
-//		break;
-//	default:
-//		break;
-//	}
-//}
-//
-//void Game::KeyUp(XID key)
-//{
-//	switch (key)
-//	{
-//	case XK_w:
-//		yOffset -= 1;
-//
-//		break;
-//	case XK_s:
-//		yOffset += 1;
-//		break;
-//	case XK_d:
-//		rotateCam.x += 1;
-//		player->GetMoveInput(0);
-//
-//		break;
-//	case XK_a:
-//		rotateCam.x -= 1;
-//		player->GetMoveInput(0);
-//		break;
-//	case XK_z:
-//		rotateCam.y += -1;
-//		break;
-//	case XK_c:
-//		rotateCam.y -= -1;
-//		break;
-//	case XK_Left:
-//		moveCam.x -= -1;
-//
-//
-//		break;
-//	case XK_Right:
-//		moveCam.x -= 1;
-//
-//
-//		break;
-//	case XK_Down:
-//		moveCam.y -= -1;
-//
-//
-//		break;
-//	case XK_Up:
-//		moveCam.y -= 1;
-//
-//
-//		break;
-//	default:
-//		break;
-//	}
-//	rotateCam.x = glm::clamp(rotateCam.x, -1.0f, 1.0f);
-//	rotateCam.y = glm::clamp(rotateCam.y, -1.0f, 1.0f);
-//	moveCam.x = glm::clamp(moveCam.x, -1.0f, 1.0f);
-//	moveCam.y = glm::clamp(moveCam.y, -1.0f, 1.0f);
-//}
 void Game::KeyDown(const KeySym keycode)
 {
     inputManager.KeyPressed(keycode);
@@ -320,6 +224,9 @@ void Game::KeyUp(const KeySym keycode)
 {
     inputManager.KeyReleased(keycode);
 }
+#endif
+
+
 
 void Game::MouseScroll(float x)
 {

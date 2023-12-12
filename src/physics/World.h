@@ -24,7 +24,7 @@ public:
 
     static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
     static btCapsuleShape* CreateBoundingCapsuleModel(const std::vector<StaticMesh>& meshes, float scale);
-    btVector3 GetRigidBodyPosition(uint ID) const;
+    btVector3 GetRigidBodyPosition(unsigned int ID) const;
     btDiscreteDynamicsWorld* GetDynamicWorld() const;
     void AddRigidBody(btRigidBody* rb) const;
     void Init();
@@ -48,7 +48,7 @@ private:
 
     static void SeparationEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
     DebugRenderer* debugDrawer = nullptr;
-    inline static uint ID = 0;
+    inline static unsigned int ID = 0;
     // Collision tracking.
     CollisionPairs pairsLastUpdate_;
 

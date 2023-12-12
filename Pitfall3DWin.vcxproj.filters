@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="game.h" />
+    <ClInclude Include="template\sprite.h" />
+    <ClInclude Include="template\stb_image.h" />
+    <ClInclude Include="template\surface.h" />
+    <ClInclude Include="src\lighting\Sun.h" />
+    <ClInclude Include="src\md2_loader\Md2.h" />
+    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
+    <ClInclude Include="src\md2_loader\Texture2D.h" />
+    <ClInclude Include="src\model_loading\ogldev_engine_common.h" />
+    <ClInclude Include="src\model_loading\ogldev_material.h" />
+    <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
+    <ClInclude Include="src\model_loading\ogldev_types.h" />
+    <ClInclude Include="src\model_loading\ogldev_util.h" />
+    <ClInclude Include="src\model_loading\ogldev_world_transform.h" />
+    <ClInclude Include="src\model_loading\SkinnedMesh.h" />
+    <ClInclude Include="src\model_loading\StaticMesh.h" />
+    <ClInclude Include="src\model_loading\StaticModel.h" />
+    <ClInclude Include="src\model_loading\UtilityAssimp.h" />
+    <ClInclude Include="src\physics\DebugRenderer.h" />
+    <ClInclude Include="src\physics\GameObject.h" />
+    <ClInclude Include="src\physics\GameValues.h" />
+    <ClInclude Include="src\physics\World.h" />
+    <ClInclude Include="src\skybox\Skybox.h" />
+    <ClInclude Include="src\tiles\Chunk.h" />
+    <ClInclude Include="src\tiles\Tile.h" />
+    <ClInclude Include="src\tiles\TileLoader.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\KeyboardManager.h" />
+    <ClInclude Include="src\PlayerCharacter.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\Timer.h" />
+    <ClInclude Include="src\Triangle.h" />
+    <ClInclude Include="template\opengl.h" />
+    <ClInclude Include="template\template.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="template\sprite.cpp" />
+    <ClCompile Include="template\surface.cpp" />
+    <ClCompile Include="src\lighting\Sun.cpp" />
+    <ClCompile Include="src\md2_loader\Md2.cpp" />
+    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
+    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
+    <ClCompile Include="src\model_loading\math_3d.cpp" />
+    <ClCompile Include="src\model_loading\ogldev_util.cpp" />
+    <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
+    <ClCompile Include="src\model_loading\StaticMesh.cpp" />
+    <ClCompile Include="src\model_loading\StaticModel.cpp" />
+    <ClCompile Include="src\physics\DebugRenderer.cpp" />
+    <ClCompile Include="src\physics\GameObject.cpp" />
+    <ClCompile Include="src\physics\World.cpp" />
+    <ClCompile Include="src\skybox\Skybox.cpp" />
+    <ClCompile Include="src\tiles\Chunk.cpp" />
+    <ClCompile Include="src\tiles\Tile.cpp" />
+    <ClCompile Include="src\tiles\TileLoader.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\KeyboardManager.cpp" />
+    <ClCompile Include="src\PlayerCharacter.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Timer.cpp" />
+    <ClCompile Include="src\Triangle.cpp" />
+    <ClCompile Include="template\opengl.cpp" />
+    <ClCompile Include="template\template.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\basic.frag" />
+    <None Include="shaders\basic.vert" />
+    <None Include="shaders\BasicFragmentShader.frag" />
+    <None Include="shaders\BasicVertexShader.vert" />
+    <None Include="shaders\compute.comp" />
+    <None Include="shaders\DebugVert.vert" />
+    <None Include="shaders\ModelLoading.frag" />
+    <None Include="shaders\ModelLoading.vert" />
+    <None Include="shaders\Skinned.frag" />
+    <None Include="shaders\Skinned.vert" />
+    <None Include="shaders\Skybox.frag" />
+    <None Include="shaders\Skybox.vert" />
+    <None Include="shaders\SolidColor.frag" />
+    <None Include="shaders\Sun.frag" />
+  </ItemGroup>
+</Project>

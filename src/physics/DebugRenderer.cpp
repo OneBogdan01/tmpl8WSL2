@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "game.h"
-#include "template.h"
+
 #include "glm/gtx/transform.hpp"
 
 

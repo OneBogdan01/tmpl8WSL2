@@ -34,10 +34,13 @@ void KeyboardManager::Update()
 }
 
 
-// Setting keystate obtained by Game using GLFW keycodes.
+
+
+
+
 void KeyboardManager::KeyPressed(const KeySym keycode)
 {
-	int index{GetPacketIndex(keycode)};
+	int index{ GetPacketIndex(keycode) };
 
 	if (index != -1)
 	{
@@ -48,13 +51,14 @@ void KeyboardManager::KeyPressed(const KeySym keycode)
 
 void KeyboardManager::KeyReleased(const KeySym keycode)
 {
-	int index{GetPacketIndex(keycode)};
+	int index{ GetPacketIndex(keycode) };
 
 	if (index != -1)
 	{
 		keyPackets_[GetPacketIndex(keycode)].wasReleased = true;
 	}
 }
+
 
 
 // Returning keystate to objects using Action enum.
