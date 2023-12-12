@@ -17,6 +17,7 @@ subject to the following restrictions:
 #include "World.h"
 
 #include <algorithm>
+#include <iterator>
 #include <stdio.h>
 #include "DebugRenderer.h"
 #include "GameObject.h"

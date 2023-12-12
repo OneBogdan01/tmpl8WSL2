@@ -1,6 +1,6 @@
 ﻿#pragma once
 #ifdef _WINDOWS
-
+#include "glad.h"
 #include <GLFW/glfw3.h>
 
 typedef int KeySym;

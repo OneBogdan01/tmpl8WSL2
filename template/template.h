@@ -38,6 +38,7 @@ using LONG = long;
 
 // generic includes
 #include <stdio.h>
+#include <iostream>
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
@@ -45,250 +46,6 @@ using LONG = long;
 #include <chrono>
 #ifdef _WINDOWS
 
-// low-level: aligned memory allocations
-#ifdef _MSC_VER
-#define ALIGN( x ) __declspec( align( x ) )
-#define MALLOC64( x ) ( ( x ) == 0 ? 0 : _aligned_malloc( ( x ), 64 ) )
-#define FREE64( x ) _aligned_free( x )
-#else
-#define ALIGN( x ) __attribute__( ( aligned( x ) ) )
-#define MALLOC64( x ) ( ( x ) == 0 ? 0 : aligned_alloc( 64, ( x ) ) )
-#define FREE64( x ) free( x )
-#endif
-#if defined(__GNUC__) && (__GNUC__ >= 4)
-#define CHECK_RESULT __attribute__ ((warn_unused_result))
-#elif defined(_MSC_VER) && (_MSC_VER >= 1700)
-#define CHECK_RESULT _Check_return_
-#else
-#define CHECK_RESULT
-#endif
-
-// math classes
-
-// template headers
-//#include "surface.h"
-//#include "sprite.h"
-//my header
-#include <Audio/Sound.hpp>
-#include <json.hpp>
-//my old project files
-//#include "Scripts/Utilities/StaticArray.h"
-//#include "Scripts/Utilities/DynamicArray.h"
-//#include "Scripts/Utilities/AABB.h"
-//
-//#include "Scripts/Utilities/SavingLoading.h"
-//#include "Scripts/Utilities/Entity.h"
-////observer
-//#include "Scripts/Observer/Observer.h"
-//#include "Scripts/Observer/Subject.h"
-//
-////ui
-//#include "Scripts/Player/HealthBar.h"
-//
-////components
-//#include "Scripts/Utilities/CollisionChecker.h"
-//#include "Scripts/Utilities/WinCondition.h"
-//#include "Scripts/Utilities/Health.h"
-//#include "Scripts/Map/Tilemap.h"
-//#include "Scripts/Utilities/MathLibrary.h"
-//#include "Scripts/Player/Camera.h"
-//#include "Scripts/Map/Tilemap.h"
-//#include "Scripts/Player/Avatar.h"
-//#include "Scripts/Map/Parallax.h"
-//#include "Scripts/Player/Rock.h"
-//#include "Scripts/Player/SpawnRocks.h"
-//#include "Scripts/Utilities/Score.h"
-//#include "Scripts/Utilities/PlayerScore.h"
-//#include "Scripts/Utilities/CoinScore.h"
-//#include "Scripts/Utilities/GameStateManager.h"
-////non tile
-//#include "Scripts/Map/Non-Tileables/NonTileMap.h"
-//#include "Scripts/Map/Non-Tileables/Rope.h"
-//#include "Scripts/Map/Non-Tileables/Zipline.h"
-//#include "Scripts/Map/Non-Tileables/ElasticPlant.h"
-//#include "Scripts/Map/Non-Tileables/Coin.h"
-//#include "Scripts/Map/Non-Tileables/Checkpoint.h"
-//
-////FSM
-//#include "Scripts/Player/States//PlayerState.h"
-//#include "Scripts/Player/States/ClimbingState.h"
-//#include "Scripts/Player/States/SwingingState.h"
-//#include "Scripts/Player/States/FreemovingState.h"
-//#include "Scripts/Player/States/ZipliningState.h"
-//#include  "Scripts/Player/States/ElasticPlantState.h"
-////enemies
-//#include  "Scripts/Enemies/EnemyStates/MonkeyState.h"
-//#include  "Scripts/Enemies/EnemyStates/MonkeyTurnState.h"
-//#include  "Scripts/Enemies/EnemyStates/MonkeyOnLadderState.h"
-//#include  "Scripts/Enemies/EnemyStates/MonkeyPatrolState.h"
-//#include  "Scripts/Enemies/EnemyStates/MonkeyThrowState.h"
-//#include  "Scripts/Enemies/EnemyStates/MonkeyToGroundState.h"
-//
-//#include "Scripts/Enemies/EnemyStates/BoarState.h"
-//#include "Scripts/Enemies/EnemyStates/BoarPatrolState.h"
-//#include "Scripts/Enemies/EnemyStates/BoarTurnState.h"
-//#include "Scripts/Enemies/EnemyStates/BoarStopState.h"
-//
-//#include "Scripts/Enemies/Enemy.h"
-//#include  "Scripts/Enemies/Boar.h"
-//#include  "Scripts/Enemies/Monkey.h"
-//#include "Scripts/Enemies/Spike.h"
-//#include "Scripts/Enemies/MonkeyBall.h"
-//
-
-// namespaces
-//using namespace Tmpl8;
-
-// clang-format off
-// basic types
-using uchar = unsigned char;
-using uint = unsigned int;
-using ushort = unsigned short;
-// windows.h: disable a few things to speed up compilation.
-#define NOMINMAX
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#define VC_EXTRALEAN
-#endif
-#define NOGDICAPMASKS
-#define NOWINMESSAGES
-#define NOWINSTYLES
-#define NOSYSMETRICS
-#define NOMENUS
-#define NOICONS
-#define NOKEYSTATES
-#define NOSYSCOMMANDS
-#define NORASTEROPS
-#define NOSHOWWINDOW
-#define OEMRESOURCE
-#define NOATOM
-#define NOCLIPBOARD
-#define NOCOLOR
-#define NOCTLMGR
-#define NODRAWTEXT
-#define NOKERNEL
-#define NONLS
-#define NOMEMMGR
-#define NOMETAFILE
-#define NOMINMAX
-#define NOMSG
-#define NOOPENFILE
-#define NOSCROLL
-#define NOSERVICE
-#define NOSOUND
-#define NOTEXTMETRIC
-#define NOWH
-#define NOWINOFFSETS
-#define NOCOMM
-#define NOKANJI
-#define NOHELP
-#define NOPROFILER
-#define NODEFERWINDOWPOS
-#define NOMCX
-#define NOIME
-#include "windows.h"
-
-// OpenCL headers
-#define CL_USE_DEPRECATED_OPENCL_2_0_APIS // safe; see https://stackoverflow.com/a/28500846
-#include "cl/cl.h"
-#include <cl/cl_gl_ext.h>
-
-// GLFW
-#define GLFW_USE_CHDIR 0
-#define GLFW_EXPOSE_NATIVE_WIN32
-#define GLFW_EXPOSE_NATIVE_WGL
-#include <glad.h>
-#include <GLFW/glfw3.h>
-#include <GLFW/glfw3native.h>
-
-// zlib
-#include "zlib.h"
-// low-level: instruction set detection
-#ifdef _WIN32
-#define cpuid(info, x) __cpuidex(info, x, 0)
-#else
-#include <cpuid.h>
-void cpuid(int info[4], int InfoType) { __cpuid_count(InfoType, 0, info[0], info[1], info[2], info[3]); }
-#endif
-
-
-//
-//class CPUCaps // from https://github.com/Mysticial/FeatureDetector
-//{
-//public:
-//	static inline bool HW_MMX = false, HW_x64 = false, HW_ABM = false, HW_RDRAND = false;
-//	static inline bool HW_BMI1 = false, HW_BMI2 = false, HW_ADX = false, HW_PREFETCHWT1 = false;
-//	// SIMD: 128-bit
-//	static inline bool HW_SSE = false, HW_SSE2 = false, HW_SSE3 = false, HW_SSSE3 = false;
-//	static inline bool HW_SSE41 = false, HW_SSE42 = false, HW_SSE4a = false;
-//	static inline bool HW_AES = false, HW_SHA = false;
-//	// SIMD: 256-bit
-//	static inline bool HW_AVX = false, HW_XOP = false, HW_FMA3 = false, HW_FMA4 = false;
-//	static inline bool HW_AVX2 = false;
-//	// SIMD: 512-bit
-//	static inline bool HW_AVX512F = false; //  AVX512 Foundation
-//	static inline bool HW_AVX512CD = false; //  AVX512 Conflict Detection
-//	static inline bool HW_AVX512PF = false; //  AVX512 Prefetch
-//	static inline bool HW_AVX512ER = false; //  AVX512 Exponential + Reciprocal
-//	static inline bool HW_AVX512VL = false; //  AVX512 Vector Length Extensions
-//	static inline bool HW_AVX512BW = false; //  AVX512 Byte + Word
-//	static inline bool HW_AVX512DQ = false; //  AVX512 Doubleword + Quadword
-//	static inline bool HW_AVX512IFMA = false; //  AVX512 Integer 52-bit Fused Multiply-Add
-//	static inline bool HW_AVX512VBMI = false; //  AVX512 Vector Byte Manipulation Instructions
-//	// constructor
-//	CPUCaps()
-//	{
-//		int info[4];
-//		cpuid(info, 0);
-//		int nIds = info[0];
-//		cpuid(info, 0x80000000);
-//		unsigned nExIds = info[0];
-//		// detect cpu features
-//		if (nIds >= 0x00000001)
-//		{
-//			cpuid(info, 0x00000001);
-//			HW_MMX = (info[3] & ((int)1 << 23)) != 0;
-//			HW_SSE = (info[3] & ((int)1 << 25)) != 0;
-//			HW_SSE2 = (info[3] & ((int)1 << 26)) != 0;
-//			HW_SSE3 = (info[2] & ((int)1 << 0)) != 0;
-//			HW_SSSE3 = (info[2] & ((int)1 << 9)) != 0;
-//			HW_SSE41 = (info[2] & ((int)1 << 19)) != 0;
-//			HW_SSE42 = (info[2] & ((int)1 << 20)) != 0;
-//			HW_AES = (info[2] & ((int)1 << 25)) != 0;
-//			HW_AVX = (info[2] & ((int)1 << 28)) != 0;
-//			HW_FMA3 = (info[2] & ((int)1 << 12)) != 0;
-//			HW_RDRAND = (info[2] & ((int)1 << 30)) != 0;
-//		}
-//		if (nIds >= 0x00000007)
-//		{
-//			cpuid(info, 0x00000007);
-//			HW_AVX2 = (info[1] & ((int)1 << 5)) != 0;
-//			HW_BMI1 = (info[1] & ((int)1 << 3)) != 0;
-//			HW_BMI2 = (info[1] & ((int)1 << 8)) != 0;
-//			HW_ADX = (info[1] & ((int)1 << 19)) != 0;
-//			HW_SHA = (info[1] & ((int)1 << 29)) != 0;
-//			HW_PREFETCHWT1 = (info[2] & ((int)1 << 0)) != 0;
-//			HW_AVX512F = (info[1] & ((int)1 << 16)) != 0;
-//			HW_AVX512CD = (info[1] & ((int)1 << 28)) != 0;
-//			HW_AVX512PF = (info[1] & ((int)1 << 26)) != 0;
-//			HW_AVX512ER = (info[1] & ((int)1 << 27)) != 0;
-//			HW_AVX512VL = (info[1] & ((int)1 << 31)) != 0;
-//			HW_AVX512BW = (info[1] & ((int)1 << 30)) != 0;
-//			HW_AVX512DQ = (info[1] & ((int)1 << 17)) != 0;
-//			HW_AVX512IFMA = (info[1] & ((int)1 << 21)) != 0;
-//			HW_AVX512VBMI = (info[2] & ((int)1 << 1)) != 0;
-//		}
-//		if (nExIds >= 0x80000001)
-//		{
-//			cpuid(info, 0x80000001);
-//			HW_x64 = (info[3] & ((int)1 << 29)) != 0;
-//			HW_ABM = (info[2] & ((int)1 << 5)) != 0;
-//			HW_SSE4a = (info[2] & ((int)1 << 6)) != 0;
-//			HW_FMA4 = (info[2] & ((int)1 << 16)) != 0;
-//			HW_XOP = (info[2] & ((int)1 << 11)) != 0;
-//		}
-//	}
-//	};
 #else
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
@@ -300,11 +57,8 @@ void cpuid(int info[4], int InfoType) { __cpuid_count(InfoType, 0, info[0], info
 #include <unistd.h>
 #include <pthread.h>
 #include <X11/Xutil.h>
+
 #endif
-#include <vector>
-#include <fcntl.h>
-#include <string.h>
-#include <fstream>
 
 
 ////define only if we run on the ARM platform
@@ -379,7 +133,7 @@ void FatalError(const char* fmt, ...);
 // generic error checking for OpenGL code
 #define CheckGL() { _CheckGL( __FILE__, __LINE__ ); }
 
-// forward declarations of helper functions
+// forward declarations of helper functions in opengl.h
 void _CheckGL(const char* f, int l);
 GLuint CreateVBO(const GLfloat* data, const uint size);
 void BindVBO(const uint idx, const uint N, const GLuint id);

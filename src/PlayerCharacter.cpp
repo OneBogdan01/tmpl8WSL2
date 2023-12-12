@@ -38,7 +38,8 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
     dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
     playerCharacterGhost->setUserPointer(&gameObject);
     characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
-    characterController->setGravity(dynamicsWorld->getGravity());
+    btScalar gravity = dynamicsWorld->getGravity().getY();
+    characterController->setGravity(gravity);
     //makes the player fall on the edge of the platform
     characterController->setMaxSlope(btScalar(0.0f));
     //characterController->setStepHeight(btScalar(0.0f));

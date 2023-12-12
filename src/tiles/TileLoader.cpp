@@ -6,6 +6,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include "Texture.h"
+
 namespace fs = std::filesystem;
 
 TileLoader::~TileLoader()
@@ -70,7 +72,7 @@ void TileLoader::Init(const char* csvPath)
                     const glm::vec3 position = chunkOff + glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
                                                                     static_cast<float>(i) * TILE_SIZE)
                         - offset;
-                    cout << position.x << " " << position.y << " " << position.z << "\n";
+                    std::cout << position.x << " " << position.y << " " << position.z << "\n";
                     chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
                 }
             }

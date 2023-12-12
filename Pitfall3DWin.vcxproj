@@ -76,10 +76,11 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3.lib;gdi32.lib;shell32.lib;OpenCL.lib;OpenGL32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\Assimp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_debug.lib;BulletSoftBody_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;LinearMath_vs2010_debug.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -91,10 +92,11 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3.lib;gdi32.lib;shell32.lib;OpenCL.lib;OpenGL32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -110,10 +112,11 @@
       <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib\Audio\inc;lib\Json;src\;external/Imgui/;external/;external/bullet/;external/assimp/</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3.lib;gdi32.lib;shell32.lib;OpenCL.lib;OpenGL32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\Assimp</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010.lib;BulletSoftBody_vs2010.lib;BulletDynamics_vs2010.lib;LinearMath_vs2010.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -129,15 +132,292 @@
       <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib\Audio\inc;lib\Json;src\;external/Imgui/;external/;external/bullet/;external/assimp/</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3.lib;gdi32.lib;shell32.lib;OpenCL.lib;OpenGL32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision;BulletSoftBody;BulletDynamics;LinearMath;assimp</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="external\bullet\btBulletCollisionCommon.h" />
+    <ClInclude Include="external\bullet\btBulletDynamicsCommon.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3Internal.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btBroadphaseInterface.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btBroadphaseProxy.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btDbvt.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btDbvtBroadphase.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btDispatcher.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCache.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btOverlappingPairCallback.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btQuantizedBvh.h" />
+    <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btSimpleBroadphase.h" />
+    <ClInclude Include="external\bullet\BulletCollision\btBulletCollisionCommon.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btActivatingCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btBox2dBox2dCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btBoxBoxCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btBoxBoxDetector.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionConfiguration.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionCreateFunc.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionDispatcher.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionDispatcherMt.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionObject.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionObjectWrapper.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionWorld.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCollisionWorldImporter.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCompoundCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btCompoundCompoundCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btConvex2dConvex2dAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btConvexConcaveCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btConvexConvexAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btConvexPlaneCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btDefaultCollisionConfiguration.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btEmptyCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btGhostObject.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btHashedSimplePairCache.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btInternalEdgeUtility.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btManifoldResult.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btSimulationIslandManager.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btSphereBoxCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btSphereSphereCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btSphereTriangleCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\btUnionFind.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionDispatch\SphereTriangleDetector.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btBox2dShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btBoxShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btBvhTriangleMeshShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btCapsuleShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btCollisionMargin.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btCollisionShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btCompoundShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConcaveShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConeShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvex2dShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexHullShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexInternalShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexPointCloudShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexPolyhedron.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btConvexTriangleMeshShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btCylinderShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btEmptyShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btHeightfieldTerrainShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btMaterial.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btMiniSDF.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btMinkowskiSumShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btMultimaterialTriangleMeshShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btMultiSphereShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btOptimizedBvh.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btPolyhedralConvexShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btScaledBvhTriangleMeshShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btSdfCollisionShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btShapeHull.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btSphereShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btStaticPlaneShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btStridingMeshInterface.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTetrahedronShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleBuffer.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleCallback.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexMaterialArray.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleInfoMap.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleMesh.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleMeshShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btTriangleShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\CollisionShapes\btUniformScalingShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btBoxCollision.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btClipPolygon.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btCompoundFromGimpact.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btContactProcessing.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btContactProcessingStructs.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGenericPoolAllocator.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGeometryOperations.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactBvh.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactBvhStructs.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactMassUtil.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactQuantizedBvh.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactQuantizedBvhStructs.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btGImpactShape.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btQuantization.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\btTriangleShapeEx.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_array.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_basic_geometry_operations.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_bitset.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_box_collision.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_box_set.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_clip_polygon.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_contact.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_geometry.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_geom_types.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_hash_table.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_linear_math.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_math.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_memory.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_pair.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_radixsort.h" />
+    <ClInclude Include="external\bullet\BulletCollision\Gimpact\gim_tri_collision.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btComputeGjkEpaPenetration.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btContinuousConvexCollision.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btConvexCast.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btConvexPenetrationDepthSolver.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btDiscreteCollisionDetectorInterface.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkCollisionDescription.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkConvexCast.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa2.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkEpa3.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkEpaPenetrationDepthSolver.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btGjkPairDetector.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btManifoldPoint.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btMinkowskiPenetrationDepthSolver.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btMprPenetration.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btPersistentManifold.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btPointCollector.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btPolyhedralContactClipping.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btRaycastCallback.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btSimplexSolverInterface.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btSubSimplexConvexCast.h" />
+    <ClInclude Include="external\bullet\BulletCollision\NarrowPhaseCollision\btVoronoiSimplexSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\btBulletDynamicsCommon.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Character\btCharacterControllerInterface.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Character\btKinematicCharacterController.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btBatchedConstraints.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btConeTwistConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btContactConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btContactSolverInfo.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btFixedConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btGearConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btGeneric6DofConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpring2Constraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btGeneric6DofSpringConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btHinge2Constraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btHingeConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btJacobianEntry.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btNNCGConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btPoint2PointConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSequentialImpulseConstraintSolverMt.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSliderConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSolve2LinearConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSolverBody.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btSolverConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btTypedConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\ConstraintSolver\btUniversalConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btActionInterface.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btDiscreteDynamicsWorldMt.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btRigidBody.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btSimpleDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Dynamics\btSimulationIslandManagerMt.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBody.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyFixedConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyGearConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyInplaceSolverIslandCallback.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyJointFeedback.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyJointLimitConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyJointMotor.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyLink.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyLinkCollider.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyMLCPConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodyPoint2Point.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodySliderConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodySolverConstraint.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodySphericalJointLimit.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Featherstone\btMultiBodySphericalJointMotor.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btDantzigLCP.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btDantzigSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btLemkeAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btLemkeSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btMLCPSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btMLCPSolverInterface.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btPATHSolver.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\MLCPSolvers\btSolveProjectedGaussSeidel.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Vehicle\btRaycastVehicle.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Vehicle\btVehicleRaycaster.h" />
+    <ClInclude Include="external\bullet\BulletDynamics\Vehicle\btWheelInfo.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btCGProjection.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btConjugateGradient.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btConjugateResidual.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDefaultSoftBodySolver.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableBackwardEulerObjective.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableBodySolver.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableContactConstraint.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableContactProjection.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableCorotatedForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableGravityForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableLagrangianForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableLinearElasticityForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableMassSpringForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableMousePickingForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableMultiBodyConstraintSolver.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableMultiBodyDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btDeformableNeoHookeanForce.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btKrylovSolver.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btPreconditioner.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBody.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodyConcaveCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodyData.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodyHelpers.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodyInternals.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodyRigidBodyCollisionConfiguration.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodySolvers.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftBodySolverVertexBuffer.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftMultiBodyDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftRigidCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftRigidDynamicsWorld.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSoftSoftCollisionAlgorithm.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\btSparseSDF.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\BulletReducedDeformableBody\btReducedDeformableBody.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\BulletReducedDeformableBody\btReducedDeformableBodyHelpers.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\BulletReducedDeformableBody\btReducedDeformableBodySolver.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\BulletReducedDeformableBody\btReducedDeformableContactConstraint.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\DeformableBodyInplaceSolverIslandCallback.h" />
+    <ClInclude Include="external\bullet\BulletSoftBody\poly34.h" />
+    <ClInclude Include="external\bullet\LinearMath\btAabbUtil2.h" />
+    <ClInclude Include="external\bullet\LinearMath\btAlignedAllocator.h" />
+    <ClInclude Include="external\bullet\LinearMath\btAlignedObjectArray.h" />
+    <ClInclude Include="external\bullet\LinearMath\btConvexHull.h" />
+    <ClInclude Include="external\bullet\LinearMath\btConvexHullComputer.h" />
+    <ClInclude Include="external\bullet\LinearMath\btCpuFeatureUtility.h" />
+    <ClInclude Include="external\bullet\LinearMath\btDefaultMotionState.h" />
+    <ClInclude Include="external\bullet\LinearMath\btGeometryUtil.h" />
+    <ClInclude Include="external\bullet\LinearMath\btGrahamScan2dConvexHull.h" />
+    <ClInclude Include="external\bullet\LinearMath\btHashMap.h" />
+    <ClInclude Include="external\bullet\LinearMath\btIDebugDraw.h" />
+    <ClInclude Include="external\bullet\LinearMath\btImplicitQRSVD.h" />
+    <ClInclude Include="external\bullet\LinearMath\btList.h" />
+    <ClInclude Include="external\bullet\LinearMath\btMatrix3x3.h" />
+    <ClInclude Include="external\bullet\LinearMath\btMatrixX.h" />
+    <ClInclude Include="external\bullet\LinearMath\btMinMax.h" />
+    <ClInclude Include="external\bullet\LinearMath\btModifiedGramSchmidt.h" />
+    <ClInclude Include="external\bullet\LinearMath\btMotionState.h" />
+    <ClInclude Include="external\bullet\LinearMath\btPolarDecomposition.h" />
+    <ClInclude Include="external\bullet\LinearMath\btPoolAllocator.h" />
+    <ClInclude Include="external\bullet\LinearMath\btQuadWord.h" />
+    <ClInclude Include="external\bullet\LinearMath\btQuaternion.h" />
+    <ClInclude Include="external\bullet\LinearMath\btQuickprof.h" />
+    <ClInclude Include="external\bullet\LinearMath\btRandom.h" />
+    <ClInclude Include="external\bullet\LinearMath\btReducedVector.h" />
+    <ClInclude Include="external\bullet\LinearMath\btScalar.h" />
+    <ClInclude Include="external\bullet\LinearMath\btSerializer.h" />
+    <ClInclude Include="external\bullet\LinearMath\btSpatialAlgebra.h" />
+    <ClInclude Include="external\bullet\LinearMath\btStackAlloc.h" />
+    <ClInclude Include="external\bullet\LinearMath\btThreads.h" />
+    <ClInclude Include="external\bullet\LinearMath\btTransform.h" />
+    <ClInclude Include="external\bullet\LinearMath\btTransformUtil.h" />
+    <ClInclude Include="external\bullet\LinearMath\btVector3.h" />
+    <ClInclude Include="external\bullet\LinearMath\TaskScheduler\btThreadSupportInterface.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="lib\glad\glad.h" />
+    <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\KeyboardManager.h" />
     <ClInclude Include="src\lighting\Sun.h" />
@@ -175,6 +455,7 @@
   <ItemGroup>
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
     <ClCompile Include="src\md2_loader\Md2.cpp" />
@@ -202,6 +483,11 @@
     <ClCompile Include="template\template.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <CopyFileToFolders Include="lib\assimp\lib64\assimp.dll">
+      <FileType>Document</FileType>
+      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
+      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
+    </CopyFileToFolders>
     <None Include="shaders\basic.frag" />
     <None Include="shaders\basic.vert" />
     <None Include="shaders\BasicFragmentShader.frag" />

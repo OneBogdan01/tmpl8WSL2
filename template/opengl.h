@@ -3,9 +3,14 @@
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
 
 #pragma once
+#ifdef _WINDOWS
+#include "glad.h"
+#include "GLFW/glfw3.h"
+#endif
 #include <glm/mat4x4.hpp>
 
 #include "model_loading/ogldev_math_3d.h"
+
 
 // OpenGL texture wrapper
 class GLTexture
