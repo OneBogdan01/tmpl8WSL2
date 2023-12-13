@@ -117,9 +117,10 @@ void TileLoader::DrawChunks()
 void TileLoader::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
-	newOffset.z = dir.z * speed * deltaTime;
 	for (int i = 0; i < chunksOfTiles.size(); i++)
 	{
+		newOffset.z = dir.z * speed * deltaTime;
+
 		Chunk* chunk = chunksOfTiles[i];
 		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
 			newOffset.z = -TILE_SIZE * heightY * chunksOfTiles.size();

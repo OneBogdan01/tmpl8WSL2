@@ -14,35 +14,35 @@
             "scaleInEditor": 0.25
         },
         "map.tmx": {
-            "scale": 0.33,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -1753.030303030303,
-                "y": -4.545454545454504
+                "x": 539.9999999999999,
+                "y": 1020.6666666666665
             }
         },
         "map1.tmx": {
-            "scale": 0.0625,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 4752,
-                "y": 5512
+                "x": 588,
+                "y": 615
             }
         },
         "map2.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 722,
-                "y": 771
+                "x": 630,
+                "y": 741
             }
         },
         "map3.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 782,
-                "y": 651
+                "x": 362,
+                "y": 747
             }
         },
         "map4.tmx": {
@@ -50,7 +50,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 948.4848484848487,
-                "y": 586.3636363636363
+                "y": 577.2727272727273
             }
         },
         "sadas.tsx": {
