@@ -31,7 +31,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	StaticModel staticPlayerMode("assets\\excalibur\\tris.md2", true);
 
 #else
-    StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
+	StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
 
 #endif
 
@@ -48,7 +48,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	btScalar gravity = dynamicsWorld->getGravity().getY();
 	characterController->setGravity(gravity);
 #else
-    characterController->setGravity(dynamicsWorld->getGravity());
+	characterController->setGravity(dynamicsWorld->getGravity());
 #endif
 
 	//makes the player fall on the edge of the platform
@@ -60,8 +60,8 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 
 	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
-	characterController->setFallSpeed(5.0f);
-	characterController->setJumpSpeed(14.0f);
+	characterController->setFallSpeed(7.0f);
+	characterController->setJumpSpeed(16.0f);
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 
 	shader = new Shader(
@@ -215,7 +215,7 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 #ifdef _WINDOWS
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 #else
-        characterController->setWalkDirection(btVector3(0, 0, 0));
+		characterController->setWalkDirection(btVector3(0, 0, 0));
 
 #endif
 	}

@@ -35,7 +35,7 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 	return false;
 }
 
-void TileLoader::Init(const char* csvPath)
+void TileLoader::Init()
 {
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
@@ -55,20 +55,34 @@ void TileLoader::Init(const char* csvPath)
 	}
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
-	LoadCSVFile(csvPath);
 
-	glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-	                             static_cast<float>(heightY - 1) * TILE_SIZE);
 
-	int chunkCount = 2;
-	chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
+	vector<string> tileMapPaths;
+	for (const auto& entry : fs::directory_iterator("assets/tiled/"))
+	{
+		std::string pathString = entry.path().string();
+		if (hasEnding(pathString, ".tmx"))
+		{
+			tileMapPaths.push_back(pathString);
+		}
+	}
+	//alphabetically sort the tile paths
+	sort(tileMapPaths.begin(), tileMapPaths.end());
+	int chunkCount = 5;
+
 	for (int k = 0; k < chunkCount; k++)
 	{
+		LoadCSVFile(tileMapPaths[k].c_str());
+		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
+
+		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
+		                             static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
+		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
+		chunk->SetPosition(chunkOff);
 
 		for (int i = 0; i < heightY; i++)
 		{
-			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 			for (int j = 0; j < widthX; j++)
 			{
 				uint index = j + i * widthX;
@@ -86,24 +100,31 @@ void TileLoader::Init(const char* csvPath)
 				}
 			}
 		}
+
+		delete[]tileArray;
 		chunksOfTiles.push_back(chunk);
 	}
 }
 
-void TileLoader::DrawChunk(size_t index)
+void TileLoader::DrawChunks()
 {
-	chunksOfTiles[index]->Draw();
+	for (auto& chunk : chunksOfTiles)
+	{
+		chunk->Draw();
+	}
 }
 
 void TileLoader::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
 	newOffset.z = dir.z * speed * deltaTime;
-	for (auto& chunk : chunksOfTiles)
+	for (int i = 0; i < chunksOfTiles.size(); i++)
 	{
-		if (chunk->GetPosition().z > TILE_SIZE * heightY)
-			newOffset.z = -TILE_SIZE * heightY;
-		chunk->SetPosition(newOffset);
+		Chunk* chunk = chunksOfTiles[i];
+		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
+			newOffset.z = -TILE_SIZE * heightY * chunksOfTiles.size();
+
+		chunk->SetOffset(newOffset);
 		chunk->Update(deltaTime);
 	}
 }
@@ -144,7 +165,8 @@ void TileLoader::LoadCSVFile(const char* csvPath)
 
 	//print the whole file
 	//cout << tilemapRaw << "\n";
-
+	widthX = 0;
+	heightY = 0;
 	ExtractWidthHeight(tilemapRaw, widthX, heightY);
 	//make a new array of unsigned intergers
 	tileArray = new uint[widthX * heightY];

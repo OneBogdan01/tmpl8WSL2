@@ -27,33 +27,33 @@ float scale = 5.0f;
 
 void Game::Init()
 {
-    world.Init();
+	world.Init();
 
-    tileLoader = new TileLoader();
-    //from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
-    tileLoader->Init("assets/tiled/map.tmx");
+	tileLoader = new TileLoader();
+	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
+	tileLoader->Init();
 
-    /*simpleShader = new Shader(
-        "assets/shaders/BasicVertexShader.vert",
-        "assets/shaders/BasicFragmentShader.frag");*/
-    lightShader = new Shader(
-        "assets/shaders/BasicVertexShader.vert",
-        "assets/shaders/Sun.frag");
+	/*simpleShader = new Shader(
+	    "assets/shaders/BasicVertexShader.vert",
+	    "assets/shaders/BasicFragmentShader.frag");*/
+	lightShader = new Shader(
+		"assets/shaders/BasicVertexShader.vert",
+		"assets/shaders/Sun.frag");
 
-    modelShader = new Shader(
-        "assets/shaders/ModelLoading.vert",
-        "assets/shaders/ModelLoading.frag");
-    modelShader->Bind();
-    modelShader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
-    modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
-    modelShader->Unbind();
+	modelShader = new Shader(
+		"assets/shaders/ModelLoading.vert",
+		"assets/shaders/ModelLoading.frag");
+	modelShader->Bind();
+	modelShader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+	modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+	modelShader->Unbind();
 
-    sun.Init();
-    camera = new Camera();
-    camera->Init();
-    player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
+	sun.Init();
+	camera = new Camera();
+	camera->Init();
+	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 
-    skybox.Init();
+	skybox.Init();
 }
 
 // -----------------------------------------------------------
@@ -78,122 +78,123 @@ Timer timer;
 
 void Game::Tick(float deltaTime)
 {
-    inputManager.Update();
-    //input is done first in the template
-    //update physics
+	inputManager.Update();
+	//input is done first in the template
+	//update physics
 
-    world.Update(deltaTime);
+	world.Update(deltaTime);
 
-    //displaying stuff
+	//displaying stuff
 #ifdef __DEBUG__
-    frameCount++;
-    if (timer.elapsed() >= 1.0f)
-    {
-        FPS = static_cast<float>(frameCount) / timer.elapsed();
-        frameCount = 0;
-        timer.reset();
-    }
+	frameCount++;
+	if (timer.elapsed() >= 1.0f)
+	{
+		FPS = static_cast<float>(frameCount) / timer.elapsed();
+		frameCount = 0;
+		timer.reset();
+	}
 
 
-    ImGui::Text("FPS:%f", FPS);
-    ImGui::Checkbox("Free Camera", &freeCam);
-    ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-                camera->GetPosition().z);
+	ImGui::Text("FPS:%f", FPS);
+	ImGui::Checkbox("Free Camera", &freeCam);
+	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
+	            camera->GetPosition().z);
 
-    ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-    if (ImGui::Button("Button"))
-        f += deltaTime;
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+	if (ImGui::Button("Button"))
+		f += deltaTime;
 #endif
 
-    if (f > 1)
-        f = 0;
-    camera->RotateMouse(rotateCam);
-    camera->MoveX(moveCam.x);
-    camera->MoveZ(moveCam.y);
-    fov -= yOffset;
-    if (fov < 1.0f)
-        fov = 1.0f;
-    if (fov > 45.0f)
-        fov = 45.0f;
-    yOffset = 0;
+	if (f > 1)
+		f = 0;
+	camera->RotateMouse(rotateCam);
+	camera->MoveX(moveCam.x);
+	camera->MoveZ(moveCam.y);
+	fov -= yOffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
+	yOffset = 0;
 
-    //simpleShader->Bind();
-
-
-    //simpleShader->SetFloat3("offset", position.x, position.y, position.z);
-    //simpleShader->SetFloat("mixing", mixing);
+	//simpleShader->Bind();
 
 
-    camera->Update(deltaTime);
-
-    perspective = glm::perspective(glm::radians(fov),
-                                   static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-                                   0.1f, 100.0f);
-    //simpleShader->SetMat4x4("projection", perspective);
-    view = camera->GetViewMat();
-
-    //simpleShader->SetMat4x4("view", view);
+	//simpleShader->SetFloat3("offset", position.x, position.y, position.z);
+	//simpleShader->SetFloat("mixing", mixing);
 
 
-    //for (uint i = 1; i <= 10; i++)
-    //{
-    //	glm::mat4 matModel = glm::mat4(1.0f);
-    //	btVector3 btVec = world.GetRigidBodyPosition(i);
-    //	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-    //	matModel = glm::translate(matModel, pos);
-    //	/*float angle = 20.0f * i;
-    //	vec3 dir(1.0f, 0.3f, 0.5f);
-    //	matModel = glm::rotate(matModel, radians(angle), dir);*/
-    //	simpleShader->SetMat4x4("model", matModel);
-    //	triangle.Draw();
-    //}
+	camera->Update(deltaTime);
 
-    //simpleShader->Unbind();
-    //draw lighting
-    lightShader->Bind();
-    lightShader->SetMat4x4("projection", perspective);
-    lightShader->SetMat4x4("view", view);
+	perspective = glm::perspective(glm::radians(fov),
+	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                               0.1f, 100.0f);
+	//simpleShader->SetMat4x4("projection", perspective);
+	view = camera->GetViewMat();
 
-    glm::mat4 sunModel = glm::mat4(1.0f);
-    sunModel = glm::translate(sunModel, GetLightPos());
-    sunModel = glm::scale(sunModel, glm::vec3(0.2f));
-    lightShader->SetMat4x4("model", sunModel);
-    sun.Draw();
-    lightShader->Unbind();
+	//simpleShader->SetMat4x4("view", view);
 
-    modelShader->Bind();
-    modelShader->SetMat4x4("projection", perspective);
-    modelShader->SetMat4x4("view", view);
-    const glm::vec3 camPos = camera->GetPosition();
-    modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-    modelShader->SetFloat3("lightPos", GetLightPos().x, GetLightPos().y, GetLightPos().z);
-    modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
-    modelShader->SetFloat("material.shininess", 32.0f);
-    modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-    modelShader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-    modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 
-    modelShader->SetInt("material.diffuse", 0);
-    //draw the tile map
-    tileLoader->DrawChunk(0);
-    tileLoader->DrawChunk(1);
-    modelShader->Unbind();
-    tileLoader->Update(deltaTime);
+	//for (uint i = 1; i <= 10; i++)
+	//{
+	//	glm::mat4 matModel = glm::mat4(1.0f);
+	//	btVector3 btVec = world.GetRigidBodyPosition(i);
+	//	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
+	//	matModel = glm::translate(matModel, pos);
+	//	/*float angle = 20.0f * i;
+	//	vec3 dir(1.0f, 0.3f, 0.5f);
+	//	matModel = glm::rotate(matModel, radians(angle), dir);*/
+	//	simpleShader->SetMat4x4("model", matModel);
+	//	triangle.Draw();
+	//}
 
-    player->Update(deltaTime);
-    player->Draw();
-    //skybox
+	//simpleShader->Unbind();
+	//draw lighting
+	lightShader->Bind();
+	lightShader->SetMat4x4("projection", perspective);
+	lightShader->SetMat4x4("view", view);
 
-    skybox.Draw();
+	glm::mat4 sunModel = glm::mat4(1.0f);
+	sunModel = glm::translate(sunModel, GetLightPos());
+	sunModel = glm::scale(sunModel, glm::vec3(0.2f));
+	lightShader->SetMat4x4("model", sunModel);
+	sun.Draw();
+	lightShader->Unbind();
+
+	modelShader->Bind();
+	modelShader->SetMat4x4("projection", perspective);
+	modelShader->SetMat4x4("view", view);
+	const glm::vec3 camPos = camera->GetPosition();
+	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
+	modelShader->SetFloat3("lightPos", GetLightPos().x, GetLightPos().y, GetLightPos().z);
+	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	modelShader->SetFloat("material.shininess", 32.0f);
+	modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
+	modelShader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+	modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
+
+	modelShader->SetInt("material.diffuse", 0);
+	//draw the tile map
+	tileLoader->DrawChunks();
+
+	modelShader->Unbind();
+
+	tileLoader->Update(deltaTime);
+
+	player->Update(deltaTime);
+	player->Draw();
+	//skybox
+
+	skybox.Draw();
 }
 
 void Game::Shutdown()
 {
-    delete simpleShader;
-    delete tileLoader;
-    delete camera;
+	delete simpleShader;
+	delete tileLoader;
+	delete camera;
 }
 #ifdef _WINDOWS
 void Game::KeyDown(int key)
@@ -208,16 +209,15 @@ void Game::KeyUp(int key)
 
 void Game::KeyDown(const KeySym keycode)
 {
-    inputManager.KeyPressed(keycode);
+	inputManager.KeyPressed(keycode);
 }
 
 
 void Game::KeyUp(const KeySym keycode)
 {
-    inputManager.KeyReleased(keycode);
+	inputManager.KeyReleased(keycode);
 }
 #endif
-
 
 
 void Game::MouseScroll(float x)

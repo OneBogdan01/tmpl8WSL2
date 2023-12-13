@@ -11,8 +11,8 @@ class TileLoader
 public:
 	~TileLoader();
 
-	void Init(const char* csvPath);
-	void DrawChunk(size_t index);
+	void Init();
+	void DrawChunks();
 	void Update(float deltaTime);
 
 private:
@@ -30,6 +30,6 @@ private:
 	uint size = 0;
 	uint* tileArray = nullptr;
 	glm::vec3 dir = {0.0f, 0.0f, 1.0f};
-	float speed = 10.0f;
+	float speed = 15.0f;
 	glm::vec3 chunkOffset;
 };

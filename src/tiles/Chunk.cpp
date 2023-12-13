@@ -8,58 +8,64 @@
 
 Chunk::~Chunk()
 {
-    delete modelShader;
+	delete modelShader;
 }
 
 Chunk::Chunk()
 {
-    modelShader = new Shader(
-        "assets/shaders/ModelLoading.vert",
-        "assets/shaders/ModelLoading.frag");
+	modelShader = new Shader(
+		"assets/shaders/ModelLoading.vert",
+		"assets/shaders/ModelLoading.frag");
 }
 
 void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
 {
-    tiles[index].Init(path, pos);
-    activeTiles.push_back(index);
+	tiles[index].Init(path, pos);
+	activeTiles.push_back(index);
 }
 
 void Chunk::Draw()
 {
-    //m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
+	//m_model = glm::scale(m_model, glm::vec3(scale, scale, scale));
 
-    /*modelShader->Bind();
-    modelShader->SetMat4x4("projection", Game::perspective);
-    modelShader->SetMat4x4("view", Game::view);*/
-    for (auto& index : activeTiles)
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-        glm::vec3 position = tiles[index].GetPosition();
-        model = glm::translate(model, position);
-        model = glm::scale(model, glm::vec3(TILE_SIZE));
-        modelShader->SetMat4x4("model", model);
-        tiles[index].Draw(*modelShader);
-    }
+	/*modelShader->Bind();
+	modelShader->SetMat4x4("projection", Game::perspective);
+	modelShader->SetMat4x4("view", Game::view);*/
+	for (auto& index : activeTiles)
+	{
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::vec3 position = tiles[index].GetPosition();
+		model = glm::translate(model, position);
+		model = glm::scale(model, glm::vec3(TILE_SIZE));
+		modelShader->SetMat4x4("model", model);
+		tiles[index].Draw(*modelShader);
+	}
 
-    //modelShader->Unbind();
+	//modelShader->Unbind();
 }
 
 void Chunk::Update(float deltaTime)
 {
-    for (auto& index : activeTiles)
-    {
-        tiles[index].SetOffset(offset);
-    }
-    offset = glm::vec3(0.0f);
+	for (auto& index : activeTiles)
+	{
+		tiles[index].SetOffset(offset);
+	}
+	offset = glm::vec3(0.0f);
 }
 
 void Chunk::SetPosition(glm::vec3 pos)
 {
-    offset = pos;
-    position += offset;
+	position = pos;
+}
+
+void Chunk::SetOffset(glm::vec3 pos)
+{
+	offset = pos;
+	offset = pos;
+	position += offset;
 }
 
 glm::vec3 Chunk::GetPosition()
 {
-    return position;
+	return position;
 }

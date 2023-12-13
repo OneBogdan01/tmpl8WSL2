@@ -1,9 +1,13 @@
 {
-    "activeFile": "map.tmx",
+    "activeFile": "map4.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
+        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/Tiles.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "Tiles.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.125,
@@ -13,8 +17,40 @@
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1051.5151515151517,
-                "y": 1319.6969696969695
+                "x": -1753.030303030303,
+                "y": -4.545454545454504
+            }
+        },
+        "map1.tmx": {
+            "scale": 0.0625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 4752,
+                "y": 5512
+            }
+        },
+        "map2.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 722,
+                "y": 771
+            }
+        },
+        "map3.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 782,
+                "y": 651
+            }
+        },
+        "map4.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 948.4848484848487,
+                "y": 586.3636363636363
             }
         },
         "sadas.tsx": {
@@ -25,12 +61,21 @@
     "last.imagePath": "D:/Buas/Projects/Perforce/Bogdan230005/Year1/BlockB/assets/tiled/Izo",
     "openFiles": [
         "map.tmx",
-        "Tiles.tsx"
+        "Tiles.tsx",
+        "map1.tmx",
+        "map2.tmx",
+        "map3.tmx",
+        "map4.tmx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "map3.tmx",
+        "map2.tmx",
+        "map4.tmx",
         "map.tmx",
+        "map1.tmx",
         "Tiles.tsx",
+        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/Tiles.tsx",
         "sadas.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

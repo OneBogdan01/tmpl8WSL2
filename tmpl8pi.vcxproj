@@ -721,6 +721,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
       <FileType>Document</FileType>
     </Resource>
+    <None Include="assets\tiled\map1.tmx" />
+    <None Include="assets\tiled\map2.tmx" />
+    <None Include="assets\tiled\map3.tmx" />
+    <None Include="assets\tiled\map4.tmx" />
     <None Include="external\glm\detail\func_common.inl" />
     <None Include="external\glm\detail\func_common_simd.inl" />
     <None Include="external\glm\detail\func_exponential.inl" />
