@@ -36,6 +36,10 @@ using ushort = unsigned short;
 using LONG = long;
 #endif
 
+
+#ifdef _WINDOWS
+
+#else
 // generic includes
 #include <stdio.h>
 #include <iostream>
@@ -44,9 +48,6 @@ using LONG = long;
 #include <math.h>
 #include <stdarg.h>
 #include <chrono>
-#ifdef _WINDOWS
-
-#else
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
 #include <GLES3/gl31.h>

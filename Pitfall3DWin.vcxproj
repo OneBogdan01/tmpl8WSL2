@@ -90,7 +90,7 @@
       <AdditionalIncludeDirectories>template;.;lib\glad;lib\glfw\include;lib\OpenCL\inc;lib\zlib;lib\Audio\inc;lib\Json;src\;external/Imgui/;external/;external/bullet/;external/assimp/</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__DEBUG__;WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <OpenMPSupport>true</OpenMPSupport>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -99,6 +99,10 @@
       <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -139,6 +143,10 @@
       <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreBuildEvent>
+      <Command>
+xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E /H /C /I  /y /r /d</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="external\bullet\btBulletCollisionCommon.h" />
@@ -415,6 +423,15 @@
     <ClInclude Include="external\bullet\LinearMath\btTransformUtil.h" />
     <ClInclude Include="external\bullet\LinearMath\btVector3.h" />
     <ClInclude Include="external\bullet\LinearMath\TaskScheduler\btThreadSupportInterface.h" />
+    <ClInclude Include="external\Imgui\imconfig.h" />
+    <ClInclude Include="external\Imgui\imgui.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="external\Imgui\imgui_internal.h" />
+    <ClInclude Include="external\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="external\Imgui\imstb_textedit.h" />
+    <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="lib\glad\glad.h" />
     <ClInclude Include="src\BulletWrapper.h" />
@@ -453,6 +470,13 @@
     <ClInclude Include="template\surface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="external\Imgui\imgui.cpp" />
+    <ClCompile Include="external\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="external\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="external\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="external\Imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="external\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="external\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -488,20 +512,38 @@
       <RootFolder Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
       <RootFolder Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
     </CopyFileToFolders>
-    <None Include="shaders\basic.frag" />
-    <None Include="shaders\basic.vert" />
-    <None Include="shaders\BasicFragmentShader.frag" />
-    <None Include="shaders\BasicVertexShader.vert" />
-    <None Include="shaders\compute.comp" />
-    <None Include="shaders\DebugVert.vert" />
-    <None Include="shaders\ModelLoading.frag" />
-    <None Include="shaders\ModelLoading.vert" />
-    <None Include="shaders\Skinned.frag" />
-    <None Include="shaders\Skinned.vert" />
-    <None Include="shaders\Skybox.frag" />
-    <None Include="shaders\Skybox.vert" />
-    <None Include="shaders\SolidColor.frag" />
-    <None Include="shaders\Sun.frag" />
+    <None Include="assets\excalibur\alphaone.pcx" />
+    <None Include="assets\excalibur\alphaone_i.pcx" />
+    <None Include="assets\excalibur\tris.md2" />
+    <None Include="assets\excalibur\weapon.md2" />
+    <None Include="assets\excalibur\weapon.pcx" />
+    <None Include="assets\shaders\basic.frag" />
+    <None Include="assets\shaders\basic.vert" />
+    <None Include="assets\shaders\BasicFragmentShader.frag" />
+    <None Include="assets\shaders\BasicVertexShader.vert" />
+    <None Include="assets\shaders\compute.comp" />
+    <None Include="assets\shaders\DebugVert.vert" />
+    <None Include="assets\shaders\ModelLoading.frag" />
+    <None Include="assets\shaders\ModelLoading.vert" />
+    <None Include="assets\shaders\Skinned.frag" />
+    <None Include="assets\shaders\Skinned.vert" />
+    <None Include="assets\shaders\Skybox.frag" />
+    <None Include="assets\shaders\Skybox.vert" />
+    <None Include="assets\shaders\SolidColor.frag" />
+    <None Include="assets\shaders\Sun.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\excalibur\alphaone.png" />
+    <Image Include="assets\tiled\castle\Textures\barrel.png" />
+    <Image Include="assets\tiled\castle\Textures\bricks.png" />
+    <Image Include="assets\tiled\castle\Textures\fence.png" />
+    <Image Include="assets\tiled\castle\Textures\planks.png" />
+    <Image Include="assets\tiled\castle\Textures\roof.png" />
+    <Image Include="assets\tiled\castle\Textures\stones.png" />
+    <Image Include="assets\tiled\castle\Textures\stonesPainted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

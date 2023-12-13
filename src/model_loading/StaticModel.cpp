@@ -22,6 +22,10 @@ std::vector<StaticMesh>& StaticModel::GetMeshes()
 
 void StaticModel::loadModel(std::string path)
 {
+#ifdef _WINDOWS
+	std::replace(path.begin(), path.end(), '/', '\\'); // Replace \ with 
+#endif
+
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -30,7 +34,14 @@ void StaticModel::loadModel(std::string path)
 		cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
 		return;
 	}
+#ifdef _WINDOWS
+	directory = path.substr(0, path.find_last_of('\\'));
+
+#else
+
+
 	directory = path.substr(0, path.find_last_of('/'));
+#endif
 
 	processNode(scene->mRootNode, scene);
 }
@@ -122,12 +133,29 @@ StaticMesh StaticModel::processMesh(aiMesh* StaticMesh, const aiScene* scene)
 std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
                                                                        std::string typeName)
 {
+	/*{
+		vector<StaticMesh::MeshTexture> textures;
+		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
+			aiString str;
+			mat->GetTexture(type, i, &str);
+			
+			cout << "Texture path: " << str.C_Str()+4 << endl;
+		}
+	}*/
 	vector<StaticMesh::MeshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
+
 		aiString str;
+
 		mat->GetTexture(type, i, &str);
+#ifdef _WINDOWS
+		//for some reason the string has 4 null characters before the path
+		 str = str.C_Str() + 4;
+#endif
+
 		bool skip = false;
+
 		for (unsigned int j = 0; j < textures_loaded.size(); j++)
 		{
 			if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)

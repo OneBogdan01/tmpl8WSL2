@@ -9,7 +9,6 @@
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
 #include "skybox/Skybox.h"
-
 class StaticModel;
 class Camera;
 class TileLoader;

@@ -17,7 +17,7 @@ Md2::Md2(const char* md2FileName, const char* textureFileName): m_texture(std::m
 	LoadModel(md2FileName);
 	LoadTexture(textureFileName);
 	InitBuffer();
-	m_shaderProgram->loadShaders("shaders/basic.vert", "shaders/ModelLoading.frag");
+	m_shaderProgram->loadShaders("assets/shaders/basic.vert", "assets/shaders/ModelLoading.frag");
 }
 
 Md2::~Md2()

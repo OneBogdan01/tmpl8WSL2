@@ -29,8 +29,8 @@ void DebugRenderer::InitBuffers()
 DebugRenderer::DebugRenderer() : mode(DBG_DrawWireframe)
 {
 	simpleShader = new Shader(
-		"shaders/DebugVert.vert",
-		"shaders/SolidColor.frag");
+		"assets/shaders/DebugVert.vert",
+		"assets/shaders/SolidColor.frag");
 	InitBuffers();
 }
 

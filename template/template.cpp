@@ -1,24 +1,74 @@
 #ifdef _WINDOWS
 
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #define STB_IMAGE_IMPLEMENTATION
+
+
 #include "glad.h"
 #include <GLFW/glfw3.h>
+
 #include "template.h"
 
+#include "game.h"
+#include <iostream>
+#include <fstream>
+#include <direct.h>
 
+#include <GLFW/glfw3.h>
 
-void processInput(GLFWwindow* window)
+// Assume that 'window' is your GLFWwindow object
+Game* game;
+
+// Key callback function
+void ProccessInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
+	// Key press
+	if (action == GLFW_PRESS)
+	{
+		// Stop program if escape is pressed
+		if (key == GLFW_KEY_ESCAPE)
+		{
+			glfwSetWindowShouldClose(window, true);
+			return;
+		}
+
+		// Handle key press in your game
+		game->KeyDown(key);
+	}
+
+	// Key release
+	else if (action == GLFW_RELEASE)
+	{
+		// Handle key release in your game
+		game->KeyUp(key);
+	}
 }
+
+
 void FatalError(const char* fmt, ...)
 {
 	return;
 }
 
-void FixWorkingFolder() {}
-string TextFileRead(const char* _File) { return ""; }
+void FixWorkingFolder()
+{
+	static bool fixed = false;
+	if (fixed) return;
+	FILE* f = fopen("assets/font.png", "rb");
+	if (f) fclose(f); /* if this worked, we're already in the right folder */ else _chdir("../");
+	fixed = true;
+}
+
+string TextFileRead(const char* _File)
+{
+	ifstream s(_File);
+	string str((istreambuf_iterator<char>(s)), istreambuf_iterator<char>());
+	s.close();
+	return str;
+}
+
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
 // ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -28,16 +78,20 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+uint sizePixels = 24;
+static Timer timer;
+
 int main()
 {
 	std::cout << "Build on windows'\n";
+	//FixWorkingFolder();
 	// glfw: initialize and configure
 	// ------------------------------
 	glfwInit();
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE /* easier :) */);
 
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -45,7 +99,7 @@ int main()
 
 	// glfw window creation
 	// --------------------
-	GLFWwindow* window = glfwCreateWindow(640, 480, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "LearnOpenGL", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -54,25 +108,59 @@ int main()
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwSwapInterval(0);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return -1;
 	}
-	
+
+	game = new Game();
+	game->Init();
+
+	//imgui init
+	//Create ImGui context
+	ImGui::CreateContext();
+
+	// Set ImGui context as current
+	ImGui::SetCurrentContext(ImGui::GetCurrentContext());
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	// Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+	ImGui_ImplOpenGL3_Init("#version 300 es");
+
+	//ImGui::StyleColorsDark();
+	ImGui::StyleColorsClassic();
+	//ImGui::StyleColorsLight();
+	ImGuiIO& io = ImGui::GetIO();
+	//use my own font
+	//io.Fonts->AddFontDefault();
+
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", sizePixels);
+
+	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
+	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
+	//will call our method
+	glfwSetKeyCallback(window, ProccessInput);
 
 	// render loop
 	// -----------
 	while (!glfwWindowShouldClose(window))
 	{
-		// input
-		// -----
-		processInput(window);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+		timer.reset();
 
-		// render
-		// ------
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		//imgui still throws erros when used with the current opengl setup
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		io.DeltaTime = deltaTime;
+		game->Tick(deltaTime);
+
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -82,6 +170,12 @@ int main()
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
+	game->Shutdown();
+
+	// destroy ImGui context
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 	glfwTerminate();
 	return 0;
 }
@@ -94,16 +188,17 @@ int main()
 // Get the latest version from: https://github.com/jbikker/tmpl8pi
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
 #define STB_IMAGE_IMPLEMENTATION
+#include "imgui.h"
+#include "imgui_impl_opengl3.h"
+
 #include "template.h"
 #include <fstream>
 #include <X11/Xlib.h>
 #include <X11/Xlibint.h>
 
 #include "game.h"
-#include "imgui.h"
 #include <gl2ext.h>
 
-#include "imgui_impl_opengl3.h"
 #include "Timer.h"
 using namespace Tmpl8;
 
@@ -255,7 +350,7 @@ inline ImGuiKey X11SymToImGuiKeycode(const unsigned long in)
 	case XK_Super_R: return ImGuiKey_RightSuper;
 	case XK_space: return ImGuiKey_Space;
 
-	// Add cases for letter keys
+		// Add cases for letter keys
 	case XK_a:
 	case XK_A: return ImGuiKey_A;
 	case XK_b:
@@ -329,7 +424,7 @@ void ProccessEvents(Game* game)
 	static XEvent event;
 
 	// key event data
-	char str[25] = {0};
+	char str[25] = { 0 };
 	KeySym key_sym = 0;
 
 	// mouse event data
@@ -343,15 +438,15 @@ void ProccessEvents(Game* game)
 		XNextEvent(x11Display, &event);
 		switch (event.type)
 		{
-		// keys have been remapped
+			// keys have been remapped
 		case KeymapNotify:
 			XRefreshKeyboardMapping(&event.xmapping);
 			break;
-		//key has been pressed
+			//key has been pressed
 		case KeyPress:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
-		// stop program if escape is pressed
+			// stop program if escape is pressed
 			if (key_sym == XK_Escape)
 			{
 				should_close = true;
@@ -367,7 +462,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-		// key is released
+			// key is released
 		case KeyRelease:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
@@ -379,7 +474,7 @@ void ProccessEvents(Game* game)
 				game->KeyUp(key_sym);
 			}
 			break;
-		// mouse button pressed
+			// mouse button pressed
 		case ButtonPress:
 
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
@@ -419,7 +514,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-		// mouse button released
+			// mouse button released
 		case ButtonRelease:
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
 			button = event.xbutton.button - 1;
@@ -440,12 +535,12 @@ void ProccessEvents(Game* game)
 				game->MouseUp(button);
 			}
 			break;
-		// mouse moved
+			// mouse moved
 		case MotionNotify:
 			x = event.xmotion.x;
 			y = event.xmotion.y;
 
-			ImGui::GetIO().MousePos = {static_cast<float>(x), static_cast<float>(y)};
+			ImGui::GetIO().MousePos = { static_cast<float>(x), static_cast<float>(y) };
 
 			game->MouseMove(
 				static_cast<int>(static_cast<float>(x) / static_cast<float>(attributes_.width) * static_cast<float>(
@@ -453,7 +548,7 @@ void ProccessEvents(Game* game)
 				static_cast<int>(static_cast<float>(y) / static_cast<float>(attributes_.height) * static_cast<float>(
 					SCRHEIGHT)));
 			break;
-		// screen got resized
+			// screen got resized
 		case ConfigureNotify:
 			XGetWindowAttributes(x11Display, event.xexpose.window, &attributes_);
 			glViewport(0, 0, attributes_.width, attributes_.height);
@@ -461,7 +556,7 @@ void ProccessEvents(Game* game)
 			ImGui::GetIO().DisplaySize = ImVec2{
 				static_cast<float>(attributes_.width), static_cast<float>(attributes_.height)
 			};
-		//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
+			//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
 			break;
 		case ClientMessage:
 			//// window closed
@@ -470,7 +565,7 @@ void ProccessEvents(Game* game)
 				should_close = true;
 				return;
 			}
-		//window got destroyed
+			//window got destroyed
 		case DestroyNotify:
 			should_close = true;
 			return;
@@ -501,7 +596,7 @@ void InitEGL()
 
 	// create window
 	x11Window = XCreateWindow(x11Display, x11Window, 0, 0, SCRWIDTH, SCRHEIGHT, 0, CopyFromParent, InputOutput,
-	                          CopyFromParent, CWEventMask, &windowAttributes);
+		CopyFromParent, CWEventMask, &windowAttributes);
 	if (!x11Window) FatalError("Could not create window");
 	// show the window
 	XMapWindow(x11Display, x11Window);
@@ -601,6 +696,7 @@ int main(int argc, char* argv[])
 
 
 	// Create ImGui context
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
 	// Set ImGui context as current

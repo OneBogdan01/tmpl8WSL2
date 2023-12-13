@@ -14,8 +14,8 @@ Chunk::~Chunk()
 Chunk::Chunk()
 {
     modelShader = new Shader(
-        "shaders/ModelLoading.vert",
-        "shaders/ModelLoading.frag");
+        "assets/shaders/ModelLoading.vert",
+        "assets/shaders/ModelLoading.frag");
 }
 
 void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)

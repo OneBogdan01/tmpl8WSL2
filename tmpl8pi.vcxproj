@@ -583,6 +583,20 @@
     <None Include="assets\excalibur\weapon.md2" />
     <None Include="assets\excalibur\weapon.pcx" />
     <None Include="assets\Run.dae" />
+    <None Include="assets\shaders\basic.frag" />
+    <None Include="assets\shaders\basic.vert" />
+    <None Include="assets\shaders\BasicFragmentShader.frag" />
+    <None Include="assets\shaders\BasicVertexShader.vert" />
+    <None Include="assets\shaders\compute.comp" />
+    <None Include="assets\shaders\DebugVert.vert" />
+    <None Include="assets\shaders\ModelLoading.frag" />
+    <None Include="assets\shaders\ModelLoading.vert" />
+    <None Include="assets\shaders\Skinned.frag" />
+    <None Include="assets\shaders\Skinned.vert" />
+    <None Include="assets\shaders\Skybox.frag" />
+    <None Include="assets\shaders\Skybox.vert" />
+    <None Include="assets\shaders\SolidColor.frag" />
+    <None Include="assets\shaders\Sun.frag" />
     <None Include="assets\tiled\castle\battlement.mtl" />
     <None Include="assets\tiled\castle\battlement.ob" />
     <None Include="assets\tiled\castle\battlement_cornerInner.mtl" />
@@ -694,11 +708,6 @@
     <None Include="assets\tiled\castle\wall_low.mtl" />
     <None Include="assets\tiled\castle\wall_low.ob" />
     <None Include="assets\tiled\map.tmx" />
-    <None Include="shaders\Skinned.vert" />
-    <None Include="shaders\Skinned.frag" />
-    <None Include="shaders\Skybox.frag" />
-    <None Include="shaders\Skybox.vert" />
-    <None Include="shaders\Sun.frag" />
     <Resource Include="assets\tiled\Tiles.tsx">
       <DeploymentContent>true</DeploymentContent>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">true</ExcludedFromBuild>
@@ -851,15 +860,6 @@
     <None Include="external\glm\gtx\vector_angle.inl" />
     <None Include="external\glm\gtx\vector_query.inl" />
     <None Include="external\glm\gtx\wrap.inl" />
-    <None Include="shaders\basic.frag" />
-    <None Include="shaders\basic.vert" />
-    <None Include="shaders\BasicFragmentShader.frag" />
-    <None Include="shaders\BasicVertexShader.vert" />
-    <None Include="shaders\compute.comp" />
-    <None Include="shaders\DebugVert.vert" />
-    <None Include="shaders\ModelLoading.frag" />
-    <None Include="shaders\ModelLoading.vert" />
-    <None Include="shaders\SolidColor.frag" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\PixelifySans-Regular.ttf" />

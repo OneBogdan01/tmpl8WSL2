@@ -60,7 +60,7 @@ void Skybox::Draw() const
 
 void Skybox::Init()
 {
-	skyboxShader = new Shader("shaders/Skybox.vert", "shaders/Skybox.frag");
+	skyboxShader = new Shader("assets/shaders/Skybox.vert", "assets/shaders/Skybox.frag");
 	skyboxShader->Bind();
 	skyboxShader->SetInt("skybox", 0);
 	skyboxShader->Unbind();

@@ -3,6 +3,9 @@
 // IGAD/NHTV/BUAS/UU - Jacco Bikker - 2006-2023
 
 #pragma once
+#ifdef _WINDOWS
+#include <algorithm>
+#endif
 
 namespace Tmpl8
 {
