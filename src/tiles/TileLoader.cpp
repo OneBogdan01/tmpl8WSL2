@@ -15,7 +15,6 @@ namespace fs = std::filesystem;
 
 TileLoader::~TileLoader()
 {
-	delete[] tileArray;
 	for (auto& chunk : chunksOfTiles)
 	{
 		delete chunk;
