@@ -1,5 +1,7 @@
 ﻿#include "PlayerCharacter.h"
 
+#include <iostream>
+
 #include "game.h"
 #include "model_loading/StaticModel.h"
 #include "tiles/Chunk.h"
@@ -45,7 +47,8 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerCharacterGhost->setUserPointer(&gameObject);
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
 #ifdef _WINDOWS
-	btScalar gravity = dynamicsWorld->getGravity().getY();
+
+	btScalar gravity = -dynamicsWorld->getGravity().getY();
 	characterController->setGravity(gravity);
 #else
 	characterController->setGravity(dynamicsWorld->getGravity());
@@ -212,26 +215,27 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	}
 	else
 	{
-#ifdef _WINDOWS
-		characterController->setWalkDirection(btVector3(0, 0, 0));
-#else
+
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 
-#endif
+
 	}
-	if (inputManager->IsJustPressed(Action::Jump))
+
+
+	if (inputManager->IsPressed(Action::Jump)) {
 		if (characterController->onGround())
 		{
+			std::cout << "jump" << std::endl;
 			characterController->jump();
 		}
-	//Clamp movement
+	}
+
 	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
 	btVector3 currentPosition = currentTransform.getOrigin();
 
-	// Clamp the X position within the specified range
 	currentPosition.setX(btClamped(currentPosition.getX(), minX, maxX));
 
-	// Update the player's position
+
 	currentTransform.setOrigin(currentPosition);
 	playerCharacterGhost->setWorldTransform(currentTransform);
 }

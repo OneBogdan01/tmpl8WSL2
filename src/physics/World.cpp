@@ -225,7 +225,13 @@ btCapsuleShape* World::CreateBoundingCapsuleModel(const std::vector<StaticMesh>&
     const float capsuleRadius = (modelMax.getY() - modelMin.getY()) * 0.5f;
     const float capsuleHalfHeight = (modelMax.getX() - modelMin.getX()) * 0.5f;
     //the model is rotated on the Z axis
+#ifdef _WINDOWS
+    btCapsuleShape* col = new btCapsuleShape(capsuleRadius, capsuleHalfHeight);
+
+#else
     btCapsuleShapeZ* col = new btCapsuleShapeZ(capsuleRadius, capsuleHalfHeight);
+
+#endif
 
     col->setLocalScaling(btVector3(scale, scale, scale));
 

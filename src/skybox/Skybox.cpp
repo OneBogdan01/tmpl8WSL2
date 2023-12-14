@@ -44,6 +44,7 @@ unsigned int Skybox::LoadCubemap(vector<std::string> faces)
 
 void Skybox::Draw() const
 {
+#ifdef _WINDOWS
 	glDepthFunc(GL_LEQUAL);
 	skyboxShader->Bind();
 	skyboxShader->SetMat4x4("projection", Game::perspective);
@@ -56,6 +57,23 @@ void Skybox::Draw() const
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
 	glDepthFunc(GL_LESS); // set depth function back to default
+
+#else
+
+	glDepthFunc(GL_LEQUAL);
+	skyboxShader->Bind();
+	skyboxShader->SetMat4x4("projection", Game::perspective);
+	glm::mat4 view = glm::mat4(glm::mat3(Game::view));
+
+	skyboxShader->SetMat4x4("view", view);
+	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindVertexArray(0);
+	glDepthFunc(GL_LESS); // set depth function back to default
+#endif
+
 }
 
 void Skybox::Init()

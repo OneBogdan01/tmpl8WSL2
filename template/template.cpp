@@ -99,7 +99,7 @@ int main()
 
 	// glfw window creation
 	// --------------------
-	GLFWwindow* window = glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCRWIDTH, SCRHEIGHT, "Pitfall 3D WINDOWS", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -142,30 +142,38 @@ int main()
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 	//will call our method
 	glfwSetKeyCallback(window, ProccessInput);
-
+	glEnable(GL_DEPTH_TEST);
 	// render loop
 	// -----------
+	const double FPS = 1.0 / 300.0;
 	while (!glfwWindowShouldClose(window))
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
-		timer.reset();
-
-		//imgui still throws erros when used with the current opengl setup
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		io.DeltaTime = deltaTime;
-		game->Tick(deltaTime);
 
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		if (timer.elapsed() > FPS) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+
+			timer.reset();
+
+			//imgui still throws erros when used with the current opengl setup
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+			io.DeltaTime = deltaTime;
+			game->Tick(deltaTime);
+
+
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+			// -------------------------------------------------------------------------------
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+		}
+
 	}
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
@@ -350,7 +358,7 @@ inline ImGuiKey X11SymToImGuiKeycode(const unsigned long in)
 	case XK_Super_R: return ImGuiKey_RightSuper;
 	case XK_space: return ImGuiKey_Space;
 
-		// Add cases for letter keys
+	// Add cases for letter keys
 	case XK_a:
 	case XK_A: return ImGuiKey_A;
 	case XK_b:
@@ -424,7 +432,7 @@ void ProccessEvents(Game* game)
 	static XEvent event;
 
 	// key event data
-	char str[25] = { 0 };
+	char str[25] = {0};
 	KeySym key_sym = 0;
 
 	// mouse event data
@@ -438,15 +446,15 @@ void ProccessEvents(Game* game)
 		XNextEvent(x11Display, &event);
 		switch (event.type)
 		{
-			// keys have been remapped
+		// keys have been remapped
 		case KeymapNotify:
 			XRefreshKeyboardMapping(&event.xmapping);
 			break;
-			//key has been pressed
+		//key has been pressed
 		case KeyPress:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
-			// stop program if escape is pressed
+		// stop program if escape is pressed
 			if (key_sym == XK_Escape)
 			{
 				should_close = true;
@@ -462,7 +470,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-			// key is released
+		// key is released
 		case KeyRelease:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
@@ -474,7 +482,7 @@ void ProccessEvents(Game* game)
 				game->KeyUp(key_sym);
 			}
 			break;
-			// mouse button pressed
+		// mouse button pressed
 		case ButtonPress:
 
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
@@ -514,7 +522,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-			// mouse button released
+		// mouse button released
 		case ButtonRelease:
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
 			button = event.xbutton.button - 1;
@@ -535,12 +543,12 @@ void ProccessEvents(Game* game)
 				game->MouseUp(button);
 			}
 			break;
-			// mouse moved
+		// mouse moved
 		case MotionNotify:
 			x = event.xmotion.x;
 			y = event.xmotion.y;
 
-			ImGui::GetIO().MousePos = { static_cast<float>(x), static_cast<float>(y) };
+			ImGui::GetIO().MousePos = {static_cast<float>(x), static_cast<float>(y)};
 
 			game->MouseMove(
 				static_cast<int>(static_cast<float>(x) / static_cast<float>(attributes_.width) * static_cast<float>(
@@ -548,7 +556,7 @@ void ProccessEvents(Game* game)
 				static_cast<int>(static_cast<float>(y) / static_cast<float>(attributes_.height) * static_cast<float>(
 					SCRHEIGHT)));
 			break;
-			// screen got resized
+		// screen got resized
 		case ConfigureNotify:
 			XGetWindowAttributes(x11Display, event.xexpose.window, &attributes_);
 			glViewport(0, 0, attributes_.width, attributes_.height);
@@ -556,7 +564,7 @@ void ProccessEvents(Game* game)
 			ImGui::GetIO().DisplaySize = ImVec2{
 				static_cast<float>(attributes_.width), static_cast<float>(attributes_.height)
 			};
-			//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
+		//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
 			break;
 		case ClientMessage:
 			//// window closed
@@ -565,7 +573,7 @@ void ProccessEvents(Game* game)
 				should_close = true;
 				return;
 			}
-			//window got destroyed
+		//window got destroyed
 		case DestroyNotify:
 			should_close = true;
 			return;
@@ -596,7 +604,7 @@ void InitEGL()
 
 	// create window
 	x11Window = XCreateWindow(x11Display, x11Window, 0, 0, SCRWIDTH, SCRHEIGHT, 0, CopyFromParent, InputOutput,
-		CopyFromParent, CWEventMask, &windowAttributes);
+	                          CopyFromParent, CWEventMask, &windowAttributes);
 	if (!x11Window) FatalError("Could not create window");
 	// show the window
 	XMapWindow(x11Display, x11Window);
@@ -683,11 +691,43 @@ static Timer timer;
 
 const uint sizePixels = 24;
 
+void ActivateErrorCallback()
+{
+	const auto pegl_debug_message_control_khr = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress(
+		"glDebugMessageCallback"));
+	if (pegl_debug_message_control_khr == nullptr)
+	{
+		printf("failed to eglGetProcAddress eglDebugMessageControlKHR\n");
+	}
+	else
+	{
+		const GLDEBUGPROCKHR debug_fn = [](GLenum source, GLenum type, GLuint id, const GLenum severity, GLsizei length,
+		                                   const GLchar* message, const void*)
+		{
+			switch (severity)
+			{
+			case GL_DEBUG_SEVERITY_HIGH_KHR:
+			case GL_DEBUG_SEVERITY_MEDIUM_KHR:
+				std::cout << message << std::endl;
+			case GL_DEBUG_SEVERITY_LOW_KHR:
+			case GL_DEBUG_SEVERITY_NOTIFICATION_KHR:
+			default:
+				break; //Ignore.
+			}
+		};
+		pegl_debug_message_control_khr(debug_fn, nullptr);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
+	}
+
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_DEBUG_OUTPUT_KHR);
+}
+
 int main(int argc, char* argv[])
 {
 	setenv("DISPLAY", ":0", 1);
 	InitEGL();
-
+	ActivateErrorCallback();
 	FixWorkingFolder();
 	game = new Game();
 	game->Init();
@@ -717,11 +757,12 @@ int main(int argc, char* argv[])
 
 	while (!should_close)
 	{
+		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		ProccessEvents(game);
 		//as Abhishek said, multiplication is way faster then division
-		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
 		timer.reset();
 
 		//imgui still throws erros when used with the current opengl setup
