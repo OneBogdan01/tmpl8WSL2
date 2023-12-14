@@ -64,7 +64,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
 	characterController->setFallSpeed(7.0f);
-	characterController->setJumpSpeed(16.0f);
+	characterController->setJumpSpeed(12.0f);
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 
 	shader = new Shader(

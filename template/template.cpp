@@ -145,6 +145,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 	// render loop
 	// -----------
+	//physics behave wierd unless the FPS is capped
 	const double FPS = 1.0 / 300.0;
 	while (!glfwWindowShouldClose(window))
 	{
@@ -757,12 +758,13 @@ int main(int argc, char* argv[])
 
 	while (!should_close)
 	{
+		//as Abhishek said, multiplication is way faster then division
+
 		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		ProccessEvents(game);
-		//as Abhishek said, multiplication is way faster then division
 		timer.reset();
 
 		//imgui still throws erros when used with the current opengl setup

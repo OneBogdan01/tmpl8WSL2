@@ -34,7 +34,7 @@ void World::Update(float deltaTime)
 #endif
 
 
-    dynamicsWorld->stepSimulation(1.f / 60.f, 5); //set it to 5! for the PI
+    dynamicsWorld->stepSimulation(1.0f/60.0f, 5); //set it to 5! for the PI
     ////print positions of all objects
     //for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
     //{

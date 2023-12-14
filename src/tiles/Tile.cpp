@@ -28,10 +28,16 @@ void Tile::AddStaticRigidbody()
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
 
 	// Create a rigid body
-	btScalar mass = 0.0; // Mass 0 for static objects
+	btScalar mass =0.0; // Mass 0 for static objects
 	btVector3 localInertia(0, 0, 0);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, tileMotionState, tileShape, localInertia);
+	
 	rigidBody = new btRigidBody(rbInfo);
+	//set it as kinamatic
+	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags()|btCollisionObject::CF_KINEMATIC_OBJECT);
+	rigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+
 
 	// Add the rigid body to the dynamics world
 	rigidBody->setUserPointer(&gameObject);
@@ -41,10 +47,11 @@ void Tile::AddStaticRigidbody()
 
 void Tile::UpdatePhysicsPosition()
 {
-	btTransform newTransform = rigidBody->getWorldTransform();
+	btTransform newTransform;
+	rigidBody->getMotionState()->getWorldTransform(newTransform);
 
 	newTransform.setOrigin(newTransform.getOrigin() + btVector3(0, 0, offset.z));
-	rigidBody->setWorldTransform(newTransform);
+	rigidBody->getMotionState()->setWorldTransform(newTransform);
 	offset = glm::vec3(0.0f);
 }
 
