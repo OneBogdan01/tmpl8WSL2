@@ -19,7 +19,6 @@ TileLoader::~TileLoader()
 	{
 		delete chunk;
 	}
-
 }
 
 
@@ -51,21 +50,18 @@ void TileLoader::Init()
 		if (hasEnding(pathString, ".ob"))
 		{
 #ifdef _WINDOWS
-			
+
 #endif
 			for (int x = 0; x < strlen(pathString.c_str()); x++)
 				pathString[x] = putchar(tolower(pathString[x]));
 			tilePaths.push_back(pathString);
-
 		}
 	}
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
-	for (int i=0;i<tilePaths.size();i++)
+	for (int i = 0; i < tilePaths.size(); i++)
 	{
-		
-			
-		cout<<i<< tilePaths [i]<<'\n';
+		cout << i << tilePaths[i] << '\n';
 	}
 
 	vector<string> tileMapPaths;
@@ -86,7 +82,7 @@ void TileLoader::Init()
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
 
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-			static_cast<float>(heightY - 1) * TILE_SIZE);
+		                             static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 		chunk->SetPosition(chunkOff);
@@ -103,7 +99,7 @@ void TileLoader::Init()
 					modelIndex--;
 
 					const glm::vec3 position = chunkOff + glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-						static_cast<float>(i) * TILE_SIZE)
+					                                                static_cast<float>(i) * TILE_SIZE)
 						- offset;
 					std::cout << position.x << " " << position.y << " " << position.z << "\n";
 					chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
