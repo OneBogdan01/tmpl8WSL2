@@ -67,35 +67,35 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setJumpSpeed(12.0f);
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 
-	shader = new Shader(
-		"assets/shaders/ModelLoading.vert",
-		"assets/shaders/ModelLoading.frag");
-	shader->Bind();
-	shader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
-	shader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
-	shader->SetFloat("material.shininess", 32.0f);
-	shader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-	shader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-	shader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
-	shader->SetInt("material.diffuse", 0);
-	shader->SetFloat3("objectColor", 1.0f, 0.5f, 0.0f);
-	shader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+	//shader = new Shader(
+	//	"assets/shaders/ModelLoading.vert",
+	//	"assets/shaders/ModelLoading.frag");
+	//shader->Bind();
+	//shader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
+	//shader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	//shader->SetFloat("material.shininess", 32.0f);
+	//shader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
+	//shader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
+	//shader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
+	//shader->SetInt("material.diffuse", 0);
+	//shader->SetFloat3("objectColor", 1.0f, 0.5f, 0.0f);
+	//shader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 
-	/*for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_boneLocation); i++)
-	{
-	    char Name[128];
-	    memset(Name, 0, sizeof(Name));
-	    SNPRINTF(Name, sizeof(Name), "gBones[%d]", i);
-	    GLuint Location = glGetUniformLocation(shader->ID, Name);
+	///*for (unsigned int i = 0; i < ARRAY_SIZE_IN_ELEMENTS(m_boneLocation); i++)
+	//{
+	//    char Name[128];
+	//    memset(Name, 0, sizeof(Name));
+	//    SNPRINTF(Name, sizeof(Name), "gBones[%d]", i);
+	//    GLuint Location = glGetUniformLocation(shader->ID, Name);
 
-	    if (Location == INVALID_UNIFORM_LOCATION)
-	    {
-	        fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", "gBones");
-	    }
-	    m_boneLocation[i] = Location;
-	    printf("m_boneLocation[%d] = %d\n", i, m_boneLocation[i]);
-	}*/
-	shader->Unbind();
+	//    if (Location == INVALID_UNIFORM_LOCATION)
+	//    {
+	//        fprintf(stderr, "Warning! Unable to get the location of uniform '%s'\n", "gBones");
+	//    }
+	//    m_boneLocation[i] = Location;
+	//    printf("m_boneLocation[%d] = %d\n", i, m_boneLocation[i]);
+	//}*/
+	//shader->Unbind();
 }
 
 PlayerCharacter::~PlayerCharacter()
@@ -120,22 +120,22 @@ void PlayerCharacter::Draw()
 	glm::mat4 model = GetModelMatrix();
 	position = glm::vec3(model[3]);
 	CheckForFall();
-	shader->Bind();
+	//shader->Bind();
 
-	shader->SetMat4x4("view", cam.GetViewMat());
-	shader->SetMat4x4("projection", cam.GetProjectionMat());
-	shader->SetMat4x4("model", model);
-	shader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
+	//shader->SetMat4x4("view", cam.GetViewMat());
+	//shader->SetMat4x4("projection", cam.GetProjectionMat());
+	//shader->SetMat4x4("model", model);
+	//shader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 
-	/*vector<Matrix4f> transforms;
-	float deltaTime = timer.elapsed();
-	playerModel->GetBoneTransforms(deltaTime, transforms);
+	///*vector<Matrix4f> transforms;
+	//float deltaTime = timer.elapsed();
+	//playerModel->GetBoneTransforms(deltaTime, transforms);
 
-	for (uint i = 0; i < transforms.size(); i++)
-	{
-	    SetBoneTransform(i, transforms[i]);
-	}*/
-	shader->Unbind();
+	//for (uint i = 0; i < transforms.size(); i++)
+	//{
+	//    SetBoneTransform(i, transforms[i]);
+	//}*/
+	//shader->Unbind();
 	player.SetPosition(position);
 	player.Draw(renderFrame, 0, interpolation, Game::camera->GetViewMat(), Game::camera->GetProjectionMat());
 }
@@ -215,14 +215,12 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	}
 	else
 	{
-
 		characterController->setWalkDirection(btVector3(0, 0, 0));
-
-
 	}
 
 
-	if (inputManager->IsPressed(Action::Jump)) {
+	if (inputManager->IsPressed(Action::Jump))
+	{
 		if (characterController->onGround())
 		{
 			std::cout << "jump" << std::endl;

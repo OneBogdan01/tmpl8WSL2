@@ -4,6 +4,7 @@
 
 
 constexpr float TILE_SIZE = 5.0f;
+constexpr size_t NUMBER_OF_CHUNKS = 5;
 
 //inspired by my old class from block A https://github.com/Tycro-Games/BlockA-Pitfall/blob/master/Scripts/Map/Tilemap.cpp
 class TileLoader
@@ -16,7 +17,9 @@ public:
 	void Update(float deltaTime);
 
 private:
-	std::vector<Chunk*> chunksOfTiles;
+	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
+	int numberOfActiveChunks = 3;
+	
 
 	void LoadCSVFile(const char* csvPath);
 

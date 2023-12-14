@@ -12,8 +12,27 @@ class Chunk
 public:
 	~Chunk();
 	void LoadTile(size_t index, const char* path, glm::vec3 pos);
+	void ResetTiles();
 	Chunk();
-
+	void ResetOffsetPosition();
+	// Copy constructor
+    Chunk(const Chunk& other)
+        : tiles(other.tiles), activeTiles(other.activeTiles), offset(other.offset), position(other.position), modelShader(other.modelShader)
+    {
+    }
+    // Copy assignment operator
+    Chunk& operator=(const Chunk& other)
+    {
+        if (this != &other)
+        {
+            tiles = other.tiles;
+            activeTiles = other.activeTiles;
+            offset = other.offset;
+            position = other.position;
+            modelShader = other.modelShader;
+        }
+        return *this;
+    }
 	void Draw();
 	void Update(float deltaTime);
 	void SetPosition(glm::vec3 pos);

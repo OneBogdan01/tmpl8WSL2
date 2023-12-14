@@ -1,5 +1,5 @@
 {
-    "activeFile": "map4.tmx",
+    "activeFile": "map3.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -11,46 +11,46 @@
         "Tiles.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 0.125,
-            "scaleInEditor": 0.25
+            "scaleInEditor": 0.12
         },
         "map.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 539.9999999999999,
-                "y": 1020.6666666666665
+                "x": 776.6666666666666,
+                "y": 820
             }
         },
         "map1.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 588,
-                "y": 615
+                "x": 383,
+                "y": 767
             }
         },
         "map2.tmx": {
-            "scale": 0.5,
+            "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 630,
-                "y": 741
+                "x": -480,
+                "y": 1024
             }
         },
         "map3.tmx": {
-            "scale": 0.5,
+            "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 362,
-                "y": 747
+                "x": -30,
+                "y": 930
             }
         },
         "map4.tmx": {
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 948.4848484848487,
-                "y": 577.2727272727273
+                "x": 333,
+                "y": 1023
             }
         },
         "sadas.tsx": {
@@ -58,23 +58,20 @@
             "scaleInEditor": 0.03125
         }
     },
+    "last.externalTilesetPath": "D:/Buas/Projects/Perforce/Bogdan230005/Year1/BlockB/assets/tiled",
     "last.imagePath": "D:/Buas/Projects/Perforce/Bogdan230005/Year1/BlockB/assets/tiled/Izo",
     "openFiles": [
-        "map.tmx",
         "Tiles.tsx",
-        "map1.tmx",
-        "map2.tmx",
-        "map3.tmx",
-        "map4.tmx"
+        "map3.tmx"
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "Tiles.tsx",
         "map3.tmx",
-        "map2.tmx",
         "map4.tmx",
+        "map2.tmx",
         "map.tmx",
         "map1.tmx",
-        "Tiles.tsx",
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/Tiles.tsx",
         "sadas.tsx"
     ],

@@ -28,10 +28,10 @@ float scale = 5.0f;
 void Game::Init()
 {
 	world.Init();
-
 	tileLoader = new TileLoader();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init();
+
 
 	/*simpleShader = new Shader(
 	    "assets/shaders/BasicVertexShader.vert",
@@ -150,6 +150,16 @@ void Game::Tick(float deltaTime)
 	//	triangle.Draw();
 	//}
 
+
+	tileLoader->Update(deltaTime);
+
+	player->Update(deltaTime);
+
+
+	tileLoader->DrawChunks();
+	player->Draw();
+
+	//skybox
 	//simpleShader->Unbind();
 	//draw lighting
 	lightShader->Bind();
@@ -162,31 +172,6 @@ void Game::Tick(float deltaTime)
 	lightShader->SetMat4x4("model", sunModel);
 	sun.Draw();
 	lightShader->Unbind();
-
-	modelShader->Bind();
-	modelShader->SetMat4x4("projection", perspective);
-	modelShader->SetMat4x4("view", view);
-	const glm::vec3 camPos = camera->GetPosition();
-	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	modelShader->SetFloat3("lightPos", GetLightPos().x, GetLightPos().y, GetLightPos().z);
-	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
-	modelShader->SetFloat("material.shininess", 32.0f);
-	modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-	modelShader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-	modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
-
-	modelShader->SetInt("material.diffuse", 0);
-	//draw the tile map
-	tileLoader->DrawChunks();
-
-	modelShader->Unbind();
-
-	tileLoader->Update(deltaTime);
-
-	player->Update(deltaTime);
-	player->Draw();
-	//skybox
-
 	skybox.Draw();
 }
 
@@ -199,11 +184,12 @@ void Game::Shutdown()
 #ifdef _WINDOWS
 void Game::KeyDown(int key)
 {
-    inputManager.KeyPressed(key);
+	inputManager.KeyPressed(key);
 }
+
 void Game::KeyUp(int key)
 {
-    inputManager.KeyReleased(key);
+	inputManager.KeyReleased(key);
 }
 #else
 

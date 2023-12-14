@@ -15,11 +15,11 @@ namespace fs = std::filesystem;
 
 TileLoader::~TileLoader()
 {
-	for (auto& chunk : chunksOfTiles)
+	for (auto& chunk : chunks)
 	{
 		delete chunk;
 	}
-	chunksOfTiles.clear();
+
 }
 
 
@@ -36,6 +36,7 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 
 void TileLoader::Init()
 {
+	srand(time(nullptr));
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
 
@@ -49,12 +50,23 @@ void TileLoader::Init()
 		std::string pathString = entry.path().string();
 		if (hasEnding(pathString, ".ob"))
 		{
+#ifdef _WINDOWS
+			
+#endif
+			for (int x = 0; x < strlen(pathString.c_str()); x++)
+				pathString[x] = putchar(tolower(pathString[x]));
 			tilePaths.push_back(pathString);
+
 		}
 	}
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
-
+	for (int i=0;i<tilePaths.size();i++)
+	{
+		
+			
+		cout<<i<< tilePaths [i]<<'\n';
+	}
 
 	vector<string> tileMapPaths;
 	for (const auto& entry : fs::directory_iterator("assets/tiled/"))
@@ -67,15 +79,14 @@ void TileLoader::Init()
 	}
 	//alphabetically sort the tile paths
 	sort(tileMapPaths.begin(), tileMapPaths.end());
-	int chunkCount = 5;
 
-	for (int k = 0; k < chunkCount; k++)
+	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		LoadCSVFile(tileMapPaths[k].c_str());
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
 
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-		                             static_cast<float>(heightY - 1) * TILE_SIZE);
+			static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 		chunk->SetPosition(chunkOff);
@@ -92,7 +103,7 @@ void TileLoader::Init()
 					modelIndex--;
 
 					const glm::vec3 position = chunkOff + glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-					                                                static_cast<float>(i) * TILE_SIZE)
+						static_cast<float>(i) * TILE_SIZE)
 						- offset;
 					std::cout << position.x << " " << position.y << " " << position.z << "\n";
 					chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
@@ -101,14 +112,15 @@ void TileLoader::Init()
 		}
 
 		delete[]tileArray;
-		chunksOfTiles.push_back(chunk);
+		chunks[k] = chunk;
 	}
 }
 
 void TileLoader::DrawChunks()
 {
-	for (auto& chunk : chunksOfTiles)
+	for (int i = 0; i < chunks.size(); i++)
 	{
+		Chunk* chunk = chunks[i];
 		chunk->Draw();
 	}
 }
@@ -116,14 +128,29 @@ void TileLoader::DrawChunks()
 void TileLoader::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
-	for (int i = 0; i < chunksOfTiles.size(); i++)
+	for (int i = 0; i < chunks.size(); i++)
 	{
 		newOffset.z = dir.z * speed * deltaTime;
 
-		Chunk* chunk = chunksOfTiles[i];
-		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
-			newOffset.z = -TILE_SIZE * heightY * chunksOfTiles.size();
+		//Chunk* chunk = chunks[i];
+		////this chunk needs to be disabled
+		//if (chunk->GetPosition().z >  2*TILE_SIZE * heightY) {
 
+		//	float chunkH = -TILE_SIZE * heightY;
+		//	newOffset.z = chunkH * chunks.size()-i*chunkH;
+		//	/*chunk->SetOffset(newOffset);
+		//	chunk->Update(deltaTime);*/
+
+		//	int randomIndex = rand() % chunks.size();
+		//	if (randomIndex < numberOfActiveChunks)
+		//		randomIndex = numberOfActiveChunks;
+		//	//their original position
+		//	chunk->ResetTiles();
+
+		//}
+		Chunk* chunk = chunks[i];
+		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
+			newOffset.z = -TILE_SIZE * heightY * chunks.size();
 		chunk->SetOffset(newOffset);
 		chunk->Update(deltaTime);
 	}
@@ -172,8 +199,14 @@ void TileLoader::LoadCSVFile(const char* csvPath)
 	tileArray = new uint[widthX * heightY];
 	size = widthX * heightY;
 	//get to the start of the csv
+#ifdef _WINDOWS
 
+	char* startOfCsv = strstr(tilemapRaw, "csv") + 6;
+#else
 	char* startOfCsv = strstr(tilemapRaw, "csv") + 7;
+
+#endif
+
 	//get to the first element of the csv
 	const char* pch = strtok(startOfCsv, ",");
 
@@ -183,7 +216,7 @@ void TileLoader::LoadCSVFile(const char* csvPath)
 		uint numberForm = 0;
 		ConvertCharToInt(pch, numberForm);
 		if (numberForm > 0)
-			cout << numberForm << " which is the model: " << tilePaths[numberForm - 1] << '\n';
+			cout << numberForm - 1 << " which is the model: " << tilePaths[numberForm - 1] << '\n';
 		tileArray[index++] = numberForm;
 		pch = strtok(nullptr, ",\r\n");
 	}

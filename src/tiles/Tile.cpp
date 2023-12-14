@@ -12,7 +12,17 @@ void Tile::Init(const char* path, glm::vec3 pos)
 	LoadModel(path);
 	AddStaticRigidbody();
 }
+void Tile::ResetPosition( glm::vec3 pos)
+{
 
+	btTransform newTransform;
+	rigidBody->getMotionState()->getWorldTransform(newTransform);
+
+	newTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
+		initialPosition.z));
+	rigidBody->getMotionState()->setWorldTransform(newTransform);
+
+}
 void Tile::AddStaticRigidbody()
 {
 	//make a collision shape

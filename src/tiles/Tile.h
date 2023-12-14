@@ -8,6 +8,7 @@ class Tile
 {
 public:
     void Init(const char* path, glm::vec3 pos);
+    void ResetPosition(glm::vec3 pos);
     void AddStaticRigidbody();
     void UpdatePhysicsPosition();
     void LoadModel(const char* path);
