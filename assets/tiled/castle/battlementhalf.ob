@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib battlement_half.mtl
+mtllib battlementhalf.mtl
 
-g battlement_half
+g battlementhalf
 
 v -0.5 0 -0.3
 v -0.5 0 -0.5

@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wallFortifiedPaint_half.mtl
+mtllib wallFortifiedPainthalf.mtl
 
-g wallFortifiedPaint_half
+g wallFortifiedPainthalf
 
 v 0.5 1 0.4
 v 0.5 1 0.5

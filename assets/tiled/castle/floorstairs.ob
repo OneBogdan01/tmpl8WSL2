@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib floor_stairs.mtl
+mtllib floorstairs.mtl
 
-g floor_stairs
+g floorstairs
 
 v 0.5 0.35 0.25
 v 0.5 0.35 0.5

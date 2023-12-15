@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib tower_base.mtl
+mtllib towerbase.mtl
 
-g tower_base
+g towerbase
 
 v 0.5 1 0
 v 0.3535534 1 0.3535534

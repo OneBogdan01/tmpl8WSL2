@@ -24,6 +24,8 @@ Game* game;
 // Key callback function
 void ProccessInput(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+	mods;
+	scancode;
 	// Key press
 	if (action == GLFW_PRESS)
 	{
@@ -49,7 +51,13 @@ void ProccessInput(GLFWwindow* window, int key, int scancode, int action, int mo
 
 void FatalError(const char* fmt, ...)
 {
-	return;
+	char t[16384];
+	va_list args;
+	va_start(args, fmt);
+	vsnprintf(t, sizeof(t), fmt, args);
+	va_end(args);
+	printf(t);
+	exit(0);
 }
 
 void FixWorkingFolder()
@@ -69,16 +77,7 @@ string TextFileRead(const char* _File)
 	return str;
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
-	glViewport(0, 0, width, height);
-}
 
-uint sizePixels = 24;
 static Timer timer;
 
 int main()
@@ -107,7 +106,6 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSwapInterval(0);
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -136,7 +134,7 @@ int main()
 	//use my own font
 	//io.Fonts->AddFontDefault();
 
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", sizePixels);
+	io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", 24);
 
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
@@ -687,7 +685,6 @@ void closeEGL()
 static Timer timer;
 
 
-const uint sizePixels = 24;
 
 void ActivateErrorCallback()
 {
@@ -749,36 +746,40 @@ int main(int argc, char* argv[])
 	//use my own font
 	//io.Fonts->AddFontDefault();
 
-	ImFont* font1 = io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", sizePixels);
+	io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", 24);
 
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 
+	const double FPS = 1.0 / 300.0;
 
 	while (!should_close)
 	{
-		//as Abhishek said, multiplication is way faster then division
+		if (timer.elapsed() > FPS)
+		{
+			//as Abhishek said, multiplication is way faster then division
 
-		const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+			const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		ProccessEvents(game);
-		timer.reset();
+			ProccessEvents(game);
+			timer.reset();
 
-		//imgui still throws erros when used with the current opengl setup
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui::NewFrame();
-		io.DeltaTime = deltaTime;
+			//imgui still throws erros when used with the current opengl setup
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui::NewFrame();
+			io.DeltaTime = deltaTime;
 
-		game->Tick(deltaTime);
+			game->Tick(deltaTime);
 
 
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-		eglSwapBuffers(eglDisplay, eglSurface);
-		glFlush();
+			eglSwapBuffers(eglDisplay, eglSurface);
+			glFlush();
+		}
 	}
 	game->Shutdown();
 

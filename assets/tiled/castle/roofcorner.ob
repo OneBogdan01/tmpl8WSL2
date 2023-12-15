@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib roof_corner.mtl
+mtllib roofcorner.mtl
 
-g roof_corner
+g roofcorner
 
 v -0.5 0.1 -0.5
 v -0.5 1 -0.05

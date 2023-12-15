@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib column_damaged.mtl
+mtllib columndamaged.mtl
 
-g column_damaged
+g columndamaged
 
 v 0.1 0.9 -1.490115E-09
 v 0 0.9 0

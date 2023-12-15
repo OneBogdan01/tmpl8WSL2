@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib overhang_round.mtl
+mtllib overhanground.mtl
 
-g overhang_round
+g overhanground
 
 v 0.75 0.125 0
 v 0.5303301 0.125 0.5303301

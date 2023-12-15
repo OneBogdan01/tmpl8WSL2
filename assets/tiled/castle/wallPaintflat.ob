@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wallPaint_flat.mtl
+mtllib wallPaintflat.mtl
 
-g wallPaint_flat
+g wallPaintflat
 
 v 0.25 3.609557E-16 0
 v 0.25 0.5 0

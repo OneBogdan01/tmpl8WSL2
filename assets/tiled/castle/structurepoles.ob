@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib structure_poles.mtl
+mtllib structurepoles.mtl
 
-g structure_poles
+g structurepoles
 
 v 0.5 1 0.4
 v 0.5 1 0.5

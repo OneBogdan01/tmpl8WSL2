@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wall_flatGate.mtl
+mtllib wallflatGate.mtl
 
-g wall_flatGate
+g wallflatGate
 
 v -0.5 0 0
 v -0.25 0 0

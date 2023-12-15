@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib floor_stairsCornerInner.mtl
+mtllib floorstairsCornerInner.mtl
 
-g floor_stairsCornerInner
+g floorstairsCornerInner
 
 v 0.5 0 0.5
 v -0.5 0 0.5

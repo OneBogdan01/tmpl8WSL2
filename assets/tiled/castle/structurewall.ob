@@ -2,7 +2,7 @@
 
 mtllib structurewall.mtl
 
-g structure_wall
+g structurewall
 
 v 0.5 1 0.4
 v 0.5 1 0.5

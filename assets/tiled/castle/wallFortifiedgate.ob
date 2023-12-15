@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wallFortified_gate.mtl
+mtllib wallFortifiedgate.mtl
 
-g wallFortified_gate
+g wallFortifiedgate
 
 v 0.5 1 0.4
 v 0.5 1 0.5

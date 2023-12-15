@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib detail_barrel.mtl
+mtllib detailbarrel.mtl
 
-g detail_barrel
+g detailbarrel
 
 v -1.443823E-15 0.0885 -0.123
 v 0.08697414 0.0885 -0.08697414

@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib detail_crateSmall.mtl
+mtllib detailcrateSmall.mtl
 
-g detail_crateSmall
+g detailcrateSmall
 
 v 0.1 0 0.1
 v -0.1 0 0.1
