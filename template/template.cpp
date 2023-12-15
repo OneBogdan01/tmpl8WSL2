@@ -149,10 +149,8 @@ int main()
 	const double FPS = 1.0 / 300.0;
 	while (!glfwWindowShouldClose(window))
 	{
-
-
-
-		if (timer.elapsed() > FPS) {
+		if (timer.elapsed() > FPS)
+		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
 
@@ -174,7 +172,6 @@ int main()
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
-
 	}
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
@@ -727,6 +724,7 @@ void ActivateErrorCallback()
 int main(int argc, char* argv[])
 {
 	setenv("DISPLAY", ":0", 1);
+
 	InitEGL();
 	ActivateErrorCallback();
 	FixWorkingFolder();
@@ -734,8 +732,9 @@ int main(int argc, char* argv[])
 	game->Init();
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	eglSwapInterval(eglDisplay, 0);
+	//to fix repeating input
 
-
+	XAutoRepeatOff(x11Display);
 	// Create ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();

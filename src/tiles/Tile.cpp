@@ -12,17 +12,17 @@ void Tile::Init(const char* path, glm::vec3 pos)
 	LoadModel(path);
 	AddStaticRigidbody();
 }
-void Tile::ResetPosition( glm::vec3 pos)
-{
 
+void Tile::ResetPosition(glm::vec3 pos)
+{
 	btTransform newTransform;
 	rigidBody->getMotionState()->getWorldTransform(newTransform);
 
 	newTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-		initialPosition.z));
+	                                 initialPosition.z));
 	rigidBody->getMotionState()->setWorldTransform(newTransform);
-
 }
+
 void Tile::AddStaticRigidbody()
 {
 	//make a collision shape
@@ -38,15 +38,14 @@ void Tile::AddStaticRigidbody()
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
 
 	// Create a rigid body
-	btScalar mass =0.0; // Mass 0 for static objects
+	btScalar mass = 0.0; // Mass 0 for static objects
 	btVector3 localInertia(0, 0, 0);
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, tileMotionState, tileShape, localInertia);
-	
+
 	rigidBody = new btRigidBody(rbInfo);
 	//set it as kinamatic
-	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags()|btCollisionObject::CF_KINEMATIC_OBJECT);
+	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 	rigidBody->setActivationState(DISABLE_DEACTIVATION);
-
 
 
 	// Add the rigid body to the dynamics world
@@ -76,7 +75,7 @@ void Tile::Draw(Shader& shader) const
 		model->Draw(shader);
 }
 
-void Tile::SetOffset(glm::vec3 pos)
+void Tile::Translate(glm::vec3 pos)
 {
 	offset = pos;
 	if (offset != glm::vec3(0.0f))

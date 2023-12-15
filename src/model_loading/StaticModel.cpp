@@ -133,25 +133,25 @@ StaticMesh StaticModel::processMesh(aiMesh* StaticMesh, const aiScene* scene)
 std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
                                                                        std::string typeName)
 {
-	/*{
+	{
 		vector<StaticMesh::MeshTexture> textures;
-		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
+		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+		{
 			aiString str;
 			mat->GetTexture(type, i, &str);
-			
-			cout << "Texture path: " << str.C_Str()+4 << endl;
+
+			cout << "Texture path: " << str.C_Str() + 4 << endl;
 		}
-	}*/
+	}
 	vector<StaticMesh::MeshTexture> textures;
 	for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 	{
-
 		aiString str;
 
 		mat->GetTexture(type, i, &str);
 #ifdef _WINDOWS
 		//for some reason the string has 4 null characters before the path
-		 str = str.C_Str() + 4;
+		str = str.C_Str() + 4;
 #endif
 
 		bool skip = false;

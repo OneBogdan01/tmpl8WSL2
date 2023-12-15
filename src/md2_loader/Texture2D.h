@@ -13,6 +13,7 @@ public:
 
 	bool loadTexture(const char* fileName, bool generateMipMaps = true);
 	void bind(GLuint texUnit = 0);
+	void unbind();
 
 private:
 	Texture2D(const Texture2D& rhs) = default;

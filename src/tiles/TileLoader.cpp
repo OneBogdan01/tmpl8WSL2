@@ -134,7 +134,7 @@ void TileLoader::Update(float deltaTime)
 
 		//	float chunkH = -TILE_SIZE * heightY;
 		//	newOffset.z = chunkH * chunks.size()-i*chunkH;
-		//	/*chunk->SetOffset(newOffset);
+		//	/*chunk->Translate(newOffset);
 		//	chunk->Update(deltaTime);*/
 
 		//	int randomIndex = rand() % chunks.size();
@@ -147,7 +147,7 @@ void TileLoader::Update(float deltaTime)
 		Chunk* chunk = chunks[i];
 		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
 			newOffset.z = -TILE_SIZE * heightY * chunks.size();
-		chunk->SetOffset(newOffset);
+		chunk->Translate(newOffset);
 		chunk->Update(deltaTime);
 	}
 }

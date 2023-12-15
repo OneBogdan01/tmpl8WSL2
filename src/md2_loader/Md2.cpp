@@ -62,6 +62,7 @@ void Md2::Draw(int frame, float angle, float interpolation, glm::mat4&& view, gl
 	m_shaderProgram->setUniform("interpolation", interpolation);
 	glDrawArrays(GL_TRIANGLES, 0, count);
 	glBindVertexArray(0);
+	m_texture->unbind();
 }
 
 void Md2::SetPosition(glm::vec3 position)
@@ -174,7 +175,7 @@ void Md2::InitBuffer()
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
-
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0); // unbind to make sure other code doesn't change it
 	m_bufferInitialized = true;
 }

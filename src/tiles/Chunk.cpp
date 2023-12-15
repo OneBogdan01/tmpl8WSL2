@@ -30,7 +30,7 @@ void Chunk::ResetTiles()
 	offset.z = 0;
 	for (auto& index : activeTiles)
 	{
-				tiles[index].ResetPosition(glm::vec3(0.0f));
+		tiles[index].ResetPosition(glm::vec3(0.0f));
 	}
 }
 
@@ -41,7 +41,7 @@ void Chunk::Draw()
 	modelShader->Bind();
 	modelShader->SetMat4x4("projection", Game::perspective);
 	modelShader->SetMat4x4("view", Game::view);
-	glm::vec3 camPos=Game::GetCameraPosition();
+	glm::vec3 camPos = Game::GetCameraPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 	modelShader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
 	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
@@ -66,7 +66,7 @@ void Chunk::Update(float deltaTime)
 {
 	for (auto& index : activeTiles)
 	{
-		tiles[index].SetOffset(offset);
+		tiles[index].Translate(offset);
 	}
 	offset = glm::vec3(0.0f);
 }
@@ -76,7 +76,7 @@ void Chunk::SetPosition(glm::vec3 pos)
 	position = pos;
 }
 
-void Chunk::SetOffset(glm::vec3 pos)
+void Chunk::Translate(glm::vec3 pos)
 {
 	offset = pos;
 	position += offset;

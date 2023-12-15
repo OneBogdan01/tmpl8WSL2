@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib tower_top.mtl
+mtllib towertop.mtl
 
-g tower_top
+g towertop
 
 v -0.1442191 0.2 0.5402625
 v -0.280045 0.2 0.4840015

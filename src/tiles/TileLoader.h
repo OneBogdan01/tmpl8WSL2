@@ -18,8 +18,8 @@ public:
 
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
-	int numberOfActiveChunks = 3;
-	
+	const uint numberOfActiveChunks = 3;
+
 
 	void LoadCSVFile(const char* csvPath);
 
