@@ -8,9 +8,11 @@ class Tile
 {
 public:
 	void Init(const char* path, glm::vec3 pos);
+	btVector3 GetTileOffset();
 	void ResetPosition(glm::vec3 pos);
 	void AddStaticRigidbody();
-	void UpdatePhysicsPosition();
+	void UpdatePhysicsPosition(glm::vec3 chunkPos);
+
 	void LoadModel(const char* path);
 	void Draw(Shader& shader) const;
 	void Translate(glm::vec3 pos);

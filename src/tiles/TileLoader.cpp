@@ -8,6 +8,8 @@
 
 
 #include <filesystem>
+#include <random>
+
 #include "Texture.h"
 
 
@@ -35,6 +37,11 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 
 void TileLoader::Init()
 {
+	// Create a random device
+	std::random_device rd;
+
+	// Initialize a random number generator with the random device
+	std::mt19937 g(rd());
 	srand(time(nullptr));
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
@@ -75,7 +82,7 @@ void TileLoader::Init()
 	}
 	//alphabetically sort the tile paths
 	sort(tileMapPaths.begin(), tileMapPaths.end());
-
+	Chunk* firstChunk;
 	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		LoadCSVFile(tileMapPaths[k].c_str());
@@ -84,8 +91,7 @@ void TileLoader::Init()
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
 		                             static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
-		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
-		chunk->SetPosition(chunkOff);
+
 
 		for (int i = 0; i < heightY; i++)
 		{
@@ -98,8 +104,8 @@ void TileLoader::Init()
 					//so the index can start from 0
 					modelIndex--;
 
-					const glm::vec3 position = chunkOff + glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-					                                                static_cast<float>(i) * TILE_SIZE)
+					const glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
+					                                     static_cast<float>(i) * TILE_SIZE)
 						- offset;
 					std::cout << position.x << " " << position.y << " " << position.z << "\n";
 					chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
@@ -107,14 +113,40 @@ void TileLoader::Init()
 			}
 		}
 
+		if (k == 0)
+			firstChunk = chunk;
 		delete[]tileArray;
 		chunks[k] = chunk;
+	}
+	//randomize order
+
+	shuffle(chunks.begin(), chunks.end(), g);
+	for (int i = 0; i < NUMBER_OF_CHUNKS; i++)
+	{
+		if (chunks[i] == firstChunk)
+		{
+			swap(chunks[0], chunks[i]);
+			break;
+		}
+	}
+	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
+	{
+		Chunk* chunk = chunks[k];
+		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
+
+		if (k < numberOfActiveChunks)
+			chunk->SetPosition(chunkOff);
+		else
+		{
+			chunk->SetPosition(glm::vec3(static_cast<float>(-2)) * chunkOffset);
+			chunk->Update(0);
+		}
 	}
 }
 
 void TileLoader::DrawChunks()
 {
-	for (int i = 0; i < chunks.size(); i++)
+	for (size_t i = 0; i < numberOfActiveChunks; i++)
 	{
 		Chunk* chunk = chunks[i];
 		chunk->Draw();
@@ -124,29 +156,28 @@ void TileLoader::DrawChunks()
 void TileLoader::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
-	for (int i = 0; i < chunks.size(); i++)
+	for (size_t i = 0; i < numberOfActiveChunks; i++)
 	{
 		newOffset.z = dir.z * speed * deltaTime;
 
-		//Chunk* chunk = chunks[i];
-		////this chunk needs to be disabled
-		//if (chunk->GetPosition().z >  2*TILE_SIZE * heightY) {
-
-		//	float chunkH = -TILE_SIZE * heightY;
-		//	newOffset.z = chunkH * chunks.size()-i*chunkH;
-		//	/*chunk->Translate(newOffset);
-		//	chunk->Update(deltaTime);*/
-
-		//	int randomIndex = rand() % chunks.size();
-		//	if (randomIndex < numberOfActiveChunks)
-		//		randomIndex = numberOfActiveChunks;
-		//	//their original position
-		//	chunk->ResetTiles();
-
-		//}
 		Chunk* chunk = chunks[i];
+		//this chunk needs to be disabled
 		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
-			newOffset.z = -TILE_SIZE * heightY * chunks.size();
+		{
+			//2 is the amount of tiles behind the player
+			newOffset.z = -TILE_SIZE * heightY * (numberOfActiveChunks - 2);
+
+			/*chunk->Translate(newOffset);
+			chunk->Update(deltaTime);*/
+
+			int randomIndex = rand() % chunks.size();
+			if (randomIndex < numberOfActiveChunks)
+				randomIndex = numberOfActiveChunks;
+			swap(chunks[i], chunks[randomIndex]);
+			chunk = chunks[i];
+			//their original position
+			chunk->ResetTiles();
+		}
 		chunk->Translate(newOffset);
 		chunk->Update(deltaTime);
 	}

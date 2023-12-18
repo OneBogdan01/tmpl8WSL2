@@ -41,8 +41,8 @@
             "scale": 0.25,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -30,
-                "y": 930
+                "x": 390,
+                "y": 2618
             }
         },
         "map4.tmx": {
@@ -66,8 +66,8 @@
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "Tiles.tsx",
         "map3.tmx",
+        "Tiles.tsx",
         "map4.tmx",
         "map2.tmx",
         "map.tmx",

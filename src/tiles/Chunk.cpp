@@ -27,11 +27,6 @@ void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
 void Chunk::ResetTiles()
 {
 	position.z = 0;
-	offset.z = 0;
-	for (auto& index : activeTiles)
-	{
-		tiles[index].ResetPosition(glm::vec3(0.0f));
-	}
 }
 
 void Chunk::Draw()
@@ -52,8 +47,8 @@ void Chunk::Draw()
 	for (auto& index : activeTiles)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
-		glm::vec3 position = tiles[index].GetPosition();
-		model = glm::translate(model, position);
+		glm::vec3 tilePosition = tiles[index].GetPosition();
+		model = glm::translate(model, tilePosition);
 		model = glm::scale(model, glm::vec3(TILE_SIZE));
 		modelShader->SetMat4x4("model", model);
 		tiles[index].Draw(*modelShader);
@@ -66,9 +61,8 @@ void Chunk::Update(float deltaTime)
 {
 	for (auto& index : activeTiles)
 	{
-		tiles[index].Translate(offset);
+		tiles[index].UpdatePhysicsPosition(position);
 	}
-	offset = glm::vec3(0.0f);
 }
 
 void Chunk::SetPosition(glm::vec3 pos)
@@ -78,8 +72,7 @@ void Chunk::SetPosition(glm::vec3 pos)
 
 void Chunk::Translate(glm::vec3 pos)
 {
-	offset = pos;
-	position += offset;
+	position += pos;
 }
 
 glm::vec3 Chunk::GetPosition()

@@ -1,6 +1,10 @@
 ﻿#include "Tile.h"
 
 
+#include "Camera.h"
+#include "Camera.h"
+#include "Camera.h"
+#include "Camera.h"
 #include "game.h"
 #include "TileLoader.h"
 #include "physics/World.h"
@@ -13,13 +17,18 @@ void Tile::Init(const char* path, glm::vec3 pos)
 	AddStaticRigidbody();
 }
 
+btVector3 Tile::GetTileOffset()
+{
+	return btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
+		initialPosition.z);
+}
+
 void Tile::ResetPosition(glm::vec3 pos)
 {
 	btTransform newTransform;
 	rigidBody->getMotionState()->getWorldTransform(newTransform);
 
-	newTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-	                                 initialPosition.z));
+	newTransform.setOrigin(GetTileOffset());
 	rigidBody->getMotionState()->setWorldTransform(newTransform);
 }
 
@@ -34,7 +43,7 @@ void Tile::AddStaticRigidbody()
 	tileTransform.setIdentity();
 	drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
 	tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-	                                  initialPosition.z));
+		initialPosition.z));
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
 
 	// Create a rigid body
@@ -54,12 +63,12 @@ void Tile::AddStaticRigidbody()
 	Game::world.AddRigidBody(rigidBody);
 }
 
-void Tile::UpdatePhysicsPosition()
+void Tile::UpdatePhysicsPosition(glm::vec3 chunkPos)
 {
 	btTransform newTransform;
 	rigidBody->getMotionState()->getWorldTransform(newTransform);
 
-	newTransform.setOrigin(newTransform.getOrigin() + btVector3(0, 0, offset.z));
+	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos) + GetTileOffset()));
 	rigidBody->getMotionState()->setWorldTransform(newTransform);
 	offset = glm::vec3(0.0f);
 }
@@ -75,14 +84,16 @@ void Tile::Draw(Shader& shader) const
 		model->Draw(shader);
 }
 
-void Tile::Translate(glm::vec3 pos)
-{
-	offset = pos;
-	if (offset != glm::vec3(0.0f))
-		UpdatePhysicsPosition();
-}
+//void Tile::Translate(glm::vec3 pos)
+//{
+//	offset = pos;
+//	if (offset != glm::vec3(0.0f))
+//		UpdatePhysicsPosition(TODO);
+//}
 
 glm::vec3 Tile::GetPosition() const
 {
-	return BtVector3ToGlm(rigidBody->getWorldTransform().getOrigin()) - drawOffset;
+	btVector3 position=rigidBody->getWorldTransform().getOrigin();
+	position.setY(position.getY() - drawOffset.y);
+	return BtVector3ToGlm(position) ;
 }

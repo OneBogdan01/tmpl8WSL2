@@ -130,7 +130,7 @@ void Game::Tick(float deltaTime)
 
 	perspective = glm::perspective(glm::radians(fov),
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                               0.1f, 100.0f);
+	                               0.1f, 300.0f);
 	//simpleShader->SetMat4x4("projection", perspective);
 	view = camera->GetViewMat();
 
