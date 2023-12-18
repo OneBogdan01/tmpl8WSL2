@@ -1,3 +1,8 @@
+#ifdef _WINDOWS
+//fixes ambigous symbol error
+#define _HAS_STD_BYTE 0
+#endif
+
 #include "game.h"
 
 #include "tiles/TileLoader.h"
@@ -76,6 +81,75 @@ float FPS = 0;
 uint frameCount = 0;
 Timer timer;
 
+
+#ifdef _WINDOWS
+#include "windows.h"
+#include "psapi.h"
+
+#else
+#include "sys/types.h"
+#include "sys/sysinfo.h"
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+
+int parseLine(char* line)
+{
+	// This assumes that a digit will be found and the line ends in " Kb".
+	int i = strlen(line);
+	const char* p = line;
+	while (*p < '0' || *p > '9') p++;
+	line[i - 3] = '\0';
+	i = atoi(p);
+	return i;
+}
+
+namespace virtualMemory
+{
+	int getValue()
+	{
+		//Note: this value is in KB!
+		FILE* file = fopen("/proc/self/status", "r");
+		int result = -1;
+		char line[128];
+
+		while (fgets(line, 128, file) != NULL)
+		{
+			if (strncmp(line, "VmSize:", 7) == 0)
+			{
+				result = parseLine(line);
+				break;
+			}
+		}
+		fclose(file);
+		return result;
+	}
+}
+
+namespace physicalMemory
+{
+	int getValue()
+	{
+		//Note: this value is in KB!
+		FILE* file = fopen("/proc/self/status", "r");
+		int result = -1;
+		char line[128];
+
+		while (fgets(line, 128, file) != NULL)
+		{
+			if (strncmp(line, "VmRSS:", 6) == 0)
+			{
+				result = parseLine(line);
+				break;
+			}
+		}
+		fclose(file);
+		return result;
+	}
+}
+#endif
+
+
 void Game::Tick(float deltaTime)
 {
 	inputManager.Update();
@@ -100,11 +174,43 @@ void Game::Tick(float deltaTime)
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
 	            camera->GetPosition().z);
 
-	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 	if (ImGui::Button("Button"))
-		f += deltaTime;
+		f += deltaTime;*/
+
+	//from this post https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+
+#ifdef _WINDOWS
+
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	SIZE_T virtualMemUsed = pmc.PrivateUsage;
+
+	MEMORYSTATUSEX memInfo;
+	memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+	GlobalMemoryStatusEx(&memInfo);
+	SIZE_T physMemUsed = pmc.WorkingSetSize;
+
+
+
+#else
+
+	//convert to byes
+	long long virtualMemUsed = virtualMemory::getValue()*1000;
+
+	long long physMemUsed = physicalMemory::getValue()*1000;
+
+
+#endif
+	// Convert from bytes to megabytes
+	double virtualMemUsedMB = virtualMemUsed / 1024.0 / 1024.0;
+	double physMemUsedMB = physMemUsed / 1024.0 / 1024.0;
+
+	ImGui::Text("Virt mem: %.2f MB", virtualMemUsedMB);
+	ImGui::Text("Phys mem: %.2f MB", physMemUsedMB);
+
 #endif
 
 	if (f > 1)
@@ -130,7 +236,7 @@ void Game::Tick(float deltaTime)
 
 	perspective = glm::perspective(glm::radians(fov),
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                               0.1f, 300.0f);
+	                               0.1f, 100.0f);
 	//simpleShader->SetMat4x4("projection", perspective);
 	view = camera->GetViewMat();
 

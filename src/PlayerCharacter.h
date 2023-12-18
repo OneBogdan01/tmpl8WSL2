@@ -39,7 +39,7 @@ private:
 	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);
 	float speed = 20.0f;
-	float jumpSpeed = 20.0f;
+	float jumpSpeed = 18.0f;
 	int displayIndex = 32;
 	Timer timer;
 #ifdef _WINDOWS

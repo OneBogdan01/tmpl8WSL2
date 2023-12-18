@@ -536,6 +536,7 @@
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\physics\World.h" />
+    <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="template\stb_image.h" />

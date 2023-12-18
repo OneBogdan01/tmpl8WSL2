@@ -48,10 +48,10 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
 #ifdef _WINDOWS
 
-	btScalar gravity = -dynamicsWorld->getGravity().getY();
+	btScalar gravity = -dynamicsWorld->getGravity().getY() * 10;
 	characterController->setGravity(gravity);
 #else
-	characterController->setGravity(dynamicsWorld->getGravity());
+	characterController->setGravity(dynamicsWorld->getGravity() * 10);
 #endif
 
 	//makes the player fall on the edge of the platform
@@ -61,10 +61,11 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
-	characterController->setMaxJumpHeight(3.0f);
+	characterController->setMaxJumpHeight(2.0f);
 	///set them sometime
-	characterController->setFallSpeed(7.0f);
-	characterController->setJumpSpeed(12.0f);
+	characterController->setFallSpeed(50.0f);
+	characterController->setJumpSpeed(40.0f);
+
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 
 	//shader = new Shader(
@@ -219,11 +220,12 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	}
 
 
-	if (inputManager->IsPressed(Action::Jump))
+	if (inputManager->IsPressed(Jump))
 	{
-		if (characterController->onGround())
+		if (characterController->canJump())
 		{
 			std::cout << "jump" << std::endl;
+
 			characterController->jump();
 		}
 	}

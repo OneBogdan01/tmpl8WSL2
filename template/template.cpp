@@ -1,3 +1,5 @@
+const double FPS = 1.0 / 60.0;
+
 #ifdef _WINDOWS
 
 #include "imgui.h"
@@ -17,7 +19,6 @@
 #include <direct.h>
 
 #include <GLFW/glfw3.h>
-
 // Assume that 'window' is your GLFWwindow object
 Game* game;
 
@@ -144,7 +145,7 @@ int main()
 	// render loop
 	// -----------
 	//physics behave wierd unless the FPS is capped
-	const double FPS = 1.0 / 300.0;
+	//const double FPS = 1.0 / 900.0;
 	while (!glfwWindowShouldClose(window))
 	{
 		if (timer.elapsed() > FPS)
@@ -685,7 +686,6 @@ void closeEGL()
 static Timer timer;
 
 
-
 void ActivateErrorCallback()
 {
 	const auto pegl_debug_message_control_khr = reinterpret_cast<PFNGLDEBUGMESSAGECALLBACKKHRPROC>(eglGetProcAddress(
@@ -751,7 +751,6 @@ int main(int argc, char* argv[])
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 
-	const double FPS = 1.0 / 300.0;
 
 	while (!should_close)
 	{
