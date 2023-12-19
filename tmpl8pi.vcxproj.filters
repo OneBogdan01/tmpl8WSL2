@@ -386,6 +386,7 @@
     <ClInclude Include="src\physics\GameObject.h" />
     <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
+    <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -679,24 +680,11 @@
     <None Include="assets\tiled\castle\wallPaintgate.ob" />
     <None Include="assets\tiled\castle\wallPainthalf.mtl" />
     <None Include="assets\tiled\castle\wallPainthalf.ob" />
-    <None Include="shaders\basic.frag" />
-    <None Include="shaders\basic.vert" />
-    <None Include="shaders\BasicFragmentShader.frag" />
-    <None Include="shaders\BasicVertexShader.vert" />
-    <None Include="shaders\compute.comp" />
-    <None Include="shaders\DebugVert.vert" />
-    <None Include="shaders\ModelLoading.frag" />
-    <None Include="shaders\ModelLoading.vert" />
-    <None Include="shaders\Skinned.frag" />
-    <None Include="shaders\Skinned.vert" />
-    <None Include="shaders\Skybox.frag" />
-    <None Include="shaders\Skybox.vert" />
-    <None Include="shaders\SolidColor.frag" />
-    <None Include="shaders\Sun.frag" />
     <None Include="assets\tiled\map1.tmx" />
     <None Include="assets\tiled\map2.tmx" />
     <None Include="assets\tiled\map3.tmx" />
     <None Include="assets\tiled\map4.tmx" />
+    <None Include="assets\shaders\DebugFrag.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

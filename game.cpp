@@ -184,6 +184,7 @@ void Game::Tick(float deltaTime)
 
 #ifdef _WINDOWS
 
+
 	PROCESS_MEMORY_COUNTERS_EX pmc;
 	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
 	SIZE_T virtualMemUsed = pmc.PrivateUsage;
@@ -279,6 +280,8 @@ void Game::Tick(float deltaTime)
 	sun.Draw();
 	lightShader->Unbind();
 	skybox.Draw();
+
+	world.RenderDebug();
 }
 
 void Game::Shutdown()

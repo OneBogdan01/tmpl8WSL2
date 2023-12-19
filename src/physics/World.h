@@ -15,6 +15,7 @@ class World
 public:
     World();
     ~World();
+    void RenderDebug();
     void Update(float deltaTime);
 
     void AddRigidBody(btRigidBody* rb);

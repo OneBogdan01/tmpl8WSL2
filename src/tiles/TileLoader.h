@@ -18,6 +18,8 @@ public:
 
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
+	//memory test
+	//std::array<Chunk*, sizeof(Chunk> test = {};
 	const uint numberOfActiveChunks = 3;
 
 

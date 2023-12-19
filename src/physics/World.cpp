@@ -24,14 +24,18 @@ subject to the following restrictions:
 
 
 /// This is a Hello World program for running a basic Bullet physics simulation
-
-void World::Update(float deltaTime)
+void World::RenderDebug()
 {
 #ifdef  __DEBUG__
 	dynamicsWorld->debugDrawWorld();
 	debugDrawer->RenderDebug();
 
 #endif
+}
+void World::Update(float deltaTime)
+{
+
+	RenderDebug();
 
 
 	dynamicsWorld->stepSimulation(1.0f / 60.0f, 5, 1.0f / 60.0f); //set it to 5! for the PI
@@ -390,7 +394,7 @@ void World::CheckForCollisionEvents()
 		// Get the manifold.
 		btPersistentManifold* pManifold = dispatcher->getManifoldByIndexInternal(i);
 
-		// Ignore manifolds that have no contact points.
+		// Ignore manifolds that have no contact allColors.
 		if (pManifold->getNumContacts() > 0)
 		{
 			// Get the two rigid bodies involved in the collision.

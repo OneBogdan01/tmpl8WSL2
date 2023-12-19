@@ -7,18 +7,6 @@
 #include "glm/gtx/transform.hpp"
 
 
-void DebugRenderer::BindBuffers()
-{
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-}
-
-void DebugRenderer::UnbindBuffers()
-{
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-}
 
 void DebugRenderer::InitBuffers()
 {
@@ -26,11 +14,11 @@ void DebugRenderer::InitBuffers()
 	glGenBuffers(1, &VBO);
 }
 
-DebugRenderer::DebugRenderer() : mode(DBG_DrawWireframe)
+DebugRenderer::DebugRenderer() : mode(DBG_MAX_DEBUG_DRAW_MODE)
 {
 	simpleShader = new Shader(
 		"assets/shaders/DebugVert.vert",
-		"assets/shaders/SolidColor.frag");
+		"assets/shaders/DebugFrag.frag");
 	InitBuffers();
 }
 
@@ -48,26 +36,39 @@ void DebugRenderer::SetShaderMatrices()
 	glm::mat4 model = glm::mat4(1.0f);
 	simpleShader->SetMat4x4("model", model);
 }
+void DebugRenderer::BindBuffers()
+{
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+}
+
+void DebugRenderer::UnbindBuffers()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+}
 
 void DebugRenderer::RenderDebug()
 {
 	BindBuffers();
 	glBufferData(GL_ARRAY_BUFFER, debugInfo.size() * sizeof(DebugInfo), &debugInfo[0],
-	             GL_STATIC_DRAW);
+		GL_STATIC_DRAW);
 	//vertices
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
 	glEnableVertexAttribArray(0);
 
-
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(DebugInfo), (void*)(sizeof(btVector3)));
+	glEnableVertexAttribArray(1);
 	simpleShader->Bind();
 	SetShaderMatrices();
-
-	simpleShader->SetFloat3("color", color.x(), color.y(), color.z());
+	allColors;
 	glDrawArrays(GL_LINES, 0, static_cast<unsigned int>(debugInfo.size()) * 2);
 
 
 	simpleShader->Unbind();
 	debugInfo.clear();
+	allColors.clear();
 	UnbindBuffers();
 }
 
@@ -77,12 +78,17 @@ void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const b
 	DebugInfo info;
 	info.from = from;
 	info.to = to;
-	color = _color;
+	info.color1 = _color;
+	Color col;
+	col.r = _color.x();
+	col.g = _color.y();
+	col.b = _color.z();
+	allColors.emplace(col);
 	debugInfo.emplace_back(info);
 }
 
 void DebugRenderer::drawContactPoint(const btVector3& PointOnB, const btVector3& normalOnB, btScalar distance,
-                                     int lifeTime, const btVector3& color)
+	int lifeTime, const btVector3& color)
 {
 }
 

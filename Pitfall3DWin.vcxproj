@@ -522,6 +522,7 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <None Include="assets\shaders\BasicFragmentShader.frag" />
     <None Include="assets\shaders\BasicVertexShader.vert" />
     <None Include="assets\shaders\compute.comp" />
+    <None Include="assets\shaders\DebugFrag.frag" />
     <None Include="assets\shaders\DebugVert.vert" />
     <None Include="assets\shaders\ModelLoading.frag" />
     <None Include="assets\shaders\ModelLoading.vert" />
