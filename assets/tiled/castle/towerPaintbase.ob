@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib towerPaintbase.mtl
+mtllib towerpaintbase.mtl
 
-g towerPaintbase
+g towerpaintbase
 
 v 0.5 1 0
 v 0.3535534 1 0.3535534

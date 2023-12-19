@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib floorstepsCornerOuter.mtl
+mtllib floorstepscornerouter.mtl
 
-g floorstepsCornerOuter
+g floorstepscornerouter
 
 v 0.5 0 -0.5
 v 0.5 0 -1.443823E-14

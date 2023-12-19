@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wallPaintdetail.mtl
+mtllib wallpaintdetail.mtl
 
-g wallPaintdetail
+g wallpaintdetail
 
 v -0.2 7.168513E-18 -0.15
 v -0.2 1 -0.15

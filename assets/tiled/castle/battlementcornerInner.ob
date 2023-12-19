@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib battlementcornerInner.mtl
+mtllib battlementcornerinner.mtl
 
-g battlementcornerInner
+g battlementcornerinner
 
 v 0.35 0.4 -0.1
 v 0.35 0.4 0.1

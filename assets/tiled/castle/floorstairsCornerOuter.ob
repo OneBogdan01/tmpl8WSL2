@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib floorstairsCornerOuter.mtl
+mtllib floorstairscornerouter.mtl
 
-g floorstairsCornerOuter
+g floorstairscornerouter
 
 v 3.609557E-15 0.15 -2.887646E-15
 v 3.609557E-15 0.25 -2.887646E-15

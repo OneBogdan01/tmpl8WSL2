@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib columnPaintdamaged.mtl
+mtllib columnpaintdamaged.mtl
 
-g columnPaintdamaged
+g columnpaintdamaged
 
 v 0.1 0.8 -0.1
 v 0.1 0 -0.1

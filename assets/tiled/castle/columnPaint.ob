@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib columnPaint.mtl
+mtllib columnpaint.mtl
 
-g columnPaint
+g columnpaint
 
 v 0.1 0 0.1
 v -0.1 0 0.1

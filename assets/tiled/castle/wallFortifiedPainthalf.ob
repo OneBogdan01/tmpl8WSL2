@@ -1,8 +1,8 @@
 # Created by Kenney (www.kenney.nl)
 
-mtllib wallFortifiedPainthalf.mtl
+mtllib wallfortifiedpainthalf.mtl
 
-g wallFortifiedPainthalf
+g wallfortifiedpainthalf
 
 v 0.5 1 0.4
 v 0.5 1 0.5
