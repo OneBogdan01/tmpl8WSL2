@@ -58,7 +58,7 @@ void DebugRenderer::RenderDebug()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(DebugInfo), (void*)(sizeof(btVector3)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(DebugInfo), (void*)offsetof(DebugInfo, color1));
 	glEnableVertexAttribArray(1);
 	simpleShader->Bind();
 	SetShaderMatrices();

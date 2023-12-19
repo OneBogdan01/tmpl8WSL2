@@ -23,6 +23,7 @@ public:
 	}
 
 	void Draw(Shader& shader);
+	void SetUpMeshes();
 	std::vector<StaticMesh>& GetMeshes();
 
 private:

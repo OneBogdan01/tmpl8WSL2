@@ -20,7 +20,7 @@ void Tile::Init(const char* path, glm::vec3 pos)
 btVector3 Tile::GetTileOffset()
 {
 	return btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-		initialPosition.z);
+	                 initialPosition.z);
 }
 
 void Tile::ResetPosition(glm::vec3 pos)
@@ -43,7 +43,7 @@ void Tile::AddStaticRigidbody()
 	tileTransform.setIdentity();
 	drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
 	tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-		initialPosition.z));
+	                                  initialPosition.z));
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
 
 	// Create a rigid body
@@ -76,6 +76,13 @@ void Tile::UpdatePhysicsPosition(glm::vec3 chunkPos)
 void Tile::LoadModel(const char* path)
 {
 	model = new StaticModel(path);
+
+	for (auto& mesh : model->GetMeshes())
+	{
+		mesh.BakeLighting(initialPosition);
+	}
+
+	model->SetUpMeshes();
 }
 
 void Tile::Draw(Shader& shader) const
@@ -93,7 +100,7 @@ void Tile::Draw(Shader& shader) const
 
 glm::vec3 Tile::GetPosition() const
 {
-	btVector3 position=rigidBody->getWorldTransform().getOrigin();
+	btVector3 position = rigidBody->getWorldTransform().getOrigin();
 	position.setY(position.getY() - drawOffset.y);
-	return BtVector3ToGlm(position) ;
+	return BtVector3ToGlm(position);
 }

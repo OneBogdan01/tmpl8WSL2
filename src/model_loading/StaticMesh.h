@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "glm/fwd.hpp"
+
 
 //from https://learnopengl.com/Model-Loading/StaticMesh
 
@@ -18,6 +20,7 @@ public:
 		glm::vec3 Position;
 		glm::vec3 Normal;
 		glm::vec2 TexCoords;
+		glm::vec3 Color;
 	};
 
 	struct MeshTexture
@@ -33,10 +36,10 @@ public:
 	std::vector<MeshTexture> textures;
 	StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<MeshTexture> textures);
 	void Draw(Shader& shader);
+	void BakeLighting(glm::vec3& worldPos);
+	void setupMesh();
 
 private:
 	//  render data
 	unsigned int VAO, VBO, EBO;
-
-	void setupMesh();
 };

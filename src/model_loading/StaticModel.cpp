@@ -15,6 +15,14 @@ void StaticModel::Draw(Shader& shader)
 		StaticMesh.Draw(shader);
 }
 
+void StaticModel::SetUpMeshes()
+{
+	for (auto& StaticMesh : meshes)
+	{
+		StaticMesh.setupMesh();
+	}
+}
+
 std::vector<StaticMesh>& StaticModel::GetMeshes()
 {
 	return meshes;

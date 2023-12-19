@@ -593,6 +593,7 @@
     <None Include="assets\shaders\DebugVert.vert" />
     <None Include="assets\shaders\ModelLoading.frag" />
     <None Include="assets\shaders\ModelLoading.vert" />
+    <None Include="assets\shaders\PhongLighting.frag" />
     <None Include="assets\shaders\Skinned.frag" />
     <None Include="assets\shaders\Skinned.vert" />
     <None Include="assets\shaders\Skybox.frag" />

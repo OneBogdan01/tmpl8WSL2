@@ -1,5 +1,10 @@
 ﻿#include "StaticMesh.h"
+
+#include "Camera.h"
+#include "Camera.h"
+#include "game.h"
 #include "template.h"
+#include "physics/DebugRenderer.h"
 
 
 StaticMesh::StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
@@ -9,7 +14,7 @@ StaticMesh::StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned> indic
 	this->indices = indices;
 	this->textures = textures;
 
-	setupMesh();
+	//setupMesh();
 }
 
 void StaticMesh::Draw(Shader& shader)
@@ -38,6 +43,74 @@ void StaticMesh::Draw(Shader& shader)
 	glBindVertexArray(0);
 }
 
+//    // ambient
+//  
+//    highp vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
+//    
+//     // diffuse 
+//    highp vec3 norm = normalize(Normal);
+//    highp vec3 lightDir = normalize(lightPos - FragPos);
+//    highp float diff = max(dot(norm, lightDir), 0.0);
+//    highp vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));  
+//
+//     
+//     // specular
+//    highp vec3 viewDir = normalize(viewPos - FragPos);
+//    highp vec3 reflectDir = reflect(-lightDir, norm);  
+//    highp float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+//    highp vec3 specular = light.specular * (spec * material.specular);   
+void StaticMesh::BakeLighting(glm::vec3& worldPos)
+{
+	//get data from texture
+	if (textures.size() > 0)
+	{
+		string path = "assets/tiled/castle/" + textures[0].path;
+		Surface surface(path.c_str());
+
+		for (auto& vertex : vertices)
+		{
+			// ambient
+
+
+			glm::vec3 ambient = glm::vec3(0.2f);
+
+			// diffuse
+			glm::vec3 norm = glm::normalize(vertex.Normal);
+			glm::vec3 lightDir = glm::normalize(Game::GetLightPos() - vertex.Position);
+			float diff = max(glm::dot(norm, lightDir), 0.0f);
+			float distance = length(Game::GetLightPos() - (vertex.Position + worldPos));
+			float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));
+			glm::vec3 diffuse = glm::vec3(1.0f) * diff;
+			//// specular
+			//glm::vec3 viewDir = glm::normalize(viewPos - vertex.Position);
+			//glm::vec3 reflectDir = reflect(-lightDir, norm);
+			//float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
+			//	glm::vec3 specular = light.specular * (spec * material.specular);
+			vertex.Color = ambient + diffuse;
+		}
+	}
+	//for (auto& vertex : vertices)
+	//{
+	//	// ambient
+
+	//	glm::vec3 ambient = light.ambient * glm::vec3(texture(material.diffuse, TexCoords));
+
+	//	// diffuse 
+	//	glm::vec3 norm = glm::normalize(Normal);
+	//	glm::vec3 lightDir = normalize(lightPos - FragPos);
+	//	float diff = max(dot(norm, lightDir), 0.0);
+	//	glm::vec3 diffuse = light.diffuse * diff * glm::vec3(texture(material.diffuse, TexCoords));
+
+
+	//	// specular
+	//	glm::vec3 viewDir = normalize(viewPos - FragPos);
+	//	glm::vec3 reflectDir = reflect(-lightDir, norm);
+	//	float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+	//	glm::vec3 specular = light.specular * (spec * material.specular);
+	//	vertex.Color = glm::glm::vec3(1.0f);
+	//}
+}
+
 void StaticMesh::setupMesh()
 {
 	glGenVertexArrays(1, &VAO);
@@ -62,6 +135,9 @@ void StaticMesh::setupMesh()
 	// vertex texture coords
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+	// vertex color 
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
 	glBindVertexArray(0);
 }
