@@ -58,7 +58,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setMaxSlope(btScalar(0.0f));
 	//characterController->setStepHeight(btScalar(0.0f));
 	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-	                                  btBroadphaseProxy::AllFilter);
+		btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
 	characterController->setMaxJumpHeight(2.0f);
@@ -159,7 +159,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{0.0f};
+	float mat4[16]{ 0.0f };
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -219,19 +219,21 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 	}
 
+	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
+	btVector3 currentPosition = currentTransform.getOrigin();
 
-	if (inputManager->IsPressed(Jump))
+	if (inputManager->IsJustPressed(Jump))
 	{
-		if (characterController->canJump())
+
+		if (gameObject.onGround)
 		{
 			std::cout << "jump" << std::endl;
-
+			gameObject.onGround = false;
 			characterController->jump();
 		}
 	}
 
-	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
-	btVector3 currentPosition = currentTransform.getOrigin();
+
 
 	currentPosition.setX(btClamped(currentPosition.getX(), minX, maxX));
 

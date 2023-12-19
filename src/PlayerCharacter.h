@@ -55,7 +55,7 @@ private:
 	// Rendering loop
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
-	GameObject gameObject = GameObject(GameObject::Mesh);
+	GameObject gameObject = GameObject(GameObject::Player);
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;

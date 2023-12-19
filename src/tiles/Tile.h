@@ -19,7 +19,7 @@ public:
 	glm::vec3 GetPosition() const;
 
 private:
-	GameObject gameObject = GameObject(GameObject::Box);
+	GameObject gameObject = GameObject(GameObject::Ground);
 	StaticModel* model = nullptr;
 	glm::vec3 initialPosition = glm::vec3(0);
 	glm::vec3 offset = glm::vec3(0.0f);

@@ -5,16 +5,17 @@ class GameObject
 public:
 	enum ColliderType
 	{
-		Box,
+		Ground,
 		Sphere,
 		Capsule,
-		Mesh
+		Player
 	};
 
 	GameObject(ColliderType type);
 	void CollidedWith(GameObject* p_obj1);
 	void SeparatedFrom(GameObject* p_obj1);
-
+	bool onGround = false;
 private:
+	
 	ColliderType m_type;
 };
