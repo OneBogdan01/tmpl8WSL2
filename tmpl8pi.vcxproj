@@ -691,10 +691,6 @@
     <None Include="assets\tiled\castle\wallfortifiedpaintgate.ob" />
     <None Include="assets\tiled\castle\wallfortifiedpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallfortifiedpainthalf.ob" />
-    <None Include="assets\tiled\castle\wallfortifiedpaint_gate.mtl" />
-    <None Include="assets\tiled\castle\wallfortifiedpaint_gate.ob" />
-    <None Include="assets\tiled\castle\wallfortifiedpaint_half.mtl" />
-    <None Include="assets\tiled\castle\wallfortifiedpaint_half.ob" />
     <None Include="assets\tiled\castle\wallgate.mtl" />
     <None Include="assets\tiled\castle\wallgate.ob" />
     <None Include="assets\tiled\castle\wallgatehalf.mtl" />

@@ -139,11 +139,11 @@
     ],
     "project": "map.tiled-project",
     "recentFiles": [
+        "Tiles.tsx",
+        "map3.tmx",
         "map4.tmx",
         "map2.tmx",
         "map1.tmx",
-        "map3.tmx",
-        "Tiles.tsx",
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map1.tmx",
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map.tmx",
         "map8.tmx",
