@@ -11,7 +11,7 @@
 #include <random>
 
 #include "Texture.h"
-
+#include "utilities/RandomNumberGenerator.h"
 
 namespace fs = std::filesystem;
 
@@ -43,6 +43,7 @@ void TileLoader::Init()
 	// Initialize a random number generator with the random device
 	std::mt19937 g(rd());
 	srand(time(nullptr));
+	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
 
@@ -169,8 +170,10 @@ void TileLoader::Update(float deltaTime)
 
 			/*chunk->Translate(newOffset);
 			chunk->Update(deltaTime);*/
-
-			int randomIndex = rand() % chunks.size();
+			//std version
+			//int randomIndex = rand() % chunks.size();
+			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat()*chunks.size());
+			//cout << randomIndex << endl;
 			if (randomIndex < numberOfActiveChunks)
 				randomIndex = numberOfActiveChunks;
 			swap(chunks[i], chunks[randomIndex]);

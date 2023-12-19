@@ -320,6 +320,7 @@
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="external\Imgui\imgui_impl_glfw.h" />
     <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />

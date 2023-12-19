@@ -47,7 +47,7 @@ public:
 	// RandomFloat()
 	// Calculate a random unsigned int and cast it to a float in the range
 	// [0..1)
-	float RandomFloat()
+	static float RandomFloat()
 	{
 		return RandomUInt() * 2.3283064365387e-10f;
 	}

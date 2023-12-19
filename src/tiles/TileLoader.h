@@ -4,7 +4,7 @@
 
 
 constexpr float TILE_SIZE = 5.0f;
-constexpr size_t NUMBER_OF_CHUNKS = 5;
+constexpr size_t NUMBER_OF_CHUNKS = 9;
 
 //inspired by my old class from block A https://github.com/Tycro-Games/BlockA-Pitfall/blob/master/Scripts/Map/Tilemap.cpp
 class TileLoader

@@ -463,6 +463,7 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClInclude Include="src\tiles\TileLoader.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
+    <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
     <ClInclude Include="template\opengl.h" />
     <ClInclude Include="template\template.h" />
     <ClInclude Include="template\sprite.h" />
