@@ -380,6 +380,7 @@
     <None Include="assets\excalibur\weapon.md2" />
     <None Include="assets\excalibur\weapon.pcx" />
     <None Include="assets\shaders\DebugFrag.frag" />
+    <None Include="assets\shaders\PhongLighting.frag" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="lib\assimp\lib64\assimp.dll" />

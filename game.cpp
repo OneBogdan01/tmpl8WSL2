@@ -155,6 +155,7 @@ void Game::Tick(float deltaTime)
 	inputManager.Update();
 	//input is done first in the template
 	//update physics
+	world.RenderDebug();
 
 	world.Update(deltaTime);
 
@@ -180,7 +181,7 @@ void Game::Tick(float deltaTime)
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-	//from this post https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -281,7 +282,6 @@ void Game::Tick(float deltaTime)
 	lightShader->Unbind();
 	skybox.Draw();
 
-	world.RenderDebug();
 }
 
 void Game::Shutdown()

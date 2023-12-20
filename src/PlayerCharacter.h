@@ -39,7 +39,7 @@ private:
 	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);
 	float speed = 20.0f;
-	float jumpSpeed = 18.0f;
+	float jumpSpeed = 13.0f;
 	int displayIndex = 32;
 	Timer timer;
 #ifdef _WINDOWS
@@ -59,7 +59,7 @@ private:
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;
-
+	bool jumped = false;
 	float minX = -5.0f; // Replace with your desired minimum X position
 	float maxX = 5.0f; // Replace with your desired maximum X position
 };
