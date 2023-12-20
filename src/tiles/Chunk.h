@@ -3,6 +3,7 @@
 #include <vector>
 
 
+#include "GroundTile.h"
 #include "Tile.h"
 constexpr unsigned int TILES_PER_CHUNK = 18;
 
@@ -13,6 +14,7 @@ public:
 	~Chunk();
 	void LoadTile(size_t index, const char* path, glm::vec3 pos);
 	void ResetTiles();
+	void SetMaterialProperties();
 	Chunk();
 
 	//Chunk& operator=(const Chunk& other)
@@ -32,17 +34,17 @@ public:
 	//	return *this;
 	//}
 
-	Chunk(Chunk&& other) noexcept
-	{
-		// Move data from 'other' object to 'this' object
-		tiles = std::move(other.tiles);
-		activeTiles = std::move(other.activeTiles);
-		position = std::move(other.position);
-		modelShader = other.modelShader;
+	//Chunk(Chunk&& other) noexcept
+	//{
+	//	// Move data from 'other' object to 'this' object
+	//	tiles = std::move(other.tiles);
+	//	activeTiles = std::move(other.activeTiles);
+	//	position = std::move(other.position);
+	//	modelShader = other.modelShader;
 
-		// Nullify the data in 'other'
-		other.modelShader = nullptr;
-	}
+	//	// Nullify the data in 'other'
+	//	other.modelShader = nullptr;
+	//}
 
 	//void ResetOffsetPosition();
 	// Copy constructor
@@ -56,7 +58,8 @@ public:
 	glm::vec3 GetPosition();
 
 private:
-	std::array<Tile, TILES_PER_CHUNK> tiles;
+	//ground layer
+	std::array<GroundTile, TILES_PER_CHUNK> tiles;
 	std::vector<size_t> activeTiles;
 	glm::vec3 position = glm::vec3(0.0f);
 	Shader* modelShader = nullptr;

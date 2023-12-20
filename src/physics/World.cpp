@@ -26,15 +26,12 @@ subject to the following restrictions:
 /// This is a Hello World program for running a basic Bullet physics simulation
 void World::RenderDebug()
 {
-#ifdef  __DEBUG__
 	dynamicsWorld->debugDrawWorld();
 	debugDrawer->RenderDebug();
-
-#endif
 }
+
 void World::Update(float deltaTime)
 {
-
 	//RenderDebug();
 
 

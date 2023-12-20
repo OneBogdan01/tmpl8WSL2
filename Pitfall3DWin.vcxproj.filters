@@ -321,6 +321,9 @@
     <ClInclude Include="external\Imgui\imgui_impl_glfw.h" />
     <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
+    <ClInclude Include="src\tiles\TileFactory.h" />
+    <ClInclude Include="src\tiles\GroundTile.h" />
+    <ClInclude Include="src\tiles\GroundTileFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -358,6 +361,9 @@
     <ClCompile Include="external\Imgui\imgui_tables.cpp" />
     <ClCompile Include="external\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="external\Imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\tiles\TileFactory.cpp" />
+    <ClCompile Include="src\tiles\GroundTile.cpp" />
+    <ClCompile Include="src\tiles\GroundTileFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\basic.frag" />

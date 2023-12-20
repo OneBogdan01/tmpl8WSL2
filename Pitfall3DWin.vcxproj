@@ -459,7 +459,10 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
+    <ClInclude Include="src\tiles\GroundTile.h" />
+    <ClInclude Include="src\tiles\GroundTileFactory.h" />
     <ClInclude Include="src\tiles\Tile.h" />
+    <ClInclude Include="src\tiles\TileFactory.h" />
     <ClInclude Include="src\tiles\TileLoader.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
@@ -498,7 +501,10 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\tiles\Chunk.cpp" />
+    <ClCompile Include="src\tiles\GroundTile.cpp" />
+    <ClCompile Include="src\tiles\GroundTileFactory.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
+    <ClCompile Include="src\tiles\TileFactory.cpp" />
     <ClCompile Include="src\tiles\TileLoader.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />

@@ -37,13 +37,9 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 
 void TileLoader::Init()
 {
-	// Create a random device
-	std::random_device rd;
-
-	// Initialize a random number generator with the random device
-	std::mt19937 g(rd());
 	srand(time(nullptr));
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
+
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
 
@@ -52,14 +48,12 @@ void TileLoader::Init()
 	std::string path = "assets/tiled/castle";
 #endif
 
+
 	for (const auto& entry : fs::directory_iterator(path))
 	{
 		std::string pathString = entry.path().string();
 		if (hasEnding(pathString, ".ob"))
 		{
-#ifdef _WINDOWS
-
-#endif
 			for (int x = 0; x < strlen(pathString.c_str()); x++)
 				pathString[x] = putchar(tolower(pathString[x]));
 			tilePaths.push_back(pathString);
@@ -119,8 +113,13 @@ void TileLoader::Init()
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
-	//randomize order
 
+	//randomize order
+	// Create a random device
+	std::random_device rd;
+
+	// Initialize a random number generator with the random device
+	std::mt19937 g(rd());
 	shuffle(chunks.begin(), chunks.end(), g);
 	for (int i = 0; i < NUMBER_OF_CHUNKS; i++)
 	{
@@ -135,7 +134,7 @@ void TileLoader::Init()
 		Chunk* chunk = chunks[k];
 		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 
-		if (k < numberOfActiveChunks)
+		if (k < NUMBER_OF_ACTIVE_CHUNKS)
 			chunk->SetPosition(chunkOff);
 		else
 		{
@@ -147,9 +146,8 @@ void TileLoader::Init()
 
 void TileLoader::DrawChunks()
 {
-	for (size_t i = 0; i < numberOfActiveChunks; i++)
+	for (const auto& chunk : chunks)
 	{
-		Chunk* chunk = chunks[i];
 		chunk->Draw();
 	}
 }
@@ -157,25 +155,25 @@ void TileLoader::DrawChunks()
 void TileLoader::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
-	for (size_t i = 0; i < numberOfActiveChunks; i++)
+	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
-		newOffset.z = dir.z * speed * deltaTime;
+		newOffset.z = dir.z * deltaTime;
 
 		Chunk* chunk = chunks[i];
 		//this chunk needs to be disabled
 		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
 		{
 			//2 is the amount of tiles behind the player
-			newOffset.z = -TILE_SIZE * heightY * (numberOfActiveChunks - 2);
+			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 2);
 
 			/*chunk->Translate(newOffset);
 			chunk->Update(deltaTime);*/
 			//std version
 			//int randomIndex = rand() % chunks.size();
-			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat()*chunks.size());
+			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
 			//cout << randomIndex << endl;
-			if (randomIndex < numberOfActiveChunks)
-				randomIndex = numberOfActiveChunks;
+			if (randomIndex < NUMBER_OF_ACTIVE_CHUNKS)
+				randomIndex = NUMBER_OF_ACTIVE_CHUNKS;
 			swap(chunks[i], chunks[randomIndex]);
 			chunk = chunks[i];
 			//their original position
@@ -184,6 +182,11 @@ void TileLoader::Update(float deltaTime)
 		chunk->Translate(newOffset);
 		chunk->Update(deltaTime);
 	}
+}
+
+void TileLoader::SetDirection(glm::vec3 _dir)
+{
+	dir = _dir;
 }
 
 void TileLoader::ConvertCharToInt(const char* pch, uint& numberForm)

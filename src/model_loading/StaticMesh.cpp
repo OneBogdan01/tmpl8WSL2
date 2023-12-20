@@ -43,22 +43,7 @@ void StaticMesh::Draw(Shader& shader)
 	glBindVertexArray(0);
 }
 
-//    // ambient
-//  
-//    highp vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
-//    
-//     // diffuse 
-//    highp vec3 norm = normalize(Normal);
-//    highp vec3 lightDir = normalize(lightPos - FragPos);
-//    highp float diff = max(dot(norm, lightDir), 0.0);
-//    highp vec3 diffuse = light.diffuse * diff * vec3(texture(material.diffuse, TexCoords));  
-//
-//     
-//     // specular
-//    highp vec3 viewDir = normalize(viewPos - FragPos);
-//    highp vec3 reflectDir = reflect(-lightDir, norm);  
-//    highp float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-//    highp vec3 specular = light.specular * (spec * material.specular);   
+
 void StaticMesh::BakeLighting(glm::vec3& worldPos)
 {
 	//get data from texture
@@ -83,7 +68,8 @@ void StaticMesh::BakeLighting(glm::vec3& worldPos)
 			glm::vec3 diffuse = glm::vec3(1.0f) * diff;
 
 			vertex.Color = ambient + diffuse;
-		}	}
+		}
+	}
 }
 
 void StaticMesh::setupMesh()

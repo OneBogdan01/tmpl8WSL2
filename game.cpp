@@ -7,6 +7,7 @@
 
 #include "tiles/TileLoader.h"
 #include "imgui.h"
+#include "tiles/GroundTileFactory.h"
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -69,7 +70,7 @@ void Game::Init()
 float mixing = .2f;
 
 glm::vec3 position = glm::vec3(0);
-float fov = 45;
+float fov = 40;
 float yOffset = 0;
 
 glm::vec2 rotateCam = glm::vec2(0);
@@ -155,7 +156,9 @@ void Game::Tick(float deltaTime)
 	inputManager.Update();
 	//input is done first in the template
 	//update physics
+#ifdef __DEBUG__
 	world.RenderDebug();
+#endif
 
 	world.Update(deltaTime);
 
@@ -196,7 +199,6 @@ void Game::Tick(float deltaTime)
 	SIZE_T physMemUsed = pmc.WorkingSetSize;
 
 
-
 #else
 
 	//convert to byes
@@ -227,36 +229,15 @@ void Game::Tick(float deltaTime)
 		fov = 45.0f;
 	yOffset = 0;
 
-	//simpleShader->Bind();
-
-
-	//simpleShader->SetFloat3("offset", position.x, position.y, position.z);
-	//simpleShader->SetFloat("mixing", mixing);
-
 
 	camera->Update(deltaTime);
 
 	perspective = glm::perspective(glm::radians(fov),
 	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
 	                               0.1f, 100.0f);
-	//simpleShader->SetMat4x4("projection", perspective);
+
 	view = camera->GetViewMat();
 
-	//simpleShader->SetMat4x4("view", view);
-
-
-	//for (uint i = 1; i <= 10; i++)
-	//{
-	//	glm::mat4 matModel = glm::mat4(1.0f);
-	//	btVector3 btVec = world.GetRigidBodyPosition(i);
-	//	glm::vec3 pos = glm::vec3(btVec.x(), btVec.y(), btVec.z());
-	//	matModel = glm::translate(matModel, pos);
-	//	/*float angle = 20.0f * i;
-	//	vec3 dir(1.0f, 0.3f, 0.5f);
-	//	matModel = glm::rotate(matModel, radians(angle), dir);*/
-	//	simpleShader->SetMat4x4("model", matModel);
-	//	triangle.Draw();
-	//}
 
 
 	tileLoader->Update(deltaTime);
@@ -281,7 +262,6 @@ void Game::Tick(float deltaTime)
 	sun.Draw();
 	lightShader->Unbind();
 	skybox.Draw();
-
 }
 
 void Game::Shutdown()
