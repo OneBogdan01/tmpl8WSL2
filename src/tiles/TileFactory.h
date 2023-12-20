@@ -13,8 +13,6 @@ public:
 
 	void Draw(const char* path, Shader& shader) const;
 
-protected:
-
 private:
 	StaticModel* LoadModel(const char* path, glm::vec3 initialPosition);
 

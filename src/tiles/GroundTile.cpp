@@ -2,7 +2,7 @@
 
 #include "game.h"
 #include "GroundTileFactory.h"
-#include "TileLoader.h"
+#include "ChunkManager.h"
 
 GroundTile::GroundTile() :
 	Tile()

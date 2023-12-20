@@ -11,7 +11,7 @@
 #include "skybox/Skybox.h"
 class StaticModel;
 class Camera;
-class TileLoader;
+class ChunkManager;
 // Function to convert btVector3 to glm::vec3
 inline glm::vec3 BtVector3ToGlm(const btVector3& vector)
 {
@@ -86,7 +86,7 @@ namespace Tmpl8
 		//Triangle triangle;
 		inline static Camera* camera = nullptr;
 		inline static World world;
-		TileLoader* tileLoader = nullptr;
+		ChunkManager* tileLoader = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;
 		Skybox skybox;

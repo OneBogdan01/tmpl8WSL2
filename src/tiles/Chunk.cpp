@@ -3,7 +3,7 @@
 
 #include "game.h"
 #include "GroundTileFactory.h"
-#include "TileLoader.h"
+#include "ChunkManager.h"
 #include "glm/fwd.hpp"
 #include "glm/gtx/transform.hpp"
 

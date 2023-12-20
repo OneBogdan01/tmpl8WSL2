@@ -5,7 +5,7 @@
 
 #include "game.h"
 
-#include "tiles/TileLoader.h"
+#include "tiles/ChunkManager.h"
 #include "imgui.h"
 #include "tiles/GroundTileFactory.h"
 
@@ -34,7 +34,7 @@ float scale = 5.0f;
 void Game::Init()
 {
 	world.Init();
-	tileLoader = new TileLoader();
+	tileLoader = new ChunkManager();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init();
 

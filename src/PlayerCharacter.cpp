@@ -222,22 +222,25 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
 	btVector3 currentPosition = currentTransform.getOrigin();
 
+	if (characterController->onGround())
+	{
+		onGround = true;
+	}
 	if (!inputManager->IsPressed(Jump))
 	{
 		jumped = false;
 	}
 
-	if (inputManager->IsPressed(Jump) && !jumped)
+	if (inputManager->IsPressed(Jump) && !jumped && onGround)
 	{
 		jumped = true;
-		if (gameObject.onGround)
-		{
-			std::cout << "jump" << std::endl;
-			gameObject.onGround = false;
-			characterController->jump();
-		}
+
+		std::cout << "jump" << std::endl;
+		gameObject.onGround = false;
+		characterController->jump();
+
 	}
-	 
+
 
 
 	currentPosition.setX(btClamped(currentPosition.getX(), minX, maxX));

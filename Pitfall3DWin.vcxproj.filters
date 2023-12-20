@@ -26,7 +26,7 @@
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
     <ClInclude Include="src\tiles\Tile.h" />
-    <ClInclude Include="src\tiles\TileLoader.h" />
+    <ClInclude Include="src\tiles\ChunkManager.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\KeyboardManager.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
@@ -344,7 +344,7 @@
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\tiles\Chunk.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
-    <ClCompile Include="src\tiles\TileLoader.cpp" />
+    <ClCompile Include="src\tiles\ChunkManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="src\PlayerCharacter.cpp" />

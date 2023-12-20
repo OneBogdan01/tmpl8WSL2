@@ -60,6 +60,7 @@ private:
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;
 	bool jumped = false;
+	bool onGround = false;
 	float minX = -5.0f; // Replace with your desired minimum X position
 	float maxX = 5.0f; // Replace with your desired maximum X position
 };

@@ -1,4 +1,4 @@
-﻿#include "TileLoader.h"
+﻿#include "ChunkManager.h"
 #ifdef _WINDOWS
 
 #include <cstring>
@@ -15,7 +15,7 @@
 
 namespace fs = std::filesystem;
 
-TileLoader::~TileLoader()
+ChunkManager::~ChunkManager()
 {
 	for (auto& chunk : chunks)
 	{
@@ -25,7 +25,7 @@ TileLoader::~TileLoader()
 
 
 //from https://stackoverflow.com/questions/874134/find-if-string-ends-with-another-string-in-c
-bool TileLoader::hasEnding(const std::string& fullString, const std::string& ending)
+bool ChunkManager::hasEnding(const std::string& fullString, const std::string& ending)
 {
 	if (fullString.length() >= ending.length())
 	{
@@ -35,7 +35,7 @@ bool TileLoader::hasEnding(const std::string& fullString, const std::string& end
 	return false;
 }
 
-void TileLoader::Init()
+void ChunkManager::Init()
 {
 	srand(time(nullptr));
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
@@ -144,7 +144,7 @@ void TileLoader::Init()
 	}
 }
 
-void TileLoader::DrawChunks()
+void ChunkManager::DrawChunks()
 {
 	for (const auto& chunk : chunks)
 	{
@@ -152,7 +152,7 @@ void TileLoader::DrawChunks()
 	}
 }
 
-void TileLoader::Update(float deltaTime)
+void ChunkManager::Update(float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
@@ -184,12 +184,12 @@ void TileLoader::Update(float deltaTime)
 	}
 }
 
-void TileLoader::SetDirection(glm::vec3 _dir)
+void ChunkManager::SetDirection(glm::vec3 _dir)
 {
 	dir = _dir;
 }
 
-void TileLoader::ConvertCharToInt(const char* pch, uint& numberForm)
+void ChunkManager::ConvertCharToInt(const char* pch, uint& numberForm)
 {
 	uint moveToRight = 1;
 	for (size_t i = 0; i < strlen(pch); i++)
@@ -199,7 +199,7 @@ void TileLoader::ConvertCharToInt(const char* pch, uint& numberForm)
 	}
 }
 
-void TileLoader::ExtractWidthHeight(const char* csvRaw, uint& w, uint& h)
+void ChunkManager::ExtractWidthHeight(const char* csvRaw, uint& w, uint& h)
 {
 	//widthX and heightY get
 	char* tileRaw = new char[strlen(csvRaw) + 1];
@@ -217,7 +217,7 @@ void TileLoader::ExtractWidthHeight(const char* csvRaw, uint& w, uint& h)
 }
 
 
-void TileLoader::LoadCSVFile(const char* csvPath)
+void ChunkManager::LoadCSVFile(const char* csvPath)
 {
 	//copy into a c style string
 	char* tilemapRaw = new char[strlen(TextFileRead(csvPath).c_str()) + 1];
