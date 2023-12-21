@@ -38,7 +38,7 @@ bool ChunkManager::hasEnding(const std::string& fullString, const std::string& e
 void ChunkManager::Init()
 {
 	srand(time(nullptr));
-	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
+
 
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
@@ -94,22 +94,38 @@ void ChunkManager::Init()
 			{
 				uint index = j + i * widthX;
 				uint modelIndex = tileArray[index];
+
+				glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
+				                               static_cast<float>(i) * TILE_SIZE)
+					- offset;
 				if (modelIndex) //index !=0
 				{
 					//so the index can start from 0
 					modelIndex--;
 
-					const glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-					                                     static_cast<float>(i) * TILE_SIZE)
-						- offset;
+
 					std::cout << position.x << " " << position.y << " " << position.z << "\n";
 					chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
+					//coins
+					position.y += TILE_SIZE;
 				}
+				else
+				{
+					position.y += TILE_SIZE * 2;
+				}
+				chunk->LoadCoins(index, tilePaths[20].c_str(), position);
 			}
 		}
 
 		if (k == 0)
+		{
 			firstChunk = chunk;
+			chunk->HideChunk();
+		}
+		else
+		{
+			chunk->RandomizeChunk();
+		}
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
@@ -146,8 +162,9 @@ void ChunkManager::Init()
 
 void ChunkManager::DrawChunks()
 {
-	for (const auto& chunk : chunks)
+	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
+		Chunk* chunk = chunks[i];
 		chunk->Draw();
 	}
 }
@@ -166,18 +183,15 @@ void ChunkManager::Update(float deltaTime)
 			//2 is the amount of tiles behind the player
 			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 2);
 
-			/*chunk->Translate(newOffset);
-			chunk->Update(deltaTime);*/
-			//std version
-			//int randomIndex = rand() % chunks.size();
+
 			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
-			//cout << randomIndex << endl;
 			if (randomIndex < NUMBER_OF_ACTIVE_CHUNKS)
 				randomIndex = NUMBER_OF_ACTIVE_CHUNKS;
 			swap(chunks[i], chunks[randomIndex]);
 			chunk = chunks[i];
 			//their original position
 			chunk->ResetTiles();
+			chunk->RandomizeChunk();
 		}
 		chunk->Translate(newOffset);
 		chunk->Update(deltaTime);

@@ -13,46 +13,53 @@ using CollisionPairs = std::set<CollisionPair>;
 class World
 {
 public:
-    World();
-    ~World();
-    void RenderDebug();
-    void Update(float deltaTime);
+	World();
+	~World();
+	void RenderDebug();
+	void Update(float deltaTime);
 
-    void AddRigidBody(btRigidBody* rb);
+	void AddRigidBody(btRigidBody* rb);
+	void AddTrigger(btGhostObject* rb);
 
 
-    void RemoveRigidBody(btRigidBody* rb);
+	void RemoveRigidBody(btRigidBody* rb);
 
-    static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
-    static btCapsuleShape* CreateBoundingCapsuleModel(const std::vector<StaticMesh>& meshes, float scale);
-    btVector3 GetRigidBodyPosition(unsigned int ID) const;
-    btDiscreteDynamicsWorld* GetDynamicWorld() const;
-    void AddRigidBody(btRigidBody* rb) const;
-    void Init();
+	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
+	static btCapsuleShape* CreateBoundingCapsuleModel(const std::vector<StaticMesh>& meshes, float scale);
+	btVector3 GetRigidBodyPosition(unsigned int ID) const;
+	btDiscreteDynamicsWorld* GetDynamicWorld() const;
+	void AddRigidBody(btRigidBody* rb) const;
+	void Init();
 
 private:
-    btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
-    btAlignedObjectArray<btCollisionShape*> collisionShapes;
-    btSequentialImpulseConstraintSolver* solver;
-    btDefaultCollisionConfiguration* collisionConfiguration;
+	btDiscreteDynamicsWorld* dynamicsWorld = nullptr;
+	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	btSequentialImpulseConstraintSolver* solver;
+	btDefaultCollisionConfiguration* collisionConfiguration;
 
-    ///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-    btCollisionDispatcher* dispatcher;
+	///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
+	btCollisionDispatcher* dispatcher;
 
-    ///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
-    btBroadphaseInterface* overlappingPairCache;
-
-
-    static void CollisionEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
-    void CheckForCollisionEvents();
+	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
+	btBroadphaseInterface* overlappingPairCache;
 
 
-    static void SeparationEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
-    DebugRenderer* debugDrawer = nullptr;
-    inline static unsigned int ID = 0;
-    // Collision tracking.
-    CollisionPairs pairsLastUpdate_;
+	static void CollisionEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
+	void CheckForCollisionEvents();
 
-    // Object tracking.
-    std::vector<btRigidBody*> rigidBodies_;
+
+	static void SeparationEvent(const btRigidBody* pBody0, const btRigidBody* pBody1);
+	DebugRenderer* debugDrawer = nullptr;
+	inline static unsigned int ID = 0;
+	// Collision tracking.
+	CollisionPairs pairsLastUpdate_;
+
+	// Object tracking.
+	std::vector<btRigidBody*> rigidBodies_;
 };
+
+inline void World::AddTrigger(btGhostObject* rb)
+{
+	dynamicsWorld->addCollisionObject(rb, btBroadphaseProxy::SensorTrigger,
+	                                  btBroadphaseProxy::AllFilter & ~btBroadphaseProxy::SensorTrigger);
+}

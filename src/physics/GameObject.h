@@ -3,19 +3,21 @@
 class GameObject
 {
 public:
+	virtual ~GameObject() = default;
+
 	enum ColliderType
 	{
 		Ground,
-		Sphere,
-		Capsule,
+		Coin,
+		Obstacle,
 		Player
 	};
 
 	GameObject(ColliderType type);
-	void CollidedWith(GameObject* p_obj1);
-	void SeparatedFrom(GameObject* p_obj1);
-	bool onGround = false;
-private:
-	
-	ColliderType m_type;
+	virtual void CollidedWith(GameObject* p_obj1) = 0;
+	virtual void SeparatedFrom(GameObject* p_obj1) = 0;
+	ColliderType GetType() const;
+
+protected:
+	ColliderType type;
 };

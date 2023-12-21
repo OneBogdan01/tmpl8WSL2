@@ -14,8 +14,8 @@ void GroundTile::Init(const char* path, glm::vec3 pos)
 {
 	initialPosition = pos;
 	modelId = path;
-	GroundTileFactory& factory = GroundTileFactory::GetInstance();
-	factory.CreateTileModel(path, pos);
+	GroundTileFactory::GetInstance().CreateTileModel(path, pos);
+
 	//LoadModel(path);
 	AddStaticRigidbody();
 }
@@ -47,19 +47,11 @@ void GroundTile::AddStaticRigidbody()
 
 
 	// Add the rigid body to the dynamics world
-	rigidBody->setUserPointer(&gameObject);
+	rigidBody->setUserPointer(&groundCallback);
 
 	Game::world.AddRigidBody(rigidBody);
 }
 
-void GroundTile::ResetPosition()
-{
-	btTransform newTransform;
-	rigidBody->getMotionState()->getWorldTransform(newTransform);
-
-	newTransform.setOrigin(GetTileInitPosition());
-	rigidBody->getMotionState()->setWorldTransform(newTransform);
-}
 
 glm::vec3 GroundTile::GetPosition() const
 {

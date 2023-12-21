@@ -8,8 +8,8 @@
 
 #include "Timer.h"
 #include "model_loading/SkinnedMesh.h"
-#include "physics/GameObject.h"
-#include "physics/GameValues.h"
+
+#include "physics/PlayerCollisions.h"
 
 
 class KeyboardManager;
@@ -55,7 +55,7 @@ private:
 	// Rendering loop
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
-	GameObject gameObject = GameObject(GameObject::Player);
+	PlayerCollisions playerCallback = PlayerCollisions(GameObject::Player);
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;

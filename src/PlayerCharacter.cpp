@@ -4,6 +4,7 @@
 
 #include "game.h"
 #include "model_loading/StaticModel.h"
+#include "physics/GameValues.h"
 #include "tiles/Chunk.h"
 
 
@@ -44,7 +45,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerCharacterGhost->setWorldTransform(playerTransform);
 	playerCharacterGhost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	playerCharacterGhost->setUserPointer(&gameObject);
+	playerCharacterGhost->setUserPointer(&playerCallback);
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
 #ifdef _WINDOWS
 
@@ -58,7 +59,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setMaxSlope(btScalar(0.0f));
 	//characterController->setStepHeight(btScalar(0.0f));
 	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-		btBroadphaseProxy::AllFilter);
+	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
 	characterController->setMaxJumpHeight(2.0f);
@@ -159,7 +160,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{ 0.0f };
+	float mat4[16]{0.0f};
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -236,11 +237,9 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		jumped = true;
 
 		std::cout << "jump" << std::endl;
-		gameObject.onGround = false;
+		playerCallback.onGround = false;
 		characterController->jump();
-
 	}
-
 
 
 	currentPosition.setX(btClamped(currentPosition.getX(), minX, maxX));

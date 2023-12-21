@@ -72,8 +72,14 @@ public:
 	}
 
 	// Perlin noise implementation - https://stackoverflow.com/questions/29711668/perlin-noise-generation
-	inline static int numX = 512, numY = 512, numOctaves = 7, primeIndex = 0;
+	inline static int numX = 512, numY = 512, numOctaves = 20, primeIndex = 0;
 	inline static float persistence = 0.5f;
+
+	static void RandomizePerlinNoise()
+	{
+		primeIndex = RandomUInt() % 10;
+	}
+
 	inline static int primes[10][3] = {
 		{995615039, 600173719, 701464987}, {831731269, 162318869, 136250887}, {174329291, 946737083, 245679977},
 		{362489573, 795918041, 350777237}, {457025711, 880830799, 909678923}, {787070341, 177340217, 593320781},
@@ -118,7 +124,7 @@ public:
 		return Interpolate(i1, i2, fractional_Y);
 	}
 
-	float noise2D(const float x, const float y)
+	static float noise2D(const float x, const float y)
 	{
 		float total = 0, frequency = (float)(2 << numOctaves), amplitude = 1;
 		for (int i = 0; i < numOctaves; ++i)

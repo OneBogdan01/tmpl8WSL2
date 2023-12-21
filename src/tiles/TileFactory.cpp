@@ -1,5 +1,7 @@
 ﻿#include "TileFactory.h"
 
+#include <iostream>
+
 void TileFactory::CreateTileModel(const char* path, glm::vec3 initialPosition)
 {
 	if (models.find(path) == models.end())
@@ -23,6 +25,7 @@ void TileFactory::Draw(const char* path, Shader& shader) const
 {
 	models.at(path)->Draw(shader);
 }
+
 
 StaticModel* TileFactory::LoadModel(const char* path, glm::vec3 initialPosition)
 {

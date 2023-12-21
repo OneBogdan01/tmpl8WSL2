@@ -16,7 +16,6 @@ public:
 protected:
 	const char* modelId = nullptr;
 
-	btRigidBody* rigidBody = nullptr;
 	glm::vec3 initialPosition = glm::vec3(0);
 	glm::vec3 offset = glm::vec3(0.0f);
 	glm::vec3 drawOffset = glm::vec3(0.0f);

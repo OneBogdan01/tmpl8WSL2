@@ -8,6 +8,7 @@
 #include "tiles/ChunkManager.h"
 #include "imgui.h"
 #include "tiles/GroundTileFactory.h"
+#include "utilities/RandomNumberGenerator.h"
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -33,6 +34,7 @@ float scale = 5.0f;
 
 void Game::Init()
 {
+	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 	world.Init();
 	tileLoader = new ChunkManager();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
@@ -237,7 +239,6 @@ void Game::Tick(float deltaTime)
 	                               0.1f, 100.0f);
 
 	view = camera->GetViewMat();
-
 
 
 	tileLoader->Update(deltaTime);
