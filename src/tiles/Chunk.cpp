@@ -73,6 +73,7 @@ void Chunk::HideChunk()
 	{
 		coin.UpdatePhysicsPosition(pos);
 	}
+	activeCoins.clear();
 }
 
 void Chunk::DisableCoin(size_t index)
@@ -89,28 +90,52 @@ void Chunk::RandomizeChunk()
 	const float h = static_cast<float>(ChunkManager::GetHeight());
 	const float w = static_cast<float>(ChunkManager::GetWidth());
 	RandomNumberGenerator::RandomizePerlinNoise();
-	float threshold = 0.75f - RandomNumberGenerator::RandomFloat() * 0.5f;
-	int count = static_cast<int>(lerp(1.0f, TILES_PER_CHUNK / 2, RandomNumberGenerator::RandomFloat()));
-	cout << threshold << endl;
-	for (uint i = 0; i < h; i++)
+	float threshold = RandomNumberGenerator::RandomFloat() * 0.25f + .5f;
+	float rng = RandomNumberGenerator::RandomFloat() * 0.4f + .2f;
+	int count =  static_cast<float>(TILES_PER_CHUNK) / 2 * RandomNumberGenerator::RandomFloat();
+	cout << "Count:" << count << endl;
+	float x = RandomNumberGenerator::RandomFloat() * 512;
+	float y = RandomNumberGenerator::RandomFloat() * 512;
+	for (uint i = 0; i < h && count > 0; i++)
 	{
-		for (uint j = 0; j < w; j++)
+		for (uint j = 0; j < w&& count > 0; j++)
 		{
-			if (count == 0)
-				break;
+
 			uint index = j + i * w;
-			float x = invLerp(0.0f, h, static_cast<float>(i));
-			float y = invLerp(0.0f, w, static_cast<float>(j));
-			cout << RandomNumberGenerator::noise2D(x, y) << " ";
-			if (abs(RandomNumberGenerator::noise2D(x, y)) > threshold)
+			x += static_cast<float>(i);
+			y += static_cast<float>(j);
+			float aux = RandomNumberGenerator::noise2D(y, x);
+			if (aux < 0)
+				aux *= -1.0f;
+
+			float perlinVal = aux; ;
+
+
+			while (perlinVal < 1.0f)
+			{
+				perlinVal *= 3.0f;
+			}
+			perlinVal = std::clamp(perlinVal, 0.0f, TILE_SIZE/2);
+
+
+			if (coins[index].GetTileInitPosition().y() > TILE_SIZE / 2.0f)
+			{
+				perlinVal *= -1;
+			}
+			cout << perlinVal << " ";
+
+			if (rng > threshold)
 			{
 				count--;
+				coins[index].SetOffset(glm::vec3(0.0f, perlinVal, 0.0f));
+
+
 				coins[index].ResetPosition();
 				activeCoins.push_back(index);
 			}
 			else
 			{
-				threshold -= 0.025f;
+				threshold -= RandomNumberGenerator::RandomFloat() * 0.1f;
 			}
 		}
 		cout << endl;

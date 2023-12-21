@@ -190,7 +190,6 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		jumped = true;
 		onGround = false;
 		std::cout << "jump" << std::endl;
-		playerCallback.onGround = false;
 		characterController->jump();
 	}
 

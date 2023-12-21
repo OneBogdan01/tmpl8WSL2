@@ -67,5 +67,4 @@ void GroundTile::UpdatePhysicsPosition(glm::vec3 chunkPos)
 
 	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos) + GetTileInitPosition()));
 	rigidBody->getMotionState()->setWorldTransform(newTransform);
-	offset = glm::vec3(0.0f);
 }

@@ -10,7 +10,7 @@ public:
 	virtual ~Tile() = default;
 	void virtual Init(const char* path, glm::vec3 pos, size_t index) = 0;
 	btVector3 GetTileInitPosition();
-
+	void SetOffset(const glm::vec3& offs);
 	const char* GetId();
 
 protected:

@@ -331,6 +331,8 @@
     <ClInclude Include="src\physics\CoinTrigger.h" />
     <ClInclude Include="template\signals.hpp" />
     <ClInclude Include="template\optional.hpp" />
+    <ClInclude Include="template\Delegate.h" />
+    <ClInclude Include="template\EventArgs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -376,6 +378,7 @@
     <ClCompile Include="src\tiles\CoinTile.cpp" />
     <ClCompile Include="src\tiles\CoinTileFactory.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
+    <ClCompile Include="template\EventArgs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\basic.frag" />

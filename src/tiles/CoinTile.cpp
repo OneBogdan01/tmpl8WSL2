@@ -68,11 +68,11 @@ glm::vec3 CoinTile::GetPosition() const
 	return BtVector3ToGlm(position);
 }
 
+
 void CoinTile::UpdatePhysicsPosition(glm::vec3 chunkPos)
 {
 	btTransform newTransform = ghostObject->getWorldTransform();
 
-	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos) + GetTileInitPosition()));
+	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos + offset) + GetTileInitPosition()));
 	ghostObject->setWorldTransform(newTransform);
-	offset = glm::vec3(0.0f);
 }

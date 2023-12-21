@@ -113,7 +113,7 @@ void ChunkManager::Init()
 				{
 					position.y += TILE_SIZE * 2;
 				}
-				chunk->LoadCoins(index, tilePaths[20].c_str(), position);
+				chunk->LoadCoins(index, tilePaths[COINS_INDEX].c_str(), position);
 			}
 		}
 
