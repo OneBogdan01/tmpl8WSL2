@@ -11,6 +11,8 @@
 
 #include "physics/PlayerCollisions.h"
 
+//must be at the end to avoid linker errors
+#include "EventArgs.h"
 
 class KeyboardManager;
 
@@ -21,6 +23,7 @@ public:
 	btTransform SetPositionTransform(const btVector3& startingPosition);
 	PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition);
 	~PlayerCharacter();
+	void Die();
 	void CheckForFall();
 	void Draw();
 	//void SetBoneTransform(uint Index, const Matrix4f& Transform);
@@ -29,6 +32,7 @@ public:
 	void HandleInput(float deltaTime);
 	void MoveCharacter(float deltaTime);
 	void Update(float deltaTime);
+	VoidEvent& GetEvent();
 
 private:
 	//md2model::Md2 model = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
@@ -45,7 +49,7 @@ private:
 #ifdef _WINDOWS
 	md2model::Md2 player = md2model::Md2("assets\\excalibur\\tris.md2", "assets\\excalibur\\alphaone.png");
 #else
-    md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
+	md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 #endif
 
 	//GLuint m_boneLocation[MAX_BONES];
@@ -61,6 +65,9 @@ private:
 	KeyboardManager* inputManager = nullptr;
 	bool jumped = false;
 	bool onGround = false;
-	float minX = -5.0f; // Replace with your desired minimum X position
-	float maxX = 5.0f; // Replace with your desired maximum X position
+	float minX = -5.0f;
+	float maxX = 5.0f;
+
+	//voidEvent
+	VoidEvent onDeath;
 };

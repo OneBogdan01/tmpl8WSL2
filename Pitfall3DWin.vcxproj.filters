@@ -329,6 +329,8 @@
     <ClInclude Include="src\tiles\CoinTile.h" />
     <ClInclude Include="src\tiles\CoinTileFactory.h" />
     <ClInclude Include="src\physics\CoinTrigger.h" />
+    <ClInclude Include="template\signals.hpp" />
+    <ClInclude Include="template\optional.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />

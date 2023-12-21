@@ -6,6 +6,8 @@
 #include "CoinTile.h"
 #include "GroundTile.h"
 #include "Tile.h"
+
+
 constexpr unsigned int TILES_PER_CHUNK = 18;
 
 
@@ -27,6 +29,7 @@ public:
 	glm::vec3 GetPosition();
 	void RandomizeChunk();
 	void HideChunk();
+	void DisableCoin(size_t index);
 
 private:
 	float lerp(float v0, float v1, float t);

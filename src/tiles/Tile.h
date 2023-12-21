@@ -8,7 +8,7 @@ class Tile
 {
 public:
 	virtual ~Tile() = default;
-	void virtual Init(const char* path, glm::vec3 pos) = 0;
+	void virtual Init(const char* path, glm::vec3 pos, size_t index) = 0;
 	btVector3 GetTileInitPosition();
 
 	const char* GetId();

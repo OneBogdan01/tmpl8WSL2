@@ -1,16 +1,26 @@
 ﻿#include "CoinTile.h"
 
+#include "Camera.h"
+
 #include "ChunkManager.h"
 #include "game.h"
 #include "GroundTileFactory.h"
+#include "physics/CoinTrigger.h"
 #include "physics/World.h"
 
-void CoinTile::Init(const char* path, glm::vec3 pos)
+void CoinTile::Init(const char* path, glm::vec3 pos, size_t index)
 {
 	initialPosition = pos;
 	modelId = path;
 	GroundTileFactory::GetInstance().CreateTileModel(path, pos);
+	coinCallBack = new CoinTrigger(GameObject::Coin, index);
+
 	AddATriggerBox();
+}
+
+CoinTrigger& CoinTile::GetCallback()
+{
+	return *coinCallBack;
 }
 
 void CoinTile::AddATriggerBox()
@@ -33,9 +43,14 @@ void CoinTile::AddATriggerBox()
 	ghostObject->setCollisionShape(tileShape);
 	ghostObject->setCollisionFlags(ghostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
 
-	ghostObject->setUserPointer(&coinCallBack);
+	ghostObject->setUserPointer(coinCallBack);
 
 	Game::world.AddTrigger(ghostObject);
+}
+
+CoinTile::~CoinTile()
+{
+	delete coinCallBack;
 }
 
 void CoinTile::ResetPosition()

@@ -213,6 +213,7 @@
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\physics\World.cpp" />
+    <ClCompile Include="template\EventArgs.cpp" />
     <ClCompile Include="template\opengl.cpp" />
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="template\surface.cpp" />
@@ -553,7 +554,11 @@
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\physics\World.h" />
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
+    <ClInclude Include="template\Delegate.h" />
+    <ClInclude Include="template\EventArgs.h" />
     <ClInclude Include="template\opengl.h" />
+    <ClInclude Include="template\optional.hpp" />
+    <ClInclude Include="template\signals.hpp" />
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="template\stb_image.h" />
     <ClCompile Include="template\template.h">

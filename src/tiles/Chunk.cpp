@@ -4,7 +4,6 @@
 
 
 #include "Camera.h"
-#include "Camera.h"
 #include "game.h"
 #include "GroundTileFactory.h"
 #include "ChunkManager.h"
@@ -28,14 +27,15 @@ Chunk::Chunk()
 
 void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
 {
-	tiles[index].Init(path, pos);
+	tiles[index].Init(path, pos, index);
 
 	activeTiles.push_back(index);
 }
 
 void Chunk::LoadCoins(size_t index, const char* path, glm::vec3 pos)
 {
-	coins[index].Init(path, pos);
+	coins[index].Init(path, pos, index);
+	coins[index].GetCallback().GetEvent().connect(&Chunk::DisableCoin, this);
 }
 
 void Chunk::ResetTiles()
@@ -73,6 +73,14 @@ void Chunk::HideChunk()
 	{
 		coin.UpdatePhysicsPosition(pos);
 	}
+}
+
+void Chunk::DisableCoin(size_t index)
+{
+	glm::vec3 pos = glm::vec3(60.0f);
+	//offscreen
+	coins[index].UpdatePhysicsPosition(pos);
+	activeCoins.erase(std::remove(activeCoins.begin(), activeCoins.end(), index), activeCoins.end());
 }
 
 void Chunk::RandomizeChunk()
@@ -142,6 +150,10 @@ void Chunk::Draw()
 		groundFactory.Draw(coins[index].GetId(), *modelShader);
 	}
 	modelShader->Unbind();
+}
+
+void DisableCoin(void)
+{
 }
 
 void Chunk::Update(float deltaTime)

@@ -10,7 +10,7 @@ GroundTile::GroundTile() :
 }
 
 
-void GroundTile::Init(const char* path, glm::vec3 pos)
+void GroundTile::Init(const char* path, glm::vec3 pos, size_t index)
 {
 	initialPosition = pos;
 	modelId = path;

@@ -218,7 +218,7 @@ void Game::Tick(float deltaTime)
 	ImGui::Text("Phys mem: %.2f MB", physMemUsedMB);
 
 #endif
-
+	//TODO encapsulate camera init
 	if (f > 1)
 		f = 0;
 	camera->RotateMouse(rotateCam);
@@ -240,7 +240,7 @@ void Game::Tick(float deltaTime)
 
 	view = camera->GetViewMat();
 
-
+	//TODO make update loop for entities
 	tileLoader->Update(deltaTime);
 
 	player->Update(deltaTime);

@@ -2,22 +2,22 @@
 
 #include <iostream>
 
-CoinTrigger::CoinTrigger(ColliderType type): GameObject(type)
+CoinTrigger::CoinTrigger(ColliderType type, size_t index) : GameObject(type),
+                                                            index(index)
 {
+}
+
+VoidEventUInt& CoinTrigger::GetEvent()
+{
+	return onCollect;
 }
 
 void CoinTrigger::CollidedWith(GameObject* p_obj1)
 {
 	if (p_obj1->GetType() == Player)
 	{
-		std::cout << "Colliding with player" << std::endl;
-		//delete this;
-		//		//this->~CoinTrigger();
-		//				//this->~GameObject();
-		//						//delete this;
-		//								//delete this;
-		//										//delete this;
-		//												//delete}
+		std::cout << "coinc collected" << std::endl;
+		onCollect(index);
 	}
 }
 
