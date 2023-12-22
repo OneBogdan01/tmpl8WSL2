@@ -323,16 +323,17 @@
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
     <ClInclude Include="src\tiles\TileFactory.h" />
     <ClInclude Include="src\tiles\GroundTile.h" />
-    <ClInclude Include="src\tiles\GroundTileFactory.h" />
+    <ClInclude Include="src\tiles\ModelTileFactory.h" />
     <ClInclude Include="src\physics\PlayerCollisions.h" />
     <ClInclude Include="src\physics\GroundCollision.h" />
     <ClInclude Include="src\tiles\CoinTile.h" />
-    <ClInclude Include="src\tiles\CoinTileFactory.h" />
     <ClInclude Include="src\physics\CoinTrigger.h" />
     <ClInclude Include="template\signals.hpp" />
     <ClInclude Include="template\optional.hpp" />
     <ClInclude Include="template\Delegate.h" />
     <ClInclude Include="template\EventArgs.h" />
+    <ClInclude Include="src\tiles\ObstacleTile.h" />
+    <ClInclude Include="src\physics\ObstacleTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -372,13 +373,14 @@
     <ClCompile Include="external\Imgui\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\tiles\TileFactory.cpp" />
     <ClCompile Include="src\tiles\GroundTile.cpp" />
-    <ClCompile Include="src\tiles\GroundTileFactory.cpp" />
+    <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
     <ClCompile Include="src\physics\PlayerCollisions.cpp" />
     <ClCompile Include="src\physics\GroundCollision.cpp" />
     <ClCompile Include="src\tiles\CoinTile.cpp" />
-    <ClCompile Include="src\tiles\CoinTileFactory.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
     <ClCompile Include="template\EventArgs.cpp" />
+    <ClCompile Include="src\tiles\ObstacleTile.cpp" />
+    <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\basic.frag" />

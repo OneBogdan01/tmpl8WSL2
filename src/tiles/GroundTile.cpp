@@ -1,7 +1,7 @@
 ﻿#include "GroundTile.h"
 
 #include "game.h"
-#include "GroundTileFactory.h"
+#include "ModelTileFactory.h"
 #include "ChunkManager.h"
 
 GroundTile::GroundTile() :
@@ -14,7 +14,7 @@ void GroundTile::Init(const char* path, glm::vec3 pos, size_t index)
 {
 	initialPosition = pos;
 	modelId = path;
-	GroundTileFactory::GetInstance().CreateTileModel(path, pos);
+	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
 
 	//LoadModel(path);
 	AddStaticRigidbody();
@@ -24,7 +24,7 @@ void GroundTile::AddStaticRigidbody()
 {
 	//make a collision shape
 	// Create a collision shape (e.g., a box shape for a rectangular tile)
-	GroundTileFactory& factory = GroundTileFactory::GetInstance();
+	ModelTileFactory& factory = ModelTileFactory::GetInstance();
 	btBoxShape* tileShape = World::CreateBoundingBoxModel(factory.GetModel(modelId)->GetMeshes(), TILE_SIZE);
 
 	// Create a motion state

@@ -4,7 +4,7 @@
 
 #include "ChunkManager.h"
 #include "game.h"
-#include "GroundTileFactory.h"
+#include "ModelTileFactory.h"
 #include "physics/CoinTrigger.h"
 #include "physics/World.h"
 
@@ -12,7 +12,7 @@ void CoinTile::Init(const char* path, glm::vec3 pos, size_t index)
 {
 	initialPosition = pos;
 	modelId = path;
-	GroundTileFactory::GetInstance().CreateTileModel(path, pos);
+	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
 	coinCallBack = new CoinTrigger(GameObject::Coin, index);
 
 	AddATriggerBox();
@@ -27,7 +27,7 @@ void CoinTile::AddATriggerBox()
 {
 	//make a collision shape
 	// Create a collision shape (e.g., a box shape for a rectangular tile)
-	GroundTileFactory& factory = GroundTileFactory::GetInstance();
+	ModelTileFactory& factory = ModelTileFactory::GetInstance();
 	btBoxShape* tileShape = World::CreateBoundingBoxModel(factory.GetModel(modelId)->GetMeshes(), TILE_SIZE);
 
 	// Create a motion state

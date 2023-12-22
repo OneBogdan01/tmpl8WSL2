@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 #include "BulletWrapper.h"
 
 #include "md2_loader/Md2.h"
@@ -17,6 +16,9 @@
 class KeyboardManager;
 
 //inspired from Abhishek's presentation
+
+///TODO cleanup
+
 class PlayerCharacter
 {
 public:
@@ -59,7 +61,7 @@ private:
 	// Rendering loop
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
-	PlayerCollisions playerCallback = PlayerCollisions(GameObject::Player);
+	PlayerCollisions* playerCallback =nullptr;
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;

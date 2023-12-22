@@ -1,12 +1,13 @@
 ﻿#include "PlayerCollisions.h"
 
-#include <iostream>
-#include <ostream>
 
-PlayerCollisions::PlayerCollisions(ColliderType type):
+PlayerCollisions::PlayerCollisions(ColliderType type, VoidEvent* ev):
 	GameObject(type)
 {
+		onHit = ev;
 }
+
+
 
 void PlayerCollisions::CollidedWith(GameObject* p_obj1)
 {
@@ -23,6 +24,7 @@ void PlayerCollisions::CollidedWith(GameObject* p_obj1)
 	}
 	else if (p_obj1->GetType() == Obstacle)
 	{
+		(*onHit)();
 		//std::cout << "Colliding with obstacle" << std::endl;
 	}
 }

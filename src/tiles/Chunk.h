@@ -5,7 +5,10 @@
 
 #include "CoinTile.h"
 #include "GroundTile.h"
+#include "ObstacleTile.h"
 #include "Tile.h"
+
+
 
 
 constexpr unsigned int TILES_PER_CHUNK = 18;
@@ -17,6 +20,7 @@ public:
 	~Chunk();
 	void LoadTile(size_t index, const char* path, glm::vec3 pos);
 	void LoadCoins(size_t index, const char* path, glm::vec3 pos);
+	void LoadObstacles(size_t index, const char* path, glm::vec3 pos);
 	void ResetTiles();
 	Chunk();
 
@@ -30,6 +34,7 @@ public:
 	void RandomizeChunk();
 	void HideChunk();
 	void DisableCoin(size_t index);
+	void DisableObstacle(size_t index);
 
 private:
 	float lerp(float v0, float v1, float t);
@@ -38,9 +43,11 @@ private:
 
 	//ground layer
 	std::array<GroundTile, TILES_PER_CHUNK> tiles;
-	std::array<CoinTile, TILES_PER_CHUNK> coins;
+	std::array<CoinTile, TILES_PER_CHUNK > coins;
+	std::array<ObstacleTile, TILES_PER_CHUNK > obstacles;
 	std::vector<size_t> activeTiles;
 	std::vector<size_t> activeCoins;
+	std::vector<size_t> activeObstacles;
 	glm::vec3 position = glm::vec3(0.0f);
 	Shader* modelShader = nullptr;
 };

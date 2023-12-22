@@ -7,7 +7,7 @@
 
 #include "tiles/ChunkManager.h"
 #include "imgui.h"
-#include "tiles/GroundTileFactory.h"
+#include "tiles/ModelTileFactory.h"
 #include "utilities/RandomNumberGenerator.h"
 
 // -----------------------------------------------------------

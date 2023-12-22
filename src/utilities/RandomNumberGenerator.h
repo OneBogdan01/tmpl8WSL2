@@ -72,7 +72,7 @@ public:
 	}
 
 	// Perlin noise implementation - https://stackoverflow.com/questions/29711668/perlin-noise-generation
-	inline static int numX = 512, numY = 512, numOctaves = 7, primeIndex = 0;
+	inline static int numX = 512, numY = 512, numOctaves =25, primeIndex = 0;
 	inline static float persistence = 0.75f;
 
 	static void RandomizePerlinNoise()
@@ -81,7 +81,7 @@ public:
 		numY = RandomUInt() % 5 + 512;
 		primeIndex = RandomUInt() % 10;
 		persistence = RandomFloat() * 0.4f + 0.1f;*/
-
+		primeIndex = RandomUInt() % 10;
 	}
 
 	inline static int primes[10][3] = {

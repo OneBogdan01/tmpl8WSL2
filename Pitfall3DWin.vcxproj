@@ -456,6 +456,7 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClInclude Include="src\physics\DebugRenderer.h" />
     <ClInclude Include="src\physics\GameObject.h" />
     <ClInclude Include="src\physics\GameValues.h" />
+    <ClInclude Include="src\physics\ObstacleTrigger.h" />
     <ClInclude Include="src\physics\PlayerCollisions.h" />
     <ClInclude Include="src\physics\World.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
@@ -463,9 +464,9 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
     <ClInclude Include="src\tiles\CoinTile.h" />
-    <ClInclude Include="src\tiles\CoinTileFactory.h" />
     <ClInclude Include="src\tiles\GroundTile.h" />
-    <ClInclude Include="src\tiles\GroundTileFactory.h" />
+    <ClInclude Include="src\tiles\ModelTileFactory.h" />
+    <ClInclude Include="src\tiles\ObstacleTile.h" />
     <ClInclude Include="src\tiles\Tile.h" />
     <ClInclude Include="src\tiles\TileFactory.h" />
     <ClInclude Include="src\tiles\ChunkManager.h" />
@@ -507,6 +508,7 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
     <ClCompile Include="src\physics\DebugRenderer.cpp" />
     <ClCompile Include="src\physics\GameObject.cpp" />
+    <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
     <ClCompile Include="src\physics\PlayerCollisions.cpp" />
     <ClCompile Include="src\physics\World.cpp" />
     <ClCompile Include="src\PlayerCharacter.cpp" />
@@ -514,9 +516,9 @@ xcopy $(ProjectDir)assets $(SolutionDir)\$(Platform)\$(Configuration)\assets /E 
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\tiles\Chunk.cpp" />
     <ClCompile Include="src\tiles\CoinTile.cpp" />
-    <ClCompile Include="src\tiles\CoinTileFactory.cpp" />
     <ClCompile Include="src\tiles\GroundTile.cpp" />
-    <ClCompile Include="src\tiles\GroundTileFactory.cpp" />
+    <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
+    <ClCompile Include="src\tiles\ObstacleTile.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
     <ClCompile Include="src\tiles\TileFactory.cpp" />
     <ClCompile Include="src\tiles\ChunkManager.cpp" />

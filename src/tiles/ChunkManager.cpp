@@ -84,7 +84,7 @@ void ChunkManager::Init()
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
 
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-		                             static_cast<float>(heightY - 1) * TILE_SIZE);
+			static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 
 
@@ -96,8 +96,9 @@ void ChunkManager::Init()
 				uint modelIndex = tileArray[index];
 
 				glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-				                               static_cast<float>(i) * TILE_SIZE)
+					static_cast<float>(i) * TILE_SIZE)
 					- offset;
+				glm::vec3 coinPos = glm::vec3(0);
 				if (modelIndex) //index !=0
 				{
 					//so the index can start from 0
@@ -106,14 +107,20 @@ void ChunkManager::Init()
 
 					std::cout << position.x << " " << position.y << " " << position.z << "\n";
 					chunk->LoadTile(index, tilePaths[modelIndex].c_str(), position);
-					//coins
-					position.y += TILE_SIZE;
+
+
+					coinPos.y += TILE_SIZE;
 				}
 				else
 				{
-					position.y += TILE_SIZE * 2;
+					coinPos.y += TILE_SIZE * 2;
 				}
-				chunk->LoadCoins(index, tilePaths[COINS_INDEX].c_str(), position);
+				//coins
+				chunk->LoadCoins(index, tilePaths[COINS_INDEX].c_str(), position + coinPos);
+
+				position.y = 0;
+
+				chunk->LoadObstacles(index, tilePaths[OBSTACLE_INDEX].c_str(), position);
 			}
 		}
 
@@ -154,7 +161,7 @@ void ChunkManager::Init()
 			chunk->SetPosition(chunkOff);
 		else
 		{
-			chunk->SetPosition(glm::vec3(static_cast<float>(-2)) * chunkOffset);
+			chunk->SetPosition(glm::vec3(-2.0f) * chunkOffset);
 			chunk->Update(0);
 		}
 	}

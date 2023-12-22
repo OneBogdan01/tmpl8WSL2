@@ -26,7 +26,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 {
 	onDeath.connect(&PlayerCharacter::Die, this);
 	inputManager = &Game::GetInputManager();
-
+	playerCallback = new PlayerCollisions(GameObject::Player,&onDeath);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 
 	//get the mesh info
@@ -51,7 +51,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerCharacterGhost->setWorldTransform(playerTransform);
 	playerCharacterGhost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	playerCharacterGhost->setUserPointer(&playerCallback);
+	playerCharacterGhost->setUserPointer(playerCallback);
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
 #ifdef _WINDOWS
 

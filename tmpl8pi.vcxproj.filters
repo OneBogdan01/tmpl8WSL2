@@ -38,7 +38,6 @@
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
-    <ClCompile Include="src\tiles\TileLoader.cpp" />
     <ClCompile Include="template\surface.cpp" />
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="src\md2_loader\Md2.cpp" />
@@ -53,6 +52,17 @@
     <ClCompile Include="src\model_loading\math_3d.cpp" />
     <ClCompile Include="src\physics\GameObject.cpp" />
     <ClCompile Include="src\tiles\Chunk.cpp" />
+    <ClCompile Include="src\physics\CoinTrigger.cpp" />
+    <ClCompile Include="src\physics\GroundCollision.cpp" />
+    <ClCompile Include="src\physics\PlayerCollisions.cpp" />
+    <ClCompile Include="src\tiles\CoinTile.cpp" />
+    <ClCompile Include="src\tiles\GroundTile.cpp" />
+    <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
+    <ClCompile Include="src\tiles\TileFactory.cpp" />
+    <ClCompile Include="src\tiles\ChunkManager.cpp" />
+    <ClCompile Include="template\EventArgs.cpp" />
+    <ClCompile Include="src\tiles\ObstacleTile.cpp" />
+    <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -358,7 +368,6 @@
     <ClInclude Include="src\model_loading\StaticModel.h" />
     <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="src\tiles\Tile.h" />
-    <ClInclude Include="src\tiles\TileLoader.h" />
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="template\sprite.h" />
     <ClInclude Include="src\md2_loader\Md2.h" />
@@ -387,6 +396,20 @@
     <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
+    <ClInclude Include="src\physics\CoinTrigger.h" />
+    <ClInclude Include="src\physics\GroundCollision.h" />
+    <ClInclude Include="src\physics\PlayerCollisions.h" />
+    <ClInclude Include="src\tiles\ChunkManager.h" />
+    <ClInclude Include="src\tiles\CoinTile.h" />
+    <ClInclude Include="src\tiles\GroundTile.h" />
+    <ClInclude Include="src\tiles\TileFactory.h" />
+    <ClInclude Include="template\Delegate.h" />
+    <ClInclude Include="template\EventArgs.h" />
+    <ClInclude Include="template\optional.hpp" />
+    <ClInclude Include="template\signals.hpp" />
+    <ClInclude Include="src\tiles\ObstacleTile.h" />
+    <ClInclude Include="src\physics\ObstacleTrigger.h" />
+    <ClInclude Include="src\tiles\ModelTileFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
