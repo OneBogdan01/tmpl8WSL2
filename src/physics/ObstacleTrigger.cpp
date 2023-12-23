@@ -1,5 +1,9 @@
 ﻿#include "ObstacleTrigger.h"
 
+ObstacleTrigger::ObstacleTrigger(ColliderType type, size_t index) : GameObject(type), index(index)
+{
+}
+
 VoidEventUInt& ObstacleTrigger::GetEvent()
 {
 	return onHit;

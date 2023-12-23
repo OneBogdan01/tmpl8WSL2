@@ -5,10 +5,8 @@
 class ObstacleTrigger : public GameObject
 {
 public:
-	explicit ObstacleTrigger(ColliderType type, size_t index)
-		: GameObject(type)
-	{
-	}
+	explicit ObstacleTrigger(ColliderType type, size_t index);
+	
 
 	VoidEventUInt& GetEvent();
 	void CollidedWith(GameObject* p_obj1) override;
