@@ -23,6 +23,7 @@ Chunk::Chunk()
 		"assets/shaders/ModelLoading.vert",
 		"assets/shaders/ModelLoading.frag");
 	SetMaterialProperties();
+	Game::lightManager->SetLightProperties(*modelShader);
 }
 
 void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
@@ -52,11 +53,9 @@ void Chunk::ResetTiles()
 void Chunk::SetMaterialProperties()
 {
 	modelShader->Bind();
+	//we are using the red channel
 	modelShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
 	modelShader->SetFloat("material.shininess", 32.0f);
-	modelShader->SetFloat3("light.ambient", 0.2f, 0.2f, 0.2f);
-	modelShader->SetFloat3("light.diffuse", 0.5f, 0.5f, 0.5f); // darken diffuse light a bit
-	modelShader->SetFloat3("light.specular", 1.0f, 1.0f, 1.0f);
 	modelShader->Unbind();
 }
 
@@ -94,6 +93,7 @@ void Chunk::DisableCoin(size_t index)
 	coins[index].UpdatePhysicsPosition(pos);
 	activeCoins.erase(std::remove(activeCoins.begin(), activeCoins.end(), index), activeCoins.end());
 }
+
 void Chunk::DisableObstacle(size_t index)
 {
 	glm::vec3 pos = glm::vec3(60.0f);
@@ -114,21 +114,21 @@ void Chunk::RandomizeChunk()
 	cout << "Count:" << count << endl;
 	float x = RandomNumberGenerator::RandomFloat() * 512;
 	float y = RandomNumberGenerator::RandomFloat() * 512;
-	int frequency[TILES_PER_CHUNK] = { 0 };
+	int frequency[TILES_PER_CHUNK] = {0};
 	//obstacles
 	uint MAX_NUMBER_OBSTACLES = static_cast<uint>(RandomNumberGenerator::RandomFloat() * 18.0f);
 	for (uint i = 0; i < h && MAX_NUMBER_OBSTACLES > 0; i++)
 	{
 		for (uint j = 0; j < w && MAX_NUMBER_OBSTACLES > 0; j++)
 		{
-
 			int index = j + i * w;
 			int nextIndex = std::clamp(index + static_cast<int>(w), 0, static_cast<int>(TILES_PER_CHUNK - 1));
 			int prevIndex = std::clamp(index - static_cast<int>(w), 0, static_cast<int>(TILES_PER_CHUNK - 1));
 			/*&& tiles[nextIndex].GetId() != nullptr &&
 				tiles[prevIndex].GetId() != nullptr*/
-			if (tiles[index].GetId() != nullptr )
-				if (RandomNumberGenerator::RandomFloat() > .85f) {
+			if (tiles[index].GetId() != nullptr)
+				if (RandomNumberGenerator::RandomFloat() > .85f)
+				{
 					MAX_NUMBER_OBSTACLES--;
 					activeObstacles.push_back(index);
 					obstacles[index].ResetPosition();
@@ -148,7 +148,6 @@ void Chunk::RandomizeChunk()
 	{
 		for (uint j = 0; j < w && count > 0; j++)
 		{
-
 			uint index = j + i * w;
 
 			x += static_cast<float>(i);
@@ -157,7 +156,7 @@ void Chunk::RandomizeChunk()
 			if (aux < 0)
 				aux *= -1.0f;
 
-			float perlinVal = aux; ;
+			float perlinVal = aux;;
 
 
 			while (perlinVal < 1.0f)
@@ -170,7 +169,6 @@ void Chunk::RandomizeChunk()
 			//it is a high coin
 			if (coins[index].GetTileInitPosition().y() > TILE_SIZE / 2.0f)
 			{
-
 				perlinVal *= -1;
 			}
 			//low coin
@@ -199,7 +197,6 @@ void Chunk::RandomizeChunk()
 		}
 		cout << endl;
 	}
-
 }
 
 void Chunk::Draw()
@@ -212,7 +209,6 @@ void Chunk::Draw()
 	modelShader->SetMat4x4("view", Game::view);
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	modelShader->SetFloat3("lightPos", Game::GetLightPos().x, Game::GetLightPos().y, Game::GetLightPos().z);
 	//draw ground
 	for (auto& index : activeTiles)
 	{

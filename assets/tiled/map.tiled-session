@@ -1,5 +1,5 @@
 {
-    "activeFile": "map5.tmx",
+    "activeFile": "map1.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -12,16 +12,16 @@
             "scale": 0.6184895833333333,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 379.95789473684215,
-                "y": 523.0484210526316
+                "x": 377.5326315789473,
+                "y": 519.8147368421053
             }
         },
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map1.tmx": {
             "scale": 0.6184895833333333,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 381.5747368421054,
-                "y": 765.5747368421054
+                "x": 379.14947368421053,
+                "y": 762.341052631579
             }
         },
         "Tiles.tsx": {
@@ -30,35 +30,35 @@
             "scaleInEditor": 0.12
         },
         "map.tmx": {
-            "scale": 0.75,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 393.99999999999994,
-                "y": 816
+                "x": 43.939393939393995,
+                "y": 527.2727272727273
             }
         },
         "map1.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 368,
-                "y": 753
+                "x": 557,
+                "y": 908
             }
         },
         "map2.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 262,
-                "y": 719
+                "x": 381,
+                "y": 762
             }
         },
         "map3.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 333.33333333333326,
-                "y": 787.3333333333334
+                "x": 383.33333333333337,
+                "y": 765.3333333333333
             }
         },
         "map4 - Copy (4).tmx": {
@@ -81,40 +81,40 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 410,
-                "y": 729
+                "x": 313,
+                "y": 758
             }
         },
         "map5.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 482.66666666666663,
-                "y": 794
+                "x": 555.3333333333334,
+                "y": 815.9999999999999
             }
         },
         "map6.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 329.33333333333326,
-                "y": 782
+                "x": 326,
+                "y": 777.3333333333333
             }
         },
         "map7.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 499.99999999999994,
-                "y": 695.3333333333334
+                "x": 532.6666666666667,
+                "y": 730.6666666666667
             }
         },
         "map8.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 585.3333333333333,
-                "y": 888.6666666666665
+                "x": 410,
+                "y": 697.3333333333333
             }
         },
         "sadas.tsx": {
@@ -139,18 +139,18 @@
     ],
     "project": "map.tiled-project",
     "recentFiles": [
-        "map1.tmx",
         "map2.tmx",
-        "map7.tmx",
-        "map8.tmx",
-        "map6.tmx",
-        "map4.tmx",
-        "map.tmx",
-        "map3.tmx",
-        "map5.tmx",
-        "Tiles.tsx",
+        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map.tmx",
+        "map1.tmx",
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map1.tmx",
-        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map.tmx"
+        "map7.tmx",
+        "map3.tmx",
+        "map8.tmx",
+        "map4.tmx",
+        "map6.tmx",
+        "Tiles.tsx",
+        "map5.tmx",
+        "map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 1

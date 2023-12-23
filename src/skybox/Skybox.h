@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "template.h"
-
+#include <vector>
 class Skybox
 {
 public:
@@ -11,7 +11,7 @@ public:
 	void Init();
 
 private:
-	uint VAO = 0;
+	glm::uint VAO = 0;
 	float skyboxVertices[108] = {
 		// positions          
 		-1.0f, 1.0f, -1.0f,

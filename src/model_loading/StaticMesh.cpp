@@ -43,8 +43,8 @@ void StaticMesh::Draw(Shader& shader)
 	glBindVertexArray(0);
 }
 
-
-void StaticMesh::BakeLighting(glm::vec3& worldPos)
+//we only bake directional lighting
+void StaticMesh::BakeDirectionalLighting()
 {
 	//get data from texture
 	if (textures.size() > 0)
@@ -59,13 +59,10 @@ void StaticMesh::BakeLighting(glm::vec3& worldPos)
 
 			// diffuse
 			glm::vec3 norm = glm::normalize(vertex.Normal);
-			glm::vec3 lightDir = glm::normalize(Game::GetLightPos() - vertex.Position);
+			glm::vec3 lightDir = glm::normalize(-Game::lightManager->GetSunDir());
 			float diff = max(glm::dot(norm, lightDir), 0.0f);
-			//float distance = length(Game::GetLightPos() - (vertex.Position + worldPos));
-			//for point lights that are static
-			/*float distance = length(Game::GetLightPos() - (vertex.Position + worldPos));
-			float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * (distance * distance));*/
-			glm::vec3 diffuse = glm::vec3(1.0f) * diff;
+			//a pink color
+			glm::vec3 diffuse = glm::vec3(1.0f, 0.71f, 0.75f) * diff;
 
 			vertex.Color = ambient + diffuse;
 		}

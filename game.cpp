@@ -34,6 +34,11 @@ float scale = 5.0f;
 
 void Game::Init()
 {
+	lightShader = new Shader(
+		"assets/shaders/BasicVertexShader.vert",
+		"assets/shaders/SolidColor.frag");
+	lightManager = new LightManager(lightShader);
+
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 	world.Init();
 	tileLoader = new ChunkManager();
@@ -44,9 +49,7 @@ void Game::Init()
 	/*simpleShader = new Shader(
 	    "assets/shaders/BasicVertexShader.vert",
 	    "assets/shaders/BasicFragmentShader.frag");*/
-	lightShader = new Shader(
-		"assets/shaders/BasicVertexShader.vert",
-		"assets/shaders/Sun.frag");
+
 
 	modelShader = new Shader(
 		"assets/shaders/ModelLoading.vert",
@@ -56,7 +59,6 @@ void Game::Init()
 	modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 	modelShader->Unbind();
 
-	sun.Init();
 	camera = new Camera();
 	camera->Init();
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
@@ -239,6 +241,7 @@ void Game::Tick(float deltaTime)
 	                               0.1f, 100.0f);
 
 	view = camera->GetViewMat();
+	lightManager->Draw();
 
 	//TODO make update loop for entities
 	tileLoader->Update(deltaTime);
@@ -252,16 +255,8 @@ void Game::Tick(float deltaTime)
 	//skybox
 	//simpleShader->Unbind();
 	//draw lighting
-	lightShader->Bind();
-	lightShader->SetMat4x4("projection", perspective);
-	lightShader->SetMat4x4("view", view);
 
-	glm::mat4 sunModel = glm::mat4(1.0f);
-	sunModel = glm::translate(sunModel, GetLightPos());
-	sunModel = glm::scale(sunModel, glm::vec3(0.2f));
-	lightShader->SetMat4x4("model", sunModel);
-	sun.Draw();
-	lightShader->Unbind();
+
 	skybox.Draw();
 }
 

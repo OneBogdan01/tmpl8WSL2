@@ -5,6 +5,7 @@
 #include "KeyboardManager.h"
 #include "PlayerCharacter.h"
 #include "Triangle.h"
+#include "lighting/LightManager.h"
 #include "physics/World.h"
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
@@ -59,11 +60,6 @@ namespace Tmpl8
 			return *camera;
 		}
 
-		static glm::vec3 GetLightPos()
-		{
-			return glm::vec3(-5.f, 5.0f, 2.0f);
-		}
-
 		static KeyboardManager& GetInputManager()
 		{
 			return inputManager;
@@ -86,6 +82,8 @@ namespace Tmpl8
 		//Triangle triangle;
 		inline static Camera* camera = nullptr;
 		inline static World world;
+		inline static LightManager* lightManager = nullptr;
+
 		ChunkManager* tileLoader = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;

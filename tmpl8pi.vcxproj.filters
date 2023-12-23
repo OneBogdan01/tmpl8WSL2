@@ -63,6 +63,8 @@
     <ClCompile Include="template\EventArgs.cpp" />
     <ClCompile Include="src\tiles\ObstacleTile.cpp" />
     <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
+    <ClCompile Include="src\lighting\LightManager.cpp" />
+    <ClCompile Include="src\lighting\PointLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -410,6 +412,8 @@
     <ClInclude Include="src\tiles\ObstacleTile.h" />
     <ClInclude Include="src\physics\ObstacleTrigger.h" />
     <ClInclude Include="src\tiles\ModelTileFactory.h" />
+    <ClInclude Include="src\lighting\PointLight.h" />
+    <ClInclude Include="src\lighting\LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">

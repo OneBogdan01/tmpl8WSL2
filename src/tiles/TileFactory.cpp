@@ -33,7 +33,7 @@ StaticModel* TileFactory::LoadModel(const char* path, glm::vec3 initialPosition)
 
 	for (auto& mesh : model->GetMeshes())
 	{
-		mesh.BakeLighting(initialPosition);
+		mesh.BakeDirectionalLighting();
 	}
 
 	model->SetUpMeshes();

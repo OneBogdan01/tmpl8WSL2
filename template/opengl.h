@@ -57,6 +57,7 @@ public:
 	void SetUInt(const char* name, const uint v);
 	GLint GetUniformLocation(const char* name);
 	void Unbind();
+	void SetVec3(const char* name, const glm::vec3 v);
 	uint ID = 0; // shader program identifier
 
 private:

@@ -334,6 +334,8 @@
     <ClInclude Include="template\EventArgs.h" />
     <ClInclude Include="src\tiles\ObstacleTile.h" />
     <ClInclude Include="src\physics\ObstacleTrigger.h" />
+    <ClInclude Include="src\lighting\PointLight.h" />
+    <ClInclude Include="src\lighting\LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -381,6 +383,8 @@
     <ClCompile Include="template\EventArgs.cpp" />
     <ClCompile Include="src\tiles\ObstacleTile.cpp" />
     <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
+    <ClCompile Include="src\lighting\PointLight.cpp" />
+    <ClCompile Include="src\lighting\LightManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\basic.frag" />

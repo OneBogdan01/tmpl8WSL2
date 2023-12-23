@@ -184,6 +184,8 @@
     <ClCompile Include="external\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\lighting\LightManager.cpp" />
+    <ClCompile Include="src\lighting\PointLight.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
     <ClCompile Include="src\physics\DebugRenderer.cpp" />
     <ClCompile Include="src\KeyboardManager.cpp" />
@@ -519,6 +521,8 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\lighting\LightManager.h" />
+    <ClInclude Include="src\lighting\PointLight.h" />
     <ClInclude Include="src\physics\CoinTrigger.h" />
     <ClInclude Include="src\physics\DebugRenderer.h" />
     <ClInclude Include="src\KeyboardManager.h" />

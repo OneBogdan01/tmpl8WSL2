@@ -49,7 +49,7 @@ void Md2::Draw(int frame, float angle, float interpolation, glm::mat4&& view, gl
 
 	glm::vec3 camPos = Game::camera->GetPosition();
 	m_shaderProgram->setUniform("viewPos", camPos);
-	m_shaderProgram->setUniform("lightPos", Game::GetLightPos());
+	
 	m_shaderProgram->setUniform("material.specular", glm::vec3(0.0f));
 	m_shaderProgram->setUniform("material.shininess", 32.0f);
 	m_shaderProgram->setUniform("light.ambient", glm::vec3(1.0f));

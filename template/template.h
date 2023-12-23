@@ -38,6 +38,7 @@ using LONG = long;
 
 
 #ifdef _WINDOWS
+#include <iostream>
 
 #else
 // generic includes

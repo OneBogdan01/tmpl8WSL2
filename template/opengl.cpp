@@ -217,6 +217,12 @@ void Shader::Unbind()
     CheckGL();
 }
 
+void Shader::SetVec3(const char* name, const glm::vec3 v)
+{
+    glUniform3f(glGetUniformLocation(ID, name), v.x, v.y, v.z);
+    CheckGL();
+}
+
 void Shader::SetInputTexture(uint slot, const char* name, GLTexture* texture)
 {
     glActiveTexture(GL_TEXTURE0 + slot);
