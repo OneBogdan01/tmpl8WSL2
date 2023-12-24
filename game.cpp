@@ -84,8 +84,9 @@ float f = 0.3f;
 char buf[] = "some windows";
 float FPS = 0;
 uint frameCount = 0;
-Timer timer;
-
+Timer FPSTimer;
+Timer FixedTimer;
+const float FIXED_TIMESTEP = 1 / 60.0f;
 
 #ifdef _WINDOWS
 #include "windows.h"
@@ -169,11 +170,11 @@ void Game::Tick(float deltaTime)
 	//displaying stuff
 #ifdef __DEBUG__
 	frameCount++;
-	if (timer.elapsed() >= 1.0f)
+	if (FPSTimer.elapsed() >= 1.0f)
 	{
-		FPS = static_cast<float>(frameCount) / timer.elapsed();
+		FPS = static_cast<float>(frameCount) / FPSTimer.elapsed();
 		frameCount = 0;
-		timer.reset();
+		FPSTimer.reset();
 	}
 
 
@@ -247,7 +248,8 @@ void Game::Tick(float deltaTime)
 	tileLoader->Update(deltaTime);
 
 	player->Update(deltaTime);
-
+	player->FixedUpdate(deltaTime);
+	
 
 	tileLoader->DrawChunks();
 	player->Draw();

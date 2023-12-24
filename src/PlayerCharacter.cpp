@@ -68,10 +68,11 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
-	characterController->setMaxJumpHeight(2.0f);
+	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
 	characterController->setFallSpeed(50.0f);
 	characterController->setJumpSpeed(40.0f);
+	
 
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 }
@@ -180,21 +181,27 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	{
 		onGround = true;
 	}
-	if (!inputManager->IsPressed(Jump))
-	{
-		jumped = false;
-	}
-
+	
 	if (inputManager->IsPressed(Jump) && !jumped && onGround)
 	{
 		jumped = true;
 		onGround = false;
 		std::cout << "jump" << std::endl;
+		//TODO sometimes bullet gets stuck and does not jump here
+		currentPosition.setY(3.f);
+		characterController->warp(currentPosition);
 		characterController->jump();
+
+
+	}
+	if (!inputManager->IsPressed(Jump))
+	{
+		jumped = false;
 	}
 
 
 	currentPosition.setX(btClamped(currentPosition.getX(), minX, maxX));
+	//currentPosition.setZ(btClamped(currentPosition.getZ(), 0.0f, 0.0f));
 
 
 	currentTransform.setOrigin(currentPosition);
@@ -204,10 +211,12 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 void PlayerCharacter::Update(float deltaTime)
 {
 	HandleInput(deltaTime);
-	MoveCharacter(deltaTime);
 	InterpolateFrames(deltaTime);
 }
-
+void PlayerCharacter::FixedUpdate(float deltaTime)
+{
+		MoveCharacter(deltaTime);
+}
 VoidEvent& PlayerCharacter::GetEvent()
 {
 	return onDeath;

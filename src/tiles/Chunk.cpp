@@ -31,6 +31,7 @@ void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
 	tiles[index].Init(path, pos, index);
 
 	activeTiles.push_back(index);
+	coinLow[index] = 1;
 }
 
 void Chunk::LoadCoins(size_t index, const char* path, glm::vec3 pos)
@@ -44,7 +45,17 @@ void Chunk::LoadObstacles(size_t index, const char* path, glm::vec3 pos)
 	obstacles[index].Init(path, pos, index);
 	obstacles[index].GetCallback().GetEvent().connect(&Chunk::DisableObstacle, this);
 }
-
+void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
+{
+	for (uint index = 0; index < COINS_PER_CHUNK; index++)
+	{
+		LoadCoins(index, coinPath, glm::vec3(0));
+	}
+	for (uint index = 0; index < OBSTACLES_PER_CHUNK; index++)
+	{
+		LoadObstacles(index, obstaclePath, glm::vec3(0));
+	}
+}
 void Chunk::ResetTiles()
 {
 	position.z = 0;
@@ -110,16 +121,16 @@ void Chunk::RandomizeChunk()
 	RandomNumberGenerator::RandomizePerlinNoise();
 	float threshold = RandomNumberGenerator::RandomFloat() * 0.25f + .5f;
 	float rng = RandomNumberGenerator::RandomFloat() * 0.4f + .2f;
-	int count = static_cast<float>(TILES_PER_CHUNK) / 2 * RandomNumberGenerator::RandomFloat();
-	cout << "Count:" << count << endl;
+	uint maxCoinCount = static_cast<float>(COINS_PER_CHUNK) * RandomNumberGenerator::RandomFloat();
+	cout << "Count:" << maxCoinCount << endl;
 	float x = RandomNumberGenerator::RandomFloat() * 512;
 	float y = RandomNumberGenerator::RandomFloat() * 512;
-	int frequency[TILES_PER_CHUNK] = {0};
+	int indexObstacleOccupied[TILES_PER_CHUNK] = { 0 };
 	//obstacles
-	uint MAX_NUMBER_OBSTACLES = static_cast<uint>(RandomNumberGenerator::RandomFloat() * 18.0f);
-	for (uint i = 0; i < h && MAX_NUMBER_OBSTACLES > 0; i++)
+	uint maxObstacleCount = static_cast<uint>(RandomNumberGenerator::RandomFloat() * OBSTACLES_PER_CHUNK);
+	for (uint i = 0; i < h && maxObstacleCount > 0; i++)
 	{
-		for (uint j = 0; j < w && MAX_NUMBER_OBSTACLES > 0; j++)
+		for (uint j = 0; j < w && maxObstacleCount > 0; j++)
 		{
 			int index = j + i * w;
 			int nextIndex = std::clamp(index + static_cast<int>(w), 0, static_cast<int>(TILES_PER_CHUNK - 1));
@@ -129,24 +140,29 @@ void Chunk::RandomizeChunk()
 			if (tiles[index].GetId() != nullptr)
 				if (RandomNumberGenerator::RandomFloat() > .85f)
 				{
-					MAX_NUMBER_OBSTACLES--;
-					activeObstacles.push_back(index);
-					obstacles[index].ResetPosition();
+					maxObstacleCount--;
+					size_t indexObstacle = activeObstacles.size();
+					glm::vec3 obstaclePos = tiles[index].initialPosition;
+					obstaclePos.y = 0;
+					obstacles[indexObstacle].initialPosition = obstaclePos;
+
+					obstacles[indexObstacle].ResetPosition();
+					activeObstacles.push_back(indexObstacle);
 					//go to next column at least
-					frequency[index] = 1;
+					indexObstacleOccupied[index] = 1;
 					i += 2;
 					if (i >= h)
 					{
-						MAX_NUMBER_OBSTACLES = 0;
+						maxObstacleCount = 0;
 					}
 				}
 		}
 	}
 
 	//coins
-	for (uint i = 0; i < h && count > 0; i++)
+	for (uint i = 0; i < h && maxCoinCount > 0; i++)
 	{
-		for (uint j = 0; j < w && count > 0; j++)
+		for (uint j = 0; j < w && maxCoinCount > 0; j++)
 		{
 			uint index = j + i * w;
 
@@ -165,30 +181,32 @@ void Chunk::RandomizeChunk()
 			}
 			perlinVal = std::clamp(perlinVal, 0.0f, TILE_SIZE / 2);
 
+			glm::vec3 coinPos = tiles[index].initialPosition;
+			coinPos.y += TILE_SIZE;
 
 			//it is a high coin
-			if (coins[index].GetTileInitPosition().y() > TILE_SIZE / 2.0f)
+			if (coinLow[index] == 0)
 			{
 				perlinVal *= -1;
+				coinPos.y += TILE_SIZE;
 			}
-			//low coin
-			else
+			//low coin, but we placed obstacle
+			else if (indexObstacleOccupied[index] == 1)
 			{
-				if (frequency[index] == 1)
-				{
-					perlinVal += TILE_SIZE;
-				}
+				perlinVal += TILE_SIZE;
+
 			}
 			cout << perlinVal << " ";
 
 			if (rng > threshold)
 			{
-				count--;
-				coins[index].SetOffset(glm::vec3(0.0f, perlinVal, 0.0f));
+				maxCoinCount--;
+				size_t indexCoin = activeCoins.size();
+				coins[indexCoin].SetOffset(glm::vec3(0.0f, perlinVal, 0.0f));
 
-
-				coins[index].ResetPosition();
-				activeCoins.push_back(index);
+				coins[indexCoin].initialPosition = coinPos;
+				coins[indexCoin].ResetPosition();
+				activeCoins.push_back(indexCoin);
 			}
 			else
 			{

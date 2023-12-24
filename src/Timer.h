@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <chrono>
 
-// timer
+// FPSTimer
 
 struct Timer
 {

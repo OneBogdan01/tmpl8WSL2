@@ -11,8 +11,11 @@ public:
 	glm::vec3 GetPosition() const;
 	void UpdatePhysicsPosition(glm::vec3 chunkPos);
 	ObstacleTrigger& GetCallback();
+	void SetInitialPosition(glm::vec3 pos);
+
 private:
 	void AddATriggerBox();
+
 
 	btGhostObject* ghostObject = nullptr;
 	ObstacleTrigger* obstacleCallback = nullptr;

@@ -63,9 +63,14 @@ void ObstacleTile::AddATriggerBox()
 	Game::world.AddTrigger(ghostObject);
 }
 
-void ObstacleTile::Init(const char* path, glm::vec3 pos, size_t index)
+void ObstacleTile::SetInitialPosition(glm::vec3 pos)
 {
 	initialPosition = pos;
+}
+
+void ObstacleTile::Init(const char* path, glm::vec3 pos, size_t index)
+{
+	SetInitialPosition(pos);
 	modelId = path;
 	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
 	obstacleCallback = new ObstacleTrigger(GameObject::Obstacle, index);

@@ -87,7 +87,7 @@ void ChunkManager::Init()
 			static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 
-
+		//load Tiles
 		for (int i = 0; i < heightY; i++)
 		{
 			for (int j = 0; j < widthX; j++)
@@ -116,14 +116,14 @@ void ChunkManager::Init()
 					coinPos.y += TILE_SIZE * 2;
 				}
 				//coins
-				chunk->LoadCoins(index, tilePaths[COINS_INDEX].c_str(), position + coinPos);
+				/*chunk->LoadCoins(index, , position + coinPos);
 
 				position.y = 0;
 
-				chunk->LoadObstacles(index, tilePaths[OBSTACLE_INDEX].c_str(), position);
+				chunk->LoadObstacles(index, , position);*/
 			}
 		}
-
+		chunk->LoadProps(tilePaths[COINS_INDEX].c_str(), tilePaths[OBSTACLE_INDEX].c_str());
 		if (k == 0)
 		{
 			firstChunk = chunk;

@@ -79,7 +79,7 @@ string TextFileRead(const char* _File)
 }
 
 
-static Timer timer;
+static Timer FPSTimer;
 
 int main()
 {
@@ -142,18 +142,19 @@ int main()
 	//will call our method
 	glfwSetKeyCallback(window, ProccessInput);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 	// render loop
 	// -----------
 	//physics behave wierd unless the FPS is capped
 	//const double FPS = 1.0 / 900.0;
 	while (!glfwWindowShouldClose(window))
 	{
-		if (timer.elapsed() > FPS)
+		if (FPSTimer.elapsed() > FPS)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+			const float deltaTime = min(500.0f, 1000.0f * FPSTimer.elapsed()) * 0.001f;
 
-			timer.reset();
+			FPSTimer.reset();
 
 			//imgui still throws erros when used with the current opengl setup
 			ImGui_ImplOpenGL3_NewFrame();
@@ -683,7 +684,7 @@ void closeEGL()
 
 // application entry point
 // ----------------------------------------------------------------------------
-static Timer timer;
+static Timer FPSTimer;
 
 
 void ActivateErrorCallback()
@@ -751,19 +752,20 @@ int main(int argc, char* argv[])
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 
+	glEnable(GL_CULL_FACE);
 
 	while (!should_close)
 	{
-		if (timer.elapsed() > FPS)
+		if (FPSTimer.elapsed() > FPS)
 		{
 			//as Abhishek said, multiplication is way faster then division
 
-			const float deltaTime = min(500.0f, 1000.0f * timer.elapsed()) * 0.001f;
+			const float deltaTime = min(500.0f, 1000.0f * FPSTimer.elapsed()) * 0.001f;
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			ProccessEvents(game);
-			timer.reset();
+			FPSTimer.reset();
 
 			//imgui still throws erros when used with the current opengl setup
 			ImGui_ImplOpenGL3_NewFrame();
