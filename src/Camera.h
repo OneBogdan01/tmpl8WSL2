@@ -25,7 +25,7 @@ public:
 private:
 	//void GetCameraAxis(const float3& cameraTarget);
 	//	float lastX = 0, lastY = 0;
-	glm::vec3 position = glm::vec3(0.0f, 17.0f, 23.0f);
+	glm::vec3 position = glm::vec3(0.0f, 17.0f, 18.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 dir = glm::vec3(0.0f);
 	glm::vec3 translation = glm::vec3(0.0f);

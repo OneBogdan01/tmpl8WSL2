@@ -155,13 +155,15 @@ void ChunkManager::Init()
 	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		Chunk* chunk = chunks[k];
-		glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 
-		if (k < NUMBER_OF_ACTIVE_CHUNKS)
+		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
+			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 			chunk->SetPosition(chunkOff);
+
+		}
 		else
 		{
-			chunk->SetPosition(glm::vec3(-2.0f) * chunkOffset);
+			chunk->SetPosition(glm::vec3(OFFSET_TILE_MULTIPLIER) * chunkOffset);
 			chunk->Update(0);
 		}
 	}
@@ -184,11 +186,16 @@ void ChunkManager::Update(float deltaTime)
 		newOffset.z = dir.z * deltaTime;
 
 		Chunk* chunk = chunks[i];
-		//this chunk needs to be disabled
-		if (chunk->GetPosition().z > 2 * TILE_SIZE * heightY)
+		//this chunk needs to be disabled physics wise
+		if (chunk->GetPosition().z > TILE_SIZE * heightY)
+		{
+			cout << "chunk " << i << " is disabled\n";
+		}
+		//this chunk needs to be disabled graphics wise
+		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 		{
 			//2 is the amount of tiles behind the player
-			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 2);
+			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 1);
 
 
 			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
