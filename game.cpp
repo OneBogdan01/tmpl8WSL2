@@ -161,9 +161,7 @@ void Game::Tick(float deltaTime)
 	inputManager.Update();
 	//input is done first in the template
 	//update physics
-#ifdef __DEBUG__
-	world.RenderDebug();
-#endif
+
 
 	world.Update(deltaTime);
 
@@ -260,6 +258,10 @@ void Game::Tick(float deltaTime)
 
 
 	skybox.Draw();
+
+#ifdef __DEBUG__
+	world.RenderDebug();
+#endif
 }
 
 void Game::Shutdown()

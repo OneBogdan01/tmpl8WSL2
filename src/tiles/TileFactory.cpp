@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void TileFactory::CreateTileModel(const char* path, glm::vec3 initialPosition)
+void TileFactory::CreateTileModel(const char* path, const glm::vec3 initialPosition)
 {
 	if (models.find(path) == models.end())
 	{

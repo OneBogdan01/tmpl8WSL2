@@ -178,7 +178,7 @@ void ChunkManager::DrawChunks()
 	}
 }
 
-void ChunkManager::Update(float deltaTime)
+void ChunkManager::Update(const float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
@@ -186,11 +186,8 @@ void ChunkManager::Update(float deltaTime)
 		newOffset.z = dir.z * deltaTime;
 
 		Chunk* chunk = chunks[i];
-		//this chunk needs to be disabled physics wise
-		if (chunk->GetPosition().z > TILE_SIZE * heightY)
-		{
-			cout << "chunk " << i << " is disabled\n";
-		}
+		
+		
 		//this chunk needs to be disabled graphics wise
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 		{
@@ -207,12 +204,21 @@ void ChunkManager::Update(float deltaTime)
 			chunk->ResetTiles();
 			chunk->RandomizeChunk();
 		}
+		
 		chunk->Translate(newOffset);
+		//this chunk needs to be enabled physics wise
+
+		if (chunk->GetPosition().z > -3.0f)
+		{
+			chunk->UpdateRB();
+
+		}
+		
 		chunk->Update(deltaTime);
 	}
 }
 
-void ChunkManager::SetDirection(glm::vec3 _dir)
+void ChunkManager::SetDirection(const glm::vec3 _dir)
 {
 	dir = _dir;
 }

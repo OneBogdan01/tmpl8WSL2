@@ -1,5 +1,6 @@
 ﻿#include "GroundTile.h"
 
+#include "Camera.h"
 #include "game.h"
 #include "ModelTileFactory.h"
 #include "ChunkManager.h"
@@ -10,14 +11,24 @@ GroundTile::GroundTile() :
 }
 
 
-void GroundTile::Init(const char* path, glm::vec3 pos, size_t index)
+void GroundTile::Init(const char* path, const glm::vec3 pos, size_t index)
 {
 	initialPosition = pos;
 	modelId = path;
 	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
 
 	//LoadModel(path);
-	AddStaticRigidbody();
+	//AddStaticRigidbody();
+}
+void GroundTile::SetUserPointer(btRigidBody* body)
+{
+	body->setUserPointer(&groundCallback);
+}
+
+void GroundTile::SetRigidBody(btRigidBody* body)
+{
+	rigidBody = body;
+	SetUserPointer(rigidBody);
 }
 
 void GroundTile::AddStaticRigidbody()
@@ -32,7 +43,7 @@ void GroundTile::AddStaticRigidbody()
 	tileTransform.setIdentity();
 	drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
 	tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
-	                                  initialPosition.z));
+		initialPosition.z));
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
 
 	// Create a rigid body
@@ -53,14 +64,15 @@ void GroundTile::AddStaticRigidbody()
 }
 
 
-glm::vec3 GroundTile::GetPosition() const
+glm::vec3 GroundTile::GetPosition(const glm::vec3 chunkPos) const
 {
-	btVector3 position = rigidBody->getWorldTransform().getOrigin();
-	position.setY(position.getY() - drawOffset.y);
-	return BtVector3ToGlm(position);
+
+	glm::vec3 pos = chunkPos + initialPosition;
+
+	return pos;
 }
 
-void GroundTile::UpdatePhysicsPosition(glm::vec3 chunkPos)
+void GroundTile::UpdatePhysicsPosition(const glm::vec3 chunkPos)
 {
 	btTransform newTransform;
 	rigidBody->getMotionState()->getWorldTransform(newTransform);

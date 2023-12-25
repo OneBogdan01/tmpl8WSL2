@@ -11,10 +11,7 @@ btVector3 Tile::GetTileInitPosition()
 	                 initialPosition.z);
 }
 
-void Tile::SetOffset(const glm::vec3& offs)
-{
-	offset = offs;
-}
+
 
 const char* Tile::GetId()
 {

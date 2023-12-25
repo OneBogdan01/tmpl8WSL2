@@ -26,8 +26,10 @@ public:
 	void LoadProps(const char* coinPath, const char* obstaclePath);
 	void ResetTiles();
 	Chunk();
+	btRigidBody* AddStaticRigidbody(const char* modelId, glm::vec3 initialPosition, glm::vec3& drawOffset);
 
 	void Draw();
+	void UpdateRB();
 	void Update(float deltaTime);
 	void SetPosition(glm::vec3 pos);
 
@@ -43,7 +45,11 @@ private:
 	float lerp(float v0, float v1, float t);
 	float invLerp(float a, float b, float v);
 	void SetMaterialProperties();
+	//pools of rigid bodies and triggers
+	//TODO do the same for the triggers
+	inline static std::array<btRigidBody*, TILES_PER_CHUNK> rbTiles;
 
+	inline static glm::vec3 drawOffset;
 	//ground layer
 	std::array<GroundTile, TILES_PER_CHUNK> tiles;
 	std::array<int, TILES_PER_CHUNK> coinLow = { 0 };

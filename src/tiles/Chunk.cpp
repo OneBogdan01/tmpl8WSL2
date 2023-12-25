@@ -4,6 +4,7 @@
 
 
 #include "Camera.h"
+
 #include "game.h"
 #include "ModelTileFactory.h"
 #include "ChunkManager.h"
@@ -26,21 +27,55 @@ Chunk::Chunk()
 	Game::lightManager->SetLightProperties(*modelShader);
 }
 
-void Chunk::LoadTile(size_t index, const char* path, glm::vec3 pos)
+btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& drawOffset)
+{
+	//make a collision shape
+	// Create a collision shape (e.g., a box shape for a rectangular tile)
+	ModelTileFactory& factory = ModelTileFactory::GetInstance();
+	btBoxShape* tileShape = World::CreateBoundingBoxModel(factory.GetModel(modelId)->GetMeshes(), TILE_SIZE);
+
+	// Create a motion state
+	btTransform tileTransform;
+	tileTransform.setIdentity();
+	drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
+	/*tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
+		initialPosition.z));*/
+	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
+
+	// Create a rigid body
+	btScalar mass = 0.0; // Mass 0 for static objects
+	btVector3 localInertia(0, 0, 0);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, tileMotionState, tileShape, localInertia);
+
+	btRigidBody* rigidBody = new btRigidBody(rbInfo);
+	//set it as kinamatic
+	rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+	rigidBody->setActivationState(DISABLE_DEACTIVATION);
+
+
+
+
+	Game::world.AddRigidBody(rigidBody);
+	return rigidBody;
+}
+
+void Chunk::LoadTile(const size_t index, const char* path, const glm::vec3 pos)
 {
 	tiles[index].Init(path, pos, index);
-
+	if (rbTiles[index] == nullptr)
+		rbTiles[index] = AddStaticRigidbody(path, pos, drawOffset);
+	tiles[index].SetRigidBody(rbTiles[index]);
 	activeTiles.push_back(index);
 	coinLow[index] = 1;
 }
 
-void Chunk::LoadCoins(size_t index, const char* path, glm::vec3 pos)
+void Chunk::LoadCoins(const size_t index, const char* path, const glm::vec3 pos)
 {
 	coins[index].Init(path, pos, index);
 	coins[index].GetCallback().GetEvent().connect(&Chunk::DisableCoin, this);
 }
 
-void Chunk::LoadObstacles(size_t index, const char* path, glm::vec3 pos)
+void Chunk::LoadObstacles(const size_t index, const char* path, const glm::vec3 pos)
 {
 	obstacles[index].Init(path, pos, index);
 	obstacles[index].GetCallback().GetEvent().connect(&Chunk::DisableObstacle, this);
@@ -71,12 +106,12 @@ void Chunk::SetMaterialProperties()
 }
 
 //to make it into the math library
-float Chunk::lerp(float v0, float v1, float t)
+float Chunk::lerp(const float v0, const float v1, const float t)
 {
 	return (1 - t) * v0 + t * v1;
 }
 
-float Chunk::invLerp(float a, float b, float v)
+float Chunk::invLerp(const float a, const float b, const float v)
 {
 	return (v - a) / (b - a);
 }
@@ -97,7 +132,7 @@ void Chunk::HideChunk()
 	activeObstacles.clear();
 }
 
-void Chunk::DisableCoin(size_t index)
+void Chunk::DisableCoin(const size_t index)
 {
 	glm::vec3 pos = glm::vec3(60.0f);
 	//offscreen
@@ -105,7 +140,7 @@ void Chunk::DisableCoin(size_t index)
 	activeCoins.erase(std::remove(activeCoins.begin(), activeCoins.end(), index), activeCoins.end());
 }
 
-void Chunk::DisableObstacle(size_t index)
+void Chunk::DisableObstacle(const size_t index)
 {
 	glm::vec3 pos = glm::vec3(60.0f);
 	//offscreen
@@ -202,7 +237,7 @@ void Chunk::RandomizeChunk()
 			{
 				maxCoinCount--;
 				size_t indexCoin = activeCoins.size();
-				coins[indexCoin].SetOffset(glm::vec3(0.0f, perlinVal, 0.0f));
+				coins[indexCoin].offset = (glm::vec3(0.0f, perlinVal, 0.0f));
 
 				coins[indexCoin].initialPosition = coinPos;
 				coins[indexCoin].ResetPosition();
@@ -231,7 +266,7 @@ void Chunk::Draw()
 	for (auto& index : activeTiles)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
-		glm::vec3 tilePosition = tiles[index].GetPosition();
+		glm::vec3 tilePosition = tiles[index].GetPosition(position);
 		model = glm::translate(model, tilePosition);
 		model = glm::scale(model, glm::vec3(TILE_SIZE));
 		modelShader->SetMat4x4("model", model);
@@ -261,16 +296,25 @@ void Chunk::Draw()
 	modelShader->Unbind();
 }
 
-void DisableCoin(void)
+
+void Chunk::UpdateRB()
 {
+	for (auto& index : activeTiles)
+	{
+		//tiles[index].UpdatePhysicsPosition(position);
+		btRigidBody* body = rbTiles[index];
+		btTransform newTransform;
+		body->getMotionState()->getWorldTransform(newTransform);
+		glm::vec3 tilePos = tiles[index].initialPosition;
+		tilePos.y += drawOffset.y;
+		newTransform.setOrigin(btVector3(GlmToBtVector3(position + tilePos)));
+		body->getMotionState()->setWorldTransform(newTransform);
+	}
 }
 
 void Chunk::Update(float deltaTime)
 {
-	for (auto& index : activeTiles)
-	{
-		tiles[index].UpdatePhysicsPosition(position);
-	}
+	//UpdateRB();
 	for (auto& index : activeCoins)
 	{
 		coins[index].UpdatePhysicsPosition(position);
@@ -281,12 +325,12 @@ void Chunk::Update(float deltaTime)
 	}
 }
 
-void Chunk::SetPosition(glm::vec3 pos)
+void Chunk::SetPosition(const glm::vec3 pos)
 {
 	position = pos;
 }
 
-void Chunk::Translate(glm::vec3 pos)
+void Chunk::Translate(const glm::vec3 pos)
 {
 	position += pos;
 }

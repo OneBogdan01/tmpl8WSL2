@@ -8,7 +8,7 @@
 #include "physics/CoinTrigger.h"
 #include "physics/World.h"
 
-void CoinTile::Init(const char* path, glm::vec3 pos, size_t index)
+void CoinTile::Init(const char* path, const glm::vec3 pos, const size_t index)
 {
 	initialPosition = pos;
 	modelId = path;
@@ -69,7 +69,7 @@ glm::vec3 CoinTile::GetPosition() const
 }
 
 
-void CoinTile::UpdatePhysicsPosition(glm::vec3 chunkPos)
+void CoinTile::UpdatePhysicsPosition(const glm::vec3 chunkPos)
 {
 	btTransform newTransform = ghostObject->getWorldTransform();
 

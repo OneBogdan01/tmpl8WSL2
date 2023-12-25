@@ -24,7 +24,7 @@ glm::vec3 ObstacleTile::GetPosition() const
 	return BtVector3ToGlm(position);
 }
 
-void ObstacleTile::UpdatePhysicsPosition(glm::vec3 chunkPos)
+void ObstacleTile::UpdatePhysicsPosition(const glm::vec3 chunkPos)
 {
 	btTransform newTransform = ghostObject->getWorldTransform();
 
@@ -63,12 +63,12 @@ void ObstacleTile::AddATriggerBox()
 	Game::world.AddTrigger(ghostObject);
 }
 
-void ObstacleTile::SetInitialPosition(glm::vec3 pos)
+void ObstacleTile::SetInitialPosition(const glm::vec3 pos)
 {
 	initialPosition = pos;
 }
 
-void ObstacleTile::Init(const char* path, glm::vec3 pos, size_t index)
+void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t index)
 {
 	SetInitialPosition(pos);
 	modelId = path;

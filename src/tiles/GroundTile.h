@@ -9,9 +9,11 @@ public:
 	GroundTile();
 	~GroundTile() override = default ;
 	//void ResetPosition(glm::vec3 pos);
-	void Init(const char* path, glm::vec3 pos, size_t index) override;
+	auto Init(const char* path, glm::vec3 pos, size_t index) -> void override;
+	void SetUserPointer(btRigidBody* body);
+	void SetRigidBody(btRigidBody* body);
 	void AddStaticRigidbody();
-	glm::vec3 GetPosition() const;
+	glm::vec3 GetPosition(glm::vec3 chunkPos) const;
 	void UpdatePhysicsPosition(glm::vec3 chunkPos);
 
 private:

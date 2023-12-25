@@ -184,7 +184,7 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	
 	if (inputManager->IsPressed(Jump) && !jumped && onGround)
 	{
-		jumped = true;
+		//jumped = true;
 		onGround = false;
 		std::cout << "jump" << std::endl;
 		//TODO sometimes bullet gets stuck and does not jump here
@@ -193,10 +193,6 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		characterController->jump();
 
 
-	}
-	if (!inputManager->IsPressed(Jump))
-	{
-		jumped = false;
 	}
 
 
