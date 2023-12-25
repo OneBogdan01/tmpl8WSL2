@@ -11,6 +11,13 @@ btVector3 Tile::GetTileInitPosition()
 	                 initialPosition.z);
 }
 
+glm::vec3 Tile::GetPosition(const glm::vec3 chunkPos) const
+{
+
+	glm::vec3 pos = chunkPos + initialPosition;
+
+	return pos;
+}
 
 
 const char* Tile::GetId()

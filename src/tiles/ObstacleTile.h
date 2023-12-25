@@ -12,6 +12,7 @@ public:
 	void UpdatePhysicsPosition(glm::vec3 chunkPos);
 	ObstacleTrigger& GetCallback();
 	void SetInitialPosition(glm::vec3 pos);
+	void SetCallback(btGhostObject* ghostObject);
 
 private:
 	void AddATriggerBox();

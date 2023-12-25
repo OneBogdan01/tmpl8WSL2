@@ -68,6 +68,11 @@ void ObstacleTile::SetInitialPosition(const glm::vec3 pos)
 	initialPosition = pos;
 }
 
+void ObstacleTile::SetCallback(btGhostObject* ghostObject)
+{
+	ghostObject->setUserPointer(obstacleCallback);
+}
+
 void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t index)
 {
 	SetInitialPosition(pos);

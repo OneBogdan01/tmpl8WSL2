@@ -64,7 +64,7 @@ void Chunk::LoadTile(const size_t index, const char* path, const glm::vec3 pos)
 	tiles[index].Init(path, pos, index);
 	if (rbTiles[index] == nullptr)
 		rbTiles[index] = AddStaticRigidbody(path, pos, drawOffset);
-	tiles[index].SetRigidBody(rbTiles[index]);
+	tiles[index].SetUserPointer(rbTiles[index]);
 	activeTiles.push_back(index);
 	coinLow[index] = 1;
 }
