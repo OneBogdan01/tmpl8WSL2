@@ -115,12 +115,7 @@ void ChunkManager::Init()
 				{
 					coinPos.y += TILE_SIZE * 2;
 				}
-				//coins
-				/*chunk->LoadCoins(index, , position + coinPos);
 
-				position.y = 0;
-
-				chunk->LoadObstacles(index, , position);*/
 			}
 		}
 		chunk->LoadProps(tilePaths[COINS_INDEX].c_str(), tilePaths[OBSTACLE_INDEX].c_str());
@@ -158,7 +153,7 @@ void ChunkManager::Init()
 
 		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
 			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
-			chunk->SetPosition(chunkOff);
+			chunk->SetPosition(chunkOff-glm::vec3(0,0,3.0f));
 
 		}
 		else
@@ -191,7 +186,7 @@ void ChunkManager::Update(const float deltaTime)
 		//this chunk needs to be disabled graphics wise
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 		{
-			//2 is the amount of tiles behind the player
+		
 			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 1);
 
 
@@ -207,7 +202,6 @@ void ChunkManager::Update(const float deltaTime)
 		
 		chunk->Translate(newOffset);
 		//this chunk needs to be enabled physics wise
-
 		if (chunk->GetPosition().z > -3.0f)
 		{
 			chunk->UpdateRB();

@@ -93,7 +93,7 @@ void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 }
 void Chunk::ResetTiles()
 {
-	position.z = 0;
+	position.z = -3.0f;
 }
 
 void Chunk::SetMaterialProperties()
