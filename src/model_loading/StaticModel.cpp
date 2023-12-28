@@ -148,7 +148,7 @@ std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMateria
 			aiString str;
 			mat->GetTexture(type, i, &str);
 
-			cout << "Texture path: " << str.C_Str() + 4 << endl;
+			cout << "Texture path: " << str.C_Str() << endl;
 		}
 	}
 	vector<StaticMesh::MeshTexture> textures;

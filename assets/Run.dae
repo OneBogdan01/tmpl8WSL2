@@ -7,12 +7,12 @@
     </contributor>
     <created>2023-12-28T08:25:54Z</created>
     <modified>2023-12-28T08:25:54Z</modified>
-    <unit meter="0.010000"/>
+    <unit meter="0.010000"></unit>
     <up_axis>Y_UP</up_axis>
   </asset>
   <library_images>
     <image id="base_color_texture-image" name="base_color_texture">
-      <init_from>textures/Character_Texture.jpg</init_from>
+      <init_from>textures/diffuse.jpg</init_from>
     </image>
   </library_images>
   <library_materials>

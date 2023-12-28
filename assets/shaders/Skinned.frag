@@ -1,14 +1,10 @@
 #version 310 es
 precision  highp float;
 //from https://learnopengl.com/Lighting/Basic-Lighting
-const int MAX_POINT_LIGHTS = 2;
-const int MAX_SPOT_LIGHTS = 2;
 
 in vec2 TexCoord0;
 in vec3 Normal0;
-in vec3 LocalPos0;
-flat in ivec4 BoneIDs0;
-in vec4 Weights0;
+
 struct Material {
    sampler2D diffuse;
    highp vec3 specular;
@@ -17,11 +13,11 @@ struct Material {
   
 uniform Material material;
 struct Light {
-    highp vec3 position;
+    vec3 position;
   
-    highp vec3 ambient;
-    highp vec3 diffuse;
-    highp vec3 specular;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
 };
 
 uniform Light light; 
@@ -33,7 +29,7 @@ uniform highp vec3 lightPos;
 in highp vec3 FragPos; 
 
 uniform highp vec3 viewPos;
-uniform int gDisplayBoneIndex;
+
 void main()
 {    
     // ambient

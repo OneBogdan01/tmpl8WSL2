@@ -79,6 +79,8 @@ namespace Tmpl8
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
 		Shader* lightShader = nullptr;
+		Shader* animationShader = nullptr;
+
 		//Triangle triangle;
 		inline static Camera* camera = nullptr;
 		inline static World world;
