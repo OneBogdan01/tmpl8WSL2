@@ -44,6 +44,7 @@ private:
 	void ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
 	void loadModel(std::string path);
 	void processNode(aiNode* node, const aiScene* scene);
+	void SetVertexBoneDataToDefault(SkinnedMesh::Vertex& vertex);
 	SkinnedMesh processMesh(aiMesh* StaticMesh, const aiScene* scene);
 	std::vector<SkinnedMesh::MeshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 		std::string typeName);

@@ -5,11 +5,14 @@
 #include "KeyboardManager.h"
 #include "PlayerCharacter.h"
 #include "Triangle.h"
+#include "animator/Animation.h"
 #include "lighting/LightManager.h"
 #include "physics/World.h"
 #include "lighting/Sun.h"
 #include "md2_loader/Md2.h"
+#include "model_loading/SkinnedModel.h"
 #include "skybox/Skybox.h"
+#include <animator/Animator.h>
 class StaticModel;
 class Camera;
 class ChunkManager;
@@ -85,7 +88,9 @@ namespace Tmpl8
 		inline static Camera* camera = nullptr;
 		inline static World world;
 		inline static LightManager* lightManager = nullptr;
-
+		SkinnedModel* ourModel;
+		Animation* danceAnimation; 
+		Animator* animator; 
 		ChunkManager* tileLoader = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;

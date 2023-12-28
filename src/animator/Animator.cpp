@@ -1,9 +1,7 @@
 #include "Animator.h"
 
 #include "Animation.h"
-#include "Animation.h"
-#include "Animation.h"
-#include "Animation.h"
+
 
 Animator::Animator(Animation* animation) : m_DeltaTime(0)
 {
@@ -13,7 +11,7 @@ Animator::Animator(Animation* animation) : m_DeltaTime(0)
 	m_FinalBoneMatrices.reserve(100);
 
 	for (int i = 0; i < 100; i++)
-		m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
+		m_FinalBoneMatrices.emplace_back(1.0f);
 }
 
 void Animator::UpdateAnimation(float dt)

@@ -15,7 +15,7 @@ class Shader;
 class SkinnedMesh
 {
 public:
-#define MAX_BONE_INFLUENCE 10
+#define MAX_BONE_INFLUENCE 4
 
 	struct Vertex {
 		// position

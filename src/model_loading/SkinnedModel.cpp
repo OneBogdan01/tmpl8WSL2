@@ -30,11 +30,16 @@ std::vector<SkinnedMesh>& SkinnedModel::GetMeshes()
 
 void SkinnedModel::SetVertexBoneData(SkinnedMesh::Vertex& vertex, int boneID, float weight)
 {
-	for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+	for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 	{
-		vertex.m_BoneIDs[i] = -1;
-		vertex.m_Weights[i] = 0.0f;
+		if (vertex.m_BoneIDs[i] < 0)
+		{
+			vertex.m_Weights[i] = weight;
+			vertex.m_BoneIDs[i] = boneID;
+			break;
+		}
 	}
+
 }
 
 void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
@@ -70,17 +75,18 @@ void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>
 			assert(vertexId <= vertices.size());
 			SetVertexBoneData(vertices[vertexId], boneID, weight);
 		}
-}
+	}
 }
 
 void SkinnedModel::loadModel(string path)
 {
 #ifdef _WINDOWS
-	std::replace(path.begin(), path.end(), '/', '\\'); // Replace \ with 
+	//std::replace(path.begin(), path.end(), '/', '\\'); // Replace \ with 
 #endif
 
 	Assimp::Importer import;
-	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	//this line craches horribly
+	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -114,39 +120,34 @@ void SkinnedModel::processNode(aiNode* node, const aiScene* scene)
 		processNode(node->mChildren[i], scene);
 	}
 }
+void SkinnedModel::SetVertexBoneDataToDefault(SkinnedMesh::Vertex& vertex)
+{
+	for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+	{
+		vertex.m_BoneIDs[i] = -1;
+		vertex.m_Weights[i] = 0.0f;
+	}
+}
 
-SkinnedMesh SkinnedModel::processMesh(aiMesh* SkinnedMesh, const aiScene* scene)
+SkinnedMesh SkinnedModel::processMesh(aiMesh* mesh, const aiScene* scene)
 {
 	// data to fill
 	vector<SkinnedMesh::Vertex> vertices;
 	vector<unsigned int> indices;
 	vector<SkinnedMesh::MeshTexture> textures;
 
-	// walk through each of the SkinnedMesh's vertices
-	for (unsigned int i = 0; i < SkinnedMesh->mNumVertices; i++)
+	// walk through each of the mesh's vertices
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		SkinnedMesh::Vertex vertex;
-		glm::vec3 vector;
-		// we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-		// positions
-		vector.x = SkinnedMesh->mVertices[i].x;
-		vector.y = SkinnedMesh->mVertices[i].y;
-		vector.z = SkinnedMesh->mVertices[i].z;
-		vertex.Position = vector;
-		// normals
-		if (SkinnedMesh->HasNormals())
-		{
-			vector.x = SkinnedMesh->mNormals[i].x;
-			vector.y = SkinnedMesh->mNormals[i].y;
-			vector.z = SkinnedMesh->mNormals[i].z;
-			vertex.Normal = vector;
-		}
-		// MeshTexture coordinates
-		if (SkinnedMesh->mTextureCoords[0]) // does the SkinnedMesh contain texture coordinates?
+		SetVertexBoneDataToDefault(vertex);
+		vertex.Position = AssimpGLMHelpers::GetGLMVec(mesh->mVertices[i]);
+		vertex.Normal = AssimpGLMHelpers::GetGLMVec(mesh->mNormals[i]);
+		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
 		{
 			glm::vec2 vec;
-			vec.x = SkinnedMesh->mTextureCoords[0][i].x;
-			vec.y = SkinnedMesh->mTextureCoords[0][i].y;
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
 			vertex.TexCoords = vec;
 		}
 		else
@@ -155,10 +156,10 @@ SkinnedMesh SkinnedModel::processMesh(aiMesh* SkinnedMesh, const aiScene* scene)
 		vertices.push_back(vertex);
 	}
 
-	// now wak through each of the SkinnedMesh's faces (a face is a SkinnedMesh its triangle) and retrieve the corresponding vertex indices.
-	for (unsigned int i = 0; i < SkinnedMesh->mNumFaces; i++)
+	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
-		aiFace face = SkinnedMesh->mFaces[i];
+		aiFace face = mesh->mFaces[i];
 		// retrieve all indices of the face and store them in the indices vector
 		for (unsigned int j = 0; j < face.mNumIndices; j++)
 			indices.push_back(face.mIndices[j]);
@@ -166,12 +167,12 @@ SkinnedMesh SkinnedModel::processMesh(aiMesh* SkinnedMesh, const aiScene* scene)
 	if (noTextures)
 		return { vertices, indices, textures };
 	// process materials
-	aiMaterial* material = scene->mMaterials[SkinnedMesh->mMaterialIndex];
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 
-	if (SkinnedMesh->mMaterialIndex >= 0)
+	if (mesh->mMaterialIndex >= 0)
 	{
-		aiMaterial* material = scene->mMaterials[SkinnedMesh->mMaterialIndex];
+		material = scene->mMaterials[mesh->mMaterialIndex];
 		vector<SkinnedMesh::MeshTexture> diffuseMaps = loadMaterialTextures(material,
 			aiTextureType_DIFFUSE, "texture_diffuse");
 		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -179,8 +180,8 @@ SkinnedMesh SkinnedModel::processMesh(aiMesh* SkinnedMesh, const aiScene* scene)
 			aiTextureType_SPECULAR, "texture_specular");
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
-	// return a SkinnedMesh object created from the extracted SkinnedMesh data
-	ExtractBoneWeightForVertices(vertices, SkinnedMesh, scene);
+	// return a mesh object created from the extracted mesh data
+	ExtractBoneWeightForVertices(vertices, mesh, scene);
 	return { vertices, indices, textures };
 }
 
@@ -194,7 +195,7 @@ std::vector<SkinnedMesh::MeshTexture> SkinnedModel::loadMaterialTextures(aiMater
 			aiString str;
 			mat->GetTexture(type, i, &str);
 
-			cout << "Texture path: " << str.C_Str()<< endl;
+			cout << "Texture path: " << str.C_Str() << endl;
 		}
 	}
 	vector<SkinnedMesh::MeshTexture> textures;

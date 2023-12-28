@@ -34,12 +34,16 @@ glm::mat4 Game::view;
 glm::vec3 modelPos = glm::vec3(-5.0f, 0.0f, 0.0f);
 float scale = 5.0f;
 
-SkinnedModel ourModel("assets/dancing_vampire.dae");
-Animation danceAnimation("assets/dancing_vampire.dae", &ourModel);
-Animator animator(&danceAnimation);
+
 
 void Game::Init()
 {
+	//TODO delete this
+	ourModel = new SkinnedModel("assets/Run.dae");
+	danceAnimation=new Animation("assets/Run.dae", ourModel);
+	animator = new Animator(danceAnimation);
+
+
 	animationShader = new Shader("assets/shaders/Skinning.vert",
 		"assets/shaders/Skinning.frag");
 
@@ -274,9 +278,10 @@ void Game::Tick(float deltaTime)
 	animationShader->Bind();
 	animationShader->SetMat4x4("view", view);
 	animationShader->SetMat4x4("projection", perspective);
-	auto transforms = animator.GetFinalBoneMatrices();
+	auto transforms = animator->GetFinalBoneMatrices();
 	for (int i = 0; i < transforms.size(); ++i) {
 		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
+
 		animationShader->SetMat4x4(path.c_str(), transforms[i]);
 	}
 
@@ -286,7 +291,7 @@ void Game::Tick(float deltaTime)
 	model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f)); // translate it down so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(.5f, .5f, .5f));	// it's a bit too big for our scene, so scale it down
 	animationShader->SetMat4x4("model", model);
-	ourModel.Draw(*animationShader);
+	ourModel->Draw(*animationShader);
 	animationShader->Unbind(); 
 
 }

@@ -79,6 +79,15 @@ int Bone::GetScaleIndex(float animationTime) const
 	assert(0);
 }
 
+float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)
+{
+	float scaleFactor = 0.0f;
+	float midWayLength = animationTime - lastTimeStamp;
+	float framesDiff = nextTimeStamp - lastTimeStamp;
+	scaleFactor = midWayLength / framesDiff;
+	return scaleFactor;
+}
+
 glm::mat4 Bone::InterpolatePosition(float animationTime)
 {
 	if (1 == m_NumPositions)
