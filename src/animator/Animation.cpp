@@ -58,7 +58,8 @@ Bone* Animation::FindBone(const std::string& name)
 	assert(src);
 
 	dest.name = src->mName.data;
-	dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
+	//dest.transformation = AssimpGLMHelpers::ConvertMatrixToGLMFormat(src->mTransformation);
+	dest.transformation = glm::mat4(1.0f);
 	dest.childrenCount = src->mNumChildren;
 	dest.children.reserve(src->mNumChildren);
 	for (uint i = 0; i < src->mNumChildren; i++)

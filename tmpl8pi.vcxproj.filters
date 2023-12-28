@@ -448,6 +448,7 @@
     <Image Include="assets\skybox\pz.jpg" />
     <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\textures\diffuse.jpg" />
+    <Image Include="assets\textures\Vampire_diffuse.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="external\glm\detail\func_common.inl" />
@@ -730,6 +731,8 @@
     <None Include="assets\tiled\castle\wallpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallpainthalf.ob" />
     <None Include="assets\shaders\PhongLighting.frag" />
+    <None Include="assets\Run(2).dae" />
+    <None Include="assets\dancing_vampire.dae" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

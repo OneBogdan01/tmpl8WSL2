@@ -39,13 +39,13 @@ float scale = 5.0f;
 void Game::Init()
 {
 	//TODO delete this
-	ourModel = new SkinnedModel("assets/Run.dae");
-	danceAnimation=new Animation("assets/Run.dae", ourModel);
+	ourModel = new SkinnedModel("assets/dancing_vampire.dae");
+	danceAnimation = new Animation("assets/dancing_vampire.dae", ourModel);
 	animator = new Animator(danceAnimation);
 
 
-	animationShader = new Shader("assets/shaders/Skinning.vert",
-		"assets/shaders/Skinning.frag");
+	animationShader = new Shader("assets/shaders/Skinned.vert",
+		"assets/shaders/Skinned.frag");
 
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
@@ -60,8 +60,8 @@ void Game::Init()
 
 
 	/*simpleShader = new Shader(
-	    "assets/shaders/BasicVertexShader.vert",
-	    "assets/shaders/BasicFragmentShader.frag");*/
+		"assets/shaders/BasicVertexShader.vert",
+		"assets/shaders/BasicFragmentShader.frag");*/
 
 
 	modelShader = new Shader(
@@ -192,7 +192,7 @@ void Game::Tick(float deltaTime)
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-	            camera->GetPosition().z);
+		camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -200,7 +200,7 @@ void Game::Tick(float deltaTime)
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -218,9 +218,9 @@ void Game::Tick(float deltaTime)
 #else
 
 	//convert to byes
-	long long virtualMemUsed = virtualMemory::getValue()*1000;
+	long long virtualMemUsed = virtualMemory::getValue() * 1000;
 
-	long long physMemUsed = physicalMemory::getValue()*1000;
+	long long physMemUsed = physicalMemory::getValue() * 1000;
 
 
 #endif
@@ -249,8 +249,8 @@ void Game::Tick(float deltaTime)
 	camera->Update(deltaTime);
 
 	perspective = glm::perspective(glm::radians(fov),
-	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                               0.1f, 100.0f);
+		static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+		0.1f, 100.0f);
 
 	view = camera->GetViewMat();
 	lightManager->Draw();
@@ -260,7 +260,7 @@ void Game::Tick(float deltaTime)
 
 	player->Update(deltaTime);
 	player->FixedUpdate(deltaTime);
-	
+
 
 	tileLoader->DrawChunks();
 	player->Draw();
@@ -289,10 +289,9 @@ void Game::Tick(float deltaTime)
 	// render the loaded model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(.5f, .5f, .5f));	// it's a bit too big for our scene, so scale it down
+	model = glm::scale(model, glm::vec3(.2f));	// it's a bit too big for our scene, so scale it down
 	animationShader->SetMat4x4("model", model);
 	ourModel->Draw(*animationShader);
-	animationShader->Unbind(); 
 
 }
 

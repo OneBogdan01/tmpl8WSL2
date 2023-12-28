@@ -2,13 +2,12 @@
 
 #include "game.h"
 #include "template.h"
-#include "physics/DebugRenderer.h"
 
 
 SkinnedMesh::SkinnedMesh(std::vector<Vertex> vertices, std::vector<unsigned> indices,
 	std::vector<SkinnedMesh::MeshTexture> textures)
 {
-	this->vertices = vertices;
+	this->vertices = vertices; 
 	this->indices = indices;
 	this->textures = textures;
 

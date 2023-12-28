@@ -604,6 +604,7 @@
     <Image Include="assets\skybox\pz.jpg" />
     <Image Include="assets\spec.jpg" />
     <Image Include="assets\textures\diffuse.jpg" />
+    <Image Include="assets\textures\Vampire_diffuse.png" />
     <Image Include="assets\tiled\castle\Textures\barrel.png" />
     <Image Include="assets\tiled\castle\Textures\bricks.png" />
     <Image Include="assets\tiled\castle\Textures\fence.png" />
@@ -614,11 +615,13 @@
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\dancing_vampire.dae" />
     <None Include="assets\excalibur\alphaone.pcx" />
     <None Include="assets\excalibur\alphaone_i.pcx" />
     <None Include="assets\excalibur\tris.md2" />
     <None Include="assets\excalibur\weapon.md2" />
     <None Include="assets\excalibur\weapon.pcx" />
+    <None Include="assets\Run(2).dae" />
     <None Include="assets\Run.dae" />
     <None Include="assets\shaders\basic.frag" />
     <None Include="assets\shaders\basic.vert" />

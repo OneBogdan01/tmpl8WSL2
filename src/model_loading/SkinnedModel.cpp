@@ -44,38 +44,33 @@ void SkinnedModel::SetVertexBoneData(SkinnedMesh::Vertex& vertex, int boneID, fl
 
 void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 {
-	auto& boneInfoMap = m_BoneInfoMap;
-	int& boneCount = m_BoneCounter;
-
-	for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
-	{
+	for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 		int boneID = -1;
 		std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
-		if (boneInfoMap.find(boneName) == boneInfoMap.end())
-		{
+		if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end()) {
 			BoneInfo newBoneInfo;
-			newBoneInfo.id = boneCount;
+			newBoneInfo.id = m_BoneCounter;
 			newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
-			boneInfoMap[boneName] = newBoneInfo;
-			boneID = boneCount;
-			boneCount++;
+			m_BoneInfoMap[boneName] = newBoneInfo;
+			boneID = m_BoneCounter;
+			m_BoneCounter++;
 		}
-		else
-		{
-			boneID = boneInfoMap[boneName].id;
+		else {
+			boneID = m_BoneInfoMap[boneName].id;
 		}
 		assert(boneID != -1);
+
 		auto weights = mesh->mBones[boneIndex]->mWeights;
 		int numWeights = mesh->mBones[boneIndex]->mNumWeights;
 
-		for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
-		{
+		for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex) {
 			int vertexId = weights[weightIndex].mVertexId;
 			float weight = weights[weightIndex].mWeight;
 			assert(vertexId <= vertices.size());
 			SetVertexBoneData(vertices[vertexId], boneID, weight);
 		}
 	}
+
 }
 
 void SkinnedModel::loadModel(string path)
@@ -86,7 +81,7 @@ void SkinnedModel::loadModel(string path)
 
 	Assimp::Importer import;
 	//this line craches horribly
-	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
+	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
