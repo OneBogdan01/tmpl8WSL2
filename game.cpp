@@ -39,8 +39,8 @@ float scale = 5.0f;
 void Game::Init()
 {
 	//TODO delete this
-	ourModel = new SkinnedModel("assets/dancing_vampire.dae");
-	danceAnimation = new Animation("assets/dancing_vampire.dae", ourModel);
+	ourModel = new SkinnedModel("assets/Run.dae");
+	danceAnimation = new Animation("assets/Run.dae", ourModel);
 	animator = new Animator(danceAnimation);
 
 
@@ -289,7 +289,7 @@ void Game::Tick(float deltaTime)
 	// render the loaded model
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(.2f));	// it's a bit too big for our scene, so scale it down
+	model = glm::scale(model, glm::vec3(10.f));	// it's a bit too big for our scene, so scale it down
 	animationShader->SetMat4x4("model", model);
 	ourModel->Draw(*animationShader);
 

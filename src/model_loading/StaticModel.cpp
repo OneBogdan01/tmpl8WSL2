@@ -157,10 +157,7 @@ std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMateria
 		aiString str;
 
 		mat->GetTexture(type, i, &str);
-#ifdef _WINDOWS
-		//for some reason the string has 4 null characters before the path
-		str = str.C_Str() + 4;
-#endif
+
 
 		bool skip = false;
 

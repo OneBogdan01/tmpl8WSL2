@@ -95,8 +95,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp-vc143-mtd.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -139,8 +139,8 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp-vc143-mt.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -544,11 +544,6 @@
     <ClCompile Include="template\template.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="lib\assimp\lib64\assimp.dll">
-      <FileType>Document</FileType>
-      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
-      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
-    </CopyFileToFolders>
     <None Include="assets\excalibur\alphaone.pcx" />
     <None Include="assets\excalibur\alphaone_i.pcx" />
     <None Include="assets\excalibur\tris.md2" />

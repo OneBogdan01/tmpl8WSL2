@@ -419,9 +419,6 @@
     <None Include="assets\shaders\PhongLighting.frag" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="lib\assimp\lib64\assimp.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Image Include="assets\excalibur\alphaone.png" />
   </ItemGroup>
   <ItemGroup>
