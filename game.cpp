@@ -279,6 +279,7 @@ void Game::Tick(float deltaTime)
 	animationShader->SetMat4x4("view", view);
 	animationShader->SetMat4x4("projection", perspective);
 	auto transforms = animator->GetFinalBoneMatrices();
+	animator->UpdateAnimation(deltaTime);
 	for (int i = 0; i < transforms.size(); ++i) {
 		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
 

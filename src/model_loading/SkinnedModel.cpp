@@ -48,6 +48,7 @@ void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>
 		int boneID = -1;
 		std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
 		if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end()) {
+			cout << boneName << endl;
 			BoneInfo newBoneInfo;
 			newBoneInfo.id = m_BoneCounter;
 			newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);

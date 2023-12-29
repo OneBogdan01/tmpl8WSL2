@@ -11,7 +11,7 @@ uniform mat4 view;
 uniform mat4 model;
 
 const int MAX_BONES = 100;
-const int MAX_BONE_INFLUENCE = 6;
+const int MAX_BONE_INFLUENCE = 4;
 uniform mat4 finalBonesMatrices[MAX_BONES];
 
 out vec3 Normal;
