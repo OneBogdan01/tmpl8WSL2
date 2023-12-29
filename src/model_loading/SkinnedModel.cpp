@@ -75,9 +75,7 @@ void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>
 
 void SkinnedModel::loadModel(string path)
 {
-#ifdef _WINDOWS
-	//std::replace(path.begin(), path.end(), '/', '\\'); // Replace \ with 
-#endif
+
 	//from Sven
 	Assimp::Importer import;
 	unsigned int assimp_read_flag = aiProcess_Triangulate | aiProcess_FlipUVs;
@@ -92,14 +90,11 @@ import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 		cout << "ERROR::ASSIMP::" << import.GetErrorString() << endl;
 		return;
 	}
-#ifdef _WINDOWS
-	directory = path.substr(0, path.find_last_of('\\'));
 
-#else
 
 
 	directory = path.substr(0, path.find_last_of('/'));
-#endif
+
 
 	processNode(scene->mRootNode, scene);
 }
@@ -203,10 +198,7 @@ std::vector<SkinnedMesh::MeshTexture> SkinnedModel::loadMaterialTextures(aiMater
 		aiString str;
 
 		mat->GetTexture(type, i, &str);
-#ifdef _WINDOWS
-		//for some reason the string has 4 null characters before the path
-		str = str.C_Str() + 4;
-#endif
+
 
 		bool skip = false;
 
