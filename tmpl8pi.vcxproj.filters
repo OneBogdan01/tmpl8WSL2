@@ -40,9 +40,6 @@
     <ClCompile Include="src\tiles\Tile.cpp" />
     <ClCompile Include="template\surface.cpp" />
     <ClCompile Include="template\sprite.cpp" />
-    <ClCompile Include="src\md2_loader\Md2.cpp" />
-    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
-    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\PlayerCharacter.cpp" />
@@ -374,9 +371,6 @@
     <ClInclude Include="src\tiles\Tile.h" />
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="template\sprite.h" />
-    <ClInclude Include="src\md2_loader\Md2.h" />
-    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
-    <ClInclude Include="src\md2_loader\Texture2D.h" />
     <ClInclude Include="external\Imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="external\Imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="external\Imgui\imgui_internal.h" />
@@ -424,7 +418,6 @@
       <Filter>assets</Filter>
     </Image>
     <Image Include="assets\wall.jpg" />
-    <Image Include="assets\awesomeface.png" />
     <Image Include="assets\tiled\castle\Textures\barrel.png" />
     <Image Include="assets\tiled\castle\Textures\bricks.png" />
     <Image Include="assets\tiled\castle\Textures\fence.png" />
@@ -723,7 +716,6 @@
     <None Include="assets\tiled\castle\wallpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallpainthalf.ob" />
     <None Include="assets\shaders\PhongLighting.frag" />
-    <None Include="assets\dancing_vampire.dae" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

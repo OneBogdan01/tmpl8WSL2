@@ -11,8 +11,8 @@ struct Material {
     vec3 direction;
   
 //we add this in the baking phase
-//    vec3 ambient;
-//    vec3 diffuse;
+    vec3 ambient;
+    vec3 diffuse;
     vec3 specular;
 };  
 uniform DirLight dirLight;
@@ -79,11 +79,10 @@ void main()
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
 
-    vec3 textureColor = texture(material.diffuse, TexCoords).xyz;
  
 
     
-    FragColor = vec4(textureColor, 1.0);
+    FragColor = vec4(result, 1.0);
 }
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
@@ -112,13 +111,13 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(-light.direction);
     // diffuse shading
-    // float diff = max(dot(normal, lightDir), 0.0);
+     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     // combine results
-    // vec3 ambient  = light.ambient  * vec3(texture(material.diffuse, TexCoords));
-    // vec3 diffuse  = light.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));
+     vec3 ambient  = light.ambient  * vec3(texture(material.diffuse, TexCoords));
+     vec3 diffuse  = light.diffuse  * diff * vec3(texture(material.diffuse, TexCoords));
     vec3 specular = light.specular * spec * texture(material.diffuse, TexCoords).r;
-    return (specular);
+    return (ambient+diffuse+specular);
 }  

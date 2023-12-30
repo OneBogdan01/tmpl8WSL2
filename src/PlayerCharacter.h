@@ -2,7 +2,6 @@
 
 #include "BulletWrapper.h"
 
-#include "md2_loader/Md2.h"
 
 
 #include "Timer.h"
@@ -40,7 +39,6 @@ public:
 	VoidEvent& GetEvent();
 
 private:
-	//md2model::Md2 model = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 	btPairCachingGhostObject* playerCharacterGhost = nullptr;
 	btKinematicCharacterController* characterController;
 

@@ -9,7 +9,6 @@
 #include "lighting/LightManager.h"
 #include "physics/World.h"
 #include "lighting/Sun.h"
-#include "md2_loader/Md2.h"
 #include "model_loading/SkinnedModel.h"
 #include "skybox/Skybox.h"
 #include <animator/Animator.h>

@@ -194,9 +194,6 @@
     <ClCompile Include="src\physics\DebugRenderer.cpp" />
     <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
-    <ClCompile Include="src\md2_loader\Md2.cpp" />
-    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
-    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
@@ -534,9 +531,6 @@
     <ClInclude Include="src\physics\DebugRenderer.h" />
     <ClInclude Include="src\KeyboardManager.h" />
     <ClInclude Include="src\lighting\Sun.h" />
-    <ClInclude Include="src\md2_loader\Md2.h" />
-    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
-    <ClInclude Include="src\md2_loader\Texture2D.h" />
     <ClInclude Include="src\model_loading\SkinnedMesh.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
@@ -585,7 +579,6 @@
     <ClInclude Include="template\surface.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\awesomeface.png" />
     <Image Include="assets\excalibur\alphaone.png" />
     <Image Include="assets\font.png" />
     <Image Include="assets\skybox\nx.jpg" />
@@ -607,7 +600,6 @@
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\dancing_vampire.dae" />
     <None Include="assets\excalibur\alphaone.pcx" />
     <None Include="assets\excalibur\alphaone_i.pcx" />
     <None Include="assets\excalibur\tris.md2" />

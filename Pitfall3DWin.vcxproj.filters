@@ -6,9 +6,6 @@
     <ClInclude Include="template\stb_image.h" />
     <ClInclude Include="template\surface.h" />
     <ClInclude Include="src\lighting\Sun.h" />
-    <ClInclude Include="src\md2_loader\Md2.h" />
-    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
-    <ClInclude Include="src\md2_loader\Texture2D.h" />
     <ClInclude Include="src\model_loading\SkinnedMesh.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
@@ -341,9 +338,6 @@
     <ClCompile Include="template\sprite.cpp" />
     <ClCompile Include="template\surface.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
-    <ClCompile Include="src\md2_loader\Md2.cpp" />
-    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
-    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
     <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
@@ -402,18 +396,7 @@
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
     <None Include="assets\shaders\Sun.frag" />
-    <None Include="assets\excalibur\alphaone.pcx" />
-    <None Include="assets\excalibur\alphaone_i.pcx" />
-    <None Include="assets\excalibur\tris.md2" />
-    <None Include="assets\excalibur\weapon.md2" />
-    <None Include="assets\excalibur\weapon.pcx" />
     <None Include="assets\shaders\DebugFrag.frag" />
     <None Include="assets\shaders\PhongLighting.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\excalibur\alphaone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
 </Project>

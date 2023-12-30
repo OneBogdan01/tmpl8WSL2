@@ -31,11 +31,25 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 
 	playerModel = new SkinnedModel("assets/Run.dae");
+
+	playerModel->SetUpMeshes();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
 		"assets/shaders/Skinned.frag");
+	animationShader->Bind();
+
+	animationShader->SetVec3("material.specular", glm::vec3(0.5f));
+	animationShader->SetVec3("dirLight.ambient", glm::vec3(0.0f));
+	animationShader->SetVec3("dirLight.direction", Game::lightManager->GetSunDir());
+	animationShader->SetVec3("dirLight.diffuse", glm::vec3(1.0f, 0.71f, 0.75f));
+	animationShader->SetFloat("material.shininess", 32.0f);
+	animationShader->Unbind();
+
+
+
+
 	runAnimation = new Animation("assets/Run.dae", playerModel);
 	animator = new Animator(runAnimation);
-
+	Game::lightManager->SetLightProperties(*animationShader);
 
 	//create collision shape
 
