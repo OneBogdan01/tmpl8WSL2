@@ -19,33 +19,9 @@
 glm::mat4 Game::perspective;
 glm::mat4 Game::view;
 
-//glm::vec3 cubePositions[] = {
-//	glm::vec3(0.0f, 5.5f, 0.0f),
-//	glm::vec3(2.0f, 5.0f, -15.0f),
-//	glm::vec3(-1.5f, -2.2f, -2.5f),
-//	glm::vec3(-3.8f, -2.0f, -12.3f),
-//	glm::vec3(2.4f, -0.4f, -3.5f),
-//	glm::vec3(-1.7f, 3.0f, -7.5f),
-//	glm::vec3(1.3f, -2.0f, -2.5f),
-//	glm::vec3(1.5f, 2.0f, -2.5f),
-//	glm::vec3(1.5f, 0.2f, -1.5f),
-//	glm::vec3(-1.3f, 1.0f, -1.5f)
-//};
-glm::vec3 modelPos = glm::vec3(-5.0f, 0.0f, 0.0f);
-float scale = 5.0f;
-
-
-
 void Game::Init()
 {
-	//TODO delete this
-	ourModel = new SkinnedModel("assets/Run.dae");
-	danceAnimation = new Animation("assets/Run.dae", ourModel);
-	animator = new Animator(danceAnimation);
 
-
-	animationShader = new Shader("assets/shaders/Skinned.vert",
-		"assets/shaders/Skinned.frag");
 
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
@@ -58,10 +34,6 @@ void Game::Init()
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init();
 
-
-	/*simpleShader = new Shader(
-		"assets/shaders/BasicVertexShader.vert",
-		"assets/shaders/BasicFragmentShader.frag");*/
 
 
 	modelShader = new Shader(
@@ -87,7 +59,7 @@ void Game::Init()
 float mixing = .2f;
 
 glm::vec3 position = glm::vec3(0);
-float fov = 40;
+float fov = 45;
 float yOffset = 0;
 
 glm::vec2 rotateCam = glm::vec2(0);
@@ -275,24 +247,7 @@ void Game::Tick(float deltaTime)
 #ifdef __DEBUG__
 	world.RenderDebug();
 #endif
-	animationShader->Bind();
-	animationShader->SetMat4x4("view", view);
-	animationShader->SetMat4x4("projection", perspective);
-	auto transforms = animator->GetFinalBoneMatrices();
-	animator->UpdateAnimation(deltaTime);
-	for (int i = 0; i < transforms.size(); ++i) {
-		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
-
-		animationShader->SetMat4x4(path.c_str(), transforms[i]);
-	}
-
-
-	// render the loaded model
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, -0.4f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(10.f));	// it's a bit too big for our scene, so scale it down
-	animationShader->SetMat4x4("model", model);
-	ourModel->Draw(*animationShader);
+	
 
 }
 

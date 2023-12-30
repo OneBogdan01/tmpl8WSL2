@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Chunk.h"
-#include "model_loading/ogldev_types.h"
+#include "template.h"
 
 constexpr float TILE_SIZE = 5.0f;
 constexpr float OFFSET_TILE_MULTIPLIER = -1.1f;

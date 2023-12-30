@@ -82,15 +82,12 @@ namespace Tmpl8
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
 		Shader* lightShader = nullptr;
-		Shader* animationShader = nullptr;
 
 		//Triangle triangle;
 		inline static Camera* camera = nullptr;
 		inline static World world;
 		inline static LightManager* lightManager = nullptr;
-		SkinnedModel* ourModel;
-		Animation* danceAnimation; 
-		Animator* animator; 
+
 		ChunkManager* tileLoader = nullptr;
 		Sun sun;
 		Shader* modelShader = nullptr;

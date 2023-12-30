@@ -197,8 +197,6 @@
     <ClCompile Include="src\md2_loader\Md2.cpp" />
     <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
     <ClCompile Include="src\md2_loader\Texture2D.cpp" />
-    <ClCompile Include="src\model_loading\math_3d.cpp" />
-    <ClCompile Include="src\model_loading\ogldev_util.cpp" />
     <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
@@ -539,12 +537,6 @@
     <ClInclude Include="src\md2_loader\Md2.h" />
     <ClInclude Include="src\md2_loader\ShaderProgram.h" />
     <ClInclude Include="src\md2_loader\Texture2D.h" />
-    <ClInclude Include="src\model_loading\ogldev_engine_common.h" />
-    <ClInclude Include="src\model_loading\ogldev_material.h" />
-    <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
-    <ClInclude Include="src\model_loading\ogldev_types.h" />
-    <ClInclude Include="src\model_loading\ogldev_util.h" />
-    <ClInclude Include="src\model_loading\ogldev_world_transform.h" />
     <ClInclude Include="src\model_loading\SkinnedMesh.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />

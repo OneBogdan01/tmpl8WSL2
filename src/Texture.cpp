@@ -2,7 +2,6 @@
 
 
 
-#include "model_loading/ogldev_util.h"
 
 Texture::Texture(Surface* texture): textureTarget(0)
 {
@@ -56,7 +55,7 @@ void Texture::Init(const char* filePath)
 		break;
 
 	default:
-		NOT_IMPLEMENTED;
+		break;
 	}
 	glGenerateMipmap(textureTarget);
 

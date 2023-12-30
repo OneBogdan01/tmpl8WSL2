@@ -1,5 +1,7 @@
 ﻿#include "PointLight.h"
 
+#include <string>
+
 
 #include "template.h"
 

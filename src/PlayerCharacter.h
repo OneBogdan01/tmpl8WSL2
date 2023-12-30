@@ -12,6 +12,8 @@
 
 //must be at the end to avoid linker errors
 #include "EventArgs.h"
+#include "animator/Animation.h"
+#include "animator/Animator.h"
 
 class KeyboardManager;
 
@@ -41,19 +43,15 @@ private:
 	//md2model::Md2 model = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
 	btPairCachingGhostObject* playerCharacterGhost = nullptr;
 	btKinematicCharacterController* characterController;
-	SkinnedMesh* playerModel = nullptr;
-	Shader* shader = nullptr;
+
+	Shader* animationShader = nullptr;
+
 	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);
 	float speed = 20.0f;
 	float jumpSpeed = 13.0f;
 	int displayIndex = 32;
 	Timer timer;
-#ifdef _WINDOWS
-	md2model::Md2 player = md2model::Md2("assets\\excalibur\\tris.md2", "assets\\excalibur\\alphaone.png");
-#else
-	md2model::Md2 player = md2model::Md2("assets/excalibur/tris.md2", "assets/excalibur/alphaone.png");
-#endif
 
 	//GLuint m_boneLocation[MAX_BONES];
 	const int startFrame = 0;
@@ -62,7 +60,7 @@ private:
 	// Rendering loop
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
-	PlayerCollisions* playerCallback =nullptr;
+	PlayerCollisions* playerCallback = nullptr;
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;
@@ -73,4 +71,7 @@ private:
 
 	//voidEvent
 	VoidEvent onDeath;
+	SkinnedModel* playerModel;
+	Animation* runAnimation;
+	Animator* animator;
 };
