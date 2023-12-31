@@ -109,7 +109,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 //diffuse and ambient already calculated on bake
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
-    vec3 lightDir = normalize(-light.direction);
+    vec3 lightDir = normalize(light.direction);
     // diffuse shading
      float diff = max(dot(normal, lightDir), 0.0);
     // specular shading

@@ -332,6 +332,9 @@
     <ClInclude Include="src\animator\Animator.h" />
     <ClInclude Include="src\animator\Bone.h" />
     <ClInclude Include="src\BoneInfo.h" />
+    <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
+    <ClInclude Include="src\model_loading\ogldev_types.h" />
+    <ClInclude Include="src\model_loading\ogldev_util.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -380,13 +383,10 @@
     <ClCompile Include="src\animator\Animation.cpp" />
     <ClCompile Include="src\animator\Animator.cpp" />
     <ClCompile Include="src\animator\Bone.cpp" />
+    <ClCompile Include="src\model_loading\ogldev_util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\basic.frag" />
-    <None Include="assets\shaders\basic.vert" />
-    <None Include="assets\shaders\BasicFragmentShader.frag" />
     <None Include="assets\shaders\BasicVertexShader.vert" />
-    <None Include="assets\shaders\compute.comp" />
     <None Include="assets\shaders\DebugVert.vert" />
     <None Include="assets\shaders\ModelLoading.frag" />
     <None Include="assets\shaders\ModelLoading.vert" />
@@ -395,8 +395,6 @@
     <None Include="assets\shaders\Skybox.frag" />
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
-    <None Include="assets\shaders\Sun.frag" />
     <None Include="assets\shaders\DebugFrag.frag" />
-    <None Include="assets\shaders\PhongLighting.frag" />
   </ItemGroup>
 </Project>

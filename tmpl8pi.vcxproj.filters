@@ -582,11 +582,7 @@
     <None Include="assets\excalibur\weapon.pcx" />
     <None Include="assets\excalibur\alphaone.pcx" />
     <None Include="assets\Run.dae" />
-    <None Include="assets\shaders\basic.frag" />
-    <None Include="assets\shaders\basic.vert" />
-    <None Include="assets\shaders\BasicFragmentShader.frag" />
     <None Include="assets\shaders\BasicVertexShader.vert" />
-    <None Include="assets\shaders\compute.comp" />
     <None Include="assets\shaders\DebugVert.vert" />
     <None Include="assets\shaders\ModelLoading.frag" />
     <None Include="assets\shaders\ModelLoading.vert" />
@@ -595,7 +591,6 @@
     <None Include="assets\shaders\Skybox.frag" />
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
-    <None Include="assets\shaders\Sun.frag" />
     <None Include="assets\tiled\map1.tmx" />
     <None Include="assets\tiled\map2.tmx" />
     <None Include="assets\tiled\map3.tmx" />
@@ -715,7 +710,6 @@
     <None Include="assets\tiled\castle\wallpaintgate.ob" />
     <None Include="assets\tiled\castle\wallpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallpainthalf.ob" />
-    <None Include="assets\shaders\PhongLighting.frag" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

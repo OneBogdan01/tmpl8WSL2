@@ -9,7 +9,7 @@
 #endif
 #include <glm/mat4x4.hpp>
 
-
+#include "model_loading/ogldev_math_3d.h"
 
 
 // OpenGL texture wrapper
@@ -51,9 +51,11 @@ public:
 	void SetInputMatrix(const char* name, const glm::mat4& matrix);
 	void SetFloat(const char* name, const float v);
 	void SetMat4x4(const char* name, const glm::mat4& v) const;
+	void SetMat4x4Transpose(const Matrix4f& v, uint boneLocation) const;
 	void SetFloat3(const char* name, float v1, float v2, float v3);
 	void SetInt(const char* name, const int v);
 	void SetUInt(const char* name, const uint v);
+	GLint GetUniformLocation(const char* name);
 	void Unbind();
 	void SetVec3(const char* name, const glm::vec3 v);
 	uint ID = 0; // shader program identifier
