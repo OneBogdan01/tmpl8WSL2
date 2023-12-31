@@ -3,7 +3,10 @@
 #include "BulletWrapper.h"
 
 
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
+#include "template.h"
 #include "Timer.h"
 #include "model_loading/SkinnedMesh.h"
 
