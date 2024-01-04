@@ -78,13 +78,13 @@ void SkinnedModel::loadModel(string path)
 {
 
 	//from Sven
+//	Assimp::Importer import;
+//	unsigned int assimp_read_flag = aiProcess_Triangulate | aiProcess_FlipUVs;
+//import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+//	const aiScene* scene = import.ReadFile(path, assimp_read_flag);
 	Assimp::Importer import;
-	unsigned int assimp_read_flag = aiProcess_Triangulate | aiProcess_FlipUVs;
-import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-	const aiScene* scene = import.ReadFile(path, assimp_read_flag);
-	//Assimp::Importer import;
-	////this line craches horribly
-	//const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+	//this line craches horribly
+	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
