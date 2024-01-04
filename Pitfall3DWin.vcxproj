@@ -68,6 +68,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>$(ProjectName)_debug</TargetName>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -95,8 +98,8 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;assimp-vc143-mtd.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -139,8 +142,8 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib64</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib/glfw/lib/$(Platform)/$(Configuration);lib/zlib;lib/OpenCL/lib/$(Platform)/$(Configuration);lib\Audio\lib\$(Platform)\$(Configuration)\;lib\Bullet\lib;lib\assimp\lib\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Audio.lib;winmm.lib;advapi32.lib;user32.lib;glfw3_mt.lib;gdi32.lib;shell32.lib;OpenCL.lib;opengl32.lib;libz-static.lib;Ole32.lib;Cfgmgr32.lib;BulletCollision_vs2010_x64_release.lib;BulletSoftBody_vs2010_x64_release.lib;BulletDynamics_vs2010_x64_release.lib;LinearMath_vs2010_x64_release.lib;assimp-vc143-mt.lib</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -434,23 +437,22 @@
     <ClInclude Include="external\Imgui\imstb_truetype.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="lib\glad\glad.h" />
+    <ClInclude Include="src\animator\Animation.h" />
+    <ClInclude Include="src\animator\Animator.h" />
+    <ClInclude Include="src\animator\Bone.h" />
+    <ClInclude Include="src\BoneInfo.h" />
     <ClInclude Include="src\BulletWrapper.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\lighting\LightManager.h" />
     <ClInclude Include="src\lighting\PointLight.h" />
+    <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
+    <ClInclude Include="src\model_loading\ogldev_types.h" />
+    <ClInclude Include="src\model_loading\ogldev_util.h" />
+    <ClInclude Include="src\model_loading\SkinnedModel.h" />
     <ClInclude Include="src\physics\CoinTrigger.h" />
     <ClInclude Include="src\physics\GroundCollision.h" />
     <ClInclude Include="src\KeyboardManager.h" />
     <ClInclude Include="src\lighting\Sun.h" />
-    <ClInclude Include="src\md2_loader\Md2.h" />
-    <ClInclude Include="src\md2_loader\ShaderProgram.h" />
-    <ClInclude Include="src\md2_loader\Texture2D.h" />
-    <ClInclude Include="src\model_loading\ogldev_engine_common.h" />
-    <ClInclude Include="src\model_loading\ogldev_material.h" />
-    <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
-    <ClInclude Include="src\model_loading\ogldev_types.h" />
-    <ClInclude Include="src\model_loading\ogldev_util.h" />
-    <ClInclude Include="src\model_loading\ogldev_world_transform.h" />
     <ClInclude Include="src\model_loading\SkinnedMesh.h" />
     <ClInclude Include="src\model_loading\StaticMesh.h" />
     <ClInclude Include="src\model_loading\StaticModel.h" />
@@ -494,19 +496,19 @@
     <ClCompile Include="external\Imgui\imgui_tables.cpp" />
     <ClCompile Include="external\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="src\animator\Animation.cpp" />
+    <ClCompile Include="src\animator\Animator.cpp" />
+    <ClCompile Include="src\animator\Bone.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\lighting\LightManager.cpp" />
     <ClCompile Include="src\lighting\PointLight.cpp" />
+    <ClCompile Include="src\model_loading\ogldev_util.cpp" />
+    <ClCompile Include="src\model_loading\SkinnedModel.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
     <ClCompile Include="src\physics\GroundCollision.cpp" />
     <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
-    <ClCompile Include="src\md2_loader\Md2.cpp" />
-    <ClCompile Include="src\md2_loader\ShaderProgram.cpp" />
-    <ClCompile Include="src\md2_loader\Texture2D.cpp" />
-    <ClCompile Include="src\model_loading\math_3d.cpp" />
-    <ClCompile Include="src\model_loading\ogldev_util.cpp" />
     <ClCompile Include="src\model_loading\SkinnedMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticMesh.cpp" />
     <ClCompile Include="src\model_loading\StaticModel.cpp" />
@@ -535,38 +537,16 @@
     <ClCompile Include="template\template.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="lib\assimp\lib64\assimp.dll">
-      <FileType>Document</FileType>
-      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
-      <RootFolder Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\Windows\\$(Platform)\$(Configuration)\</RootFolder>
-    </CopyFileToFolders>
-    <None Include="assets\excalibur\alphaone.pcx" />
-    <None Include="assets\excalibur\alphaone_i.pcx" />
-    <None Include="assets\excalibur\tris.md2" />
-    <None Include="assets\excalibur\weapon.md2" />
-    <None Include="assets\excalibur\weapon.pcx" />
-    <None Include="assets\shaders\basic.frag" />
-    <None Include="assets\shaders\basic.vert" />
-    <None Include="assets\shaders\BasicFragmentShader.frag" />
     <None Include="assets\shaders\BasicVertexShader.vert" />
-    <None Include="assets\shaders\compute.comp" />
     <None Include="assets\shaders\DebugFrag.frag" />
     <None Include="assets\shaders\DebugVert.vert" />
     <None Include="assets\shaders\ModelLoading.frag" />
     <None Include="assets\shaders\ModelLoading.vert" />
-    <None Include="assets\shaders\PhongLighting.frag" />
     <None Include="assets\shaders\Skinned.frag" />
     <None Include="assets\shaders\Skinned.vert" />
     <None Include="assets\shaders\Skybox.frag" />
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
-    <None Include="assets\shaders\Sun.frag" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="assets\excalibur\alphaone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="assets\excalibur\vf19excalibur.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

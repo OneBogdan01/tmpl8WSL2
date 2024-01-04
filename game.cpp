@@ -9,6 +9,9 @@
 #include "imgui.h"
 #include "tiles/ModelTileFactory.h"
 #include "utilities/RandomNumberGenerator.h"
+#include <model_loading/SkinnedModel.h>
+#include <animator/Animation.h>
+#include <animator/Animator.h>
 
 // -----------------------------------------------------------
 // Initialize the application
@@ -16,24 +19,10 @@
 glm::mat4 Game::perspective;
 glm::mat4 Game::view;
 
-//glm::vec3 cubePositions[] = {
-//	glm::vec3(0.0f, 5.5f, 0.0f),
-//	glm::vec3(2.0f, 5.0f, -15.0f),
-//	glm::vec3(-1.5f, -2.2f, -2.5f),
-//	glm::vec3(-3.8f, -2.0f, -12.3f),
-//	glm::vec3(2.4f, -0.4f, -3.5f),
-//	glm::vec3(-1.7f, 3.0f, -7.5f),
-//	glm::vec3(1.3f, -2.0f, -2.5f),
-//	glm::vec3(1.5f, 2.0f, -2.5f),
-//	glm::vec3(1.5f, 0.2f, -1.5f),
-//	glm::vec3(-1.3f, 1.0f, -1.5f)
-//};
-glm::vec3 modelPos = glm::vec3(-5.0f, 0.0f, 0.0f);
-float scale = 5.0f;
-
-
 void Game::Init()
 {
+
+
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
 		"assets/shaders/SolidColor.frag");
@@ -45,10 +34,6 @@ void Game::Init()
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init();
 
-
-	/*simpleShader = new Shader(
-	    "assets/shaders/BasicVertexShader.vert",
-	    "assets/shaders/BasicFragmentShader.frag");*/
 
 
 	modelShader = new Shader(
@@ -74,7 +59,7 @@ void Game::Init()
 float mixing = .2f;
 
 glm::vec3 position = glm::vec3(0);
-float fov = 40;
+float fov = 45;
 float yOffset = 0;
 
 glm::vec2 rotateCam = glm::vec2(0);
@@ -179,7 +164,7 @@ void Game::Tick(float deltaTime)
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-	            camera->GetPosition().z);
+		camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -187,7 +172,7 @@ void Game::Tick(float deltaTime)
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -205,9 +190,9 @@ void Game::Tick(float deltaTime)
 #else
 
 	//convert to byes
-	long long virtualMemUsed = virtualMemory::getValue()*1000;
+	long long virtualMemUsed = virtualMemory::getValue() * 1000;
 
-	long long physMemUsed = physicalMemory::getValue()*1000;
+	long long physMemUsed = physicalMemory::getValue() * 1000;
 
 
 #endif
@@ -236,8 +221,8 @@ void Game::Tick(float deltaTime)
 	camera->Update(deltaTime);
 
 	perspective = glm::perspective(glm::radians(fov),
-	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                               0.1f, 100.0f);
+		static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+		0.1f, 100.0f);
 
 	view = camera->GetViewMat();
 	lightManager->Draw();
@@ -247,7 +232,7 @@ void Game::Tick(float deltaTime)
 
 	player->Update(deltaTime);
 	player->FixedUpdate(deltaTime);
-	
+
 
 	tileLoader->DrawChunks();
 	player->Draw();
@@ -262,6 +247,8 @@ void Game::Tick(float deltaTime)
 #ifdef __DEBUG__
 	world.RenderDebug();
 #endif
+	
+
 }
 
 void Game::Shutdown()

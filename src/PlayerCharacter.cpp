@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "game.h"
+#include "glm/gtx/rotate_vector.hpp"
 #include "model_loading/StaticModel.h"
 #include "physics/GameValues.h"
 #include "tiles/Chunk.h"
@@ -26,25 +27,37 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 {
 	onDeath.connect(&PlayerCharacter::Die, this);
 	inputManager = &Game::GetInputManager();
-	playerCallback = new PlayerCollisions(GameObject::Player,&onDeath);
+	playerCallback = new PlayerCollisions(GameObject::Player, &onDeath);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 
-	//get the mesh info
-	//playerModel = new SkinnedMesh();
-	//playerModel->LoadMesh("assets/Run.dae");
-	//debug
-	/*UtilityAssimp util;
-	util.PrintMeshInformation("assets/Run.dae");*/
+	playerModel = new SkinnedModel("assets/Run.dae");
+
+	playerModel->SetUpMeshes();
+	animationShader = new Shader("assets/shaders/Skinned.vert",
+		"assets/shaders/Skinned.frag");
+	
+
+
+
+	runAnimation = new Animation("assets/Run.dae", playerModel);
+	animator = new Animator(runAnimation);
+	Game::lightManager->SetLightProperties(*animationShader);
+	animationShader->Bind();
+
+	animationShader->SetVec3("material.specular", glm::vec3(0.5f));
+	animationShader->SetVec3("dirLight.ambient", glm::vec3(0.1f));
+	animationShader->SetVec3("dirLight.diffuse", glm::vec3(1.0f, 0.71f, 0.75f));
+	animationShader->SetFloat("material.shininess", 64.0f);
+	animationShader->Unbind();
+
 	//create collision shape
-#ifdef _WINDOWS
-	StaticModel staticPlayerMode("assets\\excalibur\\tris.md2", true);
 
-#else
-	StaticModel staticPlayerMode("assets/excalibur/tris.md2", true);
+	StaticModel staticPlayerMode("assets/Run.dae", true);
 
-#endif
 
-	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 0.08f);
+
+
+	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 1.5f);
 	// Create a ghost object for collision detection
 	playerCharacterGhost = new btPairCachingGhostObject();
 	playerCharacterGhost->setCollisionShape(collider);
@@ -65,21 +78,24 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	characterController->setMaxSlope(btScalar(0.0f));
 	//characterController->setStepHeight(btScalar(0.0f));
 	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-	                                  btBroadphaseProxy::AllFilter);
+		btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
 	characterController->setMaxJumpHeight(3.0f);
 	///set them sometime
 	characterController->setFallSpeed(50.0f);
 	characterController->setJumpSpeed(40.0f);
-	
+
 
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
 }
 
 PlayerCharacter::~PlayerCharacter()
 {
-	delete shader;
+	delete	animator;
+	delete runAnimation;
+	delete playerModel;
+	delete animationShader;
 }
 
 
@@ -95,15 +111,29 @@ void PlayerCharacter::CheckForFall()
 
 void PlayerCharacter::Draw()
 {
-	Camera& cam = Game::GetCamera();
-	const glm::vec3 camPos = Game::GetCameraPosition();
+	glm::mat4 posMat = GetModelMatrix();
+	position = glm::vec3(posMat[3]);
 
-	glm::mat4 model = GetModelMatrix();
-	position = glm::vec3(model[3]);
-	CheckForFall();
+	animationShader->Bind();
+	animationShader->SetMat4x4("view", Game::camera->GetViewMat());
+	animationShader->SetMat4x4("projection", Game::camera->GetProjectionMat());
+	auto transforms = animator->GetFinalBoneMatrices();
+	for (int i = 0; i < transforms.size(); ++i) {
+		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
 
-	player.SetPosition(position);
-	player.Draw(renderFrame, 0, interpolation, Game::camera->GetViewMat(), Game::camera->GetProjectionMat());
+		animationShader->SetMat4x4(path.c_str(), transforms[i]);
+	}
+
+
+	// render the loaded model
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, position - glm::vec3(0, 1.5f, 0)); // translate it down so it's at the center of the scene
+	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::scale(model, glm::vec3(3.f));	// it's a bit too big for our scene, so scale it down
+	animationShader->SetMat4x4("model", model);
+	playerModel->Draw(*animationShader);
+
+
 }
 
 
@@ -114,7 +144,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{0.0f};
+	float mat4[16]{ 0.0f };
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -157,6 +187,8 @@ void PlayerCharacter::HandleInput(float deltaTime)
 
 void PlayerCharacter::MoveCharacter(float deltaTime)
 {
+	CheckForFall();
+
 	if (dir != btVector3(0, 0, 0))
 	{
 		if (characterController->onGround())
@@ -181,7 +213,7 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	{
 		onGround = true;
 	}
-	
+
 	if (inputManager->IsPressed(Jump) && !jumped && onGround)
 	{
 		//jumped = true;
@@ -208,10 +240,12 @@ void PlayerCharacter::Update(float deltaTime)
 {
 	HandleInput(deltaTime);
 	InterpolateFrames(deltaTime);
+	animator->UpdateAnimation(deltaTime);
+
 }
 void PlayerCharacter::FixedUpdate(float deltaTime)
 {
-		MoveCharacter(deltaTime);
+	MoveCharacter(deltaTime);
 }
 VoidEvent& PlayerCharacter::GetEvent()
 {

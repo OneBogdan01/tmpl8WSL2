@@ -93,7 +93,8 @@ void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 }
 void Chunk::ResetTiles()
 {
-	position.z = 0;
+	position.z = -3.0f;
+
 }
 
 void Chunk::SetMaterialProperties()
@@ -105,7 +106,7 @@ void Chunk::SetMaterialProperties()
 	modelShader->Unbind();
 }
 
-//to make it into the math library
+//TODO  make it into the math library
 float Chunk::lerp(const float v0, const float v1, const float t)
 {
 	return (1 - t) * v0 + t * v1;
@@ -200,7 +201,7 @@ void Chunk::RandomizeChunk()
 		for (uint j = 0; j < w && maxCoinCount > 0; j++)
 		{
 			uint index = j + i * w;
-
+			
 			x += static_cast<float>(i);
 			y += static_cast<float>(j);
 			float aux = RandomNumberGenerator::noise2D(y, x);

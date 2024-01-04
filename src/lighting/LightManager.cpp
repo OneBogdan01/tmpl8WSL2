@@ -21,7 +21,7 @@ LightManager::LightManager(Shader* lightShader) :
 	{
 		PointLight& pointLight = pointLights[i];
 		//some random colors for now
-		pointLight.position = glm::vec3(i * 3.0f - 3.0f, 3.0f, 0.0f);
+		pointLight.position = glm::vec3(i * 3.0f - 3.0f, 8.0f, 0.0f);
 		pointLight.diffuse = (glm::vec3(i * .2, 0.0f, (4 - i) * .2));
 	}
 	lightMesh.Init();
