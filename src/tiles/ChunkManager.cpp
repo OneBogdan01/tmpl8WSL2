@@ -152,13 +152,9 @@ void ChunkManager::Init()
 		Chunk* chunk = chunks[k];
 
 		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
-<<<<<<< Updated upstream
 			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 			chunk->SetPosition(chunkOff-glm::vec3(0,0,3.0f));
-=======
-			glm::vec3 chunkOff = glm::vec3(static_cast<float>(k)) * chunkOffset;
-			chunk->SetPosition(chunkOff-glm::vec3(0,0,3));
->>>>>>> Stashed changes
+
 
 		}
 		else

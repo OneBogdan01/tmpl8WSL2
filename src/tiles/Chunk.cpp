@@ -93,12 +93,8 @@ void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 }
 void Chunk::ResetTiles()
 {
-<<<<<<< Updated upstream
 	position.z = -3.0f;
-=======
-	//we need a bit of an offset
-	position.z = -3;
->>>>>>> Stashed changes
+
 }
 
 void Chunk::SetMaterialProperties()
