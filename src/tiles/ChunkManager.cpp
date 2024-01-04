@@ -152,8 +152,13 @@ void ChunkManager::Init()
 		Chunk* chunk = chunks[k];
 
 		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
+<<<<<<< Updated upstream
 			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 			chunk->SetPosition(chunkOff-glm::vec3(0,0,3.0f));
+=======
+			glm::vec3 chunkOff = glm::vec3(static_cast<float>(k)) * chunkOffset;
+			chunk->SetPosition(chunkOff-glm::vec3(0,0,3));
+>>>>>>> Stashed changes
 
 		}
 		else
@@ -181,8 +186,8 @@ void ChunkManager::Update(const float deltaTime)
 		newOffset.z = dir.z * deltaTime;
 
 		Chunk* chunk = chunks[i];
-		
-		
+
+
 		//this chunk needs to be disabled graphics wise
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 		{
@@ -199,7 +204,7 @@ void ChunkManager::Update(const float deltaTime)
 			chunk->ResetTiles();
 			chunk->RandomizeChunk();
 		}
-		
+
 		chunk->Translate(newOffset);
 		//this chunk needs to be enabled physics wise
 		if (chunk->GetPosition().z > -3.0f)
@@ -207,7 +212,7 @@ void ChunkManager::Update(const float deltaTime)
 			chunk->UpdateRB();
 
 		}
-		
+
 		chunk->Update(deltaTime);
 	}
 }
