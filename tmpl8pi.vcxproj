@@ -592,7 +592,6 @@
     <Image Include="assets\skybox\pz.jpg" />
     <Image Include="assets\spec.jpg" />
     <Image Include="assets\textures\diffuse.jpg" />
-    <Image Include="assets\textures\Vampire_diffuse.png" />
     <Image Include="assets\tiled\castle\Textures\barrel.png" />
     <Image Include="assets\tiled\castle\Textures\bricks.png" />
     <Image Include="assets\tiled\castle\Textures\fence.png" />
