@@ -23,6 +23,19 @@ void PlayerCharacter::Die()
 	playerCharacterGhost->setWorldTransform(originalTransform);
 }
 
+void PlayerCharacter::SetUpModel()
+{
+	playerModel = new SkinnedModel("assets/Run.dae");
+
+
+
+
+
+
+	runAnimation = new Animation("assets/Run.dae", playerModel);
+	animator = new Animator(runAnimation);
+}
+
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
 	onDeath.connect(&PlayerCharacter::Die, this);
@@ -30,17 +43,9 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	playerCallback = new PlayerCollisions(GameObject::Player, &onDeath);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 
-	playerModel = new SkinnedModel("assets/Run.dae");
-
-	playerModel->SetUpMeshes();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
 		"assets/shaders/Skinned.frag");
-	
 
-
-
-	runAnimation = new Animation("assets/Run.dae", playerModel);
-	animator = new Animator(runAnimation);
 	Game::lightManager->SetLightProperties(*animationShader);
 	animationShader->Bind();
 

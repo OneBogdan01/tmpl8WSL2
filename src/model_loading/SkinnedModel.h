@@ -1,5 +1,5 @@
 #pragma once
-//from https://learnopengl.com/StaticModel-Loading/StaticModel
+//from https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation
 #include "SkinnedMesh.h"
 
 #include <unordered_map>
@@ -17,6 +17,7 @@ public:
 	SkinnedModel(const char* path)
 	{
 		loadModel(path);
+
 	}
 
 	SkinnedModel(const char* path, bool NoTextures)

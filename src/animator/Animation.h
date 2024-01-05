@@ -1,4 +1,4 @@
-
+//from https://learnopengl.com/Guest-Articles/2020/Skeletal-Animation
 
 #pragma once
 

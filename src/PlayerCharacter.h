@@ -30,6 +30,7 @@ public:
 	PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition);
 	~PlayerCharacter();
 	void Die();
+	void SetUpModel();
 	void CheckForFall();
 	void Draw();
 	//void SetBoneTransform(uint Index, const Matrix4f& Transform);

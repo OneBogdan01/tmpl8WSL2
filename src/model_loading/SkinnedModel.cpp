@@ -78,13 +78,13 @@ void SkinnedModel::loadModel(string path)
 {
 
 	//from Sven
-//	Assimp::Importer import;
-//	unsigned int assimp_read_flag = aiProcess_Triangulate | aiProcess_FlipUVs;
-//import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
-//	const aiScene* scene = import.ReadFile(path, assimp_read_flag);
 	Assimp::Importer import;
-	//this line craches horribly
-	const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
+	unsigned int assimp_read_flag = aiProcess_Triangulate | aiProcess_FlipUVs;
+import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
+	const aiScene * scene = import.ReadFile(path, assimp_read_flag);
+	//Assimp::Importer import;
+	////this line craches horribly
+	//const aiScene * scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 
 	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{
@@ -98,6 +98,7 @@ void SkinnedModel::loadModel(string path)
 
 
 	processNode(scene->mRootNode, scene);
+	SetUpMeshes();
 }
 
 //can be used to get a parent child relationship
@@ -128,7 +129,7 @@ SkinnedMesh SkinnedModel::processMesh(aiMesh* mesh, const aiScene* scene)
 {
 	// data to fill
 	vector<SkinnedMesh::Vertex> vertices;
-	vector<unsigned int> indices;
+	vector<GLuint> indices;
 	vector<SkinnedMesh::MeshTexture> textures;
 
 	// walk through each of the mesh's vertices
@@ -176,6 +177,7 @@ SkinnedMesh SkinnedModel::processMesh(aiMesh* mesh, const aiScene* scene)
 		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	}
 	// return a mesh object created from the extracted mesh data
+
 	ExtractBoneWeightForVertices(vertices, mesh, scene);
 	return { vertices, indices, textures };
 }

@@ -46,9 +46,10 @@ void Game::Init()
 
 	camera = new Camera();
 	camera->Init();
-	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 
 	skybox.Init();
+	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
+	player->SetUpModel();
 }
 
 // -----------------------------------------------------------

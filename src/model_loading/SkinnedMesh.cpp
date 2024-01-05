@@ -11,7 +11,7 @@ SkinnedMesh::SkinnedMesh(std::vector<Vertex> vertices, std::vector<unsigned> ind
 	this->indices = indices;
 	this->textures = textures;
 
-	//setupMesh();
+	setupMesh();
 }
 
 void SkinnedMesh::Draw(Shader& shader)
