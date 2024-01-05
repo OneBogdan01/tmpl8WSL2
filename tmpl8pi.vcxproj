@@ -110,7 +110,6 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -119,7 +118,6 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -128,7 +126,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -137,7 +135,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -146,7 +144,6 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -155,7 +152,6 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">
     <ValidateArchitecture>false</ValidateArchitecture>
