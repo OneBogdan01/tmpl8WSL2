@@ -52,9 +52,14 @@ private:
 	inline static glm::vec3 drawOffset;
 	//ground layer
 	std::array<GroundTile, TILES_PER_CHUNK> tiles;
+	std::unordered_set<const char*> tileIDs;
 	std::array<int, TILES_PER_CHUNK> coinLow = { 0 };
 	std::array<CoinTile, COINS_PER_CHUNK > coins;
+	std::unordered_set<const char*> coinIDs;
+
 	std::array<ObstacleTile, OBSTACLES_PER_CHUNK > obstacles;
+	std::unordered_set<const char*> obstaclesIDs;
+
 	std::vector<size_t> activeTiles;
 	std::vector<size_t> activeCoins;
 	std::vector<size_t> activeObstacles;

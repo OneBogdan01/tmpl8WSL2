@@ -35,15 +35,6 @@ void Game::Init()
 	tileLoader->Init();
 
 
-
-	modelShader = new Shader(
-		"assets/shaders/ModelLoading.vert",
-		"assets/shaders/ModelLoading.frag");
-	modelShader->Bind();
-	modelShader->SetFloat3("objectColor", 1.0f, 0.5f, 0.31f);
-	modelShader->SetFloat3("lightColor", 1.0f, 1.0f, 1.0f);
-	modelShader->Unbind();
-
 	camera = new Camera();
 	camera->Init();
 

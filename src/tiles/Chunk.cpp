@@ -61,6 +61,7 @@ btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 init
 
 void Chunk::LoadTile(const size_t index, const char* path, const glm::vec3 pos)
 {
+	tileIDs.insert(path);
 	tiles[index].Init(path, pos, index);
 	if (rbTiles[index] == nullptr)
 		rbTiles[index] = AddStaticRigidbody(path, pos, drawOffset);
@@ -71,12 +72,14 @@ void Chunk::LoadTile(const size_t index, const char* path, const glm::vec3 pos)
 
 void Chunk::LoadCoins(const size_t index, const char* path, const glm::vec3 pos)
 {
+	coinIDs.insert(path);
 	coins[index].Init(path, pos, index);
 	coins[index].GetCallback().GetEvent().connect(&Chunk::DisableCoin, this);
 }
 
 void Chunk::LoadObstacles(const size_t index, const char* path, const glm::vec3 pos)
 {
+	obstaclesIDs.insert(path);
 	obstacles[index].Init(path, pos, index);
 	obstacles[index].GetCallback().GetEvent().connect(&Chunk::DisableObstacle, this);
 }
@@ -201,7 +204,7 @@ void Chunk::RandomizeChunk()
 		for (uint j = 0; j < w && maxCoinCount > 0; j++)
 		{
 			uint index = j + i * w;
-			
+
 			x += static_cast<float>(i);
 			y += static_cast<float>(j);
 			float aux = RandomNumberGenerator::noise2D(y, x);
@@ -264,35 +267,69 @@ void Chunk::Draw()
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 	//draw ground
-	for (auto& index : activeTiles)
+	std::vector<glm::mat4> modelMatrices;
+	modelMatrices.reserve(activeTiles.size());
+	for (auto& ID : tileIDs)
 	{
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::vec3 tilePosition = tiles[index].GetPosition(position);
-		model = glm::translate(model, tilePosition);
-		model = glm::scale(model, glm::vec3(TILE_SIZE));
-		modelShader->SetMat4x4("model", model);
-		groundFactory.Draw(tiles[index].GetId(), *modelShader);
-	}
-	// Draw coins
-	for (auto& index : activeCoins)
-	{
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::vec3 coinPosition = coins[index].GetPosition();
+		for (auto& index : activeTiles)
+		{
+			if(tiles[index].GetId() != ID)
+				continue;
+			glm::mat4 model = glm::mat4(1.0f);
+			glm::vec3 tilePosition = tiles[index].GetPosition(position);
+			model = glm::translate(model, tilePosition);
+			model = glm::scale(model, glm::vec3(TILE_SIZE));
+			modelMatrices.emplace_back(model);
+			//modelShader->SetMat4x4("model", model);
 
-		model = glm::translate(model, coinPosition);
-		model = glm::scale(model, glm::vec3(TILE_SIZE));
-		modelShader->SetMat4x4("model", model);
-		groundFactory.Draw(coins[index].GetId(), *modelShader);
-	}
-	for (auto& index : activeObstacles)
-	{
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::vec3 obstaclePosition = obstacles[index].GetPosition();
+		}
+		groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
+		modelMatrices.clear();
 
-		model = glm::translate(model, obstaclePosition);
-		model = glm::scale(model, glm::vec3(TILE_SIZE * 2));
-		modelShader->SetMat4x4("model", model);
-		groundFactory.Draw(obstacles[index].GetId(), *modelShader);
+	}
+
+	for (auto& ID : coinIDs)
+	{
+		// Draw coins
+		for (auto& index : activeCoins)
+		{
+			if (coins[index].GetId() != ID)
+				continue;
+			glm::mat4 model = glm::mat4(1.0f);
+			glm::vec3 coinPosition = coins[index].GetPosition();
+
+			model = glm::translate(model, coinPosition);
+			model = glm::scale(model, glm::vec3(TILE_SIZE));
+			//modelShader->SetMat4x4("model", model);
+			//groundFactory.Draw(coins[index].GetId(), *modelShader);
+			modelMatrices.emplace_back(model);
+
+		}
+		if (modelMatrices.size() > 0) {
+			groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
+			modelMatrices.clear();
+		}
+	}
+	for (auto& ID : obstaclesIDs)
+	{
+		for (auto& index : activeObstacles)
+		{
+			if (obstacles[index].GetId() != ID)
+				continue;
+			glm::mat4 model = glm::mat4(1.0f);
+			glm::vec3 obstaclePosition = obstacles[index].GetPosition();
+
+			model = glm::translate(model, obstaclePosition);
+			model = glm::scale(model, glm::vec3(TILE_SIZE * 2));
+			//modelShader->SetMat4x4("model", model);
+			//groundFactory.Draw(obstacles[index].GetId(), *modelShader);
+			modelMatrices.emplace_back(model);
+
+		}
+		if (modelMatrices.size() > 0) {
+			groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
+			modelMatrices.clear();
+		}
 	}
 	modelShader->Unbind();
 }

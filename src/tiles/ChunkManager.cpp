@@ -213,9 +213,9 @@ void ChunkManager::Update(const float deltaTime)
 	}
 }
 
-void ChunkManager::SetDirection(const glm::vec3 _dir)
+void ChunkManager::SetDirectionZ(float _dir)
 {
-	dir = _dir;
+	dir.z = _dir;
 }
 
 void ChunkManager::ConvertCharToInt(const char* pch, uint& numberForm)

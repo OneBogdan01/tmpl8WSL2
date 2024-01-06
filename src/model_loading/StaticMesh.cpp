@@ -17,7 +17,7 @@ StaticMesh::StaticMesh(std::vector<Vertex> vertices, std::vector<unsigned> indic
 	//setupMesh();
 }
 
-void StaticMesh::Draw(Shader& shader)
+void StaticMesh::SetMaterials(Shader& shader)
 {
 	unsigned int diffuseNr = 1;
 	unsigned int specularNr = 1;
@@ -36,11 +36,21 @@ void StaticMesh::Draw(Shader& shader)
 		glBindTexture(GL_TEXTURE_2D, textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);
+}
 
+void StaticMesh::DrawMesh()
+{
 	// draw StaticMesh
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+void StaticMesh::Draw(Shader& shader)
+{
+	SetMaterials(shader);
+
+	DrawMesh();
 }
 
 //we only bake directional lighting
@@ -98,4 +108,9 @@ void StaticMesh::setupMesh()
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
 
 	glBindVertexArray(0);
+}
+
+unsigned int StaticMesh::GetVAO()
+{
+	return VAO;
 }

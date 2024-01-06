@@ -20,7 +20,7 @@ public:
 	void Init();
 	void DrawChunks();
 	void Update(float deltaTime);
-	void SetDirection(glm::vec3 _dir);
+	void SetDirectionZ(float _dir);
 
 	static uint GetHeight()
 	{

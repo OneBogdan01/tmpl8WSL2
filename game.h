@@ -89,7 +89,6 @@ namespace Tmpl8
 
 		ChunkManager* tileLoader = nullptr;
 		Sun sun;
-		Shader* modelShader = nullptr;
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
 		btVector3 startingPlayerPosition = {0, 5, 0};
