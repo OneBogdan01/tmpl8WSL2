@@ -65,6 +65,7 @@
     <ClCompile Include="src\animator\Animation.cpp" />
     <ClCompile Include="src\animator\Bone.cpp" />
     <ClCompile Include="src\model_loading\ogldev_util.cpp" />
+    <ClCompile Include="src\utilities\RandomNames.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -413,6 +414,7 @@
     <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
     <ClInclude Include="src\model_loading\ogldev_types.h" />
     <ClInclude Include="src\model_loading\ogldev_util.h" />
+    <ClInclude Include="src\utilities\RandomNames.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
