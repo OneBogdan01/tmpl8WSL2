@@ -12,7 +12,7 @@
 #include <model_loading/SkinnedModel.h>
 #include <animator/Animation.h>
 #include <animator/Animator.h>
-
+#include "utilities/RandomNames.h"
 // -----------------------------------------------------------
 // Initialize the application
 // -----------------------------------------------------------
@@ -27,7 +27,7 @@ void Game::Init()
 		"assets/shaders/BasicVertexShader.vert",
 		"assets/shaders/SolidColor.frag");
 	lightManager = new LightManager(lightShader);
-
+	//this get random every run
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 	world.Init();
 	tileLoader = new ChunkManager();
@@ -41,6 +41,16 @@ void Game::Init()
 	skybox.Init();
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
+
+	//random names test
+	for (int j = 0; j < 100; j++) {
+		for (int i = 0; i < 4; i++) {
+			//cast it to all patterns avaiable
+			cout << RandomNames::GetRandomName(static_cast<RandomNames::Pattern>(i)) << endl;;
+		}
+		cout << endl;
+	}
+
 }
 
 // -----------------------------------------------------------
@@ -239,7 +249,7 @@ void Game::Tick(float deltaTime)
 #ifdef __DEBUG__
 	world.RenderDebug();
 #endif
-	
+
 
 }
 
