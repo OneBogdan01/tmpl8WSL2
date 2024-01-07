@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <array>
+#include <unordered_set>
 #include <vector>
 
 
@@ -7,8 +8,6 @@
 #include "GroundTile.h"
 #include "ObstacleTile.h"
 #include "Tile.h"
-
-
 
 
 constexpr unsigned int TILES_PER_CHUNK = 18;
@@ -53,11 +52,11 @@ private:
 	//ground layer
 	std::array<GroundTile, TILES_PER_CHUNK> tiles;
 	std::unordered_set<const char*> tileIDs;
-	std::array<int, TILES_PER_CHUNK> coinLow = { 0 };
-	std::array<CoinTile, COINS_PER_CHUNK > coins;
+	std::array<int, TILES_PER_CHUNK> coinLow = {0};
+	std::array<CoinTile, COINS_PER_CHUNK> coins;
 	std::unordered_set<const char*> coinIDs;
 
-	std::array<ObstacleTile, OBSTACLES_PER_CHUNK > obstacles;
+	std::array<ObstacleTile, OBSTACLES_PER_CHUNK> obstacles;
 	std::unordered_set<const char*> obstaclesIDs;
 
 	std::vector<size_t> activeTiles;

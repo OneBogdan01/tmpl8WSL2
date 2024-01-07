@@ -249,6 +249,7 @@ unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& 
 			format = GL_RGBA;
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
+
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -256,6 +257,14 @@ unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+#ifdef _WINDOWS 
+#else// exclude the first 4 mip maps
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 4);
+
+#endif
 
 		stbi_image_free(data);
 	}
