@@ -109,16 +109,9 @@ void Chunk::SetMaterialProperties()
 	modelShader->Unbind();
 }
 
-//TODO  make it into the math library
-float Chunk::lerp(const float v0, const float v1, const float t)
-{
-	return (1 - t) * v0 + t * v1;
-}
 
-float Chunk::invLerp(const float a, const float b, const float v)
-{
-	return (v - a) / (b - a);
-}
+
+
 
 void Chunk::HideChunk()
 {

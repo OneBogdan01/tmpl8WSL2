@@ -52,39 +52,36 @@ void DebugRenderer::UnbindBuffers()
 void DebugRenderer::RenderDebug()
 {
 	BindBuffers();
-	glBufferData(GL_ARRAY_BUFFER, debugInfo.size() * sizeof(DebugInfo), &debugInfo[0],
+	glBufferData(GL_ARRAY_BUFFER, debugInfo.size() * sizeof(LineInfo), &debugInfo[0],
 		GL_STATIC_DRAW);
 	//vertices
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)offsetof(DebugInfo, color1));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)offsetof(LineInfo, color1));
 	glEnableVertexAttribArray(1);
 	simpleShader->Bind();
 	SetShaderMatrices();
-	allColors;
+
 	glDrawArrays(GL_LINES, 0, static_cast<unsigned int>(debugInfo.size()) * 2);
 
 
 	simpleShader->Unbind();
 	debugInfo.clear();
-	allColors.clear();
 	UnbindBuffers();
 }
 
 void DebugRenderer::drawLine(const btVector3& from, const btVector3& to, const btVector3& _color)
 {
 	//store for later render in one go
-	DebugInfo info;
+	LineInfo info;
 	info.from = from;
 	info.to = to;
 	info.color1 = _color;
 	info.color2 = _color;
-	Color col;
-	col.r = _color.x();
-	col.g = _color.y();
-	col.b = _color.z();
-	allColors.emplace(col);
+
+
+
 	debugInfo.emplace_back(info);
 }
 

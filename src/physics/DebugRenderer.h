@@ -6,25 +6,14 @@
 
 class Shader;
 
-struct DebugInfo
+struct LineInfo
 {
 	btVector3 from;
 	btVector3 color1;
 	btVector3 to;
 	btVector3 color2;
 };
-struct Color
-{
-	float r, g, b;
-	bool operator<(const Color& other) const
-	{
-		if (r != other.r)
-			return r < other.r;
-		if (g != other.g)
-			return g < other.g;
-		return b < other.b;
-	}
-};
+
 
 class DebugRenderer : public btIDebugDraw
 {
@@ -53,8 +42,6 @@ private:
 	GLuint VAO;
 	GLuint VBO;
 	GLfloat vertices[6] = {0};
-	std::vector<DebugInfo> debugInfo;
-	set<Color> allColors;
-	btVector3 color;
-	btVector3 secondColor = btVector3(1.0f, 0.0f, 1.0f);
+	std::vector<LineInfo> debugInfo;
+
 };
