@@ -13,8 +13,7 @@ btVector3 Tile::GetTileInitPosition()
 
 glm::vec3 Tile::GetPosition(const glm::vec3 chunkPos) const
 {
-
-	glm::vec3 pos = chunkPos + initialPosition;
+	const glm::vec3 pos = chunkPos + initialPosition;
 
 	return pos;
 }

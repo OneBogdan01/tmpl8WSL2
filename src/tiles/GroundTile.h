@@ -9,7 +9,7 @@ public:
 	GroundTile();
 	~GroundTile() override = default ;
 	//void ResetPosition(glm::vec3 pos);
-	auto Init(const char* path, glm::vec3 pos, size_t index) -> void override;
+	void Init(const char* path, glm::vec3 pos, size_t index) override;
 	void SetUserPointer(btRigidBody* body);
 
 

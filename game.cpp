@@ -20,10 +20,8 @@
 // -----------------------------------------------------------
 glm::mat4 Game::perspective;
 glm::mat4 Game::view;
-Rope* rope;
 void Game::Init()
 {
-	rope = new Rope();
 
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
@@ -52,7 +50,6 @@ void Game::Init()
 		}
 		cout << endl;
 	}
-	rope->Init(glm::vec3(0,10,0));
 }
 
 // -----------------------------------------------------------
@@ -251,8 +248,7 @@ void Game::Tick(float deltaTime)
 #ifdef __DEBUG__
 	world.RenderDebug();
 #endif
-	rope->Update(deltaTime);
-	rope->Render();
+
 
 }
 

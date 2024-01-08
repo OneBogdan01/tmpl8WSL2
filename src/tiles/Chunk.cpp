@@ -20,11 +20,14 @@ Chunk::~Chunk()
 
 Chunk::Chunk()
 {
+
 	modelShader = new Shader(
 		"assets/shaders/ModelLoading.vert",
 		"assets/shaders/ModelLoading.frag");
 	SetMaterialProperties();
 	Game::lightManager->SetLightProperties(*modelShader);
+
+
 }
 
 btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& drawOffset)
@@ -53,8 +56,6 @@ btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 init
 	rigidBody->setActivationState(DISABLE_DEACTIVATION);
 
 
-
-
 	Game::world.AddRigidBody(rigidBody);
 	return rigidBody;
 }
@@ -76,6 +77,12 @@ void Chunk::LoadCoins(const size_t index, const char* path, const glm::vec3 pos)
 	coins[index].Init(path, pos, index);
 	coins[index].GetCallback().GetEvent().connect(&Chunk::DisableCoin, this);
 }
+void Chunk::LoadRopes(const size_t index, const char* path, const glm::vec3 pos)
+{
+
+	ropes[index].Init(path, pos, index);
+
+}
 
 void Chunk::LoadObstacles(const size_t index, const char* path, const glm::vec3 pos)
 {
@@ -92,6 +99,10 @@ void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 	for (uint index = 0; index < OBSTACLES_PER_CHUNK; index++)
 	{
 		LoadObstacles(index, obstaclePath, glm::vec3(0));
+	}
+	for (uint index = 0; index < ROPES_PER_CHUNK; index++)
+	{
+		LoadRopes(index, " ", glm::vec3(60));
 	}
 }
 void Chunk::ResetTiles()
@@ -110,9 +121,6 @@ void Chunk::SetMaterialProperties()
 }
 
 
-
-
-
 void Chunk::HideChunk()
 {
 	glm::vec3 pos = glm::vec3(60.0f);
@@ -125,8 +133,13 @@ void Chunk::HideChunk()
 	{
 		obstacle.UpdatePhysicsPosition(pos);
 	}
+	for (auto& rope : ropes)
+	{
+		rope.initialPosition=(pos);
+	}
 	activeCoins.clear();
 	activeObstacles.clear();
+	activeRopes.clear();
 }
 
 void Chunk::DisableCoin(const size_t index)
@@ -144,9 +157,17 @@ void Chunk::DisableObstacle(const size_t index)
 	obstacles[index].UpdatePhysicsPosition(pos);
 	activeObstacles.erase(std::remove(activeObstacles.begin(), activeObstacles.end(), index), activeObstacles.end());
 }
+void Chunk::DisableRope(const size_t index)
+{
+	//glm::vec3 pos = glm::vec3(60.0f);
+	////offscreen
+	//obstacles[index].UpdatePhysicsPosition(pos);
+	activeRopes.erase(std::remove(activeRopes.begin(), activeRopes.end(), index), activeRopes.end());
+}
 
 void Chunk::RandomizeChunk()
 {
+	//TODO CLEAN UP
 	HideChunk();
 	const float h = static_cast<float>(ChunkManager::GetHeight());
 	const float w = static_cast<float>(ChunkManager::GetWidth());
@@ -165,10 +186,7 @@ void Chunk::RandomizeChunk()
 		for (uint j = 0; j < w && maxObstacleCount > 0; j++)
 		{
 			int index = j + i * w;
-			int nextIndex = std::clamp(index + static_cast<int>(w), 0, static_cast<int>(TILES_PER_CHUNK - 1));
-			int prevIndex = std::clamp(index - static_cast<int>(w), 0, static_cast<int>(TILES_PER_CHUNK - 1));
-			/*&& tiles[nextIndex].GetId() != nullptr &&
-				tiles[prevIndex].GetId() != nullptr*/
+
 			if (tiles[index].GetId() != nullptr)
 				if (RandomNumberGenerator::RandomFloat() > .85f)
 				{
@@ -247,18 +265,42 @@ void Chunk::RandomizeChunk()
 		}
 		cout << endl;
 	}
+	uint maxRopeCount = ROPES_PER_CHUNK;
+	for (uint i = 0; i < h && maxRopeCount > 0; i++)
+	{
+		for (uint j = 0; j < w && maxRopeCount > 0; j++)
+		{
+			uint index = j + i * w;
+
+			if (tiles[index].GetId() != nullptr)
+			{
+				if (RandomNumberGenerator::RandomFloat() > .8f) {
+					maxRopeCount--;
+					size_t indexRope = activeRopes.size();
+					glm::vec3 ropePos = tiles[index].initialPosition;
+					ropePos.y = 10.0f;
+					ropes[indexRope].initialPosition = ropePos;
+					std::cout<<"Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
+					activeRopes.push_back(indexRope);
+					
+				}
+			}
+		}
+	}
 }
 
 void Chunk::Draw()
 {
 	const auto& groundFactory = ModelTileFactory::GetInstance();
-
-
+	
 	modelShader->Bind();
 	modelShader->SetMat4x4("projection", Game::perspective);
 	modelShader->SetMat4x4("view", Game::view);
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
+	//draw rope
+
+
 	//draw ground
 	std::vector<glm::mat4> modelMatrices;
 	modelMatrices.reserve(activeTiles.size());
@@ -266,7 +308,7 @@ void Chunk::Draw()
 	{
 		for (auto& index : activeTiles)
 		{
-			if(tiles[index].GetId() != ID)
+			if (tiles[index].GetId() != ID)
 				continue;
 			glm::mat4 model = glm::mat4(1.0f);
 			glm::vec3 tilePosition = tiles[index].GetPosition(position);
@@ -324,6 +366,14 @@ void Chunk::Draw()
 			modelMatrices.clear();
 		}
 	}
+	for (auto& index : activeRopes)
+	{
+
+		glm::vec3 ropePos = ropes[index].GetPosition(position);
+
+		ropes[index].Render(ropePos);
+
+	}
 	modelShader->Unbind();
 }
 
@@ -345,6 +395,10 @@ void Chunk::UpdateRB()
 
 void Chunk::Update(float deltaTime)
 {
+	for (auto& index : activeRopes)
+	{
+		ropes[index].Update(deltaTime);
+	}
 	//UpdateRB();
 	for (auto& index : activeCoins)
 	{

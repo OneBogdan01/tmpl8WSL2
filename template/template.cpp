@@ -152,7 +152,7 @@ int main()
 		if (FPSTimer.elapsed() > FPS)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			const float deltaTime = min(500.0f, 1000.0f * FPSTimer.elapsed()) * 0.001f;
+			const float deltaTime = min(500.0f, FPSTimer.elapsed());
 
 			FPSTimer.reset();
 
@@ -356,7 +356,7 @@ inline ImGuiKey X11SymToImGuiKeycode(const unsigned long in)
 	case XK_Super_R: return ImGuiKey_RightSuper;
 	case XK_space: return ImGuiKey_Space;
 
-	// Add cases for letter keys
+		// Add cases for letter keys
 	case XK_a:
 	case XK_A: return ImGuiKey_A;
 	case XK_b:
@@ -430,7 +430,7 @@ void ProccessEvents(Game* game)
 	static XEvent event;
 
 	// key event data
-	char str[25] = {0};
+	char str[25] = { 0 };
 	KeySym key_sym = 0;
 
 	// mouse event data
@@ -444,15 +444,15 @@ void ProccessEvents(Game* game)
 		XNextEvent(x11Display, &event);
 		switch (event.type)
 		{
-		// keys have been remapped
+			// keys have been remapped
 		case KeymapNotify:
 			XRefreshKeyboardMapping(&event.xmapping);
 			break;
-		//key has been pressed
+			//key has been pressed
 		case KeyPress:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
-		// stop program if escape is pressed
+			// stop program if escape is pressed
 			if (key_sym == XK_Escape)
 			{
 				should_close = true;
@@ -468,7 +468,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-		// key is released
+			// key is released
 		case KeyRelease:
 			// get pressed key
 			XLookupString(&event.xkey, str, 25, &key_sym, nullptr);
@@ -480,7 +480,7 @@ void ProccessEvents(Game* game)
 				game->KeyUp(key_sym);
 			}
 			break;
-		// mouse button pressed
+			// mouse button pressed
 		case ButtonPress:
 
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
@@ -520,7 +520,7 @@ void ProccessEvents(Game* game)
 			}
 
 			break;
-		// mouse button released
+			// mouse button released
 		case ButtonRelease:
 			// calculate which button is pressed as X11 switches middle and right click + is 1 indexed
 			button = event.xbutton.button - 1;
@@ -541,12 +541,12 @@ void ProccessEvents(Game* game)
 				game->MouseUp(button);
 			}
 			break;
-		// mouse moved
+			// mouse moved
 		case MotionNotify:
 			x = event.xmotion.x;
 			y = event.xmotion.y;
 
-			ImGui::GetIO().MousePos = {static_cast<float>(x), static_cast<float>(y)};
+			ImGui::GetIO().MousePos = { static_cast<float>(x), static_cast<float>(y) };
 
 			game->MouseMove(
 				static_cast<int>(static_cast<float>(x) / static_cast<float>(attributes_.width) * static_cast<float>(
@@ -554,7 +554,7 @@ void ProccessEvents(Game* game)
 				static_cast<int>(static_cast<float>(y) / static_cast<float>(attributes_.height) * static_cast<float>(
 					SCRHEIGHT)));
 			break;
-		// screen got resized
+			// screen got resized
 		case ConfigureNotify:
 			XGetWindowAttributes(x11Display, event.xexpose.window, &attributes_);
 			glViewport(0, 0, attributes_.width, attributes_.height);
@@ -562,7 +562,7 @@ void ProccessEvents(Game* game)
 			ImGui::GetIO().DisplaySize = ImVec2{
 				static_cast<float>(attributes_.width), static_cast<float>(attributes_.height)
 			};
-		//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
+			//DebugDrawer::SetWindowResolution({attributes_.width, attributes_.height});
 			break;
 		case ClientMessage:
 			//// window closed
@@ -571,7 +571,7 @@ void ProccessEvents(Game* game)
 				should_close = true;
 				return;
 			}
-		//window got destroyed
+			//window got destroyed
 		case DestroyNotify:
 			should_close = true;
 			return;
@@ -602,7 +602,7 @@ void InitEGL()
 
 	// create window
 	x11Window = XCreateWindow(x11Display, x11Window, 0, 0, SCRWIDTH, SCRHEIGHT, 0, CopyFromParent, InputOutput,
-	                          CopyFromParent, CWEventMask, &windowAttributes);
+		CopyFromParent, CWEventMask, &windowAttributes);
 	if (!x11Window) FatalError("Could not create window");
 	// show the window
 	XMapWindow(x11Display, x11Window);
@@ -698,19 +698,19 @@ void ActivateErrorCallback()
 	else
 	{
 		const GLDEBUGPROCKHR debug_fn = [](GLenum source, GLenum type, GLuint id, const GLenum severity, GLsizei length,
-		                                   const GLchar* message, const void*)
-		{
-			switch (severity)
+			const GLchar* message, const void*)
 			{
-			case GL_DEBUG_SEVERITY_HIGH_KHR:
-			case GL_DEBUG_SEVERITY_MEDIUM_KHR:
-				std::cout << message << std::endl;
-			case GL_DEBUG_SEVERITY_LOW_KHR:
-			case GL_DEBUG_SEVERITY_NOTIFICATION_KHR:
-			default:
-				break; //Ignore.
-			}
-		};
+				switch (severity)
+				{
+				case GL_DEBUG_SEVERITY_HIGH_KHR:
+				case GL_DEBUG_SEVERITY_MEDIUM_KHR:
+					std::cout << message << std::endl;
+				case GL_DEBUG_SEVERITY_LOW_KHR:
+				case GL_DEBUG_SEVERITY_NOTIFICATION_KHR:
+				default:
+					break; //Ignore.
+				}
+			};
 		pegl_debug_message_control_khr(debug_fn, nullptr);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_KHR);
 	}
@@ -760,7 +760,7 @@ int main(int argc, char* argv[])
 		{
 			//as Abhishek said, multiplication is way faster then division
 
-			const float deltaTime = min(500.0f, 1000.0f * FPSTimer.elapsed()) * 0.001f;
+			const float deltaTime = min(500.0f, FPSTimer.elapsed());
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

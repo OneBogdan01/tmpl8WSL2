@@ -3,7 +3,6 @@
 #include "Camera.h"
 #include "game.h"
 #include "ModelTileFactory.h"
-#include "ChunkManager.h"
 
 GroundTile::GroundTile() :
 	Tile()
