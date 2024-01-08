@@ -29,7 +29,7 @@ void Game::Init()
 		"assets/shaders/BasicVertexShader.vert",
 		"assets/shaders/SolidColor.frag");
 	lightManager = new LightManager(lightShader);
-	//this get random every run
+	//this gets random every run
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 	world.Init();
 	tileLoader = new ChunkManager();

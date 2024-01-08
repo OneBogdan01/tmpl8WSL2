@@ -185,6 +185,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\lighting\LightManager.cpp" />
     <ClCompile Include="src\lighting\PointLight.cpp" />
+    <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\model_loading\ogldev_util.cpp" />
     <ClCompile Include="src\model_loading\SkinnedModel.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
@@ -206,12 +207,14 @@
     <ClCompile Include="src\tiles\GroundTile.cpp" />
     <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
     <ClCompile Include="src\tiles\ObstacleTile.cpp" />
+    <ClCompile Include="src\tiles\Rope.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
     <ClCompile Include="src\tiles\TileFactory.cpp" />
     <ClCompile Include="src\tiles\ChunkManager.cpp" />
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\physics\World.cpp" />
+    <ClCompile Include="src\utilities\MathLibrary.cpp" />
     <ClCompile Include="src\utilities\RandomNames.cpp" />
     <ClCompile Include="template\EventArgs.cpp" />
     <ClCompile Include="template\opengl.cpp" />
@@ -524,6 +527,7 @@
     <ClInclude Include="src\lighting\LightManager.h" />
     <ClInclude Include="src\lighting\PointLight.h" />
     <ClInclude Include="src\BoneInfo.h" />
+    <ClInclude Include="src\Line.h" />
     <ClInclude Include="src\model_loading\ogldev_math_3d.h" />
     <ClInclude Include="src\model_loading\ogldev_types.h" />
     <ClInclude Include="src\model_loading\ogldev_util.h" />
@@ -550,11 +554,13 @@
     <ClInclude Include="src\tiles\GroundTile.h" />
     <ClInclude Include="src\tiles\ModelTileFactory.h" />
     <ClInclude Include="src\tiles\ObstacleTile.h" />
+    <ClInclude Include="src\tiles\Rope.h" />
     <ClInclude Include="src\tiles\Tile.h" />
     <ClInclude Include="src\tiles\TileFactory.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\physics\World.h" />
+    <ClInclude Include="src\utilities\MathLibrary.h" />
     <ClInclude Include="src\utilities\RandomNames.h" />
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
     <ClInclude Include="template\Delegate.h" />
