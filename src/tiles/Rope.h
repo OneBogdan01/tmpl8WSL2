@@ -3,6 +3,12 @@
 
 #include "Line.h"
 #include "Timer.h"
+#include "glm/fwd.hpp"
+#include "glm/fwd.hpp"
+#include "glm/fwd.hpp"
+#include "glm/fwd.hpp"
+#include "glm/fwd.hpp"
+
 #include "glm/vec2.hpp"
 
 //from my previos project
@@ -13,6 +19,8 @@ public:
 	void Render(glm::vec3 position);
 	Rope();
 	~Rope() override;
+
+	glm::vec3 DrawRope(const glm::vec3 a, float offsetX, btVector3 color);
 
 
 	void Init(const char* path, glm::vec3 pos, size_t index) override;
@@ -26,18 +34,19 @@ public:
 	void Update(float deltaTime);
 
 
-
+	bool shouldMove = true;
 private:
 	glm::vec3 points[4] = {};
 	const float len[3] = { 10.0f, 7.0f, 2.5f };
 	const float lenMultiplier = 0.8f;
 	const float multipler[3] = { 0.1f, .6f, 0.70f };
-	const uint resolution = 50;
+	const uint resolution = 32;
 	float totalLen = 0;
 	const float frq = 1.8f;
-	const float amp = 100.0f;
+	const float amp = 150.0f;
 	const int halfWidth = 3;
 	Timer* t = nullptr;
 	Line line;
 	float timeOffset = 0;
+	
 };

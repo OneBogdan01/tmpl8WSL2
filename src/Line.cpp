@@ -32,22 +32,23 @@ void Line::UnbindBuffers()
 void Line::DrawLine()
 {
 	BindBuffers();
-	glBufferData(GL_ARRAY_BUFFER, lines.size() * sizeof(lines), &lines[0],
-	             GL_STATIC_DRAW);
-	//vertices
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)offsetof(LineInfo, color1));
-	glEnableVertexAttribArray(1);
-
 	simpleShader->Bind();
 	simpleShader->SetMat4x4("projection", Game::perspective);
 	simpleShader->SetMat4x4("view", Game::view);
 	glm::mat4 model = glm::mat4(1.0f);
 	simpleShader->SetMat4x4("model", model);
 
-	glDrawArrays(GL_LINES, 0, static_cast<unsigned int>(lines.size()) * 2);
+	glBufferData(GL_ARRAY_BUFFER, 2 * lines.size() * sizeof(lines), &lines[0],
+		GL_STATIC_DRAW);
+	//vertices
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)sizeof(btVector3));
+	glEnableVertexAttribArray(1);
+
+
+	glDrawArrays(GL_LINES, 0, static_cast<unsigned int>(lines.size() * 2));
 
 
 	simpleShader->Unbind();

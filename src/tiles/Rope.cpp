@@ -2,6 +2,11 @@
 
 #include "game.h"
 #include "animator/Animation.h"
+#include "animator/Animation.h"
+#include "animator/Animation.h"
+#include "animator/Animation.h"
+#include "animator/Animation.h"
+
 #include "utilities/MathLibrary.h"
 
 
@@ -16,16 +21,14 @@ Rope::~Rope()
 	delete t;
 }
 
-void Rope::Render(glm::vec3 position)
+glm::vec3 Rope::DrawRope(const glm::vec3 a, float offsetX, btVector3 color)
 {
-	//const vec2 camPos = Game::GetCameraPosition();
-	const glm::vec3 a = points[0];
 	const glm::vec3 b = points[1];
 	const glm::vec3 c = points[2];
 	const glm::vec3 d = points[3];
 	//make line
 	//screen->BezierCurve(GREEN, p0, p1, p2, p3, resolution);
-
+	glm::vec3 lastPoint{};
 	glm::vec3 startPoint = a;
 	for (uint i = 1; i <= resolution; i++)
 	{
@@ -33,10 +36,36 @@ void Rope::Render(glm::vec3 position)
 			static_cast<float>(i) / static_cast<float>(resolution));
 
 		//Line(startPoint.x, startPoint.y, point.x, point.y);
-		line.StoreLine(btVector3(a.x, startPoint.y, startPoint.x), btVector3(a.x, point.y, point.x),
-			btVector3(0, 1, 0));
+		line.StoreLine(btVector3(a.x + offsetX, startPoint.y, a.z + startPoint.x), btVector3(a.x + offsetX, point.y, a.z + point.x),
+			color);
+		if (i == resolution)
+			lastPoint = glm::vec3(point, 0);
 		startPoint = glm::vec3(point.x, point.y, 0);
 	}
+	return lastPoint;
+}
+
+void Rope::Render(glm::vec3 position)
+{
+	//const vec2 camPos = Game::GetCameraPosition();
+	float offset = 2.0f;
+	glm::vec3 a = initialPosition + position;
+
+	glm::vec3 endOfRope = DrawRope(a, -offset / 2, btVector3(1, 1, 0));;
+
+	glm::vec3  startinPoint = a;
+
+	glm::vec3  endPoint = a;
+
+	line.DrawLine();
+	glm::vec3 end2 = DrawRope(a, offset, btVector3(0, 1, 0));
+
+	line.DrawLine();
+	//draw the line in between
+	line.StoreLine(btVector3(a.x - offset / 2, endOfRope.y, a.z + endOfRope.x), btVector3(a.x+offset, endOfRope.y, a.z + endOfRope.x),
+		btVector3(0, 1, 1));
+
+
 	line.DrawLine();
 
 
@@ -54,6 +83,8 @@ glm::vec3 Rope::GetMovingPartAtTime(glm::vec3 startPoint, float timeElapsed, con
 {
 	const float x = sinf(timeElapsed) * leng;
 	const float y = -cosf(timeElapsed) * leng;
+	if(abs(x)>=0.01f)
+		std::cout <<"errror!!! "<< x << " " << y << "\n";
 	return startPoint + glm::vec3{ x, y, 0 };
 }
 
@@ -70,28 +101,27 @@ glm::vec3* Rope::pGetMovingPart()
 void Rope::Update(float deltaTime)
 {
 	//got helped for this formula from Lynn 230137
+	if (!shouldMove)
+		return;
 	points[0] = initialPosition;
 	for (int i = 1; i < 4; i++)
 	{
-		const float timeElapsed = cosf(timeOffset + t->elapsed() * frq) * amp * deltaTime;
-
+		 float timeElapsed = cosf(timeOffset + t->elapsed() * frq) * amp * deltaTime;
+		//TODO remove this when player is on it
+		timeElapsed = 0;
 		points[i] = GetMovingPartAtTime(points[i - 1], timeElapsed * multipler[i - 1], len[i - 1] * lenMultiplier);
 	}
 }
 
 void Rope::Init(const char* path, const glm::vec3 pos, size_t index)
 {
-	//offset the function using the fixed point
-	if (static_cast<int>(pos.x) % 2 == 0)
-	{
-		timeOffset = PI;
-	}
-	else
-		timeOffset = 0;
+
+	timeOffset = 0;
 
 	points[0] = pos;
 	totalLen = 0;
 	for (int i = 0; i < 3; i++)
 		totalLen += len[i];
+
 	//coll = Box{-vec2{totalLen * lenMultiplier, 0}, vec2{totalLen * lenMultiplier, totalLen * lenMultiplier}};
 }

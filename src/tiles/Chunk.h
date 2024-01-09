@@ -17,7 +17,7 @@
 constexpr unsigned int TILES_PER_CHUNK = 18;
 constexpr unsigned int COINS_PER_CHUNK = 9;
 constexpr unsigned int OBSTACLES_PER_CHUNK = 6;
-constexpr unsigned int ROPES_PER_CHUNK = 2;
+constexpr unsigned int ROPES_PER_CHUNK = 1;
 
 
 class Chunk

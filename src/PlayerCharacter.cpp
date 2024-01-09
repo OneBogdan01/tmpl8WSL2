@@ -28,10 +28,6 @@ void PlayerCharacter::SetUpModel()
 	playerModel = new SkinnedModel("assets/Run.dae");
 
 
-
-
-
-
 	runAnimation = new Animation("assets/Run.dae", playerModel);
 	animator = new Animator(runAnimation);
 }
