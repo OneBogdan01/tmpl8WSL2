@@ -10,6 +10,7 @@
 #include "glm/fwd.hpp"
 
 #include "glm/vec2.hpp"
+#include "physics/RopeTrigger.h"
 
 //from my previos project
 class Rope : public Tile
@@ -17,6 +18,11 @@ class Rope : public Tile
 public:
 
 	void Render(glm::vec3 position);
+	void UpdatePhysicsPosition(glm::vec3 chunkPos);
+	void ResetPosition();
+
+	RopeTrigger& GetCallback();
+	void SetCallback(btGhostObject* ghostObject);
 	Rope();
 	~Rope() override;
 
@@ -24,6 +30,7 @@ public:
 
 
 	void Init(const char* path, glm::vec3 pos, size_t index) override;
+	void AddATriggerBox();
 
 	glm::vec3 GetMovingPartAtTime(glm::vec3 startPoint, float timeElapsed, const float leng);
 
@@ -36,6 +43,9 @@ public:
 
 	bool shouldMove = true;
 private:
+	RopeTrigger* callback=nullptr;
+	btGhostObject* ghostObject = nullptr;
+
 	glm::vec3 points[4] = {};
 	const float len[3] = { 10.0f, 7.0f, 2.5f };
 	const float lenMultiplier = 0.8f;
@@ -48,5 +58,6 @@ private:
 	Timer* t = nullptr;
 	Line line;
 	float timeOffset = 0;
+	const float offset = 2.0f;
 	
 };

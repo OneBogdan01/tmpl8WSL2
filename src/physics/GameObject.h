@@ -10,7 +10,8 @@ public:
 		Ground,
 		Coin,
 		Obstacle,
-		Player
+		Player,
+		Rope
 	};
 
 	GameObject(ColliderType type);

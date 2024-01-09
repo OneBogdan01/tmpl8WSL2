@@ -81,6 +81,7 @@ void Chunk::LoadRopes(const size_t index, const char* path, const glm::vec3 pos)
 {
 
 	ropes[index].Init(path, pos, index);
+	ropes[index].GetCallback().GetEvent().connect(&Chunk::DisableRope, this);
 
 }
 
@@ -136,6 +137,7 @@ void Chunk::HideChunk()
 	for (auto& rope : ropes)
 	{
 		rope.initialPosition = (pos);
+		rope.UpdatePhysicsPosition(pos);
 	}
 	activeCoins.clear();
 	activeObstacles.clear();
@@ -159,9 +161,9 @@ void Chunk::DisableObstacle(const size_t index)
 }
 void Chunk::DisableRope(const size_t index)
 {
-	//glm::vec3 pos = glm::vec3(60.0f);
-	////offscreen
-	//obstacles[index].UpdatePhysicsPosition(pos);
+	glm::vec3 pos = glm::vec3(60.0f);
+	//offscreen
+	ropes[index].UpdatePhysicsPosition(pos);
 	activeRopes.erase(std::remove(activeRopes.begin(), activeRopes.end(), index), activeRopes.end());
 }
 
@@ -398,6 +400,7 @@ void Chunk::Update(float deltaTime)
 	for (auto& index : activeRopes)
 	{
 		ropes[index].Update(deltaTime);
+
 
 	}
 	//UpdateRB();
