@@ -1,6 +1,11 @@
 ﻿#include "RandomNames.h"
 #include "RandomNumberGenerator.h"
 
+std::string RandomNames::GenerateRandomName()
+{
+	return GetRandomName(static_cast<Pattern>(RandomNumberGenerator::RandomFloat() * static_cast<float>(PreMid)));
+}
+
 std::string RandomNames::GetRandomName(Pattern pattern)
 {
 	std::string name;

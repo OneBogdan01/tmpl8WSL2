@@ -1,5 +1,10 @@
 const double FPS = 1.0 / 60.0;
-
+//declared as global
+static bool should_close = false;
+void ExitGame()
+{
+	should_close = true;
+}
 #ifdef _WINDOWS
 
 #include "imgui.h"
@@ -114,8 +119,7 @@ int main()
 		return -1;
 	}
 
-	game = new Game();
-	game->Init();
+
 
 	//imgui init
 	//Create ImGui context
@@ -135,7 +139,9 @@ int main()
 	//use my own font
 	//io.Fonts->AddFontDefault();
 
-	io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", 24);
+	//io.Fonts->AddFontFromFileTTF("assets/PixelifySans-Regular.ttf", 24);
+
+
 
 	io.DisplaySize.x = static_cast<float>(SCRWIDTH); // Set to your actual width
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
@@ -147,7 +153,11 @@ int main()
 	// -----------
 	//physics behave wierd unless the FPS is capped
 	//const double FPS = 1.0 / 900.0;
-	while (!glfwWindowShouldClose(window))
+
+
+	game = new Game();
+	game->Init();
+	while (!glfwWindowShouldClose(window) && !should_close)
 	{
 		if (FPSTimer.elapsed() > FPS)
 		{
@@ -156,7 +166,6 @@ int main()
 
 			FPSTimer.reset();
 
-			//imgui still throws erros when used with the current opengl setup
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
@@ -237,6 +246,8 @@ void FixWorkingFolder()
 	fixed = true;
 }
 
+
+
 // Helper functions
 // ----------------------------------------------------------------------------
 
@@ -315,8 +326,7 @@ static EGLSurface eglSurface;
 //static int device = -1;
 
 Game* game;
-//declared as global
-static bool should_close;
+
 // window attributes
 XWindowAttributes attributes_{};
 static Atom deleteWindow = 0;
@@ -726,8 +736,7 @@ int main(int argc, char* argv[])
 	InitEGL();
 	ActivateErrorCallback();
 	FixWorkingFolder();
-	game = new Game();
-	game->Init();
+
 	glViewport(0, 0, SCRWIDTH, SCRHEIGHT);
 	eglSwapInterval(eglDisplay, 0);
 	//to fix repeating input
@@ -753,7 +762,8 @@ int main(int argc, char* argv[])
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 
 	glEnable(GL_CULL_FACE);
-
+	game = new Game();
+	game->Init();
 	while (!should_close)
 	{
 		if (FPSTimer.elapsed() > FPS)

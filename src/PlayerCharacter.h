@@ -39,7 +39,6 @@ public:
 	void HandleInput(float deltaTime);
 	void MoveCharacter(float deltaTime);
 	void Update(float deltaTime);
-	void FixedUpdate(float deltaTime);
 	VoidEvent& GetEvent();
 
 private:

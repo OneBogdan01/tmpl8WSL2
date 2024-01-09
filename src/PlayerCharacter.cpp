@@ -246,12 +246,11 @@ void PlayerCharacter::Update(float deltaTime)
 	HandleInput(deltaTime);
 	InterpolateFrames(deltaTime);
 	animator->UpdateAnimation(deltaTime);
+	MoveCharacter(deltaTime);
+
 
 }
-void PlayerCharacter::FixedUpdate(float deltaTime)
-{
-	MoveCharacter(deltaTime);
-}
+
 VoidEvent& PlayerCharacter::GetEvent()
 {
 	return onDeath;

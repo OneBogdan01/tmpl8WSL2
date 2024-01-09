@@ -12,6 +12,11 @@
 #include "model_loading/SkinnedModel.h"
 #include "skybox/Skybox.h"
 #include <animator/Animator.h>
+
+#include "imgui.h"
+#include "utilities/Button.h"
+#include "utilities/GameStateManager.h"
+#include "utilities/Menu.h"
 class StaticModel;
 class Camera;
 class ChunkManager;
@@ -33,6 +38,10 @@ namespace Tmpl8
 	public:
 		// game flow methods
 		void Init();
+		void Update(float deltaTime);
+		void Render();
+		void CreateMenu();
+		void DisplayDebugInfo();
 		void Tick(float deltaTime);
 
 		void Shutdown();
@@ -91,8 +100,12 @@ namespace Tmpl8
 		Sun sun;
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
+		inline static GameStateManager gameState;
 		btVector3 startingPlayerPosition = {0, 5, 0};
 		inline static KeyboardManager inputManager;
 		inline static bool freeCam = false;
+
+		Menu menu;
+		Button pauseButton;
 	};
 } // namespace Tmpl8

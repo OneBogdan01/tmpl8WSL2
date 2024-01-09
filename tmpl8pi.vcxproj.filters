@@ -69,6 +69,9 @@
     <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\tiles\Rope.cpp" />
     <ClCompile Include="src\utilities\MathLibrary.cpp" />
+    <ClCompile Include="src\utilities\GameStateManager.cpp" />
+    <ClCompile Include="src\utilities\Button.cpp" />
+    <ClCompile Include="src\utilities\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -421,6 +424,9 @@
     <ClInclude Include="src\Line.h" />
     <ClInclude Include="src\tiles\Rope.h" />
     <ClInclude Include="src\utilities\MathLibrary.h" />
+    <ClInclude Include="src\utilities\GameStateManager.h" />
+    <ClInclude Include="src\utilities\Button.h" />
+    <ClInclude Include="src\utilities\Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">

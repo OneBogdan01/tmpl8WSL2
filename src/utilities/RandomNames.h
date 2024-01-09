@@ -12,9 +12,11 @@ public:
 		PreMid
 	};
 
-	static std::string GetRandomName(Pattern pattern);
+	static std::string GenerateRandomName();
 
 private:
+	static std::string GetRandomName(Pattern pattern);
+
 	static std::string RandomName(std::string elements[], size_t size);
 
 	//generate with chatGPT

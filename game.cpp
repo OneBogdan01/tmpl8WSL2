@@ -22,7 +22,7 @@ glm::mat4 Game::perspective;
 glm::mat4 Game::view;
 void Game::Init()
 {
-
+	menu.Init();
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
 		"assets/shaders/SolidColor.frag");
@@ -42,14 +42,14 @@ void Game::Init()
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
 
-	//random names test
-	for (int j = 0; j < 100; j++) {
-		for (int i = 0; i < 4; i++) {
-			//cast it to all patterns avaiable
-			cout << RandomNames::GetRandomName(static_cast<RandomNames::Pattern>(i)) << endl;;
-		}
-		cout << endl;
-	}
+	////random names test
+	//for (int j = 0; j < 100; j++) {
+	//	for (int i = 0; i < 4; i++) {
+	//		//cast it to all patterns avaiable
+	//		cout << RandomNames::GetRandomName(static_cast<RandomNames::Pattern>(i)) << endl;;
+	//	}
+	//	cout << endl;
+	//}
 }
 
 // -----------------------------------------------------------
@@ -141,18 +141,111 @@ namespace physicalMemory
 }
 #endif
 
-
-void Game::Tick(float deltaTime)
+void Game::Update(float deltaTime)
 {
 	inputManager.Update();
-	//input is done first in the template
-	//update physics
+
+	switch (gameState.GetState())
+	{
+	case GameStateManager::PLAYING:
+		//update physics
 
 
-	world.Update(deltaTime);
+		world.Update(deltaTime);
 
-	//displaying stuff
-#ifdef __DEBUG__
+		//TODO encapsulate camera init
+		if (f > 1)
+			f = 0;
+		camera->RotateMouse(rotateCam);
+		camera->MoveX(moveCam.x);
+		camera->MoveZ(moveCam.y);
+		fov -= yOffset;
+		if (fov < 1.0f)
+			fov = 1.0f;
+		if (fov > 45.0f)
+			fov = 45.0f;
+		yOffset = 0;
+
+
+		camera->Update(deltaTime);
+
+		perspective = glm::perspective(glm::radians(fov),
+			static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+			0.1f, 100.0f);
+
+		view = camera->GetViewMat();
+
+
+		//TODO make update loop for entities
+		tileLoader->Update(deltaTime);
+
+		player->Update(deltaTime);
+		break;
+	case GameStateManager::LOSE:
+		break;
+	case GameStateManager::PAUSE:
+		break;
+	case GameStateManager::START_MENU:
+		break;
+	default: break;
+	}
+
+
+}
+void Game::Render()
+{
+	switch (gameState.GetState())
+	{
+
+	case GameStateManager::LOSE:
+		break;
+	case GameStateManager::PLAYING:
+		lightManager->Draw();
+		tileLoader->DrawChunks();
+		player->Draw();
+		skybox.Draw();
+		ImGui::PushFont(menu.fontTitle);
+		pauseButton.Draw();
+
+		ImGui::PopFont();
+
+		break;
+	case GameStateManager::PAUSE:
+		lightManager->Draw();
+		tileLoader->DrawChunks();
+		player->Draw();
+		skybox.Draw();
+		menu.menuTitle = "Paused";
+		menu.startGame = "Resume";
+		menu.backToMainMenu = "Main menu";
+		menu.exitGame = "Exit";
+		CreateMenu();
+		break;
+		//Erik Cupak made a guide about how to setup an imgui menu
+	case GameStateManager::START_MENU:
+		menu.menuTitle = "Endless Pink";
+		//menu.startGame = "Start Game";
+		if (menu.dif1.length() == 0) {
+			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
+			menu.dif2 = "[Medium] " + RandomNames::GenerateRandomName();
+			menu.dif3 = "[Hard] " + RandomNames::GenerateRandomName();
+		}
+		
+		menu.exitGame = "Exit";
+		CreateMenu();
+		break;
+
+	}
+
+
+
+}
+void Game::CreateMenu()
+{
+	menu.Draw();
+}
+void Game::DisplayDebugInfo()
+{
 	frameCount++;
 	if (FPSTimer.elapsed() >= 1.0f)
 	{
@@ -198,58 +291,25 @@ void Game::Tick(float deltaTime)
 
 #endif
 	// Convert from bytes to megabytes
-	double virtualMemUsedMB = virtualMemUsed / 1024.0 / 1024.0;
-	double physMemUsedMB = physMemUsed / 1024.0 / 1024.0;
+	const double virtualMemUsedMB = virtualMemUsed / 1024.0 / 1024.0;
+	const double physMemUsedMB = physMemUsed / 1024.0 / 1024.0;
 
 	ImGui::Text("Virt mem: %.2f MB", virtualMemUsedMB);
 	ImGui::Text("Phys mem: %.2f MB", physMemUsedMB);
-
-#endif
-	//TODO encapsulate camera init
-	if (f > 1)
-		f = 0;
-	camera->RotateMouse(rotateCam);
-	camera->MoveX(moveCam.x);
-	camera->MoveZ(moveCam.y);
-	fov -= yOffset;
-	if (fov < 1.0f)
-		fov = 1.0f;
-	if (fov > 45.0f)
-		fov = 45.0f;
-	yOffset = 0;
-
-
-	camera->Update(deltaTime);
-
-	perspective = glm::perspective(glm::radians(fov),
-		static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-		0.1f, 100.0f);
-
-	view = camera->GetViewMat();
-	lightManager->Draw();
-
-	//TODO make update loop for entities
-	tileLoader->Update(deltaTime);
-
-	player->Update(deltaTime);
-	player->FixedUpdate(deltaTime);
-
-
-	tileLoader->DrawChunks();
-	player->Draw();
-
-	//skybox
-	//simpleShader->Unbind();
-	//draw lighting
-
-
-	skybox.Draw();
-
-#ifdef __DEBUG__
 	world.RenderDebug();
+}
+
+void Game::Tick(float deltaTime)
+{
+
+	Update(deltaTime);
+	//displaying stuff
+#ifdef __DEBUG__
+	DisplayDebugInfo();
+
 #endif
 
-
+	Render();
 }
 
 void Game::Shutdown()

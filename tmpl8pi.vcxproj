@@ -214,7 +214,10 @@
     <ClCompile Include="src\Timer.cpp" />
     <ClCompile Include="src\Triangle.cpp" />
     <ClCompile Include="src\physics\World.cpp" />
+    <ClCompile Include="src\utilities\Button.cpp" />
+    <ClCompile Include="src\utilities\GameStateManager.cpp" />
     <ClCompile Include="src\utilities\MathLibrary.cpp" />
+    <ClCompile Include="src\utilities\Menu.cpp" />
     <ClCompile Include="src\utilities\RandomNames.cpp" />
     <ClCompile Include="template\EventArgs.cpp" />
     <ClCompile Include="template\opengl.cpp" />
@@ -560,7 +563,10 @@
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\physics\World.h" />
+    <ClInclude Include="src\utilities\Button.h" />
+    <ClInclude Include="src\utilities\GameStateManager.h" />
     <ClInclude Include="src\utilities\MathLibrary.h" />
+    <ClInclude Include="src\utilities\Menu.h" />
     <ClInclude Include="src\utilities\RandomNames.h" />
     <ClInclude Include="src\utilities\RandomNumberGenerator.h" />
     <ClInclude Include="template\Delegate.h" />
