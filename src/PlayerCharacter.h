@@ -31,6 +31,8 @@ public:
 	~PlayerCharacter();
 	void Die();
 	void SetUpModel();
+	void SetGravity();
+	void SetNoGravity();
 	void CheckForFall();
 	void Draw();
 	//void SetBoneTransform(uint Index, const Matrix4f& Transform);
@@ -71,7 +73,7 @@ private:
 	bool onGround = false;
 	float minX = -5.0f;
 	float maxX = 5.0f;
-
+	 btScalar gravity=0;
 	//voidEvent
 	VoidEvent onDeath;
 	SkinnedModel* playerModel;

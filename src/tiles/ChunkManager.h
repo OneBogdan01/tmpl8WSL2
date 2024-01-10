@@ -32,7 +32,7 @@ public:
 	{
 		return widthX;
 	}
-
+	static inline float changeRope = 0;
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
 
@@ -50,4 +50,5 @@ private:
 	glm::vec3 dir = {0.0f, 0.0f, 15.0f};
 	const float increaseSpeed = 0.1f;
 	glm::vec3 chunkOffset = glm::vec3(0.0f);
+
 };

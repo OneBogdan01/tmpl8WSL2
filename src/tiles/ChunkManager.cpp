@@ -194,6 +194,7 @@ void ChunkManager::Update(const float deltaTime)
 			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
 			if (randomIndex < NUMBER_OF_ACTIVE_CHUNKS)
 				randomIndex = NUMBER_OF_ACTIVE_CHUNKS;
+			chunk->ResetRopes();
 			swap(chunks[i], chunks[randomIndex]);
 			chunk = chunks[i];
 			//their original position

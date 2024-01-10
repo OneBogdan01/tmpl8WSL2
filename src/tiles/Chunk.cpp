@@ -111,6 +111,11 @@ void Chunk::ResetTiles()
 	position.z = -3.0f;
 
 }
+void Chunk::ResetRopes()
+{
+	DisableRope(0);
+
+}
 
 void Chunk::SetMaterialProperties()
 {
@@ -136,7 +141,7 @@ void Chunk::HideChunk()
 	}
 	for (auto& rope : ropes)
 	{
-		rope.initialPosition = (pos);
+		//rope.initialPosition = (pos);
 		rope.UpdatePhysicsPosition(pos);
 	}
 	activeCoins.clear();
@@ -163,6 +168,7 @@ void Chunk::DisableRope(const size_t index)
 {
 	glm::vec3 pos = glm::vec3(60.0f);
 	//offscreen
+	ropes[index].initialPosition = pos;
 	ropes[index].UpdatePhysicsPosition(pos);
 	activeRopes.erase(std::remove(activeRopes.begin(), activeRopes.end(), index), activeRopes.end());
 }
@@ -267,30 +273,29 @@ void Chunk::RandomizeChunk()
 		}
 		cout << endl;
 	}
-	uint maxRopeCount = ROPES_PER_CHUNK;
-	for (int i = h - 1; i >= 0 && maxRopeCount > 0; i--)
-	{
-		for (int j = w - 1; j >= 0 && maxRopeCount > 0; j--)
-		{
-			uint index = j + i * w;
-
-
-			if (tiles[index].GetId() != nullptr)
+	for (int i = TILES_PER_CHUNK-1 ; i >= TILES_PER_CHUNK - 2; i--) {
+		//if (indexObstacleOccupied[i] == 1)
+			if (tiles[i].GetId() != nullptr)
 			{
-				if (RandomNumberGenerator::RandomFloat() > .9f) {
-					maxRopeCount--;
+				if (RandomNumberGenerator::RandomFloat()+ChunkManager::changeRope > .9f) {
+
 					size_t indexRope = activeRopes.size();
-					glm::vec3 ropePos = tiles[index].initialPosition;
+					glm::vec3 ropePos = tiles[i].initialPosition;
 					ropePos.y = 26.0f;
 					ropes[indexRope].ChangePosition(ropePos);
 					std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
 					activeRopes.push_back(indexRope);
+					ChunkManager::changeRope = 0.0f;
+					break;
 
 				}
+				ChunkManager::changeRope += 0.1f;
 			}
-		}
 	}
 }
+
+
+
 
 void Chunk::Draw()
 {

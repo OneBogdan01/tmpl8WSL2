@@ -30,6 +30,7 @@ public:
 	void LoadObstacles(size_t index, const char* path, glm::vec3 pos);
 	void LoadProps(const char* coinPath, const char* obstaclePath);
 	void ResetTiles();
+	void ResetRopes();
 	Chunk();
 	btRigidBody* AddStaticRigidbody(const char* modelId, glm::vec3 initialPosition, glm::vec3& drawOffset);
 

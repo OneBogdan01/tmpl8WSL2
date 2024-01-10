@@ -35,12 +35,14 @@ RopeTrigger& Rope::GetCallback()
 Rope::Rope() :
 	Tile()
 {
+	timeToDisable = new Timer();
 	t = new Timer();
 }
 
 Rope::~Rope()
 {
 	delete t;
+	delete timeToDisable;
 }
 
 glm::vec3 Rope::DrawRope(const glm::vec3 a, float offsetX, btVector3 color)
@@ -120,6 +122,8 @@ glm::vec3* Rope::pGetMovingPart()
 }
 void Rope::ActivateMovement()
 {
+	if (shouldMove)
+		return;
 	shouldMove = true;
 	t->reset();
 }
@@ -138,7 +142,7 @@ void Rope::SimulateRope(float deltaTime)
 
 void Rope::Update(float deltaTime)
 {
-	//got helped for this formula from Lynn 230137
+	
 
 	if (!shouldMove)
 		return;
@@ -160,6 +164,8 @@ void Rope::DeactivateMovement()
 
 void Rope::Init(const char* path, const glm::vec3 pos, size_t index)
 {
+	startDisableing = false;
+
 	this->index = index;
 	callback = new RopeTrigger(GameObject::Rope, index);
 	callback->GetEvent().connect(&Rope::ActivateMovement, this);

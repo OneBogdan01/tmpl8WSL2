@@ -32,6 +32,26 @@ void PlayerCharacter::SetUpModel()
 	animator = new Animator(runAnimation);
 }
 
+void PlayerCharacter::SetGravity()
+{
+#ifdef _WINDOWS
+
+	characterController->setGravity(gravity);
+#else
+	characterController->setGravity(btVector3(0, -gravity, 0));
+#endif
+}
+
+void PlayerCharacter::SetNoGravity()
+{
+#ifdef _WINDOWS
+
+	characterController->setGravity(btScalar(0));
+#else
+	characterController->setGravity(btVector3(0, 0, 0));
+#endif
+}
+
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
 	onDeath.connect(&PlayerCharacter::Die, this);
@@ -41,7 +61,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 	ropetimer = new Timer();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
-		"assets/shaders/Skinned.frag");
+	                             "assets/shaders/Skinned.frag");
 
 	Game::lightManager->SetLightProperties(*animationShader);
 	animationShader->Bind();
@@ -57,8 +77,6 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	StaticModel staticPlayerMode("assets/Run.dae", true);
 
 
-
-
 	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 1.5f);
 	// Create a ghost object for collision detection
 	playerCharacterGhost = new btPairCachingGhostObject();
@@ -68,19 +86,13 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 	playerCharacterGhost->setUserPointer(playerCallback);
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
-#ifdef _WINDOWS
-
-	btScalar gravity = -dynamicsWorld->getGravity().getY() * 10;
-	characterController->setGravity(gravity);
-#else
-	characterController->setGravity(dynamicsWorld->getGravity() * 10);
-#endif
-
+	gravity = -dynamicsWorld->getGravity().getY() * 10;
+	SetGravity();
 	//makes the player fall on the edge of the platform
 	characterController->setMaxSlope(btScalar(0.0f));
 	//characterController->setStepHeight(btScalar(0.0f));
 	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-		btBroadphaseProxy::AllFilter);
+	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
 	characterController->setMaxJumpHeight(3.0f);
@@ -94,11 +106,11 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 
 PlayerCharacter::~PlayerCharacter()
 {
-	delete	animator;
+	delete animator;
 	delete runAnimation;
 	delete playerModel;
 	delete animationShader;
-	delete	ropetimer;
+	delete ropetimer;
 }
 
 
@@ -121,7 +133,8 @@ void PlayerCharacter::Draw()
 	animationShader->SetMat4x4("view", Game::camera->GetViewMat());
 	animationShader->SetMat4x4("projection", Game::camera->GetProjectionMat());
 	auto transforms = animator->GetFinalBoneMatrices();
-	for (int i = 0; i < transforms.size(); ++i) {
+	for (int i = 0; i < transforms.size(); ++i)
+	{
 		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
 
 		animationShader->SetMat4x4(path.c_str(), transforms[i]);
@@ -130,13 +143,12 @@ void PlayerCharacter::Draw()
 
 	// render the loaded model
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, position - glm::vec3(0, 1.5f, 0)); // translate it down so it's at the center of the scene
+	model = glm::translate(model, position - glm::vec3(0, 1.5f, 0));
+	// translate it down so it's at the center of the scene
 	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(3.f));	// it's a bit too big for our scene, so scale it down
+	model = glm::scale(model, glm::vec3(3.f)); // it's a bit too big for our scene, so scale it down
 	animationShader->SetMat4x4("model", model);
 	playerModel->Draw(*animationShader);
-
-
 }
 
 
@@ -147,7 +159,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{ 0.0f };
+	float mat4[16]{0.0f};
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -194,20 +206,27 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 
 	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
 	btVector3 currentPosition = currentTransform.getOrigin();
-	
-	if(swinging)
+
+	if (swinging)
 	{
-		if (ropetimer->elapsed() > 1.0f)
+		if (ropetimer->elapsed() > .5f)
 		{
 			swinging = false;
-		}//make bullet stop
-		currentTransform.setOrigin(currentPosition);
-		playerCharacterGhost->setWorldTransform(currentTransform);
-		characterController->setWalkDirection(btVector3(0, 0, 0));
-		characterController->setGravity(btScalar(0));
+			currentTransform.setOrigin(currentPosition);
 
+			playerCharacterGhost->setWorldTransform(currentTransform);
+			return;
+		} //make bullet stop
+
+		characterController->setWalkDirection(btVector3(0, 0, 0));
+		currentPosition.setY(ropeP->y);
+		currentTransform.setOrigin(currentPosition);
+
+
+		playerCharacterGhost->setWorldTransform(currentTransform);
 		return;
 	}
+	SetGravity();
 
 	if (dir != btVector3(0, 0, 0))
 	{
@@ -227,7 +246,6 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 	}
 
 
-
 	if (characterController->onGround())
 	{
 		onGround = true;
@@ -242,8 +260,6 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		currentPosition.setY(3.f);
 		characterController->warp(currentPosition);
 		characterController->jump();
-
-
 	}
 
 
@@ -261,8 +277,6 @@ void PlayerCharacter::Update(float deltaTime)
 	InterpolateFrames(deltaTime);
 	animator->UpdateAnimation(deltaTime);
 	MoveCharacter(deltaTime);
-
-
 }
 
 VoidEvent& PlayerCharacter::GetEvent()
@@ -272,7 +286,14 @@ VoidEvent& PlayerCharacter::GetEvent()
 
 void PlayerCharacter::SetRopeP(glm::vec3* _ropeP)
 {
+	SetNoGravity();
+	ropetimer->reset();
+	//std::cout<<ropetimer->elapsed()<<std::endl;
+	if (swinging)
+	{
+		return;
+	}
 	ropeP = _ropeP;
 	swinging = true;
-	ropetimer->reset();
+	//characterController->jump();
 }

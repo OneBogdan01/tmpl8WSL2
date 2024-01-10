@@ -59,7 +59,8 @@ private:
 	const float amp = 150.0f;
 	const int halfWidth = 3;
 	Timer* t = nullptr;
-
+	Timer* timeToDisable = nullptr;
+	bool startDisableing = false;
 	Line line;
 	float timeOffset = 0;
 	const float offset = 2.0f;
