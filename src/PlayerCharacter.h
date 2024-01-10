@@ -73,7 +73,7 @@ private:
 	bool onGround = false;
 	float minX = -5.0f;
 	float maxX = 5.0f;
-	 btScalar gravity=0;
+	 btScalar gravity=100;
 	//voidEvent
 	VoidEvent onDeath;
 	SkinnedModel* playerModel;

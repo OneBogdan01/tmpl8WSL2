@@ -343,6 +343,7 @@
     <ClInclude Include="src\utilities\Button.h" />
     <ClInclude Include="src\utilities\Menu.h" />
     <ClInclude Include="src\physics\RopeTrigger.h" />
+    <ClInclude Include="src\physics\CustomCollisionDispatcher.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -400,6 +401,7 @@
     <ClCompile Include="src\utilities\Button.cpp" />
     <ClCompile Include="src\utilities\Menu.cpp" />
     <ClCompile Include="src\physics\RopeTrigger.cpp" />
+    <ClCompile Include="src\physics\CustomCollisionDispatcher.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\BasicVertexShader.vert" />

@@ -19,6 +19,8 @@ subject to the following restrictions:
 #include <algorithm>
 #include <iterator>
 #include <stdio.h>
+
+#include "CustomCollisionDispatcher.h"
 #include "DebugRenderer.h"
 #include "GameObject.h"
 
@@ -70,7 +72,7 @@ void World::RemoveRigidBody(btRigidBody* rb)
 	// Make sure passed value is not null and that it exists in the vector.
 	if (rb)
 	{
-		auto iter{std::find(rigidBodies_.begin(), rigidBodies_.end(), rb)};
+		auto iter{ std::find(rigidBodies_.begin(), rigidBodies_.end(), rb) };
 
 		if (iter != rigidBodies_.end())
 		{
@@ -118,61 +120,28 @@ void World::RemoveRigidBody(btRigidBody* rb)
 //	return ID++;
 //}
 //
-//uint World::AddAModelRigidbody(const btVector3& startingPos, const std::vector<StaticMesh>& meshes, float scale)
-//{
-//	//btVector3 modelMin(FLT_MAX, FLT_MAX, FLT_MAX); // Initialize to positive infinity
-//	//btVector3 modelMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-//
-//
-//	////used as starting point for the model
-//	//btVector3 boxCenter = (modelMax + modelMin) * 0.5f;
-//
-//	//btVector3 boxHalfExtents = (modelMax - modelMin) * 0.5f;
-//
-//	//btBoxShape* colShape = new btBoxShape(boxHalfExtents);
-//
-//	btConvexHullShape* colShape = new btConvexHullShape();
-//
-//	for (const auto& mesh : meshes)
-//	{
-//		for (const auto& vertex : mesh.vertices)
-//		{
-//			btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
-//
-//
-//			colShape->addPoint(vertexVec);
-//		}
-//	}
-//
-//	colShape->setLocalScaling(btVector3(scale, scale, scale));
-//
-//
-//	collisionShapes.push_back(colShape);
-//
-//	/// Create Dynamic Objects
-//	btTransform startTransform;
-//	startTransform.setIdentity();
-//
-//	btScalar mass(0.f);
-//
-//	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-//	bool isDynamic = (mass != 0.f);
-//
-//	btVector3 localInertia(0, 0, 0);
-//	if (isDynamic)
-//		colShape->calculateLocalInertia(mass, localInertia);
-//
-//	startTransform.setOrigin(startingPos);
-//
-//
-//	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-//	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-//	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-//	btRigidBody* body = new btRigidBody(rbInfo);
-//
-//	dynamicsWorld->addRigidBody(body);
-//	return ID++;
-//}
+btConvexHullShape* World::CreateBoundingConvexModel(StaticMesh& mesh, float scale)
+{
+	btConvexHullShape* colShape = new btConvexHullShape();
+
+	for (const auto& vertex : mesh.vertices)
+	{
+		btVector3 vertexVec(vertex.Position.x, vertex.Position.y, vertex.Position.z);
+
+
+		colShape->addPoint(vertexVec);
+	}
+
+
+	colShape->setLocalScaling(btVector3(scale, scale, scale));
+
+
+
+	return colShape;
+
+
+
+}
 
 btBoxShape* World::CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale)
 {
@@ -276,7 +245,7 @@ void World::Init()
 
 	///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
 	///This thing is callback for collision detection
-	dispatcher = new btCollisionDispatcher(collisionConfiguration);
+	dispatcher = new CustomCollisionDispatcher(collisionConfiguration);
 
 	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 	overlappingPairCache = new btDbvtBroadphase();
@@ -287,7 +256,7 @@ void World::Init()
 	dynamicsWorld = new btDiscreteDynamicsWorld(
 		dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-	dynamicsWorld->setGravity(btVector3(0, -10, 0));
+	dynamicsWorld->setGravity(btVector3(0, -0, 0));
 
 	debugDrawer = new DebugRenderer();
 

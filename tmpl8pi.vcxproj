@@ -189,6 +189,7 @@
     <ClCompile Include="src\model_loading\ogldev_util.cpp" />
     <ClCompile Include="src\model_loading\SkinnedModel.cpp" />
     <ClCompile Include="src\physics\CoinTrigger.cpp" />
+    <ClCompile Include="src\physics\CustomCollisionDispatcher.cpp" />
     <ClCompile Include="src\physics\DebugRenderer.cpp" />
     <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="src\lighting\Sun.cpp" />
@@ -537,6 +538,7 @@
     <ClInclude Include="src\model_loading\ogldev_util.h" />
     <ClInclude Include="src\model_loading\SkinnedModel.h" />
     <ClInclude Include="src\physics\CoinTrigger.h" />
+    <ClInclude Include="src\physics\CustomCollisionDispatcher.h" />
     <ClInclude Include="src\physics\DebugRenderer.h" />
     <ClInclude Include="src\KeyboardManager.h" />
     <ClInclude Include="src\lighting\Sun.h" />

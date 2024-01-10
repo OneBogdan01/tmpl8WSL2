@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 
+#include "CustomCollisionDispatcher.h"
 #include "model_loading/StaticMesh.h"
 class DebugRenderer;
 //modified from Erik Cupark
@@ -23,6 +24,7 @@ public:
 
 
 	void RemoveRigidBody(btRigidBody* rb);
+	static btConvexHullShape* CreateBoundingConvexModel(StaticMesh& mesh, float scale);
 
 	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
 	static btCapsuleShape* CreateBoundingCapsuleModel(const std::vector<StaticMesh>& meshes, float scale);
@@ -38,7 +40,7 @@ private:
 	btDefaultCollisionConfiguration* collisionConfiguration;
 
 	///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-	btCollisionDispatcher* dispatcher;
+	CustomCollisionDispatcher* dispatcher;
 
 	///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 	btBroadphaseInterface* overlappingPairCache;

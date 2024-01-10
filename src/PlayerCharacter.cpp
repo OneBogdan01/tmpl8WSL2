@@ -86,7 +86,6 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 	playerCharacterGhost->setUserPointer(playerCallback);
 	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
-	gravity = -dynamicsWorld->getGravity().getY() * 10;
 	SetGravity();
 	//makes the player fall on the edge of the platform
 	characterController->setMaxSlope(btScalar(0.0f));
@@ -257,8 +256,6 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		onGround = false;
 		std::cout << "jump" << std::endl;
 		//TODO sometimes bullet gets stuck and does not jump here
-		currentPosition.setY(3.f);
-		characterController->warp(currentPosition);
 		characterController->jump();
 	}
 
