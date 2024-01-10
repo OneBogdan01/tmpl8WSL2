@@ -10,7 +10,8 @@ public:
 	void SeparatedFrom(GameObject* p_obj1) override;
 	~PlayerCollisions() override;
 	bool onGround = false;
-	
+	VoidEventVec3* onRope = nullptr;
+
 
 private:
 	VoidEvent* onHit=nullptr;

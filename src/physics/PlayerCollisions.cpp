@@ -1,10 +1,13 @@
 ﻿#include "PlayerCollisions.h"
 
+#include "RopeTrigger.h"
 
-PlayerCollisions::PlayerCollisions(ColliderType type, VoidEvent* ev):
+
+PlayerCollisions::PlayerCollisions(ColliderType type, VoidEvent* ev) :
 	GameObject(type)
 {
-		onHit = ev;
+	onHit = ev;
+	onRope = new VoidEventVec3();
 }
 
 
@@ -25,6 +28,15 @@ void PlayerCollisions::CollidedWith(GameObject* p_obj1)
 	else if (p_obj1->GetType() == Obstacle)
 	{
 		(*onHit)();
+		//std::cout << "Colliding with obstacle" << std::endl;
+	}
+	else if (p_obj1->GetType() == Rope)
+	{
+		auto* rope = dynamic_cast<RopeTrigger*>(p_obj1);
+		if (rope->ropeEnd != nullptr)
+		{
+			(*onRope)(rope->ropeEnd);
+		}
 		//std::cout << "Colliding with obstacle" << std::endl;
 	}
 }

@@ -6,17 +6,22 @@ RopeTrigger::RopeTrigger(ColliderType type, size_t index) : GameObject(type),
 {
 }
 
-VoidEventUInt& RopeTrigger::GetEvent()
+VoidEvent& RopeTrigger::GetEvent()
 {
 	return onCollect;
 }
+
+VoidEventUInt& RopeTrigger::GetEventDisable()
+{
+	return onDisable;
+}	
 
 void RopeTrigger::CollidedWith(GameObject* p_obj1)
 {
 	if (p_obj1->GetType() == Player)
 	{
 		std::cout << "Rope Triggered" << std::endl;
-		onCollect(index);
+		onCollect();
 	}
 }
 

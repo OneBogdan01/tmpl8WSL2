@@ -118,34 +118,61 @@ glm::vec3* Rope::pGetMovingPart()
 {
 	return &points[3];
 }
-
-void Rope::Update(float deltaTime)
+void Rope::ActivateMovement()
 {
-	//got helped for this formula from Lynn 230137
-	if (!shouldMove)
-		return;
+	shouldMove = true;
+	t->reset();
+}
+
+void Rope::SimulateRope(float deltaTime)
+{
 	points[0] = initialPosition;
 	for (int i = 1; i < 4; i++)
 	{
 		float timeElapsed = cosf(timeOffset + t->elapsed() * frq) * amp * deltaTime;
 		//TODO remove this when player is on it
-		//timeElapsed = 0;
+
 		points[i] = GetMovingPartAtTime(points[i - 1], timeElapsed * multipler[i - 1], len[i - 1] * lenMultiplier);
 	}
+}
+
+void Rope::Update(float deltaTime)
+{
+	//got helped for this formula from Lynn 230137
+
+	if (!shouldMove)
+		return;
+	SimulateRope(deltaTime);
+
+}
+void Rope::ChangePosition(const glm::vec3& pos)
+{
+	initialPosition = pos;
+	SimulateRope(0.f);
+	DeactivateMovement();
+}
+
+void Rope::DeactivateMovement()
+{
+	shouldMove = false;
 
 }
 
 void Rope::Init(const char* path, const glm::vec3 pos, size_t index)
 {
+	this->index = index;
 	callback = new RopeTrigger(GameObject::Rope, index);
-	timeOffset = 0;
+	callback->GetEvent().connect(&Rope::ActivateMovement, this);
+	//.GetEvent().connect(&Chunk::DisableRope, this);
+	timeOffset = PI / 2;
 	initialPosition = pos;
 	AddATriggerBox();
 	points[0] = pos;
 	totalLen = 0;
 	for (int i = 0; i < 3; i++)
 		totalLen += len[i];
-
+	DeactivateMovement();
+	callback->ropeEnd = &points[3];
 	//coll = Box{-vec2{totalLen * lenMultiplier, 0}, vec2{totalLen * lenMultiplier, totalLen * lenMultiplier}};
 }
 void Rope::AddATriggerBox()

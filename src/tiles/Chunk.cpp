@@ -81,7 +81,7 @@ void Chunk::LoadRopes(const size_t index, const char* path, const glm::vec3 pos)
 {
 
 	ropes[index].Init(path, pos, index);
-	ropes[index].GetCallback().GetEvent().connect(&Chunk::DisableRope, this);
+	ropes[index].GetCallback().GetEventDisable().connect(&Chunk::DisableRope, this);
 
 }
 
@@ -282,7 +282,7 @@ void Chunk::RandomizeChunk()
 					size_t indexRope = activeRopes.size();
 					glm::vec3 ropePos = tiles[index].initialPosition;
 					ropePos.y = 26.0f;
-					ropes[indexRope].initialPosition = ropePos;
+					ropes[indexRope].ChangePosition(ropePos);
 					std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
 					activeRopes.push_back(indexRope);
 
@@ -371,8 +371,6 @@ void Chunk::Draw()
 	}
 	for (auto& index : activeRopes)
 	{
-
-
 		ropes[index].Render(position);
 
 	}
@@ -400,10 +398,7 @@ void Chunk::Update(float deltaTime)
 	for (auto& index : activeRopes)
 	{
 		ropes[index].Update(deltaTime);
-
-
 	}
-	//UpdateRB();
 	for (auto& index : activeCoins)
 	{
 		coins[index].UpdatePhysicsPosition(position);

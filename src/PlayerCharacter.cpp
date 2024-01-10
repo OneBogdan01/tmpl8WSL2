@@ -37,8 +37,9 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	onDeath.connect(&PlayerCharacter::Die, this);
 	inputManager = &Game::GetInputManager();
 	playerCallback = new PlayerCollisions(GameObject::Player, &onDeath);
+	playerCallback->onRope->connect(&PlayerCharacter::SetRopeP, this);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
-
+	ropetimer = new Timer();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
 		"assets/shaders/Skinned.frag");
 
@@ -97,6 +98,7 @@ PlayerCharacter::~PlayerCharacter()
 	delete runAnimation;
 	delete playerModel;
 	delete animationShader;
+	delete	ropetimer;
 }
 
 
@@ -190,6 +192,23 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 {
 	CheckForFall();
 
+	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
+	btVector3 currentPosition = currentTransform.getOrigin();
+	
+	if(swinging)
+	{
+		if (ropetimer->elapsed() > 1.0f)
+		{
+			swinging = false;
+		}//make bullet stop
+		currentTransform.setOrigin(currentPosition);
+		playerCharacterGhost->setWorldTransform(currentTransform);
+		characterController->setWalkDirection(btVector3(0, 0, 0));
+		characterController->setGravity(btScalar(0));
+
+		return;
+	}
+
 	if (dir != btVector3(0, 0, 0))
 	{
 		if (characterController->onGround())
@@ -207,8 +226,7 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		characterController->setWalkDirection(btVector3(0, 0, 0));
 	}
 
-	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
-	btVector3 currentPosition = currentTransform.getOrigin();
+
 
 	if (characterController->onGround())
 	{
@@ -250,4 +268,11 @@ void PlayerCharacter::Update(float deltaTime)
 VoidEvent& PlayerCharacter::GetEvent()
 {
 	return onDeath;
+}
+
+void PlayerCharacter::SetRopeP(glm::vec3* _ropeP)
+{
+	ropeP = _ropeP;
+	swinging = true;
+	ropetimer->reset();
 }

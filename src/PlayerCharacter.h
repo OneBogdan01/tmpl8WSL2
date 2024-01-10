@@ -40,8 +40,10 @@ public:
 	void MoveCharacter(float deltaTime);
 	void Update(float deltaTime);
 	VoidEvent& GetEvent();
-
+	void SetRopeP(glm::vec3* ropeP);
 private:
+	glm::vec3* ropeP = nullptr;
+	bool swinging = false;
 	btPairCachingGhostObject* playerCharacterGhost = nullptr;
 	btKinematicCharacterController* characterController;
 
@@ -75,4 +77,5 @@ private:
 	SkinnedModel* playerModel;
 	Animation* runAnimation;
 	Animator* animator;
+	Timer* ropetimer = nullptr;
 };

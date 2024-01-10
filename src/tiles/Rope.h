@@ -33,12 +33,19 @@ public:
 	glm::vec3 GetMovingPart() const;
 
 	glm::vec3* pGetMovingPart();
+	void ActivateMovement();
+	void SimulateRope(float deltaTime);
 
 	void Update(float deltaTime);
 
+	void ChangePosition(const glm::vec3& pos);
+	void DeactivateMovement();
 
-	bool shouldMove = true;
+
+	bool shouldMove = false;
+	bool deactivate = false;
 private:
+	size_t index;
 	RopeTrigger* callback=nullptr;
 	btGhostObject* ghostObject = nullptr;
 
@@ -52,6 +59,7 @@ private:
 	const float amp = 150.0f;
 	const int halfWidth = 3;
 	Timer* t = nullptr;
+
 	Line line;
 	float timeOffset = 0;
 	const float offset = 2.0f;

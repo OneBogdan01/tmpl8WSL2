@@ -1,5 +1,7 @@
 ﻿#pragma once
+
 #include "Delegate.h"
+#include "glm/glm.hpp"
 
 // Base class for all event args.
 class EventArgs
@@ -14,3 +16,4 @@ public:
 using Event = Delegate<EventArgs&>;
 using VoidEvent = sig::signal<void()>;
 using VoidEventUInt = sig::signal<void(size_t)>;
+using VoidEventVec3 = sig::signal<void(glm::vec3*)>;
