@@ -4,10 +4,6 @@
 #include "Line.h"
 #include "Timer.h"
 #include "glm/fwd.hpp"
-#include "glm/fwd.hpp"
-#include "glm/fwd.hpp"
-#include "glm/fwd.hpp"
-#include "glm/fwd.hpp"
 
 #include "glm/vec2.hpp"
 #include "physics/RopeTrigger.h"

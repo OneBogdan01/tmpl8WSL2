@@ -96,7 +96,7 @@ namespace Tmpl8
 		inline static World world;
 		inline static LightManager* lightManager = nullptr;
 
-		ChunkManager* tileLoader = nullptr;
+		inline static ChunkManager* tileLoader = nullptr;
 		Sun sun;
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;

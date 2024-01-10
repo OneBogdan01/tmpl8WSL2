@@ -199,6 +199,8 @@ void ChunkManager::Update(const float deltaTime)
 			//their original position
 			chunk->ResetTiles();
 			chunk->RandomizeChunk();
+			if (endless)
+				dir.z += increaseSpeed;
 		}
 
 		chunk->Translate(newOffset);
@@ -216,6 +218,13 @@ void ChunkManager::Update(const float deltaTime)
 void ChunkManager::SetDirectionZ(float _dir)
 {
 	dir.z = _dir;
+}
+
+void ChunkManager::SetEndless(float _dir)
+{
+	SetDirectionZ(_dir);
+	endless = true;
+
 }
 
 void ChunkManager::ConvertCharToInt(const char* pch, uint& numberForm)

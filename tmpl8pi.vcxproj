@@ -199,6 +199,7 @@
     <ClCompile Include="src\physics\GroundCollision.cpp" />
     <ClCompile Include="src\physics\ObstacleTrigger.cpp" />
     <ClCompile Include="src\physics\PlayerCollisions.cpp" />
+    <ClCompile Include="src\physics\RopeTrigger.cpp" />
     <ClCompile Include="src\PlayerCharacter.cpp" />
     <ClCompile Include="src\skybox\Skybox.cpp" />
     <ClCompile Include="src\Texture.cpp" />
@@ -548,6 +549,7 @@
     <ClInclude Include="src\physics\GroundCollision.h" />
     <ClInclude Include="src\physics\ObstacleTrigger.h" />
     <ClInclude Include="src\physics\PlayerCollisions.h" />
+    <ClInclude Include="src\physics\RopeTrigger.h" />
     <ClInclude Include="src\PlayerCharacter.h" />
     <ClInclude Include="src\skybox\Skybox.h" />
     <ClInclude Include="src\Texture.h" />

@@ -21,7 +21,11 @@ public:
 	std::string dif1;
 	std::string dif2;
 	std::string dif3;
+	std::string endless;
 	void ResetButtons();
 
 private:
+	float difficultySpeed1 = 13.0f;
+	float difficultySpeed2 = 15.0f;
+	float difficultySpeed3 = 20.0f;
 };

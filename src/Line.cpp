@@ -38,8 +38,8 @@ void Line::DrawLine()
 	glm::mat4 model = glm::mat4(1.0f);
 	simpleShader->SetMat4x4("model", model);
 
-	glBufferData(GL_ARRAY_BUFFER, 2 * lines.size() * sizeof(lines), &lines[0],
-		GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, lines.size() * sizeof(LineInfo), &lines[0],
+	             GL_STATIC_DRAW);
 	//vertices
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
 	glEnableVertexAttribArray(0);

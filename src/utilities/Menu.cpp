@@ -5,6 +5,7 @@
 #include "game.h"
 #include "imgui.h"
 #include "template.h"
+#include "tiles/ChunkManager.h"
 
 void Menu::Init()
 {
@@ -39,7 +40,7 @@ void Menu::Draw()
 	// Window setup.
 
 
-	ImGui::SetNextWindowSize({CENTER_X, CENTER_Y});
+	ImGui::SetNextWindowSize({CENTER_X, CENTER_Y*1.5f});
 
 	ImVec2 position = {CENTER_X, CENTER_Y};
 	position.x -= CENTER_X / 2;
@@ -106,7 +107,8 @@ void Menu::Draw()
 					if (ImGui::Button(dif1.c_str(), buttonSize))
 					{
 						// Code you want to do when the button is clicked.
-						ChangeMenu(GameStateManager::PLAYING);;
+						ChangeMenu(GameStateManager::PLAYING);
+						Game::tileLoader->SetDirectionZ(difficultySpeed1);
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
@@ -115,6 +117,8 @@ void Menu::Draw()
 					{
 						// Code you want to do when the button is clicked.
 						ChangeMenu(GameStateManager::PLAYING);
+						Game::tileLoader->SetDirectionZ(difficultySpeed2);
+
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
@@ -122,6 +126,17 @@ void Menu::Draw()
 					if (ImGui::Button(dif3.c_str(), buttonSize))
 					{
 						ChangeMenu(GameStateManager::PLAYING);
+						Game::tileLoader->SetDirectionZ(difficultySpeed3);
+						;
+					}
+				ImGui::Dummy(gapSize);
+				ImGui::SetCursorPosX(offset);
+				if (endless.length() > 0)
+					if (ImGui::Button(endless.c_str(), buttonSize))
+					{
+						ChangeMenu(GameStateManager::PLAYING);
+						Game::tileLoader->SetEndless(difficultySpeed3);
+						
 					}
 				ImGui::Dummy(gapSize);
 
@@ -157,6 +172,7 @@ void Menu::ResetButtons()
 	exitGame = "";
 	//paused = "";
 	backToMainMenu = "";
+	endless = "";
 	dif1 = "";
 	dif2 = "";
 	dif3 = "";

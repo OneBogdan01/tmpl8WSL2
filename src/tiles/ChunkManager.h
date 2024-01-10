@@ -21,6 +21,7 @@ public:
 	void DrawChunks();
 	void Update(float deltaTime);
 	void SetDirectionZ(float _dir);
+	void SetEndless(float _dir);
 
 	static uint GetHeight()
 	{
@@ -41,11 +42,12 @@ private:
 	void ConvertCharToInt(const char* pch, uint& numberForm);
 	void ExtractWidthHeight(const char* csvRaw, uint& w, uint& h);
 	std::vector<std::string> tilePaths;
-
+	bool endless = false;
 	static inline uint widthX = 0;
 	static inline uint heightY = 0;
 	uint size = 0;
 	uint* tileArray = nullptr;
 	glm::vec3 dir = {0.0f, 0.0f, 15.0f};
+	const float increaseSpeed = 0.1f;
 	glm::vec3 chunkOffset = glm::vec3(0.0f);
 };

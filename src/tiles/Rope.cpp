@@ -12,7 +12,7 @@ void Rope::UpdatePhysicsPosition(glm::vec3 chunkPos)
 
 	btTransform newTransform = ghostObject->getWorldTransform();
 
-	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos)) );
+	newTransform.setOrigin(btVector3(GlmToBtVector3(chunkPos)));
 	ghostObject->setWorldTransform(newTransform);
 
 }
@@ -61,7 +61,7 @@ glm::vec3 Rope::DrawRope(const glm::vec3 a, float offsetX, btVector3 color)
 		line.StoreLine(btVector3(a.x + offsetX, startPoint.y, a.z + startPoint.x), btVector3(a.x + offsetX, point.y, a.z + point.x),
 			color);
 		if (i == resolution)
-			lastPoint = glm::vec3(point, 0);
+			lastPoint = glm::vec3(point.x, point.y, 0);
 		startPoint = glm::vec3(point.x, point.y, 0);
 	}
 	return lastPoint;
@@ -74,13 +74,10 @@ void Rope::Render(glm::vec3 position)
 
 	glm::vec3 a = initialPosition + position;
 
-	glm::vec3 endOfRope = DrawRope(a, -offset / 2, btVector3(1, 1, 0));;
+	const glm::vec3 endOfRope = DrawRope(a, -offset / 2, btVector3(1, 1, 0));;
 
-	glm::vec3  startinPoint = a;
-	endOfRope.z = a.z;
-	glm::vec3  endPoint = a;
 	line.DrawLine();
-	glm::vec3 end2 = DrawRope(a, offset, btVector3(0, 1, 0));
+	DrawRope(a, offset, btVector3(0, 1, 0));
 
 	line.DrawLine();
 	//draw the line in between
@@ -90,7 +87,7 @@ void Rope::Render(glm::vec3 position)
 
 	line.DrawLine();
 
-	UpdatePhysicsPosition(glm::vec3(a.x , endOfRope.y, a.z + endOfRope.x));
+	UpdatePhysicsPosition(glm::vec3(a.x, endOfRope.y, a.z + endOfRope.x));
 
 
 
@@ -108,8 +105,7 @@ glm::vec3 Rope::GetMovingPartAtTime(glm::vec3 startPoint, float timeElapsed, con
 {
 	const float x = sinf(timeElapsed) * leng;
 	const float y = -cosf(timeElapsed) * leng;
-	if (abs(x) >= 0.01f)
-		std::cout << "errror!!! " << x << " " << y << "\n";
+
 	return startPoint + glm::vec3{ x, y, 0 };
 }
 
@@ -133,7 +129,7 @@ void Rope::Update(float deltaTime)
 	{
 		float timeElapsed = cosf(timeOffset + t->elapsed() * frq) * amp * deltaTime;
 		//TODO remove this when player is on it
-		timeElapsed = 0;
+		//timeElapsed = 0;
 		points[i] = GetMovingPartAtTime(points[i - 1], timeElapsed * multipler[i - 1], len[i - 1] * lenMultiplier);
 	}
 
@@ -157,13 +153,13 @@ void Rope::AddATriggerBox()
 	//make a collision shape
 	// Create a collision shape (e.g., a box shape for a rectangular tile)
 
-	btBoxShape* tileShape = new btBoxShape(btVector3(1+offset/2, 1, 1));
+	btBoxShape* tileShape = new btBoxShape(btVector3(1 + offset / 2, 1, 1));
 
 	// Create a motion state
 	btTransform tileTransform;
 	tileTransform.setIdentity();
 	//drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
-	tileTransform.setOrigin(btVector3(initialPosition.x , initialPosition.y,
+	tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y,
 		initialPosition.z));
 
 

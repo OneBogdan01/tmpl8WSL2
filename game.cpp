@@ -229,6 +229,7 @@ void Game::Render()
 			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
 			menu.dif2 = "[Medium] " + RandomNames::GenerateRandomName();
 			menu.dif3 = "[Hard] " + RandomNames::GenerateRandomName();
+			menu.endless = "[Endless] " + RandomNames::GenerateRandomName();
 		}
 		
 		menu.exitGame = "Exit";

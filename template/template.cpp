@@ -680,7 +680,7 @@ void InitEGL()
 	//show window
 	deleteWindow = XInternAtom(x11Display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(x11Display, x11Window, &deleteWindow, 1);
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glCullFace(GL_BACK);
 }
 
@@ -762,6 +762,7 @@ int main(int argc, char* argv[])
 	io.DisplaySize.y = static_cast<float>(SCRHEIGHT); // Set to your actual height
 
 	glEnable(GL_CULL_FACE);
+
 	game = new Game();
 	game->Init();
 	while (!should_close)

@@ -72,6 +72,7 @@
     <ClCompile Include="src\utilities\GameStateManager.cpp" />
     <ClCompile Include="src\utilities\Button.cpp" />
     <ClCompile Include="src\utilities\Menu.cpp" />
+    <ClCompile Include="src\physics\RopeTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -427,6 +428,7 @@
     <ClInclude Include="src\utilities\GameStateManager.h" />
     <ClInclude Include="src\utilities\Button.h" />
     <ClInclude Include="src\utilities\Menu.h" />
+    <ClInclude Include="src\physics\RopeTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
