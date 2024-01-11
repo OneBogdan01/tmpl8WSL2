@@ -21,8 +21,8 @@ void ObstacleTile::ResetPosition()
 
 	newTransform.setOrigin(GetTileInitPosition());
 	ghostObject->setWorldTransform(newTransform);
-	for (auto& d : dynamicObjects)
-		d->setWorldTransform(newTransform);
+	/*for (auto& d : dynamicObjects)
+		d->setWorldTransform(newTransform);*/
 }
 
 glm::vec3 ObstacleTile::GetPosition() const
@@ -91,12 +91,12 @@ void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t inde
 
 	AddATriggerBox();
 
-	//also add on trigger dynamic collisions for the parts
-	for (auto& mesh : ModelTileFactory::GetInstance().GetModel(path)->GetMeshes()) {
+	////also add on trigger dynamic collisions for the parts
+	//for (auto& mesh : ModelTileFactory::GetInstance().GetModel(path)->GetMeshes()) {
 
-		AddADynamicObject(mesh);
+	//	AddADynamicObject(mesh);
 
-	}
+	//}
 }
 void ObstacleTile::AddADynamicObject(StaticMesh& mesh)
 {

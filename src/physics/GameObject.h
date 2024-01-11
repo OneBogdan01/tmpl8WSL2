@@ -11,6 +11,7 @@ public:
 		Coin,
 		Obstacle,
 		Player,
+		Whip,
 		Rope
 	};
 

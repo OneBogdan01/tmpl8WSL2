@@ -29,7 +29,7 @@ void Line::UnbindBuffers()
 	glBindVertexArray(0);
 }
 
-void Line::DrawLine()
+void Line::DrawLine(bool deleteLines)
 {
 	BindBuffers();
 	simpleShader->Bind();
@@ -39,7 +39,7 @@ void Line::DrawLine()
 	simpleShader->SetMat4x4("model", model);
 
 	glBufferData(GL_ARRAY_BUFFER, lines.size() * sizeof(LineInfo), &lines[0],
-	             GL_STATIC_DRAW);
+		GL_STATIC_DRAW);
 	//vertices
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(btVector3), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -52,7 +52,8 @@ void Line::DrawLine()
 
 
 	simpleShader->Unbind();
-	lines.clear();
+	if (deleteLines)
+		lines.clear();
 	UnbindBuffers();
 }
 
@@ -67,4 +68,9 @@ void Line::StoreLine(const btVector3& from, const btVector3& to, const btVector3
 
 
 	lines.emplace_back(info);
+}
+
+void Line::DeleteLines()
+{
+	lines.clear();
 }

@@ -11,9 +11,9 @@ public:
 	void BindBuffers() const;
 
 	void UnbindBuffers();
-	void DrawLine();
+	void DrawLine(bool deleteLines = true);
 	void StoreLine(const btVector3& from, const btVector3& to, const btVector3& _color);
-
+	void DeleteLines();
 private:
 	Shader* simpleShader = nullptr;
 	GLuint VAO, VBO;

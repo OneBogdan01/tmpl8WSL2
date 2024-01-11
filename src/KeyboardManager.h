@@ -67,6 +67,7 @@ enum Action
 	MoveBackward,
 
 	Jump,
+	Whip,
 	Quit,
 
 	Count,
@@ -119,6 +120,7 @@ private:
 
 	// Action / Jump
 	GLFW_KEY_SPACE,
+	GLFW_KEY_E,
 
 	// Exit
 	GLFW_KEY_ESCAPE,
@@ -143,7 +145,7 @@ private:
 
 		// Action / Jump
 		XK_space,
-
+		XK_e,
 		// Exit
 		XK_Escape,
 	};

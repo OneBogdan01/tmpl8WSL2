@@ -14,8 +14,11 @@
 
 //must be at the end to avoid linker errors
 #include "EventArgs.h"
+#include "Line.h"
 #include "animator/Animation.h"
 #include "animator/Animator.h"
+#include "model_loading/StaticModel.h"
+#include "physics/WhipTrigger.h"
 
 class KeyboardManager;
 
@@ -28,17 +31,24 @@ class PlayerCharacter
 public:
 	btTransform SetPositionTransform(const btVector3& startingPosition);
 	PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition);
+	void DrawRandomWhipLine();
+	void AddWhip();
+	void RemoveWhip();
+	void AddATriggerBox();
 	~PlayerCharacter();
 	void Die();
 	void SetUpModel();
 	void SetGravity();
 	void SetNoGravity();
+	void PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, btTransform playerTransform,
+		StaticModel staticPlayerMode);
 	void CheckForFall();
 	void Draw();
 	//void SetBoneTransform(uint Index, const Matrix4f& Transform);
 	glm::mat4 GetModelMatrix() const;
 	void InterpolateFrames(float deltaTime);
 	void HandleInput(float deltaTime);
+	void SetWhipPosition();
 	void MoveCharacter(float deltaTime);
 	void Update(float deltaTime);
 	VoidEvent& GetEvent();
@@ -48,6 +58,7 @@ private:
 	bool swinging = false;
 	btPairCachingGhostObject* playerCharacterGhost = nullptr;
 	btKinematicCharacterController* characterController;
+	btRigidBody* whipRB;
 
 	Shader* animationShader = nullptr;
 
@@ -66,6 +77,8 @@ private:
 	float interpolation = 0.0f;
 	int bufferIndex = 0;
 	PlayerCollisions* playerCallback = nullptr;
+	WhipTrigger* whipTrigger = nullptr;
+	glm::vec3 whipPosition = glm::vec3(0, 0, 10);
 	glm::vec3 position;
 	btTransform originalTransform;
 	KeyboardManager* inputManager = nullptr;
@@ -73,11 +86,14 @@ private:
 	bool onGround = false;
 	float minX = -5.0f;
 	float maxX = 5.0f;
-	 btScalar gravity=100;
+	btScalar gravity = 100;
 	//voidEvent
 	VoidEvent onDeath;
 	SkinnedModel* playerModel;
 	Animation* runAnimation;
 	Animator* animator;
 	Timer* ropetimer = nullptr;
+	Timer* whipTimer = nullptr;
+	bool whipping = false;
+	Line whipLine;
 };

@@ -7,6 +7,7 @@
 #include "model_loading/StaticModel.h"
 #include "physics/GameValues.h"
 #include "tiles/Chunk.h"
+#include "utilities/RandomNumberGenerator.h"
 
 
 btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosition)
@@ -52,16 +53,45 @@ void PlayerCharacter::SetNoGravity()
 #endif
 }
 
+void PlayerCharacter::PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, const btTransform playerTransform, StaticModel staticPlayerMode)
+{
+	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 1.5f);
+	// Create a ghost object for collision detection
+	playerCharacterGhost = new btPairCachingGhostObject();
+	playerCharacterGhost->setCollisionShape(collider);
+	playerCharacterGhost->setWorldTransform(playerTransform);
+	playerCharacterGhost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+	playerCharacterGhost->setUserPointer(playerCallback);
+	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
+	SetGravity();
+	//makes the player fall on the edge of the platform
+	characterController->setMaxSlope(btScalar(0.0f));
+	//characterController->setStepHeight(btScalar(0.0f));
+	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
+		btBroadphaseProxy::AllFilter);
+	dynamicsWorld->addAction(characterController);
+
+	characterController->setMaxJumpHeight(3.0f);
+	///set them sometime
+	characterController->setFallSpeed(50.0f);
+	characterController->setJumpSpeed(40.0f);
+	originalTransform = characterController->getGhostObject()->getWorldTransform();
+
+}
+
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
+
 	onDeath.connect(&PlayerCharacter::Die, this);
 	inputManager = &Game::GetInputManager();
 	playerCallback = new PlayerCollisions(GameObject::Player, &onDeath);
 	playerCallback->onRope->connect(&PlayerCharacter::SetRopeP, this);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 	ropetimer = new Timer();
+	whipTimer = new Timer();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
-	                             "assets/shaders/Skinned.frag");
+		"assets/shaders/Skinned.frag");
 
 	Game::lightManager->SetLightProperties(*animationShader);
 	animationShader->Bind();
@@ -77,32 +107,83 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	StaticModel staticPlayerMode("assets/Run.dae", true);
 
 
-	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 1.5f);
-	// Create a ghost object for collision detection
-	playerCharacterGhost = new btPairCachingGhostObject();
-	playerCharacterGhost->setCollisionShape(collider);
-	playerCharacterGhost->setWorldTransform(playerTransform);
-	playerCharacterGhost->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
-	dynamicsWorld->getBroadphase()->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
-	playerCharacterGhost->setUserPointer(playerCallback);
-	characterController = new btKinematicCharacterController(playerCharacterGhost, collider, 0.01f);
-	SetGravity();
-	//makes the player fall on the edge of the platform
-	characterController->setMaxSlope(btScalar(0.0f));
-	//characterController->setStepHeight(btScalar(0.0f));
-	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-	                                  btBroadphaseProxy::AllFilter);
-	dynamicsWorld->addAction(characterController);
+	PlayerCharacterSetUp(dynamicsWorld, playerTransform, staticPlayerMode);
+	whipTrigger = new WhipTrigger(GameObject::Whip);
+	AddATriggerBox();
 
-	characterController->setMaxJumpHeight(3.0f);
-	///set them sometime
-	characterController->setFallSpeed(50.0f);
-	characterController->setJumpSpeed(40.0f);
-
-
-	originalTransform = characterController->getGhostObject()->getWorldTransform();
 }
 
+void PlayerCharacter::DrawRandomWhipLine()
+{
+	btVector3 from = GlmToBtVector3(position);
+
+	for (int i = 0; i < 10; i++) {
+		float sign = RandomNumberGenerator::RandomFloat() > 0.5f ? 1.0f : -1.0f;
+		float randomCoodinate = RandomNumberGenerator::RandomFloat() * 3 * sign;
+		btVector3 nexPoint = btVector3(randomCoodinate + position.x, abs(randomCoodinate) + position.y, -i * 2);
+		whipLine.StoreLine(from, nexPoint, btVector3(1, 1, 1));
+		from = nexPoint;
+	}
+	
+}
+
+void PlayerCharacter::AddWhip()
+{
+	DrawRandomWhipLine();
+	Game::world.AddRigidBody(whipRB);
+	whipTimer->reset();
+	whipping = true;
+}
+void PlayerCharacter::RemoveWhip()
+{
+	whipLine.DeleteLines();
+	Game::world.RemoveRigidBody(whipRB);
+	whipping = false;
+}
+
+void PlayerCharacter::AddATriggerBox()
+{
+	//make a collision shape
+	// Create a collision shape (e.g., a box shape for a rectangular tile)
+	btBoxShape* tileShape = new btBoxShape(btVector3(1, 1, 5));
+
+	// Create a motion state
+	btTransform tileTransform;
+	tileTransform.setIdentity();
+	tileTransform.setOrigin(btVector3(whipPosition.x, whipPosition.y,
+		whipPosition.z));
+
+
+	//whipRB = new btGhostObject();
+	//whipRB->setWorldTransform(tileTransform);
+	//whipRB->setCollisionShape(tileShape);
+	//whipRB->setCollisionFlags(whipRB->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
+
+
+	//Game::world.AddTrigger(whipRB);
+
+
+	//make a collision shape
+
+	// Create a motion state
+
+	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
+
+	// Create a rigid body
+	btScalar mass = 0.0; // Mass 0 for static objects
+	btVector3 localInertia(0, 0, 0);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, tileMotionState, tileShape, localInertia);
+
+	whipRB = new btRigidBody(rbInfo);
+	//set it as kinamatic
+	whipRB->setCollisionFlags(whipRB->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+	whipRB->setActivationState(DISABLE_DEACTIVATION);
+
+	whipRB->setUserPointer(whipTrigger);
+
+	AddWhip();
+
+}
 PlayerCharacter::~PlayerCharacter()
 {
 	delete animator;
@@ -158,7 +239,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{0.0f};
+	float mat4[16]{ 0.0f };
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -196,8 +277,22 @@ void PlayerCharacter::HandleInput(float deltaTime)
 	dirX += inputManager->IsPressed(Action::MoveLeft) ? -1 : 0;
 	dirX += inputManager->IsPressed(Action::MoveRight) ? 1 : 0;
 	dir += btVector3(static_cast<float>(dirX), 0, 0);
+	if (!whipping && inputManager->IsPressed(Action::Whip))
+	{
+		AddWhip();
+	}
 }
 
+
+void PlayerCharacter::SetWhipPosition()
+{
+
+	btTransform newTransform;
+	whipRB->getMotionState()->getWorldTransform(newTransform);
+
+	newTransform.setOrigin(btVector3(position.x, position.y, position.z - 10));
+	whipRB->getMotionState()->setWorldTransform(newTransform);
+}
 
 void PlayerCharacter::MoveCharacter(float deltaTime)
 {
@@ -205,7 +300,18 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 
 	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
 	btVector3 currentPosition = currentTransform.getOrigin();
+	if (whipping) {
+		if (whipTimer->elapsed() > .15f)
+		{
+			RemoveWhip();
+		}
+		else
+		{
+			whipLine.DrawLine(false);
+			SetWhipPosition();
+		}
 
+	}
 	if (swinging)
 	{
 		if (ropetimer->elapsed() > .5f)

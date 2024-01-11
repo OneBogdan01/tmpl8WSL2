@@ -10,4 +10,5 @@ public:
 	}
 
 	bool needsCollision(const btCollisionObject* body0, const btCollisionObject* body1) override;
+	bool needsResponse(const btCollisionObject* body0, const btCollisionObject* body1) override;
 };
