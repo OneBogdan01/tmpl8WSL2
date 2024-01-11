@@ -74,6 +74,9 @@
     <ClCompile Include="src\utilities\Menu.cpp" />
     <ClCompile Include="src\physics\RopeTrigger.cpp" />
     <ClCompile Include="src\physics\CustomCollisionDispatcher.cpp" />
+    <ClCompile Include="src\physics\WhipTrigger.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrel.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrelsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -431,6 +434,9 @@
     <ClInclude Include="src\utilities\Menu.h" />
     <ClInclude Include="src\physics\RopeTrigger.h" />
     <ClInclude Include="src\physics\CustomCollisionDispatcher.h" />
+    <ClInclude Include="src\physics\WhipTrigger.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrel.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrelsFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -454,6 +460,13 @@
     <Image Include="assets\skybox\py.jpg" />
     <Image Include="assets\skybox\pz.jpg" />
     <Image Include="assets\textures\diffuse.jpg" />
+    <Image Include="assets\tiled\Textures\stonesPainted.png" />
+    <Image Include="assets\tiled\Textures\barrel.png" />
+    <Image Include="assets\tiled\Textures\bricks.png" />
+    <Image Include="assets\tiled\Textures\fence.png" />
+    <Image Include="assets\tiled\Textures\planks.png" />
+    <Image Include="assets\tiled\Textures\roof.png" />
+    <Image Include="assets\tiled\Textures\stones.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="external\glm\detail\func_common.inl" />
@@ -725,6 +738,12 @@
     <None Include="assets\tiled\castle\wallpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallpainthalf.ob" />
     <None Include="assets\Run.dae" />
+    <None Include="assets\shaders\ModelLoadingNoInstance.vert" />
+    <None Include="assets\tiled\part1.ob" />
+    <None Include="assets\tiled\part2.ob" />
+    <None Include="assets\tiled\part3.ob" />
+    <None Include="assets\tiled\part4.ob" />
+    <None Include="assets\tiled\detailbarrel.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

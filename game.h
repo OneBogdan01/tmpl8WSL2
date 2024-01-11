@@ -105,7 +105,7 @@ namespace Tmpl8
 		btVector3 startingPlayerPosition = { 0, 5, 0 };
 		inline static KeyboardManager inputManager;
 		inline static bool freeCam = false;
-		ExplodingBarrelsFactory* explodingBarrelsFactory = nullptr;
+		inline static ExplodingBarrelsFactory* explodingBarrelsFactory = nullptr;
 		Menu menu;
 		Button pauseButton;
 	};

@@ -79,7 +79,8 @@ void ObstacleTile::SetInitialPosition(const glm::vec3 pos)
 
 void ObstacleTile::CreateExplosion()
 {
-	ExplodingBarrelsFactory::CreateExplosion(GetPosition());
+	auto pos = GetPosition();
+	ExplodingBarrelsFactory::CreateExplosion(pos);
 }
 
 void ObstacleTile::SetCallback(btGhostObject* ghostObject)

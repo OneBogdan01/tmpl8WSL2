@@ -16,6 +16,6 @@ public:
 	void Update(float deltaTime);
 
 private:
-	static inline std::array<ExplodingBarrel*,7> barrels;
-	Shader* modelShader;
+	static inline std::array<ExplodingBarrel*, 7> barrels;
+	Shader* modelShader=nullptr;
 };

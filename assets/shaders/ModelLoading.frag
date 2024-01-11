@@ -30,15 +30,15 @@ struct PointLight {
 #define NR_POINT_LIGHTS 4  
 uniform PointLight pointLights[NR_POINT_LIGHTS];
 
-in  vec2 TexCoords;
-in  vec3 Normal;  
-in  vec3 FragPos; 
-in  vec3 Color; 
+in vec2 TexCoords;
+in vec3 Normal;  
+in vec3 FragPos; 
+in vec3 Color; 
 
 
 uniform Material material;
-uniform  vec3 viewPos;
-uniform  vec3 lightPos;  
+uniform vec3 viewPos;
+uniform vec3 lightPos;  
 
 out vec4 FragColor;
 

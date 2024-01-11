@@ -619,6 +619,13 @@
     <Image Include="assets\tiled\castle\Textures\roof.png" />
     <Image Include="assets\tiled\castle\Textures\stones.png" />
     <Image Include="assets\tiled\castle\Textures\stonesPainted.png" />
+    <Image Include="assets\tiled\Textures\barrel.png" />
+    <Image Include="assets\tiled\Textures\bricks.png" />
+    <Image Include="assets\tiled\Textures\fence.png" />
+    <Image Include="assets\tiled\Textures\planks.png" />
+    <Image Include="assets\tiled\Textures\roof.png" />
+    <Image Include="assets\tiled\Textures\stones.png" />
+    <Image Include="assets\tiled\Textures\stonesPainted.png" />
     <Image Include="assets\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -744,6 +751,7 @@
     <None Include="assets\tiled\castle\wallpaintgate.ob" />
     <None Include="assets\tiled\castle\wallpainthalf.mtl" />
     <None Include="assets\tiled\castle\wallpainthalf.ob" />
+    <None Include="assets\tiled\detailbarrel.mtl" />
     <None Include="assets\tiled\map.tmx" />
     <Resource Include="assets\tiled\Tiles.tsx">
       <DeploymentContent>true</DeploymentContent>
