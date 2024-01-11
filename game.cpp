@@ -20,6 +20,7 @@
 // -----------------------------------------------------------
 glm::mat4 Game::perspective;
 glm::mat4 Game::view;
+
 void Game::Init()
 {
 	menu.Init();
@@ -50,6 +51,7 @@ void Game::Init()
 	//	}
 	//	cout << endl;
 	//}
+	explodingBarrelsFactory = new ExplodingBarrelsFactory();
 }
 
 // -----------------------------------------------------------
@@ -153,7 +155,7 @@ void Game::Update(float deltaTime)
 
 		world.Update(deltaTime);
 
-		//TODO encapsulate camera init
+	//TODO encapsulate camera init
 		if (f > 1)
 			f = 0;
 		camera->RotateMouse(rotateCam);
@@ -170,16 +172,17 @@ void Game::Update(float deltaTime)
 		camera->Update(deltaTime);
 
 		perspective = glm::perspective(glm::radians(fov),
-			static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-			0.1f, 100.0f);
+		                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+		                               0.1f, 100.0f);
 
 		view = camera->GetViewMat();
 
 
-		//TODO make update loop for entities
+	//TODO make update loop for entities
 		tileLoader->Update(deltaTime);
 
 		player->Update(deltaTime);
+		explodingBarrelsFactory->Update(deltaTime);
 		break;
 	case GameStateManager::LOSE:
 		break;
@@ -189,25 +192,25 @@ void Game::Update(float deltaTime)
 		break;
 	default: break;
 	}
-
-
 }
+
 void Game::Render()
 {
 	switch (gameState.GetState())
 	{
-
 	case GameStateManager::LOSE:
 		break;
 	case GameStateManager::PLAYING:
 		lightManager->Draw();
 		tileLoader->DrawChunks();
 		player->Draw();
-		skybox.Draw();
+		explodingBarrelsFactory->Render();
+
 		ImGui::PushFont(menu.fontTitle);
 		pauseButton.Draw();
 
 		ImGui::PopFont();
+		skybox.Draw();
 
 		break;
 	case GameStateManager::PAUSE:
@@ -221,30 +224,29 @@ void Game::Render()
 		menu.exitGame = "Exit";
 		CreateMenu();
 		break;
-		//Erik Cupak made a guide about how to setup an imgui menu
+	//Erik Cupak made a guide about how to setup an imgui menu
 	case GameStateManager::START_MENU:
 		menu.menuTitle = "Endless Pink";
-		//menu.startGame = "Start Game";
-		if (menu.dif1.length() == 0) {
+	//menu.startGame = "Start Game";
+		if (menu.dif1.length() == 0)
+		{
 			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
 			menu.dif2 = "[Medium] " + RandomNames::GenerateRandomName();
 			menu.dif3 = "[Hard] " + RandomNames::GenerateRandomName();
 			menu.endless = "[Endless] " + RandomNames::GenerateRandomName();
 		}
-		
+
 		menu.exitGame = "Exit";
 		CreateMenu();
 		break;
-
 	}
-
-
-
 }
+
 void Game::CreateMenu()
 {
 	menu.Draw();
 }
+
 void Game::DisplayDebugInfo()
 {
 	frameCount++;
@@ -259,7 +261,7 @@ void Game::DisplayDebugInfo()
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-		camera->GetPosition().z);
+	            camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -267,7 +269,7 @@ void Game::DisplayDebugInfo()
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -302,7 +304,6 @@ void Game::DisplayDebugInfo()
 
 void Game::Tick(float deltaTime)
 {
-
 	Update(deltaTime);
 	//displaying stuff
 #ifdef __DEBUG__

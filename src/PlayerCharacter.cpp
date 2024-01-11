@@ -181,7 +181,7 @@ void PlayerCharacter::AddATriggerBox()
 
 	whipRB->setUserPointer(whipTrigger);
 
-	AddWhip();
+
 
 }
 PlayerCharacter::~PlayerCharacter()
@@ -277,7 +277,7 @@ void PlayerCharacter::HandleInput(float deltaTime)
 	dirX += inputManager->IsPressed(Action::MoveLeft) ? -1 : 0;
 	dirX += inputManager->IsPressed(Action::MoveRight) ? 1 : 0;
 	dir += btVector3(static_cast<float>(dirX), 0, 0);
-	if (!whipping && inputManager->IsPressed(Action::Whip))
+	if (!whipping && inputManager->IsJustPressed(Action::Whip))
 	{
 		AddWhip();
 	}

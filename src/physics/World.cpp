@@ -58,12 +58,18 @@ void World::Update(float deltaTime)
 	CheckForCollisionEvents();
 }
 
-void World::AddRigidBody(btRigidBody* rb)
+void World::AddRigidBody(btRigidBody* rb, short group, short mask)
 {
 	if (rb)
 	{
 		rigidBodies_.push_back(rb);
-		dynamicsWorld->addRigidBody(rb);
+		if (group > 0)
+			dynamicsWorld->addRigidBody(rb, group, mask);
+		else
+		{
+			dynamicsWorld->addRigidBody(rb);
+
+		}
 	}
 }
 
@@ -423,12 +429,8 @@ void World::CollisionEvent(const btRigidBody* pBody0, const btRigidBody* pBody1)
 	{
 		return;
 	}
-	int i;
-	// Tell each object that they have started to collide. Let them figure it out later.
-	if (pObj0->GetType() == GameObject::Whip && pObj1->GetType() == GameObject::Obstacle)
-		cout << "help'\n";
-	if (pObj0->GetType() == GameObject::Obstacle && pObj1->GetType() == GameObject::Whip)
-		cout << "help'\n";
+
+
 	pObj0->CollidedWith(pObj1);
 	pObj1->CollidedWith(pObj0);
 }

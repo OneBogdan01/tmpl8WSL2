@@ -152,6 +152,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="assets\shaders\ModelLoadingNoInstance.vert" />
     <ClInclude Include="external\bullet\btBulletCollisionCommon.h" />
     <ClInclude Include="external\bullet\btBulletDynamicsCommon.h" />
     <ClInclude Include="external\bullet\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
@@ -472,6 +473,8 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\tiles\Chunk.h" />
     <ClInclude Include="src\tiles\CoinTile.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrel.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrelsFactory.h" />
     <ClInclude Include="src\tiles\GroundTile.h" />
     <ClInclude Include="src\tiles\ModelTileFactory.h" />
     <ClInclude Include="src\tiles\ObstacleTile.h" />
@@ -536,6 +539,8 @@
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\tiles\Chunk.cpp" />
     <ClCompile Include="src\tiles\CoinTile.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrel.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrelsFactory.cpp" />
     <ClCompile Include="src\tiles\GroundTile.cpp" />
     <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
     <ClCompile Include="src\tiles\ObstacleTile.cpp" />

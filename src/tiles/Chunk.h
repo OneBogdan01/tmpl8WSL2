@@ -11,9 +11,6 @@
 #include "ObstacleTile.h"
 
 
-
-
-
 constexpr unsigned int TILES_PER_CHUNK = 18;
 constexpr unsigned int COINS_PER_CHUNK = 9;
 constexpr unsigned int OBSTACLES_PER_CHUNK = 6;
@@ -49,7 +46,6 @@ public:
 	void DisableRope(size_t index);
 
 private:
-
 	void SetMaterialProperties();
 	//pools of rigid bodies and triggers
 	//TODO do the same for the triggers

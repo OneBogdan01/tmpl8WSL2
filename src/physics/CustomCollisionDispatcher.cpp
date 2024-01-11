@@ -9,6 +9,7 @@ bool CustomCollisionDispatcher::needsCollision(const btCollisionObject* body0, c
 	bool isGhost1 = body0->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE;
 	bool isGhost2 = body1->getCollisionFlags() & btCollisionObject::CF_NO_CONTACT_RESPONSE;
 
+
 	return isKinmatic1 || isKinmatic2 || isGhost1 || isGhost2;
 }
 

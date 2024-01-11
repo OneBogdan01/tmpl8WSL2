@@ -345,6 +345,9 @@
     <ClInclude Include="src\physics\RopeTrigger.h" />
     <ClInclude Include="src\physics\CustomCollisionDispatcher.h" />
     <ClInclude Include="src\physics\WhipTrigger.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrel.h" />
+    <ClInclude Include="src\tiles\ExplodingBarrelsFactory.h" />
+    <ClInclude Include="assets\shaders\ModelLoadingNoInstance.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -404,6 +407,8 @@
     <ClCompile Include="src\physics\RopeTrigger.cpp" />
     <ClCompile Include="src\physics\CustomCollisionDispatcher.cpp" />
     <ClCompile Include="src\physics\WhipTrigger.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrel.cpp" />
+    <ClCompile Include="src\tiles\ExplodingBarrelsFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\BasicVertexShader.vert" />

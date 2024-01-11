@@ -306,7 +306,6 @@ void Chunk::Draw()
 	modelShader->SetMat4x4("view", Game::view);
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	modelShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	//draw rope
 
 
 	//draw ground

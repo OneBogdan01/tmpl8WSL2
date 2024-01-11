@@ -77,6 +77,11 @@ void ObstacleTile::SetInitialPosition(const glm::vec3 pos)
 	initialPosition = pos;
 }
 
+void ObstacleTile::CreateExplosion()
+{
+	ExplodingBarrelsFactory::CreateExplosion(GetPosition());
+}
+
 void ObstacleTile::SetCallback(btGhostObject* ghostObject)
 {
 	ghostObject->setUserPointer(obstacleCallback);
@@ -88,37 +93,8 @@ void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t inde
 	modelId = path;
 	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
 	obstacleCallback = new ObstacleTrigger(GameObject::Obstacle, index);
-
+	obstacleCallback->GetEventWhip().connect(&ObstacleTile::CreateExplosion, this);
 	AddATriggerBox();
 
-	////also add on trigger dynamic collisions for the parts
-	//for (auto& mesh : ModelTileFactory::GetInstance().GetModel(path)->GetMeshes()) {
-
-	//	AddADynamicObject(mesh);
-
-	//}
-}
-void ObstacleTile::AddADynamicObject(StaticMesh& mesh)
-{
-	ModelTileFactory& factory = ModelTileFactory::GetInstance();
-	// Create a collision shape for the dynamic object (e.g., a box shape)
-	btConvexHullShape* dynamicShape = World::CreateBoundingConvexModel(mesh, TILE_SIZE * 2);
-
-
-	// Create a motion state for the dynamic object
-	btTransform dynamicTransform;
-	dynamicTransform.setIdentity();
-	dynamicTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y, initialPosition.z));
-
-	// Create a rigid body for the dynamic object
-	btScalar mass = 1.0f;
-	btVector3 dynamicInertia(0.0f, 0.0f, 0.0f);
-	dynamicShape->calculateLocalInertia(mass, dynamicInertia);
-	dynamicObjects[index] = new btRigidBody(mass, nullptr, dynamicShape, dynamicInertia);
-	dynamicObjects[index]->setWorldTransform(dynamicTransform);
-	btVector3 gravity = btVector3(0, 0, 0);
-	dynamicObjects[index]->setGravity(gravity);
-	// Add the rigid body to the Bullet dynamics world
-	Game::world.AddRigidBody(dynamicObjects[index]);
-	index++;
+	
 }

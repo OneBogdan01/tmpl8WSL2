@@ -19,7 +19,7 @@ public:
 	void RenderDebug();
 	void Update(float deltaTime);
 
-	void AddRigidBody(btRigidBody* rb);
+	void AddRigidBody(btRigidBody* rb, short group=-1, short mask=-1);
 	void AddTrigger(btGhostObject* rb);
 
 

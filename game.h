@@ -14,6 +14,7 @@
 #include <animator/Animator.h>
 
 #include "imgui.h"
+#include "tiles/ExplodingBarrelsFactory.h"
 #include "utilities/Button.h"
 #include "utilities/GameStateManager.h"
 #include "utilities/Menu.h"
@@ -50,9 +51,9 @@ namespace Tmpl8
 		void KeyDown(int key);
 		void KeyUp(int key);
 #else
-        void KeyDown(XID key);
-        void KeyUp(XID key);
-       
+		void KeyDown(XID key);
+		void KeyUp(XID key);
+
 #endif
 
 
@@ -101,10 +102,10 @@ namespace Tmpl8
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
 		inline static GameStateManager gameState;
-		btVector3 startingPlayerPosition = {0, 5, 0};
+		btVector3 startingPlayerPosition = { 0, 5, 0 };
 		inline static KeyboardManager inputManager;
 		inline static bool freeCam = false;
-
+		ExplodingBarrelsFactory* explodingBarrelsFactory = nullptr;
 		Menu menu;
 		Button pauseButton;
 	};

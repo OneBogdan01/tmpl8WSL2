@@ -9,10 +9,12 @@ public:
 	
 
 	VoidEventUInt& GetEvent();
+	VoidEvent& GetEventWhip();
 	void CollidedWith(GameObject* p_obj1) override;
 	void SeparatedFrom(GameObject* p_obj1) override;
 
 private:
 	size_t index = 0;
 	VoidEventUInt onHit;
+	VoidEvent onWhip;
 };
