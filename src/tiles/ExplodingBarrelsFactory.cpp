@@ -1,5 +1,6 @@
 ﻿#include "ExplodingBarrelsFactory.h"
 
+#include "template.h"
 #include "game.h"
 
 ExplodingBarrelsFactory::ExplodingBarrelsFactory()

@@ -1,7 +1,7 @@
 mtllib detailbarrel.mtl
 
 g detailbarrel
-o detailbarrel_cell.003
+
 v 0.000000 0.088500 -0.123000
 v 0.000000 -0.000000 -0.100000
 v -0.060933 0.173822 0.055549

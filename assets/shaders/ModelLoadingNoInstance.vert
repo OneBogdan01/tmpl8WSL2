@@ -1,6 +1,4 @@
-﻿#version 310 es
-//from https://learnopengl.com/Lighting/Basic-Lighting
-precision highp float;
+#version 310 es
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;

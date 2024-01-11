@@ -78,7 +78,7 @@ void FixWorkingFolder()
 string TextFileRead(const char* _File)
 {
 	ifstream s(_File);
-	string str((istreambuf_iterator<char>(s)), istreambuf_iterator<char>());
+	string str((istreambuf_iterator(s)), istreambuf_iterator<char>());
 	s.close();
 	return str;
 }

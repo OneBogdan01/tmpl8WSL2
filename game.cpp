@@ -23,14 +23,17 @@ glm::mat4 Game::view;
 
 void Game::Init()
 {
+	world.Init();
+
 	menu.Init();
 	lightShader = new Shader(
 		"assets/shaders/BasicVertexShader.vert",
 		"assets/shaders/SolidColor.frag");
 	lightManager = new LightManager(lightShader);
+	explodingBarrelsFactory = new ExplodingBarrelsFactory();
+
 	//this gets random every run
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
-	world.Init();
 	tileLoader = new ChunkManager();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
 	tileLoader->Init();
@@ -51,7 +54,6 @@ void Game::Init()
 	//	}
 	//	cout << endl;
 	//}
-	explodingBarrelsFactory = new ExplodingBarrelsFactory();
 }
 
 // -----------------------------------------------------------
