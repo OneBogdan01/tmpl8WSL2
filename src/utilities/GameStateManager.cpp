@@ -31,6 +31,10 @@ void GameStateManager::SetState(GameState _state)
 	{
 		resetGame();
 	}
-	
+	if (_state == LOADING)
+	{
+		loadingGame();
+	}
+
 	state = _state;
 }

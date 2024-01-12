@@ -139,6 +139,8 @@ void Chunk::HideChunk()
 	for (auto& rope : ropes)
 	{
 		//rope.initialPosition = (pos);
+		rope.ChangePosition(pos);
+
 		rope.UpdatePhysicsPosition(pos);
 	}
 	activeCoins.clear();
@@ -181,7 +183,7 @@ void Chunk::RandomizeChunk()
 	float threshold = RandomNumberGenerator::RandomFloat() * 0.25f + .5f;
 	float rng = RandomNumberGenerator::RandomFloat() * 0.4f + .2f;
 	uint maxCoinCount = static_cast<float>(COINS_PER_CHUNK) * RandomNumberGenerator::RandomFloat();
-	cout << "Count:" << maxCoinCount << endl;
+	//cout << "Count:" << maxCoinCount << endl;
 	float x = RandomNumberGenerator::RandomFloat() * 512;
 	float y = RandomNumberGenerator::RandomFloat() * 512;
 	int indexObstacleOccupied[TILES_PER_CHUNK] = {0};
@@ -251,7 +253,7 @@ void Chunk::RandomizeChunk()
 			{
 				perlinVal += TILE_SIZE;
 			}
-			cout << perlinVal << " ";
+			//cout << perlinVal << " ";
 
 			if (rng > threshold)
 			{
@@ -268,20 +270,20 @@ void Chunk::RandomizeChunk()
 				threshold -= RandomNumberGenerator::RandomFloat() * 0.1f;
 			}
 		}
-		cout << endl;
+		//cout << endl;
 	}
 	for (int i = TILES_PER_CHUNK - 1; i >= TILES_PER_CHUNK - 2; i--)
 	{
 		//if (indexObstacleOccupied[i] == 1)
 		if (tiles[i].GetId() != nullptr)
 		{
-			if (RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope > .9f)
+			if (RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope > .1f)
 			{
 				size_t indexRope = activeRopes.size();
 				glm::vec3 ropePos = tiles[i].initialPosition;
 				ropePos.y = 26.0f;
 				ropes[indexRope].ChangePosition(ropePos);
-				std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
+				//std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
 				activeRopes.push_back(indexRope);
 				ChunkManager::changeRope = 0.0f;
 				break;
@@ -295,7 +297,7 @@ void Chunk::RandomizeChunk()
 void Chunk::Draw()
 {
 	const auto& groundFactory = ModelTileFactory::GetInstance();
-
+	Game::lightManager->SetLightPosition(*modelShader);
 	modelShader->Bind();
 	modelShader->SetMat4x4("projection", Game::perspective);
 	modelShader->SetMat4x4("view", Game::view);

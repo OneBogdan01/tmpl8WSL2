@@ -4,6 +4,7 @@
 #include "GameStateManager.h"
 #include "imgui.h"
 
+//most of this class is made by following Erik Cupark's guide
 class Menu
 {
 public:
@@ -13,6 +14,7 @@ public:
 	ImFont* fontTitle;
 	ImFont* fontBody;
 	std::string menuTitle;
+	std::string loadingText;
 	//button functionality
 	std::string startGame;
 	std::string exitGame;

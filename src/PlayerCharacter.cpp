@@ -21,7 +21,13 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
-	Game::GoToMainMenu();
+	std::cout << "Request to die'\n";
+
+	if (invincibility->elapsed() > 2.0f)
+	{
+		std::cout << "Player dies'\n";
+		Game::GoToMainMenu();
+	}
 }
 
 void PlayerCharacter::SetUpModel()
@@ -53,7 +59,8 @@ void PlayerCharacter::SetNoGravity()
 #endif
 }
 
-void PlayerCharacter::PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, const btTransform playerTransform, StaticModel staticPlayerMode)
+void PlayerCharacter::PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, const btTransform playerTransform,
+                                           StaticModel staticPlayerMode)
 {
 	btConvexShape* collider = World::CreateBoundingCapsuleModel(staticPlayerMode.GetMeshes(), 1.5f);
 	// Create a ghost object for collision detection
@@ -69,7 +76,7 @@ void PlayerCharacter::PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorl
 	characterController->setMaxSlope(btScalar(0.0f));
 	//characterController->setStepHeight(btScalar(0.0f));
 	dynamicsWorld->addCollisionObject(playerCharacterGhost, btBroadphaseProxy::CharacterFilter,
-		btBroadphaseProxy::AllFilter);
+	                                  btBroadphaseProxy::AllFilter);
 	dynamicsWorld->addAction(characterController);
 
 	characterController->setMaxJumpHeight(3.0f);
@@ -77,11 +84,11 @@ void PlayerCharacter::PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorl
 	characterController->setFallSpeed(50.0f);
 	characterController->setJumpSpeed(40.0f);
 	originalTransform = characterController->getGhostObject()->getWorldTransform();
-
 }
 
 PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const btVector3& startingPosition)
 {
+	invincibility = new Timer();
 
 	onDeath.connect(&PlayerCharacter::Die, this);
 	inputManager = &Game::GetInputManager();
@@ -91,7 +98,7 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	ropetimer = new Timer();
 	whipTimer = new Timer();
 	animationShader = new Shader("assets/shaders/Skinned.vert",
-		"assets/shaders/Skinned.frag");
+	                             "assets/shaders/Skinned.frag");
 
 	Game::lightManager->SetLightProperties(*animationShader);
 	animationShader->Bind();
@@ -110,30 +117,32 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	PlayerCharacterSetUp(dynamicsWorld, playerTransform, staticPlayerMode);
 	whipTrigger = new WhipTrigger(GameObject::Whip);
 	AddATriggerBox();
-
 }
 
 void PlayerCharacter::DrawRandomWhipLine()
 {
 	btVector3 from = GlmToBtVector3(position);
 
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++)
+	{
 		float sign = RandomNumberGenerator::RandomFloat() > 0.5f ? 1.0f : -1.0f;
 		float randomCoodinate = RandomNumberGenerator::RandomFloat() * 3 * sign;
 		btVector3 nexPoint = btVector3(randomCoodinate + position.x, abs(randomCoodinate) + position.y, -i * 2);
 		whipLine.StoreLine(from, nexPoint, btVector3(1, 1, 1));
 		from = nexPoint;
 	}
-
 }
 
 void PlayerCharacter::AddWhip()
 {
-	DrawRandomWhipLine();
 	Game::world.AddRigidBody(whipRB);
+	SetWhipPosition();
+	DrawRandomWhipLine();
+	whipLine.DrawLine(false);
 	whipTimer->reset();
 	whipping = true;
 }
+
 void PlayerCharacter::RemoveWhip()
 {
 	whipLine.DeleteLines();
@@ -151,7 +160,7 @@ void PlayerCharacter::AddATriggerBox()
 	btTransform tileTransform;
 	tileTransform.setIdentity();
 	tileTransform.setOrigin(btVector3(whipPosition.x, whipPosition.y,
-		whipPosition.z));
+	                                  whipPosition.z));
 
 
 	//whipRB = new btGhostObject();
@@ -180,10 +189,8 @@ void PlayerCharacter::AddATriggerBox()
 	whipRB->setActivationState(DISABLE_DEACTIVATION);
 
 	whipRB->setUserPointer(whipTrigger);
-
-
-
 }
+
 PlayerCharacter::~PlayerCharacter()
 {
 	delete animator;
@@ -198,10 +205,10 @@ void PlayerCharacter::CheckForFall()
 {
 	glm::mat4 posMat = GetModelMatrix();
 	position = glm::vec3(posMat[3]);
-	if (position.y < -1)
+	if (position.y < -2)
 	{
 		//die logic
-
+		std::cout << "Player fell\n";
 		onDeath();
 	}
 }
@@ -241,7 +248,7 @@ glm::mat4 PlayerCharacter::GetModelMatrix() const
 
 	btTransform trans;
 	values->getWorldTransform(trans);
-	float mat4[16]{ 0.0f };
+	float mat4[16]{0.0f};
 	trans.getOpenGLMatrix(mat4);
 	delete values;
 	return {
@@ -276,8 +283,10 @@ void PlayerCharacter::HandleInput(float deltaTime)
 {
 	dir = btVector3(0, 0, 0);
 	int dirX = 0;
+	//int dirY = 0;
 	dirX += inputManager->IsPressed(Action::MoveLeft) ? -1 : 0;
 	dirX += inputManager->IsPressed(Action::MoveRight) ? 1 : 0;
+	//dirY += inputManager->IsPressed(Action::MoveBackward) ? -1 : 0;
 	dir += btVector3(static_cast<float>(dirX), 0, 0);
 	if (!whipping && inputManager->IsJustPressed(Action::Whip))
 	{
@@ -288,35 +297,40 @@ void PlayerCharacter::HandleInput(float deltaTime)
 
 void PlayerCharacter::SetWhipPosition()
 {
+	btTransform newTransform = whipRB->getWorldTransform();
 
-	btTransform newTransform;
-	whipRB->getMotionState()->getWorldTransform(newTransform);
 
 	newTransform.setOrigin(btVector3(position.x, position.y, position.z - 10));
+
 	whipRB->getMotionState()->setWorldTransform(newTransform);
+	whipRB->setWorldTransform(newTransform);
 }
+
 void PlayerCharacter::ResetPosition()
 {
+	invincibility->reset();
+	characterController->warp(originalTransform.getOrigin());
 	playerCharacterGhost->setWorldTransform(originalTransform);
-
 }
+
 void PlayerCharacter::MoveCharacter(float deltaTime)
 {
 	CheckForFall();
 
 	btTransform currentTransform = playerCharacterGhost->getWorldTransform();
 	btVector3 currentPosition = currentTransform.getOrigin();
-	if (whipping) {
+	if (whipping)
+	{
 		if (whipTimer->elapsed() > .15f)
 		{
 			RemoveWhip();
 		}
 		else
 		{
-			whipLine.DrawLine(false);
 			SetWhipPosition();
-		}
 
+			whipLine.DrawLine(false);
+		}
 	}
 	if (swinging)
 	{
@@ -337,18 +351,26 @@ void PlayerCharacter::MoveCharacter(float deltaTime)
 		playerCharacterGhost->setWorldTransform(currentTransform);
 		return;
 	}
+
 	SetGravity();
+
 
 	if (dir != btVector3(0, 0, 0))
 	{
+		float tempSpeed = 0;
+
+
 		if (characterController->onGround())
 		{
-			characterController->setWalkDirection(btVector3(dir).normalized() * speed * deltaTime);
+			tempSpeed += speed;
+			characterController->setWalkDirection(btVector3(dir).normalized() * tempSpeed * deltaTime);
 		}
 		else
 		{
 			//maybe slower
-			characterController->setWalkDirection(btVector3(dir).normalized() * jumpSpeed * deltaTime);
+			tempSpeed += jumpSpeed;
+
+			characterController->setWalkDirection(btVector3(dir).normalized() * tempSpeed * deltaTime);
 		}
 	}
 	else
@@ -386,6 +408,17 @@ void PlayerCharacter::Update(float deltaTime)
 	InterpolateFrames(deltaTime);
 	animator->UpdateAnimation(deltaTime);
 	MoveCharacter(deltaTime);
+	Game::lightManager->SetPositionPointLight(0, position);
+	glm::vec3 whipPos;
+	if (whipping)
+	{
+		whipPos = glm::vec3(position.x, position.y, position.z - 10 - whipTimer->elapsed() * 100);
+	}
+	else
+	{
+		whipPos = glm::vec3(position.x, position.y, position.z + 30);
+	}
+	Game::lightManager->SetPositionPointLight(1, whipPos);
 }
 
 VoidEvent& PlayerCharacter::GetEvent()

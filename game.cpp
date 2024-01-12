@@ -47,6 +47,7 @@ void Game::Init()
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
 	gameState.resetGame.connect(&Game::ResetState, this);
+	gameState.loadingGame.connect(&Game::LoadingGame, this);
 
 
 	//loading stuff
@@ -218,14 +219,25 @@ void Game::Update(float deltaTime)
 	case GameStateManager::LOADING:
 		UpdateCam(deltaTime);
 		menu.menuTitle = "Loading...";
-		CreateMenu();
 
 
 		currentProgress = MathLibrary::InvLerp(0, 100, currentTasks);
-		std::cout << currentProgress << "\n";
+		char buffer[256]; // Adjust the buffer size accordingly
+		std::sprintf(buffer, "%.2f", currentProgress * 100.0f);
+
+	// Store the formatted string in a std::string
+		std::string formattedString(buffer);
+		menu.loadingText = formattedString;
+
+		CreateMenu();
 
 		if (currentProgress >= 1.0f)
+		{
+			currentProgress = 0;
+			currentProgress = 0;
+			menu.loadingText = "";
 			gameState.SetState(GameStateManager::PLAYING);
+		}
 		else
 		{
 			currentTasks++;
@@ -246,9 +258,12 @@ void Game::Update(float deltaTime)
 
 void Game::ResetState()
 {
+	std::cout << "Reseting '\n";
 	player->ResetPosition();
 	tileLoader->Reset();
 	explodingBarrelsFactory->ResetState();
+	currentTasks = 0;
+	currentProgress = 0;
 }
 
 void Game::Render()
@@ -343,7 +358,7 @@ void Game::DisplayDebugInfo()
 		FPSTimer.reset();
 	}
 
-
+	ImGui::Begin("info");
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
@@ -385,6 +400,8 @@ void Game::DisplayDebugInfo()
 
 	ImGui::Text("Virt mem: %.2f MB", virtualMemUsedMB);
 	ImGui::Text("Phys mem: %.2f MB", physMemUsedMB);
+	ImGui::End();
+
 	world.RenderDebug();
 }
 
@@ -450,4 +467,6 @@ void Game::MouseMove(int x, int y)
 
 void Game::LoadingGame()
 {
+	std::cout << "Loading game\n";
+	currentTasks = 0;
 }

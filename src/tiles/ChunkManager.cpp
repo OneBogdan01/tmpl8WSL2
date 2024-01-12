@@ -85,7 +85,7 @@ void ChunkManager::Init()
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
 
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-			static_cast<float>(heightY - 1) * TILE_SIZE);
+		                             static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 
 		//load Tiles
@@ -97,7 +97,7 @@ void ChunkManager::Init()
 				uint modelIndex = tileArray[index];
 
 				glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-					static_cast<float>(i) * TILE_SIZE)
+				                               static_cast<float>(i) * TILE_SIZE)
 					- offset;
 				glm::vec3 coinPos = glm::vec3(0);
 				if (modelIndex) //index !=0
@@ -116,7 +116,6 @@ void ChunkManager::Init()
 				{
 					coinPos.y += TILE_SIZE * 2;
 				}
-
 			}
 		}
 		chunk->LoadProps(tilePaths[COINS_INDEX].c_str(), tilePaths[OBSTACLE_INDEX].c_str());
@@ -132,7 +131,6 @@ void ChunkManager::Init()
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
-	
 }
 
 void ChunkManager::DrawChunks()
@@ -157,7 +155,6 @@ void ChunkManager::Update(const float deltaTime)
 		//this chunk needs to be disabled graphics wise
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 		{
-		
 			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 1);
 
 
@@ -179,7 +176,6 @@ void ChunkManager::Update(const float deltaTime)
 		if (chunk->GetPosition().z > -3.0f)
 		{
 			chunk->UpdateRB();
-
 		}
 
 		chunk->Update(deltaTime);
@@ -195,11 +191,14 @@ void ChunkManager::SetEndless(float _dir)
 {
 	SetDirectionZ(_dir);
 	endless = true;
-
 }
 
 void ChunkManager::Reset()
 {
+	for (auto& chunk : chunks)
+	{
+		chunk->HideChunk();
+	}
 	//randomize order
 	// Create a random device
 	std::random_device rd;
@@ -211,21 +210,23 @@ void ChunkManager::Reset()
 	{
 		if (chunks[i] == firstChunk)
 		{
-
 			swap(chunks[0], chunks[i]);
 			chunks[0]->HideChunk();
 			break;
+		}
+		else
+		{
+			chunks[i]->RandomizeChunk();
 		}
 	}
 	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		Chunk* chunk = chunks[k];
 
-		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
+		if (k < NUMBER_OF_ACTIVE_CHUNKS)
+		{
 			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
 			chunk->SetPosition(chunkOff - glm::vec3(0, 0, 3.0f));
-
-
 		}
 		else
 		{

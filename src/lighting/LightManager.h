@@ -8,8 +8,10 @@ class LightManager
 {
 public:
 	void SetLightProperties(Shader& shader);
+	void SetLightPosition(Shader& shader);
 
 	LightManager(Shader* lightShader);
+	void SetPositionPointLight(size_t index, glm::vec3& pos);
 	void Draw();
 
 	glm::vec3 GetSunDir() const;

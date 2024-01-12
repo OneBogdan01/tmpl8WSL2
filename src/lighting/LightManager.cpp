@@ -1,6 +1,8 @@
 ﻿#include "LightManager.h"
 
 #include "game.h"
+#include "animator/Animation.h"
+#include "animator/Animation.h"
 
 void LightManager::SetLightProperties(Shader& shader)
 {
@@ -14,6 +16,16 @@ void LightManager::SetLightProperties(Shader& shader)
 	shader.Unbind();
 }
 
+void LightManager::SetLightPosition(Shader& shader)
+{
+	shader.Bind();
+	for (int i = 0; i < MAX_POINT_LIGHTS; i++)
+	{
+		pointLights[i].SetPosition(shader, i);
+	}
+	shader.Unbind();
+}
+
 LightManager::LightManager(Shader* lightShader) :
 	lightShader(lightShader), pointLights{}, lightMesh()
 {
@@ -21,10 +33,15 @@ LightManager::LightManager(Shader* lightShader) :
 	{
 		PointLight& pointLight = pointLights[i];
 		//some random colors for now
-		pointLight.position = glm::vec3(i * 3.0f - 3.0f, 6.0f, 0.0f);
+		pointLight.position = glm::vec3(i * 3.0f - 3.0f, 6.0f, 20.0f);
 		pointLight.diffuse = (glm::vec3(i * .2, 0.0f, (4 - i) * .2));
 	}
 	lightMesh.Init();
+}
+
+void LightManager::SetPositionPointLight(size_t index, glm::vec3& pos)
+{
+	pointLights[index].position = pos;
 }
 
 void LightManager::Draw()

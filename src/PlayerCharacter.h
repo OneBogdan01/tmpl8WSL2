@@ -41,7 +41,7 @@ public:
 	void SetGravity();
 	void SetNoGravity();
 	void PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, btTransform playerTransform,
-		StaticModel staticPlayerMode);
+	                          StaticModel staticPlayerMode);
 	void CheckForFall();
 	void Draw();
 	//void SetBoneTransform(uint Index, const Matrix4f& Transform);
@@ -54,6 +54,7 @@ public:
 	void Update(float deltaTime);
 	VoidEvent& GetEvent();
 	void SetRopeP(glm::vec3* ropeP);
+
 private:
 	glm::vec3* ropeP = nullptr;
 	bool swinging = false;
@@ -95,6 +96,7 @@ private:
 	Animator* animator;
 	Timer* ropetimer = nullptr;
 	Timer* whipTimer = nullptr;
+	Timer* invincibility = nullptr;
 	bool whipping = false;
 	Line whipLine;
 };

@@ -5,6 +5,13 @@
 
 #include "template.h"
 
+void PointLight::SetPosition(Shader& lightingShader, size_t index)
+{
+	std::string str = "pointLights[" + std::to_string(index) + "].";
+
+	lightingShader.SetVec3((str + "position").c_str(), position);
+}
+
 void PointLight::SetLightProperties(Shader& lightingShader, size_t index)
 {
 	std::string str = "pointLights[" + std::to_string(index) + "].";
@@ -13,9 +20,9 @@ void PointLight::SetLightProperties(Shader& lightingShader, size_t index)
 	lightingShader.SetFloat((str + "quadratic").c_str(), quadratic);
 
 	lightingShader.SetVec3((str + "ambient").c_str(), ambient);
-	lightingShader.SetVec3((str + "diffuse").c_str(), diffuse); // darken diffuse light a bit
+	lightingShader.SetVec3((str + "diffuse").c_str(), diffuse * glm::vec3(5)); // darken diffuse light a bit
 	lightingShader.SetVec3((str + "specular").c_str(), specular);
-	lightingShader.SetVec3((str + "position").c_str(), position);
+	SetPosition(lightingShader, index);
 }
 
 

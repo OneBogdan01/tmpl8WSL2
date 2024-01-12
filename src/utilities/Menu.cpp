@@ -19,7 +19,6 @@ void Menu::Init()
 
 void Menu::ChangeMenu(GameStateManager::GameState state)
 {
-	
 	Game::gameState.SetState(state);
 	ResetButtons();
 }
@@ -41,7 +40,7 @@ void Menu::Draw()
 	// Window setup.
 
 
-	ImGui::SetNextWindowSize({CENTER_X, CENTER_Y*1.5f});
+	ImGui::SetNextWindowSize({CENTER_X, CENTER_Y * 1.5f});
 
 	ImVec2 position = {CENTER_X, CENTER_Y};
 	position.x -= CENTER_X / 2;
@@ -103,6 +102,14 @@ void Menu::Draw()
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
+				if (loadingText.length() > 0)
+				{
+					ImGui::SetWindowFontScale(3.f); //
+					ImGui::Text(loadingText.c_str());
+					ImGui::SetWindowFontScale(1); //
+				}
+				ImGui::Dummy(gapSize);
+				ImGui::SetCursorPosX(offset);
 
 				if (dif1.length() > 0)
 					if (ImGui::Button(dif1.c_str(), buttonSize))
@@ -119,7 +126,6 @@ void Menu::Draw()
 						// Code you want to do when the button is clicked.
 						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed2);
-
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
@@ -128,7 +134,6 @@ void Menu::Draw()
 					{
 						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed3);
-						
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
@@ -137,7 +142,6 @@ void Menu::Draw()
 					{
 						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetEndless(difficultySpeed3);
-						
 					}
 				ImGui::Dummy(gapSize);
 
@@ -169,6 +173,7 @@ void Menu::Draw()
 
 void Menu::ResetButtons()
 {
+	loadingText = "";
 	menuTitle = "";
 	startGame = "";
 	exitGame = "";

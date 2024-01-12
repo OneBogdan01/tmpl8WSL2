@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <xstring>
+
 #include "glm/vec3.hpp"
 
 
@@ -7,6 +9,7 @@ class Shader;
 class PointLight
 {
 public:
+	void SetPosition(Shader& lightingShader, size_t index);
 	void SetLightProperties(Shader& lightingShader, size_t index);
 
 

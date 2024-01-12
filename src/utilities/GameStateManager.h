@@ -18,6 +18,7 @@ public:
 
 	void SetState(GameState _state);
 	VoidEvent resetGame;
+	VoidEvent loadingGame;
 
 private:
 	GameState state = START_MENU;
