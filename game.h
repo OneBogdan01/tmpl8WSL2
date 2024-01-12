@@ -39,6 +39,7 @@ namespace Tmpl8
 	public:
 		// game flow methods
 		void Init();
+		static void GoToMainMenu();
 		void Update(float deltaTime);
 		void ResetState();
 		void Render();

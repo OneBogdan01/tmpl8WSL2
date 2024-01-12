@@ -23,7 +23,7 @@ glm::mat4 Game::view;
 
 void Game::Init()
 {
-	
+
 	world.Init();
 
 	menu.Init();
@@ -47,6 +47,8 @@ void Game::Init()
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
 	gameState.stateChanged.connect(&Game::ResetState, this);
+
+
 	////random names test
 	//for (int j = 0; j < 100; j++) {
 	//	for (int i = 0; i < 4; i++) {
@@ -61,7 +63,10 @@ void Game::Init()
 // Main application tick function
 // -----------------------------------------------------------
 
-
+void Game::GoToMainMenu()
+{
+	gameState.SetState(GameStateManager::START_MENU);
+}
 float mixing = .2f;
 
 glm::vec3 position = glm::vec3(0);
@@ -158,7 +163,7 @@ void Game::Update(float deltaTime)
 
 		world.Update(deltaTime);
 
-	//TODO encapsulate camera init
+		//TODO encapsulate camera init
 		if (f > 1)
 			f = 0;
 		camera->RotateMouse(rotateCam);
@@ -175,13 +180,13 @@ void Game::Update(float deltaTime)
 		camera->Update(deltaTime);
 
 		perspective = glm::perspective(glm::radians(fov),
-		                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-		                               0.1f, 100.0f);
+			static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+			0.1f, 100.0f);
 
 		view = camera->GetViewMat();
 
 
-	//TODO make update loop for entities
+		//TODO make update loop for entities
 		tileLoader->Update(deltaTime);
 
 		player->Update(deltaTime);
@@ -237,10 +242,10 @@ void Game::Render()
 		menu.exitGame = "Exit";
 		CreateMenu();
 		break;
-	//Erik Cupak made a guide about how to setup an imgui menu
+		//Erik Cupak made a guide about how to setup an imgui menu
 	case GameStateManager::START_MENU:
 		menu.menuTitle = "Endless Pink";
-	//menu.startGame = "Start Game";
+		//menu.startGame = "Start Game";
 		if (menu.dif1.length() == 0)
 		{
 			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
@@ -274,7 +279,7 @@ void Game::DisplayDebugInfo()
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-	            camera->GetPosition().z);
+		camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -282,7 +287,7 @@ void Game::DisplayDebugInfo()
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 

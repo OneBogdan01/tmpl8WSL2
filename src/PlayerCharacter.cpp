@@ -21,7 +21,7 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
-	playerCharacterGhost->setWorldTransform(originalTransform);
+	Game::GoToMainMenu();
 }
 
 void PlayerCharacter::SetUpModel()
@@ -196,7 +196,9 @@ PlayerCharacter::~PlayerCharacter()
 
 void PlayerCharacter::CheckForFall()
 {
-	if (position.y < 0)
+	glm::mat4 posMat = GetModelMatrix();
+	position = glm::vec3(posMat[3]);
+	if (position.y < -1)
 	{
 		//die logic
 
@@ -295,9 +297,8 @@ void PlayerCharacter::SetWhipPosition()
 }
 void PlayerCharacter::ResetPosition()
 {
-	characterController->setWalkDirection(btVector3(0, 0, 0));
-	SetGravity();
-	characterController->warp(btVector3(0, 0, 0));
+	playerCharacterGhost->setWorldTransform(originalTransform);
+
 }
 void PlayerCharacter::MoveCharacter(float deltaTime)
 {
