@@ -37,7 +37,6 @@ void Game::Init()
 	RandomNumberGenerator::seed = RandomNumberGenerator::InitSeed(time(nullptr));
 	tileLoader = new ChunkManager();
 	//from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c/37494654#37494654
-	tileLoader->Init();
 
 
 	camera = new Camera();
@@ -45,7 +44,6 @@ void Game::Init()
 
 	skybox.Init();
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
-	player->SetUpModel();
 	gameState.resetGame.connect(&Game::ResetState, this);
 	gameState.loadingGame.connect(&Game::LoadingGame, this);
 
@@ -62,12 +60,6 @@ void Game::Init()
 	loadingShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
 	loadingShader->SetFloat("material.shininess", 32.0f);
 	loadingShader->Unbind();
-
-	size_t count = tileLoader->modelPaths.size() - 1;
-	const size_t index = static_cast<size_t>(RandomNumberGenerator::RandomFloat() * count);
-	string path = tileLoader->modelPaths[index];
-
-	loadingModel = ModelTileFactory::LoadModel(path.c_str(), glm::vec3(0));
 }
 
 // -----------------------------------------------------------
@@ -258,6 +250,8 @@ void Game::Update(float deltaTime)
 
 void Game::ResetState()
 {
+	if (!gameLoaded)
+		return;
 	std::cout << "Reseting '\n";
 	player->ResetPosition();
 	tileLoader->Reset();
@@ -324,16 +318,17 @@ void Game::Render()
 		glm::mat4 model = glm::mat4(1.0f);
 		glm::vec3 tilePosition = glm::vec3(-8, 5.0f, 0);
 		model = glm::translate(model, tilePosition);
-		model = glm::rotate(model, glm::radians(10.0f * currentTasks * -2), glm::vec3(0, 1, 0));
-		model = glm::scale(model, glm::vec3(2));
+		const float speed = 720.0f;
+		model = glm::rotate(model, glm::radians(currentProgress * -speed), glm::vec3(0, 1, 0));
+		model = glm::scale(model, glm::vec3(4));
 		loadingShader->SetMat4x4("model", model);
 		loadingModel->Draw(*loadingShader);
 
 		model = glm::mat4(1.0f);
 		tilePosition = glm::vec3(8, 5.0f, 0);
 		model = glm::translate(model, tilePosition);
-		model = glm::rotate(model, glm::radians(10.0f * currentTasks * 2), glm::vec3(0, 1, 0));
-		model = glm::scale(model, glm::vec3(2));
+		model = glm::rotate(model, glm::radians(currentProgress * speed), glm::vec3(0, 1, 0));
+		model = glm::scale(model, glm::vec3(4));
 		loadingShader->SetMat4x4("model", model);
 
 		loadingModel->Draw(*loadingShader);
@@ -468,5 +463,22 @@ void Game::MouseMove(int x, int y)
 void Game::LoadingGame()
 {
 	std::cout << "Loading game\n";
+	if (!gameLoaded)
+	{
+		gameLoaded = true;
+
+		//load model
+		tileLoader->ParseModelPaths();
+
+		size_t count = tileLoader->modelPaths.size() - 1;
+		const size_t index = static_cast<size_t>(RandomNumberGenerator::RandomFloat() * count);
+		string path = tileLoader->modelPaths[index];
+		loadingModel = ModelTileFactory::LoadModel(path.c_str(), glm::vec3(0));
+
+		tileLoader->Init();
+		player->SetUpModel();
+
+		ResetState();
+	}
 	currentTasks = 0;
 }

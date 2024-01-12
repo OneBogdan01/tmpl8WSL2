@@ -35,20 +35,8 @@ bool ChunkManager::hasEnding(const std::string& fullString, const std::string& e
 	return false;
 }
 
-void ChunkManager::Init()
+void ChunkManager::ParseModelPaths()
 {
-	srand(time(nullptr));
-
-
-#ifdef _WINDOWS
-	std::string path = "assets\\tiled\\castle";
-
-#else
-
-	std::string path = "assets/tiled/castle";
-#endif
-
-
 	for (const auto& entry : fs::directory_iterator(path))
 	{
 		std::string pathString = entry.path().string();
@@ -62,6 +50,13 @@ void ChunkManager::Init()
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
 	modelPaths = tilePaths;
+}
+
+void ChunkManager::Init()
+{
+	srand(time(nullptr));
+
+
 	for (int i = 0; i < tilePaths.size(); i++)
 	{
 		cout << i << tilePaths[i] << '\n';

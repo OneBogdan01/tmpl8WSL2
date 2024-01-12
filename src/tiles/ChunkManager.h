@@ -25,6 +25,7 @@ public:
 	void SetDirectionZ(float _dir);
 	void SetEndless(float _dir);
 	void Reset();
+
 	static uint GetHeight()
 	{
 		return heightY;
@@ -34,8 +35,11 @@ public:
 	{
 		return widthX;
 	}
+
 	static inline float changeRope = 0;
 	std::vector<std::string> modelPaths;
+	void ParseModelPaths();
+
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
 	Chunk* firstChunk;
@@ -54,5 +58,11 @@ private:
 	glm::vec3 dir = {0.0f, 0.0f, 15.0f};
 	const float increaseSpeed = 0.1f;
 	glm::vec3 chunkOffset = glm::vec3(0.0f);
+#ifdef _WINDOWS
+	std::string path = "assets\\tiled\\castle";
 
+#else
+
+	std::string path = "assets/tiled/castle";
+#endif
 };
