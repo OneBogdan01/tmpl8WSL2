@@ -61,6 +61,7 @@ void ChunkManager::Init()
 	}
 	//alphabetically sort the tile paths
 	sort(tilePaths.begin(), tilePaths.end());
+	modelPaths = tilePaths;
 	for (int i = 0; i < tilePaths.size(); i++)
 	{
 		cout << i << tilePaths[i] << '\n';

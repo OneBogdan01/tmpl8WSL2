@@ -15,9 +15,9 @@ public:
 	void Draw(const char* path, Shader& shader) const;
 	void DrawInstanced(const char* path, ::Shader& shader, std::vector<glm::mat4>& modelMatrices) const;
 	//static TileFactory& GetInstance();
+	static StaticModel* LoadModel(const char* path, glm::vec3 initialPosition);
 
 private:
-	StaticModel* LoadModel(const char* path, glm::vec3 initialPosition);
 	unsigned int instancedBuffer;
 
 	std::unordered_map<const char*, StaticModel*> models = {};

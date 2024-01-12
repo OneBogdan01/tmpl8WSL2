@@ -19,7 +19,6 @@ void Menu::Init()
 
 void Menu::ChangeMenu(GameStateManager::GameState state)
 {
-	//reset state to initial
 	
 	Game::gameState.SetState(state);
 	ResetButtons();
@@ -109,7 +108,7 @@ void Menu::Draw()
 					if (ImGui::Button(dif1.c_str(), buttonSize))
 					{
 						// Code you want to do when the button is clicked.
-						ChangeMenu(GameStateManager::PLAYING);
+						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed1);
 					}
 				ImGui::Dummy(gapSize);
@@ -118,7 +117,7 @@ void Menu::Draw()
 					if (ImGui::Button(dif2.c_str(), buttonSize))
 					{
 						// Code you want to do when the button is clicked.
-						ChangeMenu(GameStateManager::PLAYING);
+						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed2);
 
 					}
@@ -127,7 +126,7 @@ void Menu::Draw()
 				if (dif3.length() > 0)
 					if (ImGui::Button(dif3.c_str(), buttonSize))
 					{
-						ChangeMenu(GameStateManager::PLAYING);
+						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed3);
 						
 					}
@@ -136,7 +135,7 @@ void Menu::Draw()
 				if (endless.length() > 0)
 					if (ImGui::Button(endless.c_str(), buttonSize))
 					{
-						ChangeMenu(GameStateManager::PLAYING);
+						ChangeMenu(GameStateManager::LOADING);
 						Game::tileLoader->SetEndless(difficultySpeed3);
 						
 					}
@@ -170,6 +169,7 @@ void Menu::Draw()
 
 void Menu::ResetButtons()
 {
+	menuTitle = "";
 	startGame = "";
 	exitGame = "";
 	//paused = "";

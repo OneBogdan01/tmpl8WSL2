@@ -145,6 +145,7 @@ void DrawQuad();
 void FixWorkingFolder();
 string TextFileRead(const char* _File);
 void ExitGame();
+void ResetDeltaTime();
 
 
 // EOF

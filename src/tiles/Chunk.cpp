@@ -20,14 +20,11 @@ Chunk::~Chunk()
 
 Chunk::Chunk()
 {
-
 	modelShader = new Shader(
 		"assets/shaders/ModelLoading.vert",
 		"assets/shaders/ModelLoading.frag");
 	SetMaterialProperties();
 	Game::lightManager->SetLightProperties(*modelShader);
-
-
 }
 
 btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& drawOffset)
@@ -77,12 +74,11 @@ void Chunk::LoadCoins(const size_t index, const char* path, const glm::vec3 pos)
 	coins[index].Init(path, pos, index);
 	coins[index].GetCallback().GetEvent().connect(&Chunk::DisableCoin, this);
 }
+
 void Chunk::LoadRopes(const size_t index, const char* path, const glm::vec3 pos)
 {
-
 	ropes[index].Init(path, pos, index);
 	ropes[index].GetCallback().GetEventDisable().connect(&Chunk::DisableRope, this);
-
 }
 
 void Chunk::LoadObstacles(const size_t index, const char* path, const glm::vec3 pos)
@@ -91,6 +87,7 @@ void Chunk::LoadObstacles(const size_t index, const char* path, const glm::vec3 
 	obstacles[index].Init(path, pos, index);
 	obstacles[index].GetCallback().GetEvent().connect(&Chunk::DisableObstacle, this);
 }
+
 void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 {
 	for (uint index = 0; index < COINS_PER_CHUNK; index++)
@@ -106,15 +103,15 @@ void Chunk::LoadProps(const char* coinPath, const char* obstaclePath)
 		LoadRopes(index, " ", glm::vec3(60));
 	}
 }
+
 void Chunk::ResetTiles()
 {
 	position.z = -3.0f;
-
 }
+
 void Chunk::ResetRopes()
 {
 	DisableRope(0);
-
 }
 
 void Chunk::SetMaterialProperties()
@@ -164,6 +161,7 @@ void Chunk::DisableObstacle(const size_t index)
 	obstacles[index].UpdatePhysicsPosition(pos);
 	activeObstacles.erase(std::remove(activeObstacles.begin(), activeObstacles.end(), index), activeObstacles.end());
 }
+
 void Chunk::DisableRope(const size_t index)
 {
 	glm::vec3 pos = glm::vec3(60.0f);
@@ -186,7 +184,7 @@ void Chunk::RandomizeChunk()
 	cout << "Count:" << maxCoinCount << endl;
 	float x = RandomNumberGenerator::RandomFloat() * 512;
 	float y = RandomNumberGenerator::RandomFloat() * 512;
-	int indexObstacleOccupied[TILES_PER_CHUNK] = { 0 };
+	int indexObstacleOccupied[TILES_PER_CHUNK] = {0};
 	//obstacles
 	uint maxObstacleCount = static_cast<uint>(RandomNumberGenerator::RandomFloat() * OBSTACLES_PER_CHUNK);
 	for (uint i = 0; i < h && maxObstacleCount > 0; i++)
@@ -252,7 +250,6 @@ void Chunk::RandomizeChunk()
 			else if (indexObstacleOccupied[index] == 1)
 			{
 				perlinVal += TILE_SIZE;
-
 			}
 			cout << perlinVal << " ";
 
@@ -273,28 +270,26 @@ void Chunk::RandomizeChunk()
 		}
 		cout << endl;
 	}
-	for (int i = TILES_PER_CHUNK-1 ; i >= TILES_PER_CHUNK - 2; i--) {
+	for (int i = TILES_PER_CHUNK - 1; i >= TILES_PER_CHUNK - 2; i--)
+	{
 		//if (indexObstacleOccupied[i] == 1)
-			if (tiles[i].GetId() != nullptr)
+		if (tiles[i].GetId() != nullptr)
+		{
+			if (RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope > .9f)
 			{
-				if (RandomNumberGenerator::RandomFloat()+ChunkManager::changeRope > .9f) {
-
-					size_t indexRope = activeRopes.size();
-					glm::vec3 ropePos = tiles[i].initialPosition;
-					ropePos.y = 26.0f;
-					ropes[indexRope].ChangePosition(ropePos);
-					std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
-					activeRopes.push_back(indexRope);
-					ChunkManager::changeRope = 0.0f;
-					break;
-
-				}
-				ChunkManager::changeRope += 0.1f;
+				size_t indexRope = activeRopes.size();
+				glm::vec3 ropePos = tiles[i].initialPosition;
+				ropePos.y = 26.0f;
+				ropes[indexRope].ChangePosition(ropePos);
+				std::cout << "Rope pos: " << ropePos.x << " " << ropePos.y << " " << ropePos.z << std::endl;
+				activeRopes.push_back(indexRope);
+				ChunkManager::changeRope = 0.0f;
+				break;
 			}
+			ChunkManager::changeRope += 0.1f;
+		}
 	}
 }
-
-
 
 
 void Chunk::Draw()
@@ -323,11 +318,9 @@ void Chunk::Draw()
 			model = glm::scale(model, glm::vec3(TILE_SIZE));
 			modelMatrices.emplace_back(model);
 			//modelShader->SetMat4x4("model", model);
-
 		}
 		groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
 		modelMatrices.clear();
-
 	}
 
 	for (auto& ID : coinIDs)
@@ -345,9 +338,9 @@ void Chunk::Draw()
 			//modelShader->SetMat4x4("model", model);
 			//groundFactory.Draw(coins[index].GetId(), *modelShader);
 			modelMatrices.emplace_back(model);
-
 		}
-		if (modelMatrices.size() > 0) {
+		if (modelMatrices.size() > 0)
+		{
 			groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
 			modelMatrices.clear();
 		}
@@ -366,9 +359,9 @@ void Chunk::Draw()
 			//modelShader->SetMat4x4("model", model);
 			//groundFactory.Draw(obstacles[index].GetId(), *modelShader);
 			modelMatrices.emplace_back(model);
-
 		}
-		if (modelMatrices.size() > 0) {
+		if (modelMatrices.size() > 0)
+		{
 			groundFactory.DrawInstanced(ID, *modelShader, modelMatrices);
 			modelMatrices.clear();
 		}
@@ -376,7 +369,6 @@ void Chunk::Draw()
 	for (auto& index : activeRopes)
 	{
 		ropes[index].Render(position);
-
 	}
 	modelShader->Unbind();
 }

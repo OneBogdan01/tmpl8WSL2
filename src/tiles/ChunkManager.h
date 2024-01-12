@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <vector>
+
 #include "Chunk.h"
 #include "model_loading/ogldev_types.h"
 
@@ -33,6 +35,7 @@ public:
 		return widthX;
 	}
 	static inline float changeRope = 0;
+	std::vector<std::string> modelPaths;
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
 	Chunk* firstChunk;

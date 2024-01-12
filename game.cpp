@@ -14,6 +14,7 @@
 #include <animator/Animator.h>
 
 #include "tiles/Rope.h"
+#include "utilities/MathLibrary.h"
 #include "utilities/RandomNames.h"
 // -----------------------------------------------------------
 // Initialize the application
@@ -23,7 +24,6 @@ glm::mat4 Game::view;
 
 void Game::Init()
 {
-
 	world.Init();
 
 	menu.Init();
@@ -46,17 +46,27 @@ void Game::Init()
 	skybox.Init();
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
-	gameState.stateChanged.connect(&Game::ResetState, this);
+	gameState.resetGame.connect(&Game::ResetState, this);
 
 
-	////random names test
-	//for (int j = 0; j < 100; j++) {
-	//	for (int i = 0; i < 4; i++) {
-	//		//cast it to all patterns avaiable
-	//		cout << RandomNames::GetRandomName(static_cast<RandomNames::Pattern>(i)) << endl;;
-	//	}
-	//	cout << endl;
-	//}
+	//loading stuff
+	loadingShader = new Shader(
+		"assets/shaders/ModelLoadingNoInstance.vert",
+		"assets/shaders/ModelLoading.frag");
+
+	lightManager->SetLightProperties(*loadingShader);
+	//we are using the red channel
+	loadingShader->Bind();
+
+	loadingShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	loadingShader->SetFloat("material.shininess", 32.0f);
+	loadingShader->Unbind();
+
+	size_t count = tileLoader->modelPaths.size() - 1;
+	const size_t index = static_cast<size_t>(RandomNumberGenerator::RandomFloat() * count);
+	string path = tileLoader->modelPaths[index];
+
+	loadingModel = ModelTileFactory::LoadModel(path.c_str(), glm::vec3(0));
 }
 
 // -----------------------------------------------------------
@@ -67,6 +77,7 @@ void Game::GoToMainMenu()
 {
 	gameState.SetState(GameStateManager::START_MENU);
 }
+
 float mixing = .2f;
 
 glm::vec3 position = glm::vec3(0);
@@ -150,6 +161,32 @@ namespace physicalMemory
 	}
 }
 #endif
+const float seconds = 5.0f;
+
+void Game::UpdateCam(float deltaTime)
+{
+	//TODO encapsulate camera init
+	if (f > 1)
+		f = 0;
+	camera->RotateMouse(rotateCam);
+	camera->MoveX(moveCam.x);
+	camera->MoveZ(moveCam.y);
+	fov -= yOffset;
+	if (fov < 1.0f)
+		fov = 1.0f;
+	if (fov > 45.0f)
+		fov = 45.0f;
+	yOffset = 0;
+
+
+	camera->Update(deltaTime);
+
+	perspective = glm::perspective(glm::radians(fov),
+	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+	                               0.1f, 100.0f);
+
+	view = camera->GetViewMat();
+}
 
 void Game::Update(float deltaTime)
 {
@@ -163,30 +200,10 @@ void Game::Update(float deltaTime)
 
 		world.Update(deltaTime);
 
-		//TODO encapsulate camera init
-		if (f > 1)
-			f = 0;
-		camera->RotateMouse(rotateCam);
-		camera->MoveX(moveCam.x);
-		camera->MoveZ(moveCam.y);
-		fov -= yOffset;
-		if (fov < 1.0f)
-			fov = 1.0f;
-		if (fov > 45.0f)
-			fov = 45.0f;
-		yOffset = 0;
+		UpdateCam(deltaTime);
 
 
-		camera->Update(deltaTime);
-
-		perspective = glm::perspective(glm::radians(fov),
-			static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-			0.1f, 100.0f);
-
-		view = camera->GetViewMat();
-
-
-		//TODO make update loop for entities
+	//TODO make update loop for entities
 		tileLoader->Update(deltaTime);
 
 		player->Update(deltaTime);
@@ -198,7 +215,32 @@ void Game::Update(float deltaTime)
 		break;
 	case GameStateManager::START_MENU:
 		break;
-	default: break;
+	case GameStateManager::LOADING:
+		UpdateCam(deltaTime);
+		menu.menuTitle = "Loading...";
+		CreateMenu();
+
+
+		currentProgress = MathLibrary::InvLerp(0, 100, currentTasks);
+		std::cout << currentProgress << "\n";
+
+		if (currentProgress >= 1.0f)
+			gameState.SetState(GameStateManager::PLAYING);
+		else
+		{
+			currentTasks++;
+			if (currentProgress > 0)
+			{
+#ifdef _WINDOWS
+				//Sleep(seconds * 1000.0f);
+#else
+
+				//sleep(seconds);
+#endif
+			}
+		}
+
+		break;
 	}
 }
 
@@ -207,7 +249,6 @@ void Game::ResetState()
 	player->ResetPosition();
 	tileLoader->Reset();
 	explodingBarrelsFactory->ResetState();
-
 }
 
 void Game::Render()
@@ -242,10 +283,10 @@ void Game::Render()
 		menu.exitGame = "Exit";
 		CreateMenu();
 		break;
-		//Erik Cupak made a guide about how to setup an imgui menu
+	//Erik Cupak made a guide about how to setup an imgui menu
 	case GameStateManager::START_MENU:
 		menu.menuTitle = "Endless Pink";
-		//menu.startGame = "Start Game";
+	//menu.startGame = "Start Game";
 		if (menu.dif1.length() == 0)
 		{
 			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
@@ -256,6 +297,33 @@ void Game::Render()
 
 		menu.exitGame = "Exit";
 		CreateMenu();
+		break;
+	case GameStateManager::LOADING:
+		loadingShader->Bind();
+		loadingShader->SetMat4x4("projection", Game::perspective);
+		loadingShader->SetMat4x4("view", Game::view);
+		const glm::vec3 camPos = Game::GetCameraPosition();
+
+		loadingShader->SetFloat3("viewPos", 0, 0, 5);
+
+		glm::mat4 model = glm::mat4(1.0f);
+		glm::vec3 tilePosition = glm::vec3(-8, 5.0f, 0);
+		model = glm::translate(model, tilePosition);
+		model = glm::rotate(model, glm::radians(10.0f * currentTasks * -2), glm::vec3(0, 1, 0));
+		model = glm::scale(model, glm::vec3(2));
+		loadingShader->SetMat4x4("model", model);
+		loadingModel->Draw(*loadingShader);
+
+		model = glm::mat4(1.0f);
+		tilePosition = glm::vec3(8, 5.0f, 0);
+		model = glm::translate(model, tilePosition);
+		model = glm::rotate(model, glm::radians(10.0f * currentTasks * 2), glm::vec3(0, 1, 0));
+		model = glm::scale(model, glm::vec3(2));
+		loadingShader->SetMat4x4("model", model);
+
+		loadingModel->Draw(*loadingShader);
+		loadingShader->Unbind();
+
 		break;
 	}
 }
@@ -279,7 +347,7 @@ void Game::DisplayDebugInfo()
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-		camera->GetPosition().z);
+	            camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -287,7 +355,7 @@ void Game::DisplayDebugInfo()
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -325,7 +393,8 @@ void Game::Tick(float deltaTime)
 	Update(deltaTime);
 	//displaying stuff
 #ifdef __DEBUG__
-	DisplayDebugInfo();
+	if (gameState.GetState() != GameStateManager::LOADING)
+		DisplayDebugInfo();
 
 #endif
 
@@ -376,5 +445,9 @@ void Game::MouseUp(unsigned button)
 }
 
 void Game::MouseMove(int x, int y)
+{
+}
+
+void Game::LoadingGame()
 {
 }

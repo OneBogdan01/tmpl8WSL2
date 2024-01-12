@@ -10,14 +10,14 @@ public:
 		LOSE,
 		PAUSE,
 		START_MENU,
-		CHOOSE_DIFFICULTY
+		LOADING
 	};
 
 
 	GameState GetState() const;
 
 	void SetState(GameState _state);
-	VoidEvent stateChanged;
+	VoidEvent resetGame;
 
 private:
 	GameState state = START_MENU;

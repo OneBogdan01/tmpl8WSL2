@@ -40,6 +40,7 @@ namespace Tmpl8
 		// game flow methods
 		void Init();
 		static void GoToMainMenu();
+		void UpdateCam(float deltaTime);
 		void Update(float deltaTime);
 		void ResetState();
 		void Render();
@@ -89,6 +90,7 @@ namespace Tmpl8
 			0.5f, -0.5f, 0.0f,
 			0.0f, 0.5f, 0.0f
 		};
+		void LoadingGame();
 		static glm::mat4 perspective;
 		static glm::mat4 view;
 		Shader* simpleShader = nullptr;
@@ -104,11 +106,17 @@ namespace Tmpl8
 		Skybox skybox;
 		PlayerCharacter* player = nullptr;
 		inline static GameStateManager gameState;
-		btVector3 startingPlayerPosition = { 0, 5, 0 };
+		btVector3 startingPlayerPosition = {0, 5, 0};
 		inline static KeyboardManager inputManager;
 		inline static bool freeCam = false;
 		inline static ExplodingBarrelsFactory* explodingBarrelsFactory = nullptr;
 		Menu menu;
 		Button pauseButton;
+		bool gameLoaded = false;
+		const uint tasks = 3;
+		uint currentTasks = 0;
+		float currentProgress = 0.0f;
+		StaticModel* loadingModel = nullptr;
+		Shader* loadingShader = nullptr;
 	};
 } // namespace Tmpl8

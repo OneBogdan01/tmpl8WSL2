@@ -27,9 +27,10 @@ GameStateManager::GameState GameStateManager::GetState() const
 
 void GameStateManager::SetState(GameState _state)
 {
-	if(state==START_MENU)
+	if (state == START_MENU)
 	{
-		stateChanged();
+		resetGame();
 	}
+	
 	state = _state;
 }
