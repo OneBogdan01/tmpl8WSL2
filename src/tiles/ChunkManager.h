@@ -22,7 +22,7 @@ public:
 	void Update(float deltaTime);
 	void SetDirectionZ(float _dir);
 	void SetEndless(float _dir);
-
+	void Reset();
 	static uint GetHeight()
 	{
 		return heightY;
@@ -35,6 +35,7 @@ public:
 	static inline float changeRope = 0;
 private:
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
+	Chunk* firstChunk;
 
 	//helper functions for parsing
 	void LoadCSVFile(const char* csvPath);

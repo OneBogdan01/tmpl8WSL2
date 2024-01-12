@@ -12,6 +12,7 @@ public:
 	void SetMaterialProperties();
 	~ExplodingBarrelsFactory() = default;
 	static void CreateExplosion(glm::vec3& position);
+	void ResetState();
 	void Render();
 	void Update(float deltaTime);
 

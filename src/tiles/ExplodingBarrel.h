@@ -15,6 +15,7 @@ public:
 	void Init(glm::vec3& pos);
 	~ExplodingBarrel() = default;
 	void AddADynamicObject(StaticMesh& mesh);
+	void Disable();
 	void Update(float deltaTime);
 	void Draw(Shader& shader);
 	bool active = false;

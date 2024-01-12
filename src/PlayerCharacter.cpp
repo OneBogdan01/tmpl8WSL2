@@ -124,7 +124,7 @@ void PlayerCharacter::DrawRandomWhipLine()
 		whipLine.StoreLine(from, nexPoint, btVector3(1, 1, 1));
 		from = nexPoint;
 	}
-	
+
 }
 
 void PlayerCharacter::AddWhip()
@@ -293,7 +293,12 @@ void PlayerCharacter::SetWhipPosition()
 	newTransform.setOrigin(btVector3(position.x, position.y, position.z - 10));
 	whipRB->getMotionState()->setWorldTransform(newTransform);
 }
-
+void PlayerCharacter::ResetPosition()
+{
+	characterController->setWalkDirection(btVector3(0, 0, 0));
+	SetGravity();
+	characterController->warp(btVector3(0, 0, 0));
+}
 void PlayerCharacter::MoveCharacter(float deltaTime)
 {
 	CheckForFall();

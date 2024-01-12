@@ -77,7 +77,7 @@ void ChunkManager::Init()
 	}
 	//alphabetically sort the tile paths
 	sort(tileMapPaths.begin(), tileMapPaths.end());
-	Chunk* firstChunk;
+
 	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		LoadCSVFile(tileMapPaths[k].c_str());
@@ -131,38 +131,7 @@ void ChunkManager::Init()
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
-
-	//randomize order
-	// Create a random device
-	std::random_device rd;
-
-	// Initialize a random number generator with the random device
-	std::mt19937 g(rd());
-	shuffle(chunks.begin(), chunks.end(), g);
-	for (int i = 0; i < NUMBER_OF_CHUNKS; i++)
-	{
-		if (chunks[i] == firstChunk)
-		{
-			swap(chunks[0], chunks[i]);
-			break;
-		}
-	}
-	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
-	{
-		Chunk* chunk = chunks[k];
-
-		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
-			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
-			chunk->SetPosition(chunkOff-glm::vec3(0,0,3.0f));
-
-
-		}
-		else
-		{
-			chunk->SetPosition(glm::vec3(OFFSET_TILE_MULTIPLIER) * chunkOffset);
-			chunk->Update(0);
-		}
-	}
+	
 }
 
 void ChunkManager::DrawChunks()
@@ -226,6 +195,43 @@ void ChunkManager::SetEndless(float _dir)
 	SetDirectionZ(_dir);
 	endless = true;
 
+}
+
+void ChunkManager::Reset()
+{
+	//randomize order
+	// Create a random device
+	std::random_device rd;
+
+	// Initialize a random number generator with the random device
+	std::mt19937 g(rd());
+	shuffle(chunks.begin(), chunks.end(), g);
+	for (int i = 0; i < NUMBER_OF_CHUNKS; i++)
+	{
+		if (chunks[i] == firstChunk)
+		{
+
+			swap(chunks[0], chunks[i]);
+			chunks[0]->HideChunk();
+			break;
+		}
+	}
+	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
+	{
+		Chunk* chunk = chunks[k];
+
+		if (k < NUMBER_OF_ACTIVE_CHUNKS) {
+			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
+			chunk->SetPosition(chunkOff - glm::vec3(0, 0, 3.0f));
+
+
+		}
+		else
+		{
+			chunk->SetPosition(glm::vec3(OFFSET_TILE_MULTIPLIER) * chunkOffset);
+			chunk->Update(0);
+		}
+	}
 }
 
 void ChunkManager::ConvertCharToInt(const char* pch, uint& numberForm)

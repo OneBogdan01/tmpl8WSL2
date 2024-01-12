@@ -23,6 +23,7 @@ glm::mat4 Game::view;
 
 void Game::Init()
 {
+	
 	world.Init();
 
 	menu.Init();
@@ -45,7 +46,7 @@ void Game::Init()
 	skybox.Init();
 	player = new PlayerCharacter(world.GetDynamicWorld(), startingPlayerPosition);
 	player->SetUpModel();
-
+	gameState.stateChanged.connect(&Game::ResetState, this);
 	////random names test
 	//for (int j = 0; j < 100; j++) {
 	//	for (int i = 0; i < 4; i++) {
@@ -196,6 +197,14 @@ void Game::Update(float deltaTime)
 	}
 }
 
+void Game::ResetState()
+{
+	player->ResetPosition();
+	tileLoader->Reset();
+	explodingBarrelsFactory->ResetState();
+
+}
+
 void Game::Render()
 {
 	switch (gameState.GetState())
@@ -219,6 +228,8 @@ void Game::Render()
 		lightManager->Draw();
 		tileLoader->DrawChunks();
 		player->Draw();
+		explodingBarrelsFactory->Render();
+
 		skybox.Draw();
 		menu.menuTitle = "Paused";
 		menu.startGame = "Resume";

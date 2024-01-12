@@ -40,6 +40,7 @@ namespace Tmpl8
 		// game flow methods
 		void Init();
 		void Update(float deltaTime);
+		void ResetState();
 		void Render();
 		void CreateMenu();
 		void DisplayDebugInfo();

@@ -49,6 +49,7 @@ public:
 	void InterpolateFrames(float deltaTime);
 	void HandleInput(float deltaTime);
 	void SetWhipPosition();
+	void ResetPosition();
 	void MoveCharacter(float deltaTime);
 	void Update(float deltaTime);
 	VoidEvent& GetEvent();

@@ -28,13 +28,23 @@ void ExplodingBarrelsFactory::CreateExplosion(glm::vec3& position)
 {
 	for (auto& barrel : barrels) {
 
-		if (!barrel->active){
-		barrel->Init(position);
-		break;
+		if (!barrel->active) {
+			barrel->Init(position);
+			break;
 		}
 	}
 }
+void ExplodingBarrelsFactory::ResetState()
+{
+	for (auto& barrel : barrels)
+	{
 
+		if (!barrel->active)
+			continue;
+
+		barrel->Disable();
+	}
+}
 void ExplodingBarrelsFactory::Render()
 {
 	modelShader->Bind();

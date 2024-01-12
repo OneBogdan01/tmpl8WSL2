@@ -122,6 +122,13 @@ void ExplodingBarrel::AddADynamicObject(StaticMesh& mesh)
 	index++;
 
 }
+
+void ExplodingBarrel::Disable()
+{
+	RemoveParts();
+	active = false;
+}
+
 void ExplodingBarrel::Update(float deltaTime)
 {
 	if (active)
@@ -133,8 +140,7 @@ void ExplodingBarrel::Update(float deltaTime)
 		}
 		if (t.elapsed() > 1.7f)
 		{
-			RemoveParts();
-			active = false;
+			Disable();
 		}
 	}
 }

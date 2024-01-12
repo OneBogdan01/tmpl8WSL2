@@ -19,6 +19,8 @@ void Menu::Init()
 
 void Menu::ChangeMenu(GameStateManager::GameState state)
 {
+	//reset state to initial
+	
 	Game::gameState.SetState(state);
 	ResetButtons();
 }
@@ -127,7 +129,7 @@ void Menu::Draw()
 					{
 						ChangeMenu(GameStateManager::PLAYING);
 						Game::tileLoader->SetDirectionZ(difficultySpeed3);
-						;
+						
 					}
 				ImGui::Dummy(gapSize);
 				ImGui::SetCursorPosX(offset);
