@@ -98,7 +98,6 @@ import.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 
 
 	processNode(scene->mRootNode, scene);
-	SetUpMeshes();
 }
 
 //can be used to get a parent child relationship

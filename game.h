@@ -1,5 +1,8 @@
 #pragma once
-
+#include <iostream>
+#include <thread>
+#include <atomic>
+#include <chrono>
 
 #include "Camera.h"
 #include "KeyboardManager.h"
@@ -64,6 +67,7 @@ namespace Tmpl8
 		void MouseDown(unsigned button);
 		void MouseUp(unsigned button);
 		void MouseMove(int x, int y);
+		void LoadModels(std::atomic<int>& currentTask);
 
 		static glm::vec3 GetCameraPosition()
 		{
@@ -114,9 +118,12 @@ namespace Tmpl8
 		Button pauseButton;
 		bool gameLoaded = false;
 		const uint tasks = 3;
-		uint currentTasks = 0;
+		atomic<int> currentTasks = 95;
 		float currentProgress = 0.0f;
 		StaticModel* loadingModel = nullptr;
 		Shader* loadingShader = nullptr;
+		float durationToLoad = 1.5f;
+		Timer loadTimer;
+		std::thread t;
 	};
 } // namespace Tmpl8

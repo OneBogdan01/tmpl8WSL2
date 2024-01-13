@@ -277,7 +277,7 @@ void Chunk::RandomizeChunk()
 		//if (indexObstacleOccupied[i] == 1)
 		if (tiles[i].GetId() != nullptr)
 		{
-			if (RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope > .1f)
+			if (RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope > .9f)
 			{
 				size_t indexRope = activeRopes.size();
 				glm::vec3 ropePos = tiles[i].initialPosition;

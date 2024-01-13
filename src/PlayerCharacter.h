@@ -38,6 +38,7 @@ public:
 	~PlayerCharacter();
 	void Die();
 	void SetUpModel();
+	void LoadAnimations();
 	void SetGravity();
 	void SetNoGravity();
 	void PlayerCharacterSetUp(btDiscreteDynamicsWorld* dynamicsWorld, btTransform playerTransform,

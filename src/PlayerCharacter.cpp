@@ -33,12 +33,18 @@ void PlayerCharacter::Die()
 void PlayerCharacter::SetUpModel()
 {
 	playerModel = new SkinnedModel("assets/Run.dae");
+	playerModel->SetUpMeshes();
 
 
+
+}
+void PlayerCharacter::LoadAnimations()
+{
+	
 	runAnimation = new Animation("assets/Run.dae", playerModel);
 	animator = new Animator(runAnimation);
+	
 }
-
 void PlayerCharacter::SetGravity()
 {
 #ifdef _WINDOWS
@@ -308,6 +314,8 @@ void PlayerCharacter::SetWhipPosition()
 
 void PlayerCharacter::ResetPosition()
 {
+	jumped = false;
+	onGround = false;
 	invincibility->reset();
 	characterController->warp(originalTransform.getOrigin());
 	playerCharacterGhost->setWorldTransform(originalTransform);

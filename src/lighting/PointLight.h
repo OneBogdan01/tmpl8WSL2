@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <xstring>
 
 #include "glm/vec3.hpp"
 

@@ -98,6 +98,7 @@ const float FIXED_TIMESTEP = 1 / 60.0f;
 #include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
+#include <thread>
 
 int parseLine(char* line)
 {
@@ -175,8 +176,8 @@ void Game::UpdateCam(float deltaTime)
 	camera->Update(deltaTime);
 
 	perspective = glm::perspective(glm::radians(fov),
-	                               static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
-	                               0.1f, 100.0f);
+		static_cast<float>(SCRWIDTH) / static_cast<float>(SCRHEIGHT),
+		0.1f, 100.0f);
 
 	view = camera->GetViewMat();
 }
@@ -196,7 +197,7 @@ void Game::Update(float deltaTime)
 		UpdateCam(deltaTime);
 
 
-	//TODO make update loop for entities
+		//TODO make update loop for entities
 		tileLoader->Update(deltaTime);
 
 		player->Update(deltaTime);
@@ -211,37 +212,41 @@ void Game::Update(float deltaTime)
 	case GameStateManager::LOADING:
 		UpdateCam(deltaTime);
 		menu.menuTitle = "Loading...";
+		//[0, 1]
 
-
-		currentProgress = MathLibrary::InvLerp(0, 100, currentTasks);
+		float desiredProgress = MathLibrary::InvLerp(0, 100, currentTasks);
+		if(currentTasks==100)
+			if (t.joinable()) {
+				t.join();
+			}
+		if (currentProgress < desiredProgress) {
+			float step = loadTimer.elapsed() / durationToLoad;
+			currentProgress = MathLibrary::Lerp(0, desiredProgress, step);
+		}
 		char buffer[256]; // Adjust the buffer size accordingly
 		std::sprintf(buffer, "%.2f", currentProgress * 100.0f);
 
-	// Store the formatted string in a std::string
+		// Store the formatted string in a std::string
 		std::string formattedString(buffer);
 		menu.loadingText = formattedString;
 
 		CreateMenu();
-
+		
 		if (currentProgress >= 1.0f)
 		{
+			
 			currentProgress = 0;
 			currentProgress = 0;
 			menu.loadingText = "";
+			currentTasks = 0;
+			ResetState();
+
 			gameState.SetState(GameStateManager::PLAYING);
 		}
 		else
 		{
-			currentTasks++;
-			if (currentProgress > 0)
-			{
-#ifdef _WINDOWS
-				//Sleep(seconds * 1000.0f);
-#else
+			//currentTasks++;
 
-				//sleep(seconds);
-#endif
-			}
 		}
 
 		break;
@@ -256,7 +261,7 @@ void Game::ResetState()
 	player->ResetPosition();
 	tileLoader->Reset();
 	explodingBarrelsFactory->ResetState();
-	currentTasks = 0;
+	currentTasks = 95;
 	currentProgress = 0;
 }
 
@@ -292,10 +297,10 @@ void Game::Render()
 		menu.exitGame = "Exit";
 		CreateMenu();
 		break;
-	//Erik Cupak made a guide about how to setup an imgui menu
+		//Erik Cupak made a guide about how to setup an imgui menu
 	case GameStateManager::START_MENU:
 		menu.menuTitle = "Endless Pink";
-	//menu.startGame = "Start Game";
+		//menu.startGame = "Start Game";
 		if (menu.dif1.length() == 0)
 		{
 			menu.dif1 = "[Easy] " + RandomNames::GenerateRandomName();
@@ -357,7 +362,7 @@ void Game::DisplayDebugInfo()
 	ImGui::Text("FPS:%f", FPS);
 	ImGui::Checkbox("Free Camera", &freeCam);
 	ImGui::Text("Camera position: %f, %f, %f", camera->GetPosition().x, camera->GetPosition().y,
-	            camera->GetPosition().z);
+		camera->GetPosition().z);
 
 	/*ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 
@@ -365,7 +370,7 @@ void Game::DisplayDebugInfo()
 	if (ImGui::Button("Button"))
 		f += deltaTime;*/
 
-	//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
+		//from this post on memory usage https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 
 #ifdef _WINDOWS
 
@@ -460,25 +465,41 @@ void Game::MouseMove(int x, int y)
 {
 }
 
+void Game::LoadModels(std::atomic<int>& currentTask)
+{
+
+
+	player->LoadAnimations();
+	//std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<long>(durationToLoad)*1000));
+	currentTask = 100;
+
+	std::cout << "thread work done";
+}
+
 void Game::LoadingGame()
 {
 	std::cout << "Loading game\n";
+	loadTimer.reset();
 	if (!gameLoaded)
 	{
 		gameLoaded = true;
-
 		//load model
 		tileLoader->ParseModelPaths();
 
 		size_t count = tileLoader->modelPaths.size() - 1;
-		const size_t index = static_cast<size_t>(RandomNumberGenerator::RandomFloat() * count);
+		const size_t index = RandomNumberGenerator::RandomFloat()
+			* count;
 		string path = tileLoader->modelPaths[index];
 		loadingModel = ModelTileFactory::LoadModel(path.c_str(), glm::vec3(0));
 
-		tileLoader->Init();
+		//load other stuff
 		player->SetUpModel();
-
-		ResetState();
+		tileLoader->Init();
+		t = std::thread(&Game::LoadModels, this, std::ref(currentTasks));
 	}
-	currentTasks = 0;
+	else
+	{
+		currentTasks = 100;
+	}
+
 }
