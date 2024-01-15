@@ -33,11 +33,18 @@ private:
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 dir = glm::vec3(0.0f);
 	glm::vec3 translation = glm::vec3(0.0f);
+	glm::vec3 translatedPos = glm::vec3(0.0f);
 	glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+	glm::vec3 finalPosition = glm::vec3(0.0f);
+	//glm::vec3 interpolatedPosition = glm::vec3(0.0f);
+	glm::vec3 startPosition = glm::vec3(0.0f);
+
 	const float camSpeed = 20.0f;
 	Timer timer;
 	bool interpolating = false;
-	const float timeToRotate = 2.0f;
+	bool backToOriginalRotation = false;
+	const float timeToRotate = .50f;
 	glm::quat startRotation;
 	glm::quat endRotation;
 	glm::quat currentRotation;

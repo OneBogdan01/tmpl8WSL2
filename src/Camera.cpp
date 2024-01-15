@@ -4,6 +4,8 @@
 #include "KeyboardManager.h"
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/ext/matrix_transform.hpp"
+#include "utilities/MathLibrary.h"
+#include "utilities/RandomNumberGenerator.h"
 
 
 //void Camera::GetCameraAxis(const float3& cameraTarget)
@@ -13,8 +15,9 @@
 //	cameraUp = cross(cameraFront, cameraRight);
 //}
 
-Camera::Camera() 
+Camera::Camera()
 {
+	startPosition = position;
 }
 
 Camera::~Camera()
@@ -57,6 +60,7 @@ void Camera::Init()
 void Camera::SetPosition(const glm::vec3& pos)
 {
 	position = pos;
+	
 }
 
 const glm::vec3 Camera::GetPosition() const
@@ -86,7 +90,7 @@ void Camera::MovementCamera(float deltaTime)
 	cameraFront = normalize(dir);
 	UpdateRotation();
 
-	position = position + translation * deltaTime;
+	//position = position + translation * deltaTime;
 
 	translation = glm::vec3(0);
 }
@@ -99,13 +103,33 @@ void Camera::InterpolateTo(float deltaTime)
 	float step = t / timeToRotate;
 	std::cout << step << "\n";
 
-	currentRotation = glm::slerp(startRotation, endRotation, step);
-	if (t > timeToRotate)
-	{
-		interpolating = false;
 
-		std::cout << "Finished camera interpolation'\n";
-		return;
+
+
+	if (backToOriginalRotation)
+	{
+
+		currentRotation = glm::slerp(endRotation, startRotation, step);
+		//position = glm::mix(finalPosition, startPosition, step);
+		position = glm::mix(finalPosition, startPosition, step);
+			if (t > timeToRotate)
+			{
+				interpolating = false;
+				backToOriginalRotation = false;
+				std::cout << "Stop interpolation'\n";
+			}
+	}
+	else
+	{
+		position = glm::mix(startPosition, finalPosition, step);
+
+		currentRotation = glm::slerp(startRotation, endRotation, step);
+		if (t > timeToRotate)
+		{
+			backToOriginalRotation = true;
+			timer.reset();
+			std::cout << "Go back'\n";
+		}
 	}
 
 }
@@ -155,15 +179,21 @@ void Camera::RotateMouse(const glm::vec2& p)
 
 void Camera::InterpolateRotation(glm::vec3* lookAt)
 {
-	lookAt->x = 0;
+	
 	lookAt->z = 0;
+	lookAt->y += 10.0f;
 	//still interpolating
 	if (interpolating)
 		return;
 	interpolating = true;
 	timer.reset();
-	endRotation = glm::quatLookAt(glm::normalize(*lookAt - position), cameraUp);
-
+	translatedPos.x = 0.0f;
+	float sign = lookAt->x > 0.f ? -1.0f : 1.0f;
+	translatedPos.x += 15.0f * sign;
+	finalPosition = translatedPos + position;
+	
+	endRotation = glm::quatLookAt(glm::normalize(*lookAt - finalPosition), cameraUp);
+	finalPosition = -translatedPos + position;
 	std::cout << "Init camera interpolation'\n";
 }
 
