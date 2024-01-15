@@ -21,6 +21,11 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
+#ifdef _DEBUG
+	ResetPosition();
+	return;
+#endif
+
 	std::cout << "Request to die'\n";
 
 	if (invincibility->elapsed() > 2.0f)
@@ -100,6 +105,8 @@ PlayerCharacter::PlayerCharacter(btDiscreteDynamicsWorld* dynamicsWorld, const b
 	inputManager = &Game::GetInputManager();
 	playerCallback = new PlayerCollisions(GameObject::Player, &onDeath);
 	playerCallback->onRope->connect(&PlayerCharacter::SetRopeP, this);
+	auto cam = Game::camera;
+	playerCallback->onRope->connect(&Camera::InterpolateRotation, cam);
 	const btTransform playerTransform = SetPositionTransform(startingPosition);
 	ropetimer = new Timer();
 	whipTimer = new Timer();
@@ -209,6 +216,7 @@ PlayerCharacter::~PlayerCharacter()
 
 void PlayerCharacter::CheckForFall()
 {
+	
 	glm::mat4 posMat = GetModelMatrix();
 	position = glm::vec3(posMat[3]);
 	if (position.y < -2)
