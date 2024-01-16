@@ -479,12 +479,14 @@
     <ClInclude Include="src\tiles\ModelTileFactory.h" />
     <ClInclude Include="src\tiles\ObstacleTile.h" />
     <ClInclude Include="src\tiles\Rope.h" />
+    <ClInclude Include="src\tiles\TerrainChunk.h" />
     <ClInclude Include="src\tiles\Tile.h" />
     <ClInclude Include="src\tiles\TileFactory.h" />
     <ClInclude Include="src\tiles\ChunkManager.h" />
     <ClInclude Include="src\Timer.h" />
     <ClInclude Include="src\Triangle.h" />
     <ClInclude Include="src\utilities\Button.h" />
+    <ClInclude Include="src\utilities\DiamondSquare.h" />
     <ClInclude Include="src\utilities\GameStateManager.h" />
     <ClInclude Include="src\utilities\MathLibrary.h" />
     <ClInclude Include="src\utilities\Menu.h" />
@@ -545,6 +547,7 @@
     <ClCompile Include="src\tiles\ModelTileFactory.cpp" />
     <ClCompile Include="src\tiles\ObstacleTile.cpp" />
     <ClCompile Include="src\tiles\Rope.cpp" />
+    <ClCompile Include="src\tiles\TerrainChunk.cpp" />
     <ClCompile Include="src\tiles\Tile.cpp" />
     <ClCompile Include="src\tiles\TileFactory.cpp" />
     <ClCompile Include="src\tiles\ChunkManager.cpp" />
@@ -572,6 +575,8 @@
     <None Include="assets\shaders\Skybox.frag" />
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
+    <None Include="assets\shaders\Terrain.frag" />
+    <None Include="assets\shaders\Terrain.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

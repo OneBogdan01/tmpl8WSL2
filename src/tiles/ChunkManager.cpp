@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <random>
 
+#include "game.h"
 #include "Texture.h"
 #include "utilities/RandomNumberGenerator.h"
 
@@ -55,8 +56,12 @@ void ChunkManager::ParseModelPaths()
 void ChunkManager::Init()
 {
 	srand(time(nullptr));
-
-
+	terrainShader = new Shader("assets/shaders/Terrain.vert", "assets/shaders/Terrain.frag");
+	terrainShader->Bind();
+	terrainShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+	terrainShader->SetFloat("material.shininess", 32.0f);
+	Game::lightManager->SetLightProperties(*terrainShader);
+	terrainShader->Unbind();
 	for (int i = 0; i < tilePaths.size(); i++)
 	{
 		cout << i << tilePaths[i] << '\n';
@@ -80,7 +85,7 @@ void ChunkManager::Init()
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
 
 		glm::vec3 offset = glm::vec3(static_cast<float>(widthX - 1) * TILE_SIZE / 2.0f, TILE_SIZE,
-		                             static_cast<float>(heightY - 1) * TILE_SIZE);
+			static_cast<float>(heightY - 1) * TILE_SIZE);
 		Chunk* chunk = new Chunk();
 
 		//load Tiles
@@ -92,7 +97,7 @@ void ChunkManager::Init()
 				uint modelIndex = tileArray[index];
 
 				glm::vec3 position = glm::vec3(static_cast<float>(j) * TILE_SIZE, 0.0f,
-				                               static_cast<float>(i) * TILE_SIZE)
+					static_cast<float>(i) * TILE_SIZE)
 					- offset;
 				glm::vec3 coinPos = glm::vec3(0);
 				if (modelIndex) //index !=0
@@ -126,10 +131,32 @@ void ChunkManager::Init()
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
+	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
+	{
+		terrainChunks[i] = new TerrainChunk();
+		terrainChunks[i]->Init();
+	}
+}
+
+void ChunkManager::DrawTerrainChunks()
+{
+	Game::lightManager->SetLightPosition(*terrainShader);
+	terrainShader->Bind();
+	terrainShader->SetMat4x4("projection", Game::perspective);
+	terrainShader->SetMat4x4("view", Game::view);
+	glm::mat4 model = glm::mat4(1.0f);
+	terrainShader->SetMat4x4("model", model);
+
+	const glm::vec3 camPos = Game::GetCameraPosition();
+	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
+	terrainChunks[0]->Draw();
+	terrainShader->Unbind();
 }
 
 void ChunkManager::DrawChunks()
 {
+	DrawTerrainChunks();
+
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
 		Chunk* chunk = chunks[i];

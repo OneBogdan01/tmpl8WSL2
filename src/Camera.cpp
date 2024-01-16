@@ -71,7 +71,7 @@ const glm::vec3 Camera::GetPosition() const
 
 void Camera::MoveZ(float multiplier)
 {
-	translation += camSpeed * (cameraFront)*multiplier;
+	translation += camSpeed * (cameraUp)*multiplier;
 }
 
 void Camera::MoveX(float multiplier)
@@ -90,7 +90,7 @@ void Camera::MovementCamera(float deltaTime)
 	cameraFront = normalize(dir);
 	UpdateRotation();
 
-	//position = position + translation * deltaTime;
+	position = position + translation * deltaTime;
 
 	translation = glm::vec3(0);
 }

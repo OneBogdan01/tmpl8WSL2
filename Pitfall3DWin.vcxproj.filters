@@ -348,6 +348,8 @@
     <ClInclude Include="src\tiles\ExplodingBarrel.h" />
     <ClInclude Include="src\tiles\ExplodingBarrelsFactory.h" />
     <ClInclude Include="assets\shaders\ModelLoadingNoInstance.vert" />
+    <ClInclude Include="src\utilities\DiamondSquare.h" />
+    <ClInclude Include="src\tiles\TerrainChunk.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp" />
@@ -409,6 +411,7 @@
     <ClCompile Include="src\physics\WhipTrigger.cpp" />
     <ClCompile Include="src\tiles\ExplodingBarrel.cpp" />
     <ClCompile Include="src\tiles\ExplodingBarrelsFactory.cpp" />
+    <ClCompile Include="src\tiles\TerrainChunk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\BasicVertexShader.vert" />
@@ -421,5 +424,7 @@
     <None Include="assets\shaders\Skybox.vert" />
     <None Include="assets\shaders\SolidColor.frag" />
     <None Include="assets\shaders\DebugFrag.frag" />
+    <None Include="assets\shaders\Terrain.vert" />
+    <None Include="assets\shaders\Terrain.frag" />
   </ItemGroup>
 </Project>

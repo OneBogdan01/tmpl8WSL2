@@ -77,6 +77,7 @@
     <ClCompile Include="src\physics\WhipTrigger.cpp" />
     <ClCompile Include="src\tiles\ExplodingBarrel.cpp" />
     <ClCompile Include="src\tiles\ExplodingBarrelsFactory.cpp" />
+    <ClCompile Include="src\tiles\TerrainChunk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
@@ -437,6 +438,8 @@
     <ClInclude Include="src\physics\WhipTrigger.h" />
     <ClInclude Include="src\tiles\ExplodingBarrel.h" />
     <ClInclude Include="src\tiles\ExplodingBarrelsFactory.h" />
+    <ClInclude Include="src\utilities\DiamondSquare.h" />
+    <ClInclude Include="src\tiles\TerrainChunk.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\font.png">
@@ -744,6 +747,8 @@
     <None Include="assets\tiled\part3.ob" />
     <None Include="assets\tiled\part4.ob" />
     <None Include="assets\tiled\detailbarrel.mtl" />
+    <None Include="assets\shaders\Terrain.frag" />
+    <None Include="assets\shaders\Terrain.vert" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="assets\tiled\Tiles.tsx" />

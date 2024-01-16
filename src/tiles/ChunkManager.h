@@ -2,12 +2,14 @@
 #include <vector>
 
 #include "Chunk.h"
+#include "TerrainChunk.h"
 #include "model_loading/ogldev_types.h"
 
 
 constexpr float TILE_SIZE = 5.0f;
 constexpr float OFFSET_TILE_MULTIPLIER = -1.1f;
 constexpr size_t NUMBER_OF_CHUNKS = 9;
+constexpr size_t NUMBER_OF_TERRAIN_CHUNKS = 1;
 constexpr uint NUMBER_OF_ACTIVE_CHUNKS = 3;
 constexpr uint COINS_INDEX = 10;
 constexpr uint OBSTACLE_INDEX = 8;
@@ -20,6 +22,7 @@ public:
 	~ChunkManager();
 
 	void Init();
+	void DrawTerrainChunks();
 	void DrawChunks();
 	void Update(float deltaTime);
 	void SetDirectionZ(float _dir);
@@ -41,7 +44,9 @@ public:
 	void ParseModelPaths();
 
 private:
+
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
+	std::array<TerrainChunk*, NUMBER_OF_TERRAIN_CHUNKS> terrainChunks = {};
 	Chunk* firstChunk;
 
 	//helper functions for parsing
@@ -58,6 +63,8 @@ private:
 	glm::vec3 dir = {0.0f, 0.0f, 15.0f};
 	const float increaseSpeed = 0.1f;
 	glm::vec3 chunkOffset = glm::vec3(0.0f);
+	 Shader* terrainShader = nullptr;
+
 #ifdef _WINDOWS
 	std::string path = "assets\\tiled\\castle";
 

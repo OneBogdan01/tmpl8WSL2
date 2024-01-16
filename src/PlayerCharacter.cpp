@@ -21,7 +21,7 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
-#ifdef _DEBUG
+#ifdef __DEBUG__
 	ResetPosition();
 	return;
 #endif
