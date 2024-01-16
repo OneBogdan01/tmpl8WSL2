@@ -57,10 +57,11 @@ void ChunkManager::Init()
 {
 	srand(time(nullptr));
 	terrainShader = new Shader("assets/shaders/Terrain.vert", "assets/shaders/Terrain.frag");
+	Game::lightManager->SetLightProperties(*terrainShader);
+
 	terrainShader->Bind();
 	terrainShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
 	terrainShader->SetFloat("material.shininess", 32.0f);
-	Game::lightManager->SetLightProperties(*terrainShader);
 	terrainShader->Unbind();
 	for (int i = 0; i < tilePaths.size(); i++)
 	{
@@ -145,6 +146,7 @@ void ChunkManager::DrawTerrainChunks()
 	terrainShader->SetMat4x4("projection", Game::perspective);
 	terrainShader->SetMat4x4("view", Game::view);
 	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, terrainChunks[0]->position);
 	terrainShader->SetMat4x4("model", model);
 
 	const glm::vec3 camPos = Game::GetCameraPosition();
@@ -156,7 +158,7 @@ void ChunkManager::DrawTerrainChunks()
 void ChunkManager::DrawChunks()
 {
 	DrawTerrainChunks();
-
+	return;
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
 		Chunk* chunk = chunks[i];
