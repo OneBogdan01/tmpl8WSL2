@@ -1,8 +1,7 @@
 ﻿#include "LightManager.h"
 
 #include "game.h"
-#include "animator/Animation.h"
-#include "animator/Animation.h"
+
 
 void LightManager::SetLightProperties(Shader& shader)
 {

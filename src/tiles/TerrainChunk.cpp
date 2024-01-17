@@ -2,15 +2,38 @@
 #include <vector>
 
 using namespace std;
-TerrainChunk::TerrainChunk() : heightMap{}, VBO(0), VAO(0)
+TerrainChunk::TerrainChunk() : heightMap{}, VBO(0), VAO(0), EBO(0)
 {
-	
+
 }
 
 void TerrainChunk::Init()
 {
+	float maxHeight = 0;
 
-	DiamondSquare::generateHeightMap(settings, heightMap);
+	if (firstRow[0] < 0)
+	{
+		DiamondSquare::generateHeightMap(settings, heightMap, maxHeight);
+		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
+		{
+			firstRow[i] = heightMap[MAX_TERRAIN_SIZE - 1][i];
+			lastRow[i] = heightMap[0][i];
+		}
+	}
+	else
+	{
+		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
+		{
+			heightMap[0][i] = firstRow[i];
+		}
+		DiamondSquare::generateHeightMapNoFirstRow(settings, heightMap, maxHeight);
+		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
+		{
+			firstRow[i] = heightMap[MAX_TERRAIN_SIZE - 1][i];
+		}
+	}
+
+	cout << maxHeight << endl;
 	PrintHeightMap(heightMap);
 
 	// Calculate normals and colors
@@ -21,56 +44,61 @@ void TerrainChunk::Init()
 	{
 		for (int j = 0; j < MAX_TERRAIN_SIZE; ++j)
 		{
-			// Calculate normals (simple example, you might want to improve this)
-			glm::vec3 normal = glm::normalize(glm::vec3(
-				heightMap[i < MAX_TERRAIN_SIZE - 1 ? i + 1 : i][j] - heightMap[i > 0 ? i - 1 : i][j],
-				2.0f,
-				heightMap[i][j < MAX_TERRAIN_SIZE - 1 ? j + 1 : j] - heightMap[i][j > 0 ? j - 1 : j]
-			));
 
-			normals.push_back(normal);
 
 			// Calculate color based on height
-			glm::vec3 color = glm::vec3(1.0f, 0.0f, 0.0f); // Default color (e.g., blue)
+			glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f); // Default color (e.g., blue)
 			// You can adjust color based on height, e.g., interpolate between different colors
-			color.y = heightMap[i][j] / maxH; // Adjust based on your actual max height
+			color.y = heightMap[i][j] / (maxHeight); // Adjust based on your actual max height
 			colors.push_back(color);
 		}
 	}
-	// Generate indices
+	//from Lynn, I had the wrong direction
 	for (int i = 0; i < MAX_TERRAIN_SIZE - 1; ++i)
 	{
 		for (int j = 0; j < MAX_TERRAIN_SIZE - 1; ++j)
 		{
-			// Triangle 1
-			indices.push_back(i * MAX_TERRAIN_SIZE + j);
-			indices.push_back((i + 1) * MAX_TERRAIN_SIZE + j);
-			indices.push_back(i * MAX_TERRAIN_SIZE + j + 1);
+			// First triangle of the square
+			indices.push_back(j + i * MAX_TERRAIN_SIZE); // Top left vertej
+			indices.push_back(j + 1 + i * MAX_TERRAIN_SIZE); // Top right vertej
+			indices.push_back(j + (i + 1) * MAX_TERRAIN_SIZE); // Bottom left vertej
 
-			// Triangle 2
-			indices.push_back((i + 1) * MAX_TERRAIN_SIZE + j);
-			indices.push_back((i + 1) * MAX_TERRAIN_SIZE + j + 1);
-			indices.push_back(i * MAX_TERRAIN_SIZE + j + 1);
+			// Second triangle
+			indices.push_back(j + 1 + i * MAX_TERRAIN_SIZE); // Top right vertej
+			indices.push_back(j + 1 + (i + 1) * MAX_TERRAIN_SIZE); // Bottom right vertej
+			indices.push_back(j + (i + 1) * MAX_TERRAIN_SIZE); // Bottom left vertej
+
+
+
 		}
 	}
+
+	normals.assign(MAX_TERRAIN_SIZE * MAX_TERRAIN_SIZE, glm::vec3(0.0f, 1.0f, 0.0f));
+
+
+
+
 	vector<float> modifiedVertices;
+	cout << endl;
 	for (int i = 0; i < MAX_TERRAIN_SIZE; ++i)
 	{
+
 		for (int j = 0; j < MAX_TERRAIN_SIZE; ++j)
 		{
+
 			modifiedVertices.push_back(static_cast<float>(i));
 			modifiedVertices.push_back(heightMap[i][j]);
 			modifiedVertices.push_back(static_cast<float>(j));
 
-			//// Add normals
-			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].x);
-			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].y);
-			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].z);
+			// Add normals
+			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].x );
+			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].y );
+			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].z );
 
-			//// Add colors
-			//modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].r);
-			//modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].g);
-			//modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].b);
+			// Add colors
+			modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].r);
+			modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].g);
+			modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].b);
 		}
 	}
 	glGenVertexArrays(1, &VAO);
@@ -82,39 +110,35 @@ void TerrainChunk::Init()
 	// Copy the modified vertex data to the VBO
 	glBufferData(GL_ARRAY_BUFFER, modifiedVertices.size() * sizeof(float), &modifiedVertices[0], GL_STATIC_DRAW);
 
-	// Set up vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	//// Set up normal attributes
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
-
-	//// Set up color attributes
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
-	//glEnableVertexAttribArray(2);
-
-	// Unbind the VAO and VBO
-	// Copy the index data to the VBO
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+	// Set up vertex attributes
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 
-	// Unbind the VAO, VBO, and EBO
+	// Set up normal attributes
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	// Set up color attributes
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+
+	// Unbind the VAO and VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
 void TerrainChunk::Draw()
 {
-	
+
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
-	
+
 
 }
 
@@ -127,5 +151,13 @@ void TerrainChunk::PrintHeightMap(const float heightMap[MAX_TERRAIN_SIZE][MAX_TE
 			cout << heightMap[i][j] << " ";
 		}
 		cout << endl;
+	}
+}
+
+void TerrainChunk::SetLastRow()
+{
+	for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
+	{
+		heightMap[MAX_TERRAIN_SIZE - 1][i] = lastRow[i];
 	}
 }

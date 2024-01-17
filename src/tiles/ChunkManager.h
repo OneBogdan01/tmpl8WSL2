@@ -9,7 +9,7 @@
 constexpr float TILE_SIZE = 5.0f;
 constexpr float OFFSET_TILE_MULTIPLIER = -1.1f;
 constexpr size_t NUMBER_OF_CHUNKS = 9;
-constexpr size_t NUMBER_OF_TERRAIN_CHUNKS = 1;
+constexpr size_t NUMBER_OF_TERRAIN_CHUNKS = 3;
 constexpr uint NUMBER_OF_ACTIVE_CHUNKS = 3;
 constexpr uint COINS_INDEX = 10;
 constexpr uint OBSTACLE_INDEX = 8;

@@ -135,7 +135,12 @@ void ChunkManager::Init()
 	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
 	{
 		terrainChunks[i] = new TerrainChunk();
+		if (i == NUMBER_OF_TERRAIN_CHUNKS - 1)
+		{
+			terrainChunks[i]->SetLastRow();
+		}
 		terrainChunks[i]->Init();
+		
 	}
 }
 
@@ -145,20 +150,28 @@ void ChunkManager::DrawTerrainChunks()
 	terrainShader->Bind();
 	terrainShader->SetMat4x4("projection", Game::perspective);
 	terrainShader->SetMat4x4("view", Game::view);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, terrainChunks[0]->position);
-	terrainShader->SetMat4x4("model", model);
-
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	terrainChunks[0]->Draw();
+	ImGui::Begin("debug");
+	for (int i = 0; i < NUMBER_OF_ACTIVE_CHUNKS;i++) {
+		glm::mat4 model = glm::mat4(1.0f);
+
+		ImGui::Text("%d chunk %f", i, chunks[i]->GetPosition().z);
+		model = glm::translate(model, terrainChunks[i]->position+chunks[i]->GetPosition());
+		model = glm::scale(model, glm::vec3(widthX*1.25f,1.25f,heightY*1.25f));//1.25 makes it take exactly 5 units
+		terrainShader->SetMat4x4("model", model);
+
+
+		terrainChunks[i]->Draw();
+	}
+	ImGui::End();
+
 	terrainShader->Unbind();
 }
 
 void ChunkManager::DrawChunks()
 {
 	DrawTerrainChunks();
-	return;
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
 		Chunk* chunk = chunks[i];

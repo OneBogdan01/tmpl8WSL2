@@ -33,7 +33,11 @@ public:
 	{
 		return WangHash((seedBase + 1) * 17);
 	}
-
+	//idea from Lynn over inverse lerp
+	static float RandomInRange(float min, float max)
+	{
+		return min + (max-min)*RandomFloat();
+	}
 	// RandomUInt()
 	// Update the seed and return it as a random 32-bit unsigned int.
 	static uint RandomUInt()
