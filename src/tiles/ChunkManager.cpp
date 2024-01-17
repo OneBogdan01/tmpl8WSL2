@@ -140,8 +140,9 @@ void ChunkManager::Init()
 			terrainChunks[i]->SetLastRow();
 		}
 		terrainChunks[i]->Init();
-		
+
 	}
+
 }
 
 void ChunkManager::DrawTerrainChunks()
@@ -153,12 +154,17 @@ void ChunkManager::DrawTerrainChunks()
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 	ImGui::Begin("debug");
-	for (int i = 0; i < NUMBER_OF_ACTIVE_CHUNKS;i++) {
+	for (int i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++) {
 		glm::mat4 model = glm::mat4(1.0f);
 
 		ImGui::Text("%d chunk %f", i, chunks[i]->GetPosition().z);
-		model = glm::translate(model, terrainChunks[i]->position+chunks[i]->GetPosition());
-		model = glm::scale(model, glm::vec3(widthX*1.25f,1.25f,heightY*1.25f));//1.25 makes it take exactly 5 units
+		//model = glm::translate(model, glm::vec3(0,0,-i*4+22));
+		model = glm::translate(model, terrainChunks[i]->position + chunks[i]->GetPosition());
+
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0, 1, 0));
+
+		glm::vec3 scale = glm::vec3(10);
+		model = glm::scale(model, glm::vec3(heightY * 1.25f, 1.25f, 1.25f * scale.x));//1.25 makes it take exactly 5 units
 		terrainShader->SetMat4x4("model", model);
 
 
@@ -182,17 +188,17 @@ void ChunkManager::DrawChunks()
 void ChunkManager::Update(const float deltaTime)
 {
 	glm::vec3 newOffset = glm::vec3(0.0f);
+	float posZ = -100;
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
 		newOffset.z = dir.z * deltaTime;
 
 		Chunk* chunk = chunks[i];
 
-
-		//this chunk needs to be disabled graphics wise
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
+			//this chunk needs to be disabled graphics wise
 		{
-			newOffset.z = -TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS - 1);
+			newOffset.z += (chunk->GetPosition().z) + (-TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS))+3.0f;
 
 
 			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
@@ -206,9 +212,17 @@ void ChunkManager::Update(const float deltaTime)
 			chunk->RandomizeChunk();
 			if (endless)
 				dir.z += increaseSpeed;
+			chunk->Translate(newOffset);
+			
+		}
+		else
+		{
+			
+			chunk->Translate(newOffset);
 		}
 
-		chunk->Translate(newOffset);
+
+
 		//this chunk needs to be enabled physics wise
 		if (chunk->GetPosition().z > -3.0f)
 		{
@@ -216,7 +230,9 @@ void ChunkManager::Update(const float deltaTime)
 		}
 
 		chunk->Update(deltaTime);
+		
 	}
+
 }
 
 void ChunkManager::SetDirectionZ(float _dir)

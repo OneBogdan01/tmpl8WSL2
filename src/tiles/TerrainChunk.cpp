@@ -17,6 +17,8 @@ void TerrainChunk::Init()
 		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
 		{
 			firstRow[i] = heightMap[MAX_TERRAIN_SIZE - 1][i];
+			//heightMap[0][i] = firstRow[i];
+
 			lastRow[i] = heightMap[0][i];
 		}
 	}
@@ -90,10 +92,10 @@ void TerrainChunk::Init()
 			modifiedVertices.push_back(heightMap[i][j]);
 			modifiedVertices.push_back(static_cast<float>(j));
 
-			// Add normals
-			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].x );
-			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].y );
-			modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].z );
+			//// Add normals
+			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].x );
+			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].y );
+			//modifiedVertices.push_back(normals[i * MAX_TERRAIN_SIZE + j].z );
 
 			// Add colors
 			modifiedVertices.push_back(colors[i * MAX_TERRAIN_SIZE + j].r);
@@ -114,16 +116,13 @@ void TerrainChunk::Init()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 	// Set up vertex attributes
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// Set up normal attributes
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
 
 	// Set up color attributes
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	// Unbind the VAO and VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -134,10 +133,11 @@ void TerrainChunk::Init()
 
 void TerrainChunk::Draw()
 {
-
+	glEnable(GL_CULL_FACE);
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glDisable(GL_CULL_FACE);
 
 
 }

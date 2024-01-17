@@ -3,12 +3,12 @@
  <tileset firstgid="1" source="Tiles.tsx"/>
  <layer id="1" name="Tile Layer 1" width="3" height="6">
   <data encoding="csv">
-36,36,36,
-36,0,36,
+0,0,0,
+36,40,36,
 0,0,0,
 36,36,36,
-0,36,0,
-0,36,0
+0,36,40,
+0,0,0
 </data>
  </layer>
 </map>

@@ -27,7 +27,7 @@ public:
 	void ResetButtons();
 
 private:
-	float difficultySpeed1 = 13.0f;
+	float difficultySpeed1 = 14.0f;
 	float difficultySpeed2 = 15.0f;
 	float difficultySpeed3 = 20.0f;
 };

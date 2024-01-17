@@ -10,7 +10,7 @@ public:
 	void Init();
 	void Draw();
 	void PrintHeightMap(const float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE]) const;
-	glm::vec3 position = glm::vec3(-7.5f,0,-30.0f+2.5f);
+	glm::vec3 position = glm::vec3( -7.5f*3.5,-15.f, 2.5f);
 	void SetLastRow();
 private:
 	static inline float firstRow[MAX_TERRAIN_SIZE]={-1};

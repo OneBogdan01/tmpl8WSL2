@@ -44,6 +44,7 @@ public:
 	void ParseModelPaths();
 
 private:
+	int index = 0;
 
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
 	std::array<TerrainChunk*, NUMBER_OF_TERRAIN_CHUNKS> terrainChunks = {};
