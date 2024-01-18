@@ -21,11 +21,9 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
-//#ifdef __DEBUG__
-//	ResetPosition();
-//	return;
-//#endif
-
+#ifdef __DEBUG__
+	ResetPosition();
+#else
 	std::cout << "Request to die'\n";
 
 	if (invincibility->elapsed() > 2.0f)
@@ -33,6 +31,9 @@ void PlayerCharacter::Die()
 		std::cout << "Player dies'\n";
 		Game::GoToMainMenu();
 	}
+#endif
+
+	
 }
 
 void PlayerCharacter::SetUpModel()

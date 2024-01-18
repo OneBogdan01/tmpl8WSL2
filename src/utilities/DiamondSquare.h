@@ -25,9 +25,8 @@ public:
 		return rng::RandomFloat() * roughness * sign;
 	}
 
-	static void generateHeightMap(const TerrainSettings& settings, float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE], float& maxHeight)
+	static void generateHeightMap(const TerrainSettings& settings, float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE])
 	{
-		maxHeight = -1;
 		const float minH = settings.minHeight;
 		const float maxH = settings.maxHeight;
 
@@ -35,17 +34,13 @@ public:
 		float roughness = settings.randomness;
 		rng::RandomInRange(minH, maxH);
 		heightMap[0][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-		if (maxHeight < heightMap[0][0])
-			maxHeight = heightMap[0][0];
+
 		heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-		if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][0])
-			maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][0];
+
 		heightMap[0][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-		if (maxHeight < heightMap[0][MAX_TERRAIN_SIZE - 1])
-			maxHeight = heightMap[0][MAX_TERRAIN_SIZE - 1];
+
 		heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-		if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1])
-			maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1];
+
 		int chunkSize = MAX_TERRAIN_SIZE - 1;
 		while (chunkSize > 1)
 		{
@@ -110,9 +105,8 @@ public:
 			roughness /= 2;
 		}
 	}
-	static void generateHeightMapNoFirstRow(const TerrainSettings& settings, float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE], float& maxHeight)
+	static void generateHeightMapNoFirstRow(const TerrainSettings& settings, float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE])
 	{
-		maxHeight = -1;
 		const float minH = settings.minHeight;
 		const float maxH = settings.maxHeight;
 
@@ -127,13 +121,11 @@ public:
 				maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][0];*/
 		if (heightMap[MAX_TERRAIN_SIZE - 1][0] < MIN_THRESHOLD) {
 			heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-			if (maxHeight < heightMap[0][MAX_TERRAIN_SIZE - 1])
-				maxHeight = heightMap[0][MAX_TERRAIN_SIZE - 1];
+
 		}
 		if (heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] < MIN_THRESHOLD) {
 			heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
-			if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1])
-				maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1];
+
 		}
 		int chunkSize = MAX_TERRAIN_SIZE - 1;
 		while (chunkSize > 1)

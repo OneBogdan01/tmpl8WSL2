@@ -61,7 +61,7 @@ void TerrainChunk::Init()
 	}
 	if (firstRow[0] < 0)
 	{
-		DiamondSquare::generateHeightMap(settings, heightMap, maxHeight);
+		DiamondSquare::generateHeightMap(settings, heightMap);
 		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
 		{
 			firstRow[i] = heightMap[MAX_TERRAIN_SIZE - 1][i];
@@ -76,7 +76,7 @@ void TerrainChunk::Init()
 		{
 			heightMap[0][i] = firstRow[i];
 		}
-		DiamondSquare::generateHeightMapNoFirstRow(settings, heightMap, maxHeight);
+		DiamondSquare::generateHeightMapNoFirstRow(settings, heightMap);
 		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
 		{
 			firstRow[i] = heightMap[MAX_TERRAIN_SIZE - 1][i];
