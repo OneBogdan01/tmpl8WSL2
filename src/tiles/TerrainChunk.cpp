@@ -1,16 +1,64 @@
 ﻿#include "TerrainChunk.h"
 #include <vector>
 
+#include "animator/Animation.h"
+
+
 using namespace std;
 TerrainChunk::TerrainChunk() : heightMap{}, VBO(0), VAO(0), EBO(0)
 {
 
 }
 
+glm::vec3 TerrainChunk::GetColor(float height)
+{
+
+
+	glm::vec3 waterColor = glm::vec3(0.0f, 0.6f, 1.0f);   // Light blue for water
+	glm::vec3 shallowWaterColor = glm::vec3(0.0f, 0.8f, 1.0f); // Lighter blue for shallow water
+	glm::vec3 sandColor = glm::vec3(0.9f, 0.8f, 0.5f); // Sand color
+	glm::vec3 grassColor = glm::vec3(0.0f, 0.4f, 0.3f);   // Green for grass
+	glm::vec3 mountainColor = glm::vec3(0.7f, 0.7f, 0.7f); // Grey for mountains
+	glm::vec3 snowColor = glm::vec3(1.0f, 1.0f, 1.0f); // White for snow
+	if (height > 0.9f)
+	{
+		return snowColor;
+	}
+	else if (height > 0.6f)
+	{
+		return mountainColor;
+	}
+	else if (height > 0.3f)
+	{
+		return grassColor;
+	}
+	else if (height > 0.2f)
+	{
+		return sandColor;
+	}
+	else if (height > 0.1f)
+	{
+		return shallowWaterColor;
+	}
+	else
+	{
+		return waterColor;
+	}
+}
+
+
+
+
 void TerrainChunk::Init()
 {
 	float maxHeight = 0;
-
+	for (int j = MAX_TERRAIN_SIZE / 2 -3; j < MAX_TERRAIN_SIZE / 2 + 5; j++)
+	{
+		for (int i = 0; i < MAX_TERRAIN_SIZE; i++)
+		{
+			heightMap[i][j] = 0.3f;
+		}
+	}
 	if (firstRow[0] < 0)
 	{
 		DiamondSquare::generateHeightMap(settings, heightMap, maxHeight);
@@ -48,11 +96,9 @@ void TerrainChunk::Init()
 		{
 
 
-			// Calculate color based on height
-			glm::vec3 color = glm::vec3(0.0f, 0.0f, 0.0f); // Default color (e.g., blue)
-			// You can adjust color based on height, e.g., interpolate between different colors
-			color.y = heightMap[i][j] / (maxHeight); // Adjust based on your actual max height
-			colors.push_back(color);
+
+			float h = heightMap[i][j]/maxH;
+			colors.push_back(GetColor(h));
 		}
 	}
 	//from Lynn, I had the wrong direction

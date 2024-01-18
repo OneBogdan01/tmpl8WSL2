@@ -123,6 +123,8 @@ void ChunkManager::Init()
 		if (k == 0)
 		{
 			firstChunk = chunk;
+			chunkWithMaxZ = firstChunk;
+
 			chunk->HideChunk();
 		}
 		else
@@ -140,6 +142,7 @@ void ChunkManager::Init()
 			terrainChunks[i]->SetLastRow();
 		}
 		terrainChunks[i]->Init();
+		terrainChunks[i]->position.z = i * -(MAX_TERRAIN_SIZE - 1);
 
 	}
 
@@ -154,18 +157,21 @@ void ChunkManager::DrawTerrainChunks()
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 	ImGui::Begin("debug");
-	for (int i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++) {
+
+	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++) {
+
 		glm::mat4 model = glm::mat4(1.0f);
 
 		ImGui::Text("%d chunk %f", i, chunks[i]->GetPosition().z);
 		//model = glm::translate(model, glm::vec3(0,0,-i*4+22));
-		model = glm::translate(model, terrainChunks[i]->position + chunks[i]->GetPosition());
+		model = glm::translate(model, terrainChunks[i]->position);
 
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0, 1, 0));
 
-		glm::vec3 scale = glm::vec3(10);
-		model = glm::scale(model, glm::vec3(heightY * 1.25f, 1.25f, 1.25f * scale.x));//1.25 makes it take exactly 5 units
+
+		model = glm::scale(model, glm::vec3( 1.f, 1.3f, 2.0f));//1.25 makes it take exactly 5 units
 		terrainShader->SetMat4x4("model", model);
+
 
 
 		terrainChunks[i]->Draw();
@@ -187,8 +193,8 @@ void ChunkManager::DrawChunks()
 
 void ChunkManager::Update(const float deltaTime)
 {
+
 	glm::vec3 newOffset = glm::vec3(0.0f);
-	float posZ = -100;
 	for (size_t i = 0; i < NUMBER_OF_ACTIVE_CHUNKS; i++)
 	{
 		newOffset.z = dir.z * deltaTime;
@@ -198,7 +204,7 @@ void ChunkManager::Update(const float deltaTime)
 		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
 			//this chunk needs to be disabled graphics wise
 		{
-			newOffset.z += (chunk->GetPosition().z) + (-TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS))+3.0f;
+			newOffset.z += (chunk->GetPosition().z) + (-TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS));
 
 
 			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
@@ -212,26 +218,31 @@ void ChunkManager::Update(const float deltaTime)
 			chunk->RandomizeChunk();
 			if (endless)
 				dir.z += increaseSpeed;
-			chunk->Translate(newOffset);
-			
+
 		}
-		else
-		{
-			
-			chunk->Translate(newOffset);
-		}
-
-
-
-		//this chunk needs to be enabled physics wise
-		if (chunk->GetPosition().z > -3.0f)
+		else if (chunk->GetPosition().z > -0.1f * TILE_SIZE * heightY)
 		{
 			chunk->UpdateRB();
+			chunkWithMaxZ = chunk;
 		}
+		chunk->Translate(newOffset);
+
+
+
+
 
 		chunk->Update(deltaTime);
-		
+
 	}
+	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
+	{
+		terrainChunks[i]->position.z += dir.z * deltaTime;
+		if (terrainChunks[i]->position.z > 1.1f * TILE_SIZE * heightY)
+		{
+			terrainChunks[i]->position.z += -32 * 3;
+		}
+	}
+
 
 }
 

@@ -44,8 +44,8 @@ public:
 	void ParseModelPaths();
 
 private:
-	int index = 0;
-
+	float maxZ = -100;
+	Chunk* chunkWithMaxZ = nullptr;
 	std::array<Chunk*, NUMBER_OF_CHUNKS> chunks = {};
 	std::array<TerrainChunk*, NUMBER_OF_TERRAIN_CHUNKS> terrainChunks = {};
 	Chunk* firstChunk;

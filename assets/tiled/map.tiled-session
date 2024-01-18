@@ -12,16 +12,16 @@
             "scale": 0.6184895833333333,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 376.7242105263158,
-                "y": 518.1978947368422
+                "x": 382.3831578947369,
+                "y": 502.0294736842106
             }
         },
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map1.tmx": {
             "scale": 0.6184895833333333,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 378.34105263157903,
-                "y": 760.7242105263159
+                "x": 376.7242105263158,
+                "y": 759.1073684210527
             }
         },
         "Tiles.tsx": {
@@ -41,24 +41,24 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 412,
-                "y": 745
+                "x": 498,
+                "y": 1017
             }
         },
         "map2.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 378,
-                "y": 761
+                "x": 380,
+                "y": 767
             }
         },
         "map3.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 546,
-                "y": 705
+                "x": 387,
+                "y": 1693
             }
         },
         "map4 - Copy (4).tmx": {
@@ -81,40 +81,40 @@
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 310,
-                "y": 757
+                "x": 382,
+                "y": 767
             }
         },
         "map5.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 553.3333333333334,
-                "y": 815.3333333333334
+                "x": 382.66666666666674,
+                "y": 766
             }
         },
         "map6.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 324,
-                "y": 776.6666666666665
+                "x": 382.66666666666674,
+                "y": 766
             }
         },
         "map7.tmx": {
             "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 524,
-                "y": 909
+                "x": 382,
+                "y": 767
             }
         },
         "map8.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 408,
-                "y": 696.6666666666665
+                "x": 382.66666666666674,
+                "y": 766
             }
         },
         "sadas.tsx": {
@@ -140,16 +140,16 @@
     "project": "map.tiled-project",
     "recentFiles": [
         "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map1.tmx",
-        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map.tmx",
-        "map2.tmx",
-        "map1.tmx",
-        "map7.tmx",
         "map3.tmx",
-        "map8.tmx",
+        "map7.tmx",
         "map4.tmx",
-        "map6.tmx",
-        "Tiles.tsx",
+        "map2.tmx",
         "map5.tmx",
+        "map6.tmx",
+        "map8.tmx",
+        "//wsl.localhost/Debian/home/bobo/projects/Pitfall3D/assets/tiled/map.tmx",
+        "map1.tmx",
+        "Tiles.tsx",
         "map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",

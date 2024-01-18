@@ -1,6 +1,7 @@
 #pragma once
 #include "RandomNumberGenerator.h"
-constexpr int MAX_TERRAIN_SIZE = 5;
+constexpr int MAX_TERRAIN_SIZE = 33;
+constexpr float MIN_THRESHOLD = 0.2f;
 
 //based on https://www.youtube.com/watch?v=4GuAV1PnurU&list=WL&index=2
 struct TerrainSettings
@@ -18,9 +19,10 @@ using  rng = RandomNumberGenerator;
 class DiamondSquare
 {
 public:
-	static float RandomHeightValue(const float minH, const float maxH, float roughness)
+	static float RandomHeightValue(float roughness)
 	{
-		return rng::RandomFloat() * roughness + rng::RandomInRange(minH, maxH);
+		float sign = rng::RandomFloat() > 0.5f ? 1.0f : -1.0f;
+		return rng::RandomFloat() * roughness * sign;
 	}
 
 	static void generateHeightMap(const TerrainSettings& settings, float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE], float& maxHeight)
@@ -32,16 +34,16 @@ public:
 
 		float roughness = settings.randomness;
 		rng::RandomInRange(minH, maxH);
-		heightMap[0][0] = RandomHeightValue(minH, maxH, roughness);
+		heightMap[0][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 		if (maxHeight < heightMap[0][0])
 			maxHeight = heightMap[0][0];
-		heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(minH, maxH, roughness);
+		heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 		if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][0])
 			maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][0];
-		heightMap[0][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(minH, maxH, roughness);
+		heightMap[0][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 		if (maxHeight < heightMap[0][MAX_TERRAIN_SIZE - 1])
 			maxHeight = heightMap[0][MAX_TERRAIN_SIZE - 1];
-		heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(minH, maxH, roughness);
+		heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 		if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1])
 			maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1];
 		int chunkSize = MAX_TERRAIN_SIZE - 1;
@@ -59,9 +61,12 @@ public:
 					avg += heightMap[i][j + chunkSize];
 					avg += heightMap[i + chunkSize][j + chunkSize];
 					avg /= 4;
-					heightMap[i + half][j + half] = avg + RandomHeightValue(minH, maxH, roughness);
-					if (maxHeight < heightMap[i + half][j + half])
-						maxHeight = heightMap[i + half][j + half];
+					if (heightMap[i + half][j + half] > MIN_THRESHOLD)
+						continue;
+					heightMap[i + half][j + half] = avg + RandomHeightValue(roughness);
+
+					if (0.3f > heightMap[i + half][j + half])
+						heightMap[i + half][j + half] = .3f;
 					//heightMap[i + half][j] = avg + rng::RandomFloat() * roughness;
 				}
 			}
@@ -93,9 +98,11 @@ public:
 						count++;
 					}
 					avg /= count;
-					heightMap[i][j] = avg + RandomHeightValue(minH, maxH, roughness);
-					if (maxHeight < heightMap[i][j])
-						maxHeight = heightMap[i][j];
+					if (heightMap[i][j] > MIN_THRESHOLD)
+						continue;
+					heightMap[i][j] = avg + RandomHeightValue(roughness);
+					if (0.3f > heightMap[i][j])
+						heightMap[i][j] = .3f;
 				}
 			}
 
@@ -111,20 +118,20 @@ public:
 
 
 		float roughness = settings.randomness;
-		rng::RandomInRange(minH, maxH);
+
 		/*heightMap[0][0] = RandomHeightValue(minH, maxH, roughness);
 		if (maxHeight < heightMap[0][0])
 			maxHeight = heightMap[0][0];*/
 			/*heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(minH, maxH, roughness);
 			if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][0])
 				maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][0];*/
-		if (heightMap[MAX_TERRAIN_SIZE - 1][0] < 0.2f) {
-			heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(minH, maxH, roughness);
+		if (heightMap[MAX_TERRAIN_SIZE - 1][0] < MIN_THRESHOLD) {
+			heightMap[MAX_TERRAIN_SIZE - 1][0] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 			if (maxHeight < heightMap[0][MAX_TERRAIN_SIZE - 1])
 				maxHeight = heightMap[0][MAX_TERRAIN_SIZE - 1];
 		}
-		if (heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] < 0.2f) {
-			heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(minH, maxH, roughness);
+		if (heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] < MIN_THRESHOLD) {
+			heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1] = RandomHeightValue(roughness) + rng::RandomInRange(minH, maxH);
 			if (maxHeight < heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1])
 				maxHeight = heightMap[MAX_TERRAIN_SIZE - 1][MAX_TERRAIN_SIZE - 1];
 		}
@@ -142,12 +149,12 @@ public:
 					avg += heightMap[i + chunkSize][j];
 					avg += heightMap[i][j + chunkSize];
 					avg += heightMap[i + chunkSize][j + chunkSize];
-					if (heightMap[i + half][j + half] > 0.2f)
+					if (heightMap[i + half][j + half] > MIN_THRESHOLD)
 						continue;
 					avg /= 4;
-					heightMap[i + half][j + half] = avg + RandomHeightValue(minH, maxH, roughness);
-					if (maxHeight < heightMap[i + half][j + half])
-						maxHeight = heightMap[i + half][j + half];
+					heightMap[i + half][j + half] = avg + RandomHeightValue(roughness);
+					if (0.3f > heightMap[i + half][j + half])
+						heightMap[i + half][j + half] = .3f;
 					//heightMap[i + half][j] = avg + rng::RandomFloat() * roughness;
 				}
 			}
@@ -178,12 +185,12 @@ public:
 						avg += heightMap[i][j + half];
 						count++;
 					}
-					if (heightMap[i][j] > 0.2f)
+					if (heightMap[i][j] > MIN_THRESHOLD)
 						continue;
 					avg /= count;
-					heightMap[i][j] = avg + RandomHeightValue(minH, maxH, roughness);
-					if (maxHeight < heightMap[i][j])
-						maxHeight = heightMap[i][j];
+					heightMap[i][j] = avg + RandomHeightValue(roughness);
+					if (0.3f > heightMap[i][j])
+						heightMap[i ][j ] = .3f;
 				}
 			}
 
