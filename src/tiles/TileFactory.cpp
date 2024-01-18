@@ -68,9 +68,9 @@ void TileFactory::DrawInstanced(const char* path, Shader& shader,std::vector<glm
 }
 
 
-StaticModel* TileFactory::LoadModel(const char* path, glm::vec3 initialPosition)
+StaticModel* TileFactory::LoadModel(const char* path, glm::vec3 /*initialPosition*/)
 {
-	initialPosition;
+	//initialPosition;
 	const auto model = new StaticModel(path);
 
 	for (auto& mesh : model->GetMeshes())

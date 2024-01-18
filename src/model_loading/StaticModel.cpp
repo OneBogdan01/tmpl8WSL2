@@ -184,9 +184,8 @@ std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMateria
 	return textures;
 }
 
-unsigned int StaticModel::TextureFromFile(const char* path, const std::string& _directory, bool gamma)
+unsigned int StaticModel::TextureFromFile(const char* path, const std::string& _directory, bool /*gamma*/)
 {
-	gamma;
 	std::string filename = std::string(path);
 	filename = _directory + '/' + filename;
 

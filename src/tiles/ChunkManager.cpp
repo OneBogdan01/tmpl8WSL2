@@ -42,7 +42,7 @@ void ChunkManager::ParseModelPaths()
 		std::string pathString = entry.path().string();
 		if (hasEnding(pathString, ".ob"))
 		{
-			for (int x = 0; x < strlen(pathString.c_str()); x++)
+			for (size_t x = 0; x < strlen(pathString.c_str()); x++)
 				pathString[x] = static_cast<char>(putchar(tolower(pathString[x])));
 			tilePaths.push_back(pathString);
 		}
@@ -62,7 +62,7 @@ void ChunkManager::Init()
 	terrainShader->SetFloat3("material.specular", 0.5f, 0.5f, 0.5f);
 	terrainShader->SetFloat("material.shininess", 32.0f);
 	terrainShader->Unbind();
-	for (int i = 0; i < tilePaths.size(); i++)
+	for (size_t i = 0; i < tilePaths.size(); i++)
 	{
 		cout << i << tilePaths[i] << '\n';
 	}
@@ -79,7 +79,7 @@ void ChunkManager::Init()
 	//alphabetically sort the tile paths
 	sort(tileMapPaths.begin(), tileMapPaths.end());
 
-	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
+	for (size_t k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		LoadCSVFile(tileMapPaths[k].c_str());
 		chunkOffset = glm::vec3(0.0f, 0.0f, -static_cast<float>(heightY) * TILE_SIZE);
@@ -133,7 +133,7 @@ void ChunkManager::Init()
 		delete[]tileArray;
 		chunks[k] = chunk;
 	}
-	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
+	for (size_t i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
 	{
 		terrainChunks[i] = new TerrainChunk();
 		if (i == NUMBER_OF_TERRAIN_CHUNKS - 1)
@@ -157,7 +157,7 @@ void ChunkManager::DrawTerrainChunks()
 	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
 
 
-	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++) {
+	for (size_t i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++) {
 
 		glm::mat4 model = glm::mat4(1.0f);
 
@@ -200,14 +200,14 @@ void ChunkManager::Update(const float deltaTime)
 
 		Chunk* chunk = chunks[i];
 
-		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * heightY)
+		if (chunk->GetPosition().z > 1.1f * TILE_SIZE * static_cast<float>(heightY))
 			//this chunk needs to be disabled graphics wise
 		{
-			newOffset.z += (chunk->GetPosition().z) + (-TILE_SIZE * heightY * (NUMBER_OF_ACTIVE_CHUNKS));
+			newOffset.z += (chunk->GetPosition().z) + (-TILE_SIZE * static_cast<float>(heightY) * (NUMBER_OF_ACTIVE_CHUNKS));
 
 
-			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * chunks.size());
-			if (randomIndex < NUMBER_OF_ACTIVE_CHUNKS)
+			int randomIndex = static_cast<int>(RandomNumberGenerator::RandomFloat() * static_cast<float>(chunks.size()));
+			if (randomIndex < static_cast<int>(NUMBER_OF_ACTIVE_CHUNKS))
 				randomIndex = NUMBER_OF_ACTIVE_CHUNKS;
 			chunk->ResetRopes();
 			swap(chunks[i], chunks[randomIndex]);
@@ -219,7 +219,7 @@ void ChunkManager::Update(const float deltaTime)
 				dir.z += increaseSpeed;
 
 		}
-		else if (chunk->GetPosition().z > -0.1f * TILE_SIZE * heightY)
+		else if (chunk->GetPosition().z > -0.1f * TILE_SIZE * static_cast<float>(heightY))
 		{
 			chunk->UpdateRB();
 			chunkWithMaxZ = chunk;
@@ -233,10 +233,10 @@ void ChunkManager::Update(const float deltaTime)
 		chunk->Update(deltaTime);
 
 	}
-	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
+	for (size_t i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++)
 	{
 		terrainChunks[i]->position.z += dir.z * deltaTime;
-		if (terrainChunks[i]->position.z > 1.1f * TILE_SIZE * heightY)
+		if (terrainChunks[i]->position.z > 1.1f * TILE_SIZE * static_cast<float>(heightY))
 		{
 			terrainChunks[i]->position.z += -32 * 3;
 		}
@@ -269,7 +269,7 @@ void ChunkManager::Reset()
 	// Initialize a random number generator with the random device
 	std::mt19937 g(rd());
 	shuffle(chunks.begin(), chunks.end(), g);
-	for (int i = 0; i < NUMBER_OF_CHUNKS; i++)
+	for (size_t i = 0; i < NUMBER_OF_CHUNKS; i++)
 	{
 		if (chunks[i] == firstChunk)
 		{
@@ -282,13 +282,13 @@ void ChunkManager::Reset()
 			chunks[i]->RandomizeChunk();
 		}
 	}
-	for (int k = 0; k < NUMBER_OF_CHUNKS; k++)
+	for (size_t k = 0; k < NUMBER_OF_CHUNKS; k++)
 	{
 		Chunk* chunk = chunks[k];
 
 		if (k < NUMBER_OF_ACTIVE_CHUNKS)
 		{
-			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * k, chunkOffset.y * k, chunkOffset.z * k);
+			glm::vec3 chunkOff = glm::vec3(chunkOffset.x * static_cast<float>(k), chunkOffset.y * static_cast<float>(k), chunkOffset.z * static_cast<float>(k));
 			chunk->SetPosition(chunkOff - glm::vec3(0, 0, 3.0f));
 		}
 		else

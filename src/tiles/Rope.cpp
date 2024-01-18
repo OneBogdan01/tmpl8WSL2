@@ -151,9 +151,9 @@ void Rope::DeactivateMovement()
 	shouldMove = false;
 }
 
-void Rope::Init(const char* path, const glm::vec3 pos, size_t _index)
+void Rope::Init(const char* /*path*/, const glm::vec3 pos, size_t _index)
 {
-	path;
+	//path;
 	startDisableing = false;
 
 	this->index = _index;

@@ -3,9 +3,9 @@
 
 #include "Chunk.h"
 #include "TerrainChunk.h"
-#pragma warning(push, 0)
+//#pragma warning(push, 0)
 #include "model_loading/ogldev_types.h"
-#pragma warning(pop)
+//#pragma warning(pop)
 
 constexpr float TILE_SIZE = 5.0f;
 constexpr float OFFSET_TILE_MULTIPLIER = -1.1f;

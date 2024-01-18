@@ -10,9 +10,9 @@ GroundTile::GroundTile() :
 }
 
 
-void GroundTile::Init(const char* path, const glm::vec3 pos, size_t index)
+void GroundTile::Init(const char* path, const glm::vec3 pos, size_t /*index*/)
 {
-	index;
+	//index;
 	initialPosition = pos;
 	modelId = path;
 	ModelTileFactory::GetInstance().CreateTileModel(path, pos);

@@ -8,10 +8,10 @@
 #include "GLFW/glfw3.h"
 #endif
 #include <glm/mat4x4.hpp>
-#pragma warning(push, 0)
+
 
 #include "model_loading/ogldev_math_3d.h"
-#pragma warning(pop)
+
 
 
 // OpenGL texture wrapper

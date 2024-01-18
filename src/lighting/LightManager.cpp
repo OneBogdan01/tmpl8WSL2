@@ -32,8 +32,8 @@ LightManager::LightManager(Shader* lightShader) :
 	{
 		PointLight& pointLight = pointLights[i];
 		//some random colors for now
-		pointLight.position = glm::vec3(i * 3.0f - 3.0f, 6.0f, 20.0f);
-		pointLight.diffuse = (glm::vec3(i * .2, 0.0f, (4 - i) * .2));
+		pointLight.position = glm::vec3(static_cast<float>(i) * 3.0f - 3.0f, 6.0f, 20.0f);
+		pointLight.diffuse = (glm::vec3(static_cast<float>(i) * .2f, 0.0f, (4 - i) * .2));
 	}
 	lightMesh.Init();
 }

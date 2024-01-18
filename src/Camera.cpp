@@ -96,9 +96,9 @@ void Camera::MovementCamera(float deltaTime)
 	translation = glm::vec3(0);
 }
 
-void Camera::InterpolateTo(float deltaTime)
+void Camera::InterpolateTo(float /*deltaTime*/)
 {
-	deltaTime;
+	//deltaTime;
 	if (!interpolating)
 		return;
 	float t = timer.elapsed();

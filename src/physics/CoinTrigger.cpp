@@ -21,9 +21,9 @@ void CoinTrigger::CollidedWith(GameObject* p_obj1)
 	}
 }
 
-void CoinTrigger::SeparatedFrom(GameObject* p_obj1)
+void CoinTrigger::SeparatedFrom(GameObject* /*p_obj1*/)
 {
-	p_obj1;
+	//p_obj1;
 }
 
 CoinTrigger::~CoinTrigger()

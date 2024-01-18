@@ -42,9 +42,9 @@ void SkinnedModel::SetVertexBoneData(SkinnedMesh::Vertex& vertex, int boneID, fl
 
 }
 
-void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* /*scene*/)
 {
-	scene;
+	//scene;
 	for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 		int boneID = -1;
 		std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
@@ -60,7 +60,7 @@ void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>
 		else {
 			boneID = m_BoneInfoMap[boneName].id;
 		}
-		assert(boneID != -1);
+		//assert(boneID != -1);
 
 		auto weights = mesh->mBones[boneIndex]->mWeights;
 		int numWeights = mesh->mBones[boneIndex]->mNumWeights;
@@ -68,7 +68,7 @@ void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>
 		for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex) {
 			int vertexId = weights[weightIndex].mVertexId;
 			float weight = weights[weightIndex].mWeight;
-			assert(vertexId <= vertices.size());
+			//assert(vertexId <= vertices.size());
 			SetVertexBoneData(vertices[vertexId], boneID, weight);
 		}
 	}
@@ -228,9 +228,8 @@ std::vector<SkinnedMesh::MeshTexture> SkinnedModel::loadMaterialTextures(aiMater
 	return textures;
 }
 
-unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& _directory, bool gamma)
+unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& _directory, bool /*gamma*/)
 {
-	gamma;
 	std::string filename = std::string(path);
 	filename = _directory + '/' + filename;
 

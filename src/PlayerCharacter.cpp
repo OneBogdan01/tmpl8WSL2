@@ -235,8 +235,8 @@ void PlayerCharacter::Draw()
 	animationShader->Bind();
 	animationShader->SetMat4x4("view", Game::camera->GetViewMat());
 	animationShader->SetMat4x4("projection", Game::camera->GetProjectionMat());
-	auto transforms = animator->GetFinalBoneMatrices();
-	for (int i = 0; i < transforms.size(); ++i)
+	const auto transforms = animator->GetFinalBoneMatrices();
+	for (size_t i = 0; i < transforms.size(); ++i)
 	{
 		string path = "finalBonesMatrices[" + std::to_string(i) + "]";
 
@@ -293,9 +293,9 @@ void PlayerCharacter::InterpolateFrames(float deltaTime)
 	interpolation += 10.0f * deltaTime;
 }
 
-void PlayerCharacter::HandleInput(float deltaTime)
+void PlayerCharacter::HandleInput(float /*deltaTime*/)
 {
-	deltaTime;
+	//deltaTime;
 	dir = btVector3(0, 0, 0);
 	int dirX = 0;
 	//int dirY = 0;

@@ -97,7 +97,7 @@ public:
 						avg += heightMap[i][j + half];
 						count++;
 					}
-					avg /= count;
+					avg /= static_cast<float>(count);
 					if (heightMap[i][j] > MIN_THRESHOLD)
 						continue;
 					heightMap[i][j] = avg + RandomHeightValue(roughness);
@@ -188,7 +188,7 @@ public:
 					if (heightMap[i][j] > MIN_THRESHOLD)
 						continue;
 					if (count != 0)
-						avg /= count;
+						avg /= static_cast<float>(count);
 					heightMap[i][j] = avg + RandomHeightValue(roughness);
 					if (0.3f > heightMap[i][j])
 						heightMap[i][j] = .3f;

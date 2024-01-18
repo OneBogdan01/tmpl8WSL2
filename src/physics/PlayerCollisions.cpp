@@ -39,9 +39,8 @@ void PlayerCollisions::CollidedWith(GameObject* p_obj1)
 	}
 }
 
-void PlayerCollisions::SeparatedFrom(GameObject* p_obj1)
+void PlayerCollisions::SeparatedFrom(GameObject* /*p_obj1*/)
 {
-	p_obj1;
 }
 
 PlayerCollisions::~PlayerCollisions()

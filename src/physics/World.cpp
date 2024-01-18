@@ -32,10 +32,10 @@ void World::RenderDebug()
 	debugDrawer->RenderDebug();
 }
 
-void World::Update(float deltaTime)
+void World::Update(float /*deltaTime*/)
 {
 	//RenderDebug();
-	deltaTime;
+	//deltaTime;
 
 
 	dynamicsWorld->stepSimulation(1.0f / 60.0f, 5, 1.0f / 60.0f); //set it to 5! for the PI

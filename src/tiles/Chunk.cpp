@@ -27,9 +27,9 @@ Chunk::Chunk()
 	Game::lightManager->SetLightProperties(*modelShader);
 }
 
-btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& _drawOffset)
+btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 /*initialPosition*/, glm::vec3& _drawOffset)
 {
-	initialPosition;
+	//initialPosition;
 	//make a collision shape
 	// Create a collision shape (e.g., a box shape for a rectangular tile)
 	ModelTileFactory& factory = ModelTileFactory::GetInstance();
@@ -190,9 +190,9 @@ void Chunk::RandomizeChunk()
 	int indexObstacleOccupied[TILES_PER_CHUNK] = {0};
 	//obstacles
 	uint maxObstacleCount = static_cast<uint>(RandomNumberGenerator::RandomFloat() * OBSTACLES_PER_CHUNK);
-	for (uint i = 0; i < h && maxObstacleCount > 0; i++)
+	for (uint i = 0; i < static_cast<uint>(h) && maxObstacleCount > 0; i++)
 	{
-		for (uint j = 0; j < w && maxObstacleCount > 0; j++)
+		for (uint j = 0; j < static_cast<uint>(w) && maxObstacleCount > 0; j++)
 		{
 			int index = static_cast<int>(j + i * static_cast<uint>(w));
 
@@ -210,7 +210,7 @@ void Chunk::RandomizeChunk()
 					//go to next column at least
 					indexObstacleOccupied[index] = 1;
 					i += 2;
-					if (i >= h)
+					if (i >= static_cast<uint>(h))
 					{
 						maxObstacleCount = 0;
 					}
@@ -219,9 +219,9 @@ void Chunk::RandomizeChunk()
 	}
 
 	//coins
-	for (uint i = 0; i < h && maxCoinCount > 0; i++)
+	for (uint i = 0; i < static_cast<uint>(h) && maxCoinCount > 0; i++)
 	{
-		for (uint j = 0; j < w && maxCoinCount > 0; j++)
+		for (uint j = 0; j < static_cast<uint>(w) && maxCoinCount > 0; j++)
 		{
 			uint index = j + i * static_cast<uint>(w);
 
@@ -273,7 +273,7 @@ void Chunk::RandomizeChunk()
 		}
 		//cout << endl;
 	}
-	for (int i = TILES_PER_CHUNK - 1; i >= TILES_PER_CHUNK - 2; i--)
+	for (uint i = TILES_PER_CHUNK - 1; i >= TILES_PER_CHUNK - 2; i--)
 	{
 		//if (indexObstacleOccupied[i] == 1)
 		if (tiles[i].GetId() != nullptr)

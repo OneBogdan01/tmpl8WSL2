@@ -25,9 +25,8 @@ void RopeTrigger::CollidedWith(GameObject* p_obj1)
 	}
 }
 
-void RopeTrigger::SeparatedFrom(GameObject* p_obj1)
+void RopeTrigger::SeparatedFrom(GameObject* /*p_obj1*/)
 {
-	p_obj1;
 	/*if (p_obj1->GetType() == Player)
 	{
 		std::cout << "Rope Disabled" << std::endl;

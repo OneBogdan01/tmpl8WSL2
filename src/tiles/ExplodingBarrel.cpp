@@ -48,7 +48,7 @@ void ExplodingBarrel::Init(glm::vec3& pos)
 {
 	//set to parts
 	position = pos;
-	for (int i = 0; i < parts.size(); i++)
+	for (size_t i = 0; i < parts.size(); i++)
 	{
 
 
@@ -129,9 +129,9 @@ void ExplodingBarrel::Disable()
 	active = false;
 }
 
-void ExplodingBarrel::Update(float deltaTime)
+void ExplodingBarrel::Update(float /*deltaTime*/)
 {
-	deltaTime;
+	//deltaTime;
 	if (active)
 	{
 		for (auto& part : parts) {
@@ -149,7 +149,7 @@ void ExplodingBarrel::Draw(Shader& shader)
 {
 	if (!active)
 		return;
-	for (int i = 0; i < meshes.size(); i++)
+	for (size_t i = 0; i < meshes.size(); i++)
 	{
 		glm::vec3 partPos = BtVector3ToGlm(parts[i]->getWorldTransform().getOrigin());
 

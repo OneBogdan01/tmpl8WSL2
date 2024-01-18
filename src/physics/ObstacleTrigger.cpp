@@ -34,7 +34,6 @@ void ObstacleTrigger::CollidedWith(GameObject* p_obj1)
 	
 }
 
-void ObstacleTrigger::SeparatedFrom(GameObject* p_obj1)
+void ObstacleTrigger::SeparatedFrom(GameObject* /*p_obj1*/)
 {
-	p_obj1;
 }
