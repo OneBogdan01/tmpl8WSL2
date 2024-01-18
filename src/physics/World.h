@@ -28,7 +28,7 @@ public:
 
 	static btBoxShape* CreateBoundingBoxModel(const std::vector<StaticMesh>& meshes, float scale = 1.0f);
 	static btCapsuleShape* CreateBoundingCapsuleModel(const std::vector<StaticMesh>& meshes, float scale);
-	btVector3 GetRigidBodyPosition(unsigned int ID) const;
+	btVector3 GetRigidBodyPosition(unsigned int _ID) const;
 	btDiscreteDynamicsWorld* GetDynamicWorld() const;
 	void AddRigidBody(btRigidBody* rb) const;
 	void Init();

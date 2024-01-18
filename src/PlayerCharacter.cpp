@@ -21,10 +21,10 @@ btTransform PlayerCharacter::SetPositionTransform(const btVector3& startingPosit
 
 void PlayerCharacter::Die()
 {
-#ifdef __DEBUG__
-	ResetPosition();
-	return;
-#endif
+//#ifdef __DEBUG__
+//	ResetPosition();
+//	return;
+//#endif
 
 	std::cout << "Request to die'\n";
 
@@ -138,9 +138,9 @@ void PlayerCharacter::DrawRandomWhipLine()
 
 	for (int i = 0; i < 10; i++)
 	{
-		float sign = RandomNumberGenerator::RandomFloat() > 0.5f ? 1.0f : -1.0f;
-		float randomCoodinate = RandomNumberGenerator::RandomFloat() * 3 * sign;
-		btVector3 nexPoint = btVector3(randomCoodinate + position.x, abs(randomCoodinate) + position.y, -i * 2);
+		const float sign = RandomNumberGenerator::RandomFloat() > 0.5f ? 1.0f : -1.0f;
+		const float randomCoodinate = RandomNumberGenerator::RandomFloat() * 3 * sign;
+		btVector3 nexPoint = btVector3(randomCoodinate + position.x, abs(randomCoodinate) + position.y, static_cast<btScalar>(-i * 2));
 		whipLine.StoreLine(from, nexPoint, btVector3(1, 1, 1));
 		from = nexPoint;
 	}
@@ -295,6 +295,7 @@ void PlayerCharacter::InterpolateFrames(float deltaTime)
 
 void PlayerCharacter::HandleInput(float deltaTime)
 {
+	deltaTime;
 	dir = btVector3(0, 0, 0);
 	int dirX = 0;
 	//int dirY = 0;

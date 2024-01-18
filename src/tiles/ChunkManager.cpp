@@ -11,7 +11,6 @@
 #include <random>
 
 #include "game.h"
-#include "Texture.h"
 #include "utilities/RandomNumberGenerator.h"
 
 namespace fs = std::filesystem;
@@ -44,7 +43,7 @@ void ChunkManager::ParseModelPaths()
 		if (hasEnding(pathString, ".ob"))
 		{
 			for (int x = 0; x < strlen(pathString.c_str()); x++)
-				pathString[x] = putchar(tolower(pathString[x]));
+				pathString[x] = static_cast<char>(putchar(tolower(pathString[x])));
 			tilePaths.push_back(pathString);
 		}
 	}
@@ -55,7 +54,7 @@ void ChunkManager::ParseModelPaths()
 
 void ChunkManager::Init()
 {
-	srand(time(nullptr));
+	srand(static_cast<unsigned int>(time(nullptr)));
 	terrainShader = new Shader("assets/shaders/Terrain.vert", "assets/shaders/Terrain.frag");
 	Game::lightManager->SetLightProperties(*terrainShader);
 
@@ -90,9 +89,9 @@ void ChunkManager::Init()
 		Chunk* chunk = new Chunk();
 
 		//load Tiles
-		for (int i = 0; i < heightY; i++)
+		for (uint i = 0; i < heightY; i++)
 		{
-			for (int j = 0; j < widthX; j++)
+			for (uint j = 0; j < widthX; j++)
 			{
 				uint index = j + i * widthX;
 				uint modelIndex = tileArray[index];
@@ -142,7 +141,7 @@ void ChunkManager::Init()
 			terrainChunks[i]->SetLastRow();
 		}
 		terrainChunks[i]->Init();
-		terrainChunks[i]->position.z = i * -(MAX_TERRAIN_SIZE - 1);
+		terrainChunks[i]->position.z = static_cast<float>(i * -(MAX_TERRAIN_SIZE - 1));
 
 	}
 
@@ -156,13 +155,13 @@ void ChunkManager::DrawTerrainChunks()
 	terrainShader->SetMat4x4("view", Game::view);
 	const glm::vec3 camPos = Game::GetCameraPosition();
 	terrainShader->SetFloat3("viewPos", camPos.x, camPos.y, camPos.z);
-	ImGui::Begin("debug");
+
 
 	for (int i = 0; i < NUMBER_OF_TERRAIN_CHUNKS; i++) {
 
 		glm::mat4 model = glm::mat4(1.0f);
 
-		ImGui::Text("%d chunk %f", i, chunks[i]->GetPosition().z);
+		
 		//model = glm::translate(model, glm::vec3(0,0,-i*4+22));
 		model = glm::translate(model, terrainChunks[i]->position);
 
@@ -176,7 +175,7 @@ void ChunkManager::DrawTerrainChunks()
 
 		terrainChunks[i]->Draw();
 	}
-	ImGui::End();
+
 
 	terrainShader->Unbind();
 }

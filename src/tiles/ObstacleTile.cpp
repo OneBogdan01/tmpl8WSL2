@@ -83,17 +83,17 @@ void ObstacleTile::CreateExplosion()
 	ExplodingBarrelsFactory::CreateExplosion(pos);
 }
 
-void ObstacleTile::SetCallback(btGhostObject* ghostObject)
+void ObstacleTile::SetCallback(btGhostObject* _ghostObject)
 {
-	ghostObject->setUserPointer(obstacleCallback);
+	_ghostObject->setUserPointer(obstacleCallback);
 }
 
-void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t index)
+void ObstacleTile::Init(const char* path, const glm::vec3 pos, const size_t _index)
 {
 	SetInitialPosition(pos);
 	modelId = path;
 	ModelTileFactory::GetInstance().CreateTileModel(path, pos);
-	obstacleCallback = new ObstacleTrigger(GameObject::Obstacle, index);
+	obstacleCallback = new ObstacleTrigger(GameObject::Obstacle, _index);
 	obstacleCallback->GetEventWhip().connect(&ObstacleTile::CreateExplosion, this);
 	AddATriggerBox();
 

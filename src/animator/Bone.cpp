@@ -11,10 +11,10 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 	for (int positionIndex = 0; positionIndex < m_NumPositions; ++positionIndex)
 	{
 		aiVector3D aiPosition = channel->mPositionKeys[positionIndex].mValue;
-		float timeStamp = channel->mPositionKeys[positionIndex].mTime;
+		const double timeStamp = (channel->mPositionKeys[positionIndex].mTime);
 		KeyPosition data;
 		data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
-		data.timeStamp = timeStamp;
+		data.timeStamp = static_cast<float>(timeStamp);
 		m_Positions.push_back(data);
 	}
 
@@ -22,10 +22,10 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 	for (int rotationIndex = 0; rotationIndex < m_NumRotations; ++rotationIndex)
 	{
 		aiQuaternion aiOrientation = channel->mRotationKeys[rotationIndex].mValue;
-		float timeStamp = channel->mRotationKeys[rotationIndex].mTime;
+		double timeStamp = channel->mRotationKeys[rotationIndex].mTime;
 		KeyRotation data;
 		data.orientation = AssimpGLMHelpers::GetGLMQuat(aiOrientation);
-		data.timeStamp = timeStamp;
+		data.timeStamp = static_cast<float>(timeStamp);
 		m_Rotations.push_back(data);
 	}
 
@@ -33,10 +33,10 @@ Bone::Bone(const std::string& name, int ID, const aiNodeAnim* channel)
 	for (int keyIndex = 0; keyIndex < m_NumScalings; ++keyIndex)
 	{
 		aiVector3D scale = channel->mScalingKeys[keyIndex].mValue;
-		float timeStamp = channel->mScalingKeys[keyIndex].mTime;
+		double timeStamp = (channel->mScalingKeys[keyIndex].mTime);
 		KeyScale data;
 		data.scale = AssimpGLMHelpers::GetGLMVec(scale);
-		data.timeStamp = timeStamp;
+		data.timeStamp = static_cast<float>(timeStamp);
 		m_Scales.push_back(data);
 	}
 }
@@ -57,6 +57,7 @@ int Bone::GetPositionIndex(float animationTime) const
 			return index;
 	}
 	assert(0);
+	return -1;
 }
 
 int Bone::GetRotationIndex(float animationTime) const
@@ -67,6 +68,7 @@ int Bone::GetRotationIndex(float animationTime) const
 			return index;
 	}
 	assert(0);
+	return -1;
 }
 
 int Bone::GetScaleIndex(float animationTime) const
@@ -77,6 +79,7 @@ int Bone::GetScaleIndex(float animationTime) const
 			return index;
 	}
 	assert(0);
+	return -1;
 }
 
 float Bone::GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)

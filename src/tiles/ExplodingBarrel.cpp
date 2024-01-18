@@ -131,6 +131,7 @@ void ExplodingBarrel::Disable()
 
 void ExplodingBarrel::Update(float deltaTime)
 {
+	deltaTime;
 	if (active)
 	{
 		for (auto& part : parts) {

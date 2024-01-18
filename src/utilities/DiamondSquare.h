@@ -187,10 +187,11 @@ public:
 					}
 					if (heightMap[i][j] > MIN_THRESHOLD)
 						continue;
-					avg /= count;
+					if (count != 0)
+						avg /= count;
 					heightMap[i][j] = avg + RandomHeightValue(roughness);
 					if (0.3f > heightMap[i][j])
-						heightMap[i ][j ] = .3f;
+						heightMap[i][j] = .3f;
 				}
 			}
 

@@ -62,7 +62,7 @@ void TileFactory::DrawInstanced(const char* path, Shader& shader,std::vector<glm
 		glVertexAttribDivisor(5, 1);
 		glVertexAttribDivisor(6, 1);
 		glVertexAttribDivisor(7, 1);
-		glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(mesh.indices.size()), GL_UNSIGNED_INT, 0, count);
+		glDrawElementsInstanced(GL_TRIANGLES, static_cast<GLsizei>(mesh.indices.size()), GL_UNSIGNED_INT, 0, static_cast<GLsizei>(count));
 		glBindVertexArray(0);
 	}
 }
@@ -70,6 +70,7 @@ void TileFactory::DrawInstanced(const char* path, Shader& shader,std::vector<glm
 
 StaticModel* TileFactory::LoadModel(const char* path, glm::vec3 initialPosition)
 {
+	initialPosition;
 	const auto model = new StaticModel(path);
 
 	for (auto& mesh : model->GetMeshes())

@@ -29,7 +29,7 @@ public:
 	void ResetTiles();
 	void ResetRopes();
 	Chunk();
-	btRigidBody* AddStaticRigidbody(const char* modelId, glm::vec3 initialPosition, glm::vec3& drawOffset);
+	btRigidBody* AddStaticRigidbody(const char* modelId, glm::vec3 initialPosition, glm::vec3& _drawOffset);
 
 	void Draw();
 	void UpdateRB();

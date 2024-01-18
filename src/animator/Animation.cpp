@@ -6,8 +6,8 @@
 	const aiScene* scene = importer.ReadFile(animationPath, aiProcess_Triangulate);
 	assert(scene && scene->mRootNode);
 	auto animation = scene->mAnimations[0];
-	m_Duration = animation->mDuration;
-	m_TicksPerSecond = animation->mTicksPerSecond;
+	m_Duration = static_cast<float>(animation->mDuration);
+	m_TicksPerSecond =static_cast<int>(animation->mTicksPerSecond);
 	//aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
 	//globalTransformation = globalTransformation.Inverse();
 	ReadHierarchyData(m_RootNode, scene->mRootNode);

@@ -6,8 +6,10 @@
 #include "template.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#pragma warning(push, 0)
 
 #include "model_loading/ogldev_math_3d.h"
+#pragma warning(pop)
 static bool IGP_detected = false;
 
 // OpenGL helper functions

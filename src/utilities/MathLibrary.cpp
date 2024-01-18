@@ -21,7 +21,7 @@ float MathLibrary::InvLerp(const float a, const float b, const float v)
 }
 float MathLibrary::Lerp(float a, float b, float f)
 {
-	return a * (1.0 - f) + (b * f);
+	return a * (1.0f - f) + (b * f);
 }
 float MathLibrary::Sign(float value)
 {

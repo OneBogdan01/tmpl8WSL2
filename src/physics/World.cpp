@@ -35,6 +35,7 @@ void World::RenderDebug()
 void World::Update(float deltaTime)
 {
 	//RenderDebug();
+	deltaTime;
 
 
 	dynamicsWorld->stepSimulation(1.0f / 60.0f, 5, 1.0f / 60.0f); //set it to 5! for the PI
@@ -214,9 +215,9 @@ btCapsuleShape* World::CreateBoundingCapsuleModel(const std::vector<StaticMesh>&
 	return col;
 }
 
-btVector3 World::GetRigidBodyPosition(const uint ID) const
+btVector3 World::GetRigidBodyPosition(const uint _ID) const
 {
-	btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[ID];
+	btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[_ID];
 	btRigidBody* body = btRigidBody::upcast(obj);
 	btTransform trans;
 	if (body && body->getMotionState())

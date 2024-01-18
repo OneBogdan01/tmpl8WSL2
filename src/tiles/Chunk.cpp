@@ -27,8 +27,9 @@ Chunk::Chunk()
 	Game::lightManager->SetLightProperties(*modelShader);
 }
 
-btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& drawOffset)
+btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 initialPosition, glm::vec3& _drawOffset)
 {
+	initialPosition;
 	//make a collision shape
 	// Create a collision shape (e.g., a box shape for a rectangular tile)
 	ModelTileFactory& factory = ModelTileFactory::GetInstance();
@@ -37,7 +38,7 @@ btRigidBody* Chunk::AddStaticRigidbody(const char* modelId, const glm::vec3 init
 	// Create a motion state
 	btTransform tileTransform;
 	tileTransform.setIdentity();
-	drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
+	_drawOffset = glm::vec3(0.0f, tileShape->getHalfExtentsWithMargin().y(), 0.0f);
 	/*tileTransform.setOrigin(btVector3(initialPosition.x, initialPosition.y + drawOffset.y,
 		initialPosition.z));*/
 	btDefaultMotionState* tileMotionState = new btDefaultMotionState(tileTransform);
@@ -182,7 +183,7 @@ void Chunk::RandomizeChunk()
 	RandomNumberGenerator::RandomizePerlinNoise();
 	float threshold = RandomNumberGenerator::RandomFloat() * 0.25f + .5f;
 	float rng = RandomNumberGenerator::RandomFloat() * 0.4f + .2f;
-	uint maxCoinCount = static_cast<float>(COINS_PER_CHUNK) * RandomNumberGenerator::RandomFloat();
+	uint maxCoinCount = static_cast<uint>(static_cast<float>(COINS_PER_CHUNK) * RandomNumberGenerator::RandomFloat());
 	//cout << "Count:" << maxCoinCount << endl;
 	float x = RandomNumberGenerator::RandomFloat() * 512;
 	float y = RandomNumberGenerator::RandomFloat() * 512;
@@ -193,7 +194,7 @@ void Chunk::RandomizeChunk()
 	{
 		for (uint j = 0; j < w && maxObstacleCount > 0; j++)
 		{
-			int index = j + i * w;
+			int index = static_cast<int>(j + i * static_cast<uint>(w));
 
 			if (tiles[index].GetId() != nullptr)
 				if (RandomNumberGenerator::RandomFloat() > .85f)
@@ -222,7 +223,7 @@ void Chunk::RandomizeChunk()
 	{
 		for (uint j = 0; j < w && maxCoinCount > 0; j++)
 		{
-			uint index = j + i * w;
+			uint index = j + i * static_cast<uint>(w);
 
 			x += static_cast<float>(i);
 			y += static_cast<float>(j);
@@ -278,9 +279,9 @@ void Chunk::RandomizeChunk()
 		if (tiles[i].GetId() != nullptr)
 		{
 			float chance = RandomNumberGenerator::RandomFloat() + ChunkManager::changeRope;
-#ifdef _DEBUG
-			chance = 1.0f;
-#endif
+//#ifdef _DEBUG
+//			chance = 1.0f;
+//#endif
 
 			if (chance > .9f)
 			{

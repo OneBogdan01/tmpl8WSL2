@@ -54,13 +54,14 @@ void Camera::UpdateRotation()
 void Camera::Init()
 {
 	//we can concatenate the rotations
-	UpdateRotation();
+	position = startPosition;
+		UpdateRotation();
 }
 
 void Camera::SetPosition(const glm::vec3& pos)
 {
 	position = pos;
-	
+
 }
 
 const glm::vec3 Camera::GetPosition() const
@@ -97,6 +98,7 @@ void Camera::MovementCamera(float deltaTime)
 
 void Camera::InterpolateTo(float deltaTime)
 {
+	deltaTime;
 	if (!interpolating)
 		return;
 	float t = timer.elapsed();
@@ -112,12 +114,12 @@ void Camera::InterpolateTo(float deltaTime)
 		currentRotation = glm::slerp(endRotation, startRotation, step);
 		//position = glm::mix(finalPosition, startPosition, step);
 		position = glm::mix(finalPosition, startPosition, step);
-			if (t > timeToRotate)
-			{
-				interpolating = false;
-				backToOriginalRotation = false;
-				std::cout << "Stop interpolation'\n";
-			}
+		if (t > timeToRotate)
+		{
+			interpolating = false;
+			backToOriginalRotation = false;
+			std::cout << "Stop interpolation'\n";
+		}
 	}
 	else
 	{
@@ -179,7 +181,7 @@ void Camera::RotateMouse(const glm::vec2& p)
 
 void Camera::InterpolateRotation(glm::vec3* lookAt)
 {
-	
+
 	lookAt->z = 0;
 	lookAt->y += 10.0f;
 	//still interpolating
@@ -191,7 +193,7 @@ void Camera::InterpolateRotation(glm::vec3* lookAt)
 	float sign = lookAt->x > 0.f ? -1.0f : 1.0f;
 	translatedPos.x += 15.0f * sign;
 	finalPosition = translatedPos + position;
-	
+
 	endRotation = glm::quatLookAt(glm::normalize(*lookAt - finalPosition), cameraUp);
 	finalPosition = -translatedPos + position;
 	std::cout << "Init camera interpolation'\n";

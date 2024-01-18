@@ -44,7 +44,8 @@ void SkinnedModel::SetVertexBoneData(SkinnedMesh::Vertex& vertex, int boneID, fl
 
 void SkinnedModel::ExtractBoneWeightForVertices(std::vector<SkinnedMesh::Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 {
-	for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
+	scene;
+	for (unsigned int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex) {
 		int boneID = -1;
 		std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
 		if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end()) {
@@ -227,10 +228,11 @@ std::vector<SkinnedMesh::MeshTexture> SkinnedModel::loadMaterialTextures(aiMater
 	return textures;
 }
 
-unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& directory, bool gamma)
+unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& _directory, bool gamma)
 {
+	gamma;
 	std::string filename = std::string(path);
-	filename = directory + '/' + filename;
+	filename = _directory + '/' + filename;
 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
@@ -239,7 +241,7 @@ unsigned int SkinnedModel::TextureFromFile(const char* path, const std::string& 
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
 	if (data)
 	{
-		GLenum format;
+		GLenum format=0;
 		if (nrComponents == 1)
 			format = GL_RED;
 		else if (nrComponents == 3)

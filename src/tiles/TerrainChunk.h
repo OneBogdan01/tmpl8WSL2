@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <vector>
 
 #include "utilities/DiamondSquare.h"
 
@@ -10,7 +9,7 @@ public:
 	glm::vec3 GetColor(float height);
 	void Init();
 	void Draw();
-	void PrintHeightMap(const float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE]) const;
+	void PrintHeightMap(const float _heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE]) const;
 	glm::vec3 position = glm::vec3(-MAX_TERRAIN_SIZE , -6.f, 0);
 	void SetLastRow();
 private:

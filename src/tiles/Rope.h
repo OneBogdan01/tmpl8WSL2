@@ -25,7 +25,7 @@ public:
 	glm::vec3 DrawRope(const glm::vec3 a, float offsetX, btVector3 color);
 
 
-	void Init(const char* path, glm::vec3 pos, size_t index) override;
+	void Init(const char* path, glm::vec3 pos, size_t _index) override;
 	void AddATriggerBox();
 
 	glm::vec3 GetMovingPartAtTime(glm::vec3 startPoint, float timeElapsed, const float leng);

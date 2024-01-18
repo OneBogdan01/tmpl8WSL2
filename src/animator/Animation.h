@@ -33,7 +33,7 @@ public:
 	Bone* FindBone(const std::string& name);
 
 
-	float GetTicksPerSecond() const { return m_TicksPerSecond; }
+	float GetTicksPerSecond() const { return static_cast<float>(m_TicksPerSecond); }
 	float GetDuration() const { return m_Duration; }
 	const AssimpNodeData& GetRootNode() { return m_RootNode; }
 

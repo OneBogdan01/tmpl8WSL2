@@ -181,20 +181,20 @@ void TerrainChunk::Draw()
 {
 	glEnable(GL_CULL_FACE);
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 	glDisable(GL_CULL_FACE);
 
 
 }
 
-void TerrainChunk::PrintHeightMap(const float heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE]) const
+void TerrainChunk::PrintHeightMap(const float _heightMap[MAX_TERRAIN_SIZE][MAX_TERRAIN_SIZE]) const
 {
 	for (int i = 0; i < MAX_TERRAIN_SIZE; ++i)
 	{
 		for (int j = 0; j < MAX_TERRAIN_SIZE; ++j)
 		{
-			cout << heightMap[i][j] << " ";
+			cout << _heightMap[i][j] << " ";
 		}
 		cout << endl;
 	}

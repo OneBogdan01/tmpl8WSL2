@@ -1,7 +1,6 @@
 ﻿#include "Rope.h"
 
 #include "game.h"
-#include "animator/Animation.h"
 
 
 #include "utilities/MathLibrary.h"
@@ -90,14 +89,7 @@ void Rope::Render(glm::vec3 position)
 	UpdatePhysicsPosition(glm::vec3(a.x, endOfRope.y, a.z + endOfRope.x));
 
 
-#ifdef _DEBUG
-	//const int x1 = static_cast<int>(points[0].x - camPos.x + coll.min.x);
-	//const int y1 = static_cast<int>(points[0].y - camPos.y + coll.min.y);
 
-	//const int x2 = static_cast<int>(points[0].x - camPos.x + coll.max.x);
-	//const int y2 = static_cast<int>(points[0].y - camPos.y + coll.max.y);
-
-#endif
 }
 
 glm::vec3 Rope::GetMovingPartAtTime(glm::vec3 startPoint, float timeElapsed, const float leng)
@@ -159,12 +151,13 @@ void Rope::DeactivateMovement()
 	shouldMove = false;
 }
 
-void Rope::Init(const char* path, const glm::vec3 pos, size_t index)
+void Rope::Init(const char* path, const glm::vec3 pos, size_t _index)
 {
+	path;
 	startDisableing = false;
 
-	this->index = index;
-	callback = new RopeTrigger(GameObject::Rope, index);
+	this->index = _index;
+	callback = new RopeTrigger(GameObject::Rope, _index);
 	callback->GetEvent().connect(&Rope::ActivateMovement, this);
 	//.GetEvent().connect(&Chunk::DisableRope, this);
 	timeOffset = PI / 2;

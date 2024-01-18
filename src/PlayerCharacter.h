@@ -65,11 +65,9 @@ private:
 
 	Shader* animationShader = nullptr;
 
-	float dirX = 0;
 	btVector3 dir = btVector3(0, 0, 0);
 	float speed = 20.0f;
 	float jumpSpeed = 13.0f;
-	int displayIndex = 32;
 	Timer timer;
 
 	//GLuint m_boneLocation[MAX_BONES];

@@ -49,5 +49,5 @@ private:
 	SkinnedMesh processMesh(aiMesh* StaticMesh, const aiScene* scene);
 	std::vector<SkinnedMesh::MeshTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 		std::string typeName);
-	unsigned TextureFromFile(const char* path, const std::string& directory, bool gamma = false);
+	unsigned TextureFromFile(const char* path, const std::string& _directory, bool gamma = false);
 };

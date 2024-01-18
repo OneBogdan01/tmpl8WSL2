@@ -2,7 +2,6 @@
 #include "BulletWrapper.h"
 
 #include "model_loading/StaticModel.h"
-#include "physics/GameObject.h"
 
 class Tile
 {

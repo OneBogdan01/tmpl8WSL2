@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include <vector>
 
 #include "ExplodingBarrel.h"
 #include "model_loading/StaticMesh.h"

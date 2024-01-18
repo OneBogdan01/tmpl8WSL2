@@ -121,7 +121,7 @@ StaticMesh StaticModel::processMesh(aiMesh* StaticMesh, const aiScene* scene)
 	if (noTextures)
 		return {vertices, indices, textures};
 	// process materials
-	aiMaterial* material = scene->mMaterials[StaticMesh->mMaterialIndex];
+	//aiMaterial* material = scene->mMaterials[StaticMesh->mMaterialIndex];
 
 
 	if (StaticMesh->mMaterialIndex >= 0)
@@ -184,10 +184,11 @@ std::vector<StaticMesh::MeshTexture> StaticModel::loadMaterialTextures(aiMateria
 	return textures;
 }
 
-unsigned int StaticModel::TextureFromFile(const char* path, const std::string& directory, bool gamma)
+unsigned int StaticModel::TextureFromFile(const char* path, const std::string& _directory, bool gamma)
 {
+	gamma;
 	std::string filename = std::string(path);
-	filename = directory + '/' + filename;
+	filename = _directory + '/' + filename;
 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
@@ -196,7 +197,7 @@ unsigned int StaticModel::TextureFromFile(const char* path, const std::string& d
 	unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
 	if (data)
 	{
-		GLenum format;
+		GLenum format=0;
 		if (nrComponents == 1)
 			format = GL_RED;
 		else if (nrComponents == 3)
