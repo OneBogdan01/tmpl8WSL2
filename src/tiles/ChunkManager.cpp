@@ -141,7 +141,7 @@ void ChunkManager::Init()
 			terrainChunks[i]->SetLastRow();
 		}
 		terrainChunks[i]->Init();
-		terrainChunks[i]->position.z = static_cast<float>(i * -(MAX_TERRAIN_SIZE - 1));
+		terrainChunks[i]->position.z = static_cast<float>(static_cast<int>(i) * -(MAX_TERRAIN_SIZE - 1));
 
 	}
 
