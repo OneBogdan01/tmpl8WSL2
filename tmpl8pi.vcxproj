@@ -110,6 +110,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -118,6 +119,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <SourcePath>.;$(SourcePath)</SourcePath>
