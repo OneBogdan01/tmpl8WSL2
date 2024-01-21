@@ -110,6 +110,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -118,6 +119,7 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>default</WSLPath>
+    <CopyAdditionalIncludes>false</CopyAdditionalIncludes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <SourcePath>.;$(SourcePath)</SourcePath>
@@ -152,23 +154,6 @@
     <MultiProcNumber>4</MultiProcNumber>
     <ValidateArchitecture>false</ValidateArchitecture>
     <WSLPath>Debian</WSLPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM64'">
-    <ValidateArchitecture>false</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|ARM'">
-    <ValidateArchitecture>false</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <WSLPath>Debian</WSLPath>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelProf|x64'">
-    <ValidateArchitecture>false</ValidateArchitecture>
-    <MultiProcNumber>4</MultiProcNumber>
-    <CopyAdditionalIncludes>true</CopyAdditionalIncludes>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="src\animator\Bone.cpp" />
